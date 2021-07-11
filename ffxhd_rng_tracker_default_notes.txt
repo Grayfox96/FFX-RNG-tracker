@@ -1,0 +1,186 @@
+# Usage:
+# kill [enemy] [killer] [party]
+# steal [enemy] [successful steals]
+# death [character]
+# waste/advance [rng#] [number of times]
+# add comments with a # at the start
+# of the line
+#
+# blank lines are also skipped
+# and create a blank line
+#
+# Zanarkand
+waste rng10 45
+
+# Baaj Temple
+kill klikk tidus tyakwlr
+kill piranha tidus tyakwlr
+kill piranha-2 tidus tyakwlr
+kill piranha-3 tidus tyakwlr
+kill tros tidus tyakwlr
+
+# Besaid
+kill piranha tidus tyakwlr
+kill piranha-2 tidus tyakwlr
+kill piranha-3 tidus tyakwlr
+kill Dingo tidus tyakwlr
+kill Condor tidus tyakwlr
+kill Water-Flan tidus tyakwlr
+kill ??? tidus tyakwlr
+kill Garuda tidus tyakwlr
+kill dingo-2 tidus tyakwlr
+kill condor-2 tidus tyakwlr
+kill water-flan-2 tidus tyakwlr
+
+# S.S. Liki
+kill Sin tidus tyakwlr
+kill Sinspawn-Echuilles tidus tyakwlr
+kill sinscale tidus tyakwlr
+kill sinscale-2 tidus tyakwlr
+kill sinscale-3 tidus tyakwlr
+kill sinscale-4 tidus tyakwlr
+
+# Kilika
+kill Ragora tidus tyakwlr
+kill Dinonix tidus tyakwlr
+kill Killer-Bee tidus tyakwlr
+kill Yellow-Element tidus tyakwlr
+kill Dinonix tidus tyakwlr
+kill Killer-Bee tidus tyakwlr
+kill Dinonix tidus tyakwlr
+kill Killer-Bee tidus tyakwlr
+kill Geneaux's-Tentacle tidus tyakwlr
+kill Geneaux's-Tentacle tidus tyakwlr
+kill Sinspawn-Geneaux tidus tyakwlr
+kill Dinonix tidus tyakwlr
+kill Killer-Bee tidus tyakwlr
+kill Dinonix tidus tyakwlr
+kill Killer-Bee tidus tyakwlr
+
+# Luca
+kill Worker lulu tyakwlr
+kill Worker lulu tyakwlr
+kill Worker lulu tyakwlr
+kill Worker lulu tyakwlr
+kill Worker tidus tyakwlr
+kill Worker tidus tyakwlr
+kill Worker tidus tyakwlr
+kill Worker tidus tyakwlr
+kill Worker tidus tyakwlr
+kill Worker tidus tyakwlr
+kill Oblitzerator tidus tyakwlr
+kill Sahagin-Chief tidus tyakwlr
+# 16 Sahagin-Chief kills, 16*3 rng10 rolls
+waste rng10 48
+kill Vouivre tidus tyakwlr
+kill Garuda-3 tidus tyakwlr
+
+# Mi'ihen Highroad
+kill Raldo tidus tyakwlr
+
+# Mushroom Rock Road
+kill Gandarewa tidus tyakwlr
+kill Raptor tidus tyakwlr
+kill Lamashtu tidus tyakwlr
+kill Red-Element tidus tyakwlr
+kill Funguar tidus tyakwlr
+kill arm tidus tyakwlr
+kill arm tidus tyakwlr
+kill head tidus tyakwlr
+kill Sinspawn-Gui tidus tyakwlr
+kill head tidus tyakwlr
+kill sinspawn-gui tidus tyakwlr
+kill arm tidus tyakwlr
+kill arm tidus tyakwlr
+
+# Moonflow
+kill Extractor tidus tyakwlr
+kill Bunyip tidus tyakwlr
+
+# Thunder Plains
+kill buer tidus tyakwlr
+steal iron-giant 0
+# steal larva 0
+
+# Macalania Woods
+steal melusine 0
+steal chimera 0
+steal blue-Element 0
+kill Spherimorph tidus tyakwlr
+
+# Lake Macalania
+kill Negator tidus tyakwlr
+kill Crawler tidus tyakwlr
+kill Negator tidus tyakwlr
+kill Guado-Guardian tidus tyakwlr
+kill Guado-Guardian tidus tyakwlr
+kill Anima tidus tyakwlr
+kill Seymour tidus tyakwlr
+kill Snow-Wolf tidus tyakwlr
+# guado-guardian-2
+kill Mafdet tidus tyakwlr
+kill Evil-Eye tidus tyakwlr
+kill Ice-Flan tidus tyakwlr
+kill Guado-Guardian-2 tidus tyakwlr
+kill Wendigo tidus tyakwlr
+kill Guado-Guardian-2 tidus tyakwlr
+
+# Bikanel Desert
+# bikanel desert monsters
+# sand wolf
+# alcyone
+# mushussu
+# zu-2
+# sand-worm
+# cactuar
+kill Sandragora tidus tyakwlr
+kill Sandragora tidus tyakwlr
+
+# Home
+kill Bomb-2 tidus tyakwlr
+kill Guado-Guardian-3 tidus tyakwlr
+kill Dual-Horn-2 tidus tyakwlr
+kill Chimera-2 tidus tyakwlr
+
+# Airship
+kill Evrae tidus tyakwlr
+
+# Bevelle
+kill Warrior-Monk tidus tyakwlr
+kill warrior-monk-2 tidus tyakwlr
+kill YKT-63 tidus tyakwlr
+kill YAT-99 tidus tyakwlr
+
+# Via Purifico
+kill Maze-Larva tidus tyakwlr
+# isaaru summons
+kill Phlegyas tidus tyakwlr
+kill Sahagin-4 tidus tyakwlr
+kill Evrae-Altana tidus tyakwlr
+
+# Highbridge
+kill Seymour-Natus tidus tyakwlr
+
+# Calm Lands
+# steal flame-flan 0
+kill Defender-X tidus tyakwlr
+
+# Cavern of the Stolen Fayth
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+kill Ghost bahamut tyakwlr
+
+# Mt. Gagazet
+kill Biran-Ronso kimahri k
+kill Yenke-Ronso kimahri k
