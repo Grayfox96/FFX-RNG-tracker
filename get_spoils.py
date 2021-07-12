@@ -1,5 +1,3 @@
-# needs ffxhd-raw-rng10-values.csv, ffxhd-raw-rng12-values.csv and ffxhd-raw-rng13-values.csv placed in the same folder to work
-
 import csv
 
 def get_damage_rolls():
@@ -100,23 +98,23 @@ def get_monsters_array(monster_data, text_characters_array):
 				if line[408 + i] == '00': break
 				monster_name += text_characters_array[line[408 + i]]
 
-			monster_name = monster_name.lower().replace(' ', '-')
+			monster_name = monster_name.lower().replace(' ', '_')
 
 			monsters_list = monsters_array.keys()
-			if f'{monster_name}-7' in monsters_list:
-				monsters_array[f'{monster_name}-8'] = line
-			elif f'{monster_name}-6' in monsters_list:
-				monsters_array[f'{monster_name}-7'] = line
-			elif f'{monster_name}-5' in monsters_list:
-				monsters_array[f'{monster_name}-6'] = line
-			elif f'{monster_name}-4' in monsters_list:
-				monsters_array[f'{monster_name}-5'] = line
-			elif f'{monster_name}-3' in monsters_list:
-				monsters_array[f'{monster_name}-4'] = line
-			elif f'{monster_name}-2' in monsters_list:
-				monsters_array[f'{monster_name}-3'] = line
+			if f'{monster_name}_7' in monsters_list:
+				monsters_array[f'{monster_name}_8'] = line
+			elif f'{monster_name}_6' in monsters_list:
+				monsters_array[f'{monster_name}_7'] = line
+			elif f'{monster_name}_5' in monsters_list:
+				monsters_array[f'{monster_name}_6'] = line
+			elif f'{monster_name}_4' in monsters_list:
+				monsters_array[f'{monster_name}_5'] = line
+			elif f'{monster_name}_3' in monsters_list:
+				monsters_array[f'{monster_name}_4'] = line
+			elif f'{monster_name}_2' in monsters_list:
+				monsters_array[f'{monster_name}_3'] = line
 			elif monster_name in monsters_list:
-				monsters_array[f'{monster_name}-2'] = line
+				monsters_array[f'{monster_name}_2'] = line
 			else: monsters_array[monster_name] = line
 
 	return monsters_array
@@ -133,10 +131,13 @@ def get_rng_generator(seed_array):
 
 # returns the prize struct byte array
 def get_prize_struct(monster, monsters_array):
-	monster = monster.lower().replace(' ', '-')
+	monster = monster.lower().replace(' ', '_')
 	# monster = ''.join([word[0].upper() + word[1:] for word in monster.split()])
-	prize_struct = [int(value, 16) for value in monsters_array[monster]]
-	return prize_struct
+	try:
+		prize_struct = [int(value, 16) for value in monsters_array[monster]]
+		return prize_struct
+	except KeyError:
+		return False
 
 
 def get_item1(prize_struct, items_array):
@@ -152,7 +153,7 @@ def get_item2(prize_struct, items_array):
 
 
 # uses rng12 and rng13 to generate an equipment drop from a specific enemy
-def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_string, killer_index, equipment_number_generator, rng_equipment, rng_abilities):
+def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_string, killer_index, rng_equipment, rng_abilities):
 
 	def get_characters_enabled(characters_enabled_string):
 		characters_enabled_string = characters_enabled_string.lower()
@@ -177,14 +178,13 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 		return value
 
 	equipment = {}
-	number_of_dropped_equipment = next(equipment_number_generator)
 
-	if number_of_dropped_equipment < 0:
-		return -1
+	# if number_of_dropped_equipment < 0:
+	# 	return -1
 
-	dropped_equipment_array_offset = number_of_dropped_equipment * 22
-	base_dropped_equipment_address = 0
-	equipment['address'] = base_dropped_equipment_address + 254 + dropped_equipment_array_offset
+	# dropped_equipment_array_offset = number_of_dropped_equipment * 22
+	# base_dropped_equipment_address = 0
+	# equipment['address'] = base_dropped_equipment_address + 254 + dropped_equipment_array_offset
 	equipment['exists'] = 1
 	equipment['enemy'] = ''
 
@@ -250,20 +250,16 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 	# number of abilities
 	rng_number_of_abilities = next(rng_equipment)
 	number_of_abilities_modifier = prize_struct[177] + (rng_number_of_abilities & 7) - 4
-	number_of_auto_abilities = (number_of_abilities_modifier + ((number_of_abilities_modifier >> 31) & 7)) >> 3
+	number_of_abilities_max = (number_of_abilities_modifier + ((number_of_abilities_modifier >> 31) & 7)) >> 3
 
 	# PossibleAutoAbilitiesArrayAddress = (ushort *)(TargetPrizeStructAddress + 0x32 + ((uint)*(byte *)(NumberOfDroppedEquipment + 0x103 + SomeAddress) + (uint)*(byte *)(NumberOfDroppedEquipment + 0x102 + SomeAddress) * 2) * 16);
 	# weapon_or_armor = (uint)*(byte *)(NumberOfDroppedEquipment + 0x103 + SomeAddress)
 	# killer_index = (uint)*(byte *)(NumberOfDroppedEquipment + 0x102 + SomeAddress)
 	possible_auto_abilities_array_address = 178 + ((equipment_type + (killer_index * 2)) * 16)
-	# the first ability in the array is always 0 for armors, its either 0 or piercing (11) for weapons
+	# the first ability in the array is always 0 for armors, its either 0 or piercing/sensor (11/0) for weapons
 	piercing_auto_ability_value = prize_struct[possible_auto_abilities_array_address] + (prize_struct[possible_auto_abilities_array_address + 1] * 256)
-	equipment['abilities'] = {}
-	equipment['abilities'][0] = '-'
-	equipment['abilities'][1] = '-'
-	equipment['abilities'][2] = '-'
-	equipment['abilities'][3] = '-'
 
+	equipment['abilities'] = {}
 
 	# if the first ability is piercing it always gets added, only the case for auron and kimahri weapons
 	if number_of_slots == 0 or piercing_auto_ability_value == 0:
@@ -274,10 +270,10 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 		equipment['abilities'][0] = abilities_array[piercing_auto_ability_value]
 		number_of_abilities_added = 1
 
-	if number_of_auto_abilities > 0:
+	if number_of_abilities_max > 0:
 		current_dropped_equipment_ability = number_of_abilities_added
 
-		while number_of_auto_abilities > 0:
+		while number_of_abilities_max > 0:
 
 			# if all the slots are filled break
 			if number_of_abilities_added >= number_of_slots: break
@@ -309,30 +305,15 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 					current_dropped_equipment_ability += 1
 
 			# always decrements
-			number_of_auto_abilities -= 1
+			number_of_abilities_max -= 1
 
 	if number_of_abilities_added < 4:
 		# null remaining ability slots, shouldnt be important, it never overwrites filled slots
 		pass
 
-	# delete not important values
-	try:
-		del equipment['ability_0_index']
-		del equipment['ability_1_index']
-		del equipment['ability_2_index']
-		del equipment['ability_3_index']
-	except KeyError:
-		pass
-
-	for i in range(4 - equipment['slots']):
-		del equipment['abilities'][3 - i]
-
-	del equipment['address']
-	del equipment['exists']
-	del equipment['0_if_equipped']
-	del equipment['0x106']
-	del equipment['base_weapon_damage']
-	del equipment['base_weapon_crit']
+	# delete 
+	for i in range(number_of_slots - number_of_abilities_added):
+		equipment['abilities'][number_of_abilities_added + 1 + i] = '-'
 
 	return equipment
 
@@ -362,8 +343,7 @@ def get_spoils(prize_struct, abilities_array, items_array, characters_enabled_st
 	if item2_dropped:
 		item2 = get_item2(prize_struct, items_array)
 	if equipment_dropped:
-		equipment_number_generator = get_number_of_dropped_equipment()
-		equipment = create_dropped_equipment(prize_struct, abilities_array, characters_enabled_string, killer_index, equipment_number_generator, rng_equipment, rng_abilities)
+		equipment = create_dropped_equipment(prize_struct, abilities_array, characters_enabled_string, killer_index, rng_equipment, rng_abilities)
 
 	return item1, item2, equipment
 
@@ -374,5 +354,5 @@ def get_stolen_item(prize_struct, items_array, successful_steals, rng_steal_drop
 	if steal_chance > (rng_steal % 255):
 		common_item, common_item_quantity = items_array[prize_struct[164]], prize_struct[168]
 		rare_item, rare_item_quantity = items_array[prize_struct[166]], prize_struct[169]
-		return f'Stolen item {common_item} x{common_item_quantity} or {rare_item} x{rare_item_quantity}'
-	else: return 'Steal failed'
+		return f'{common_item} x{common_item_quantity} or {rare_item} x{rare_item_quantity}'
+	else: return 'failed'

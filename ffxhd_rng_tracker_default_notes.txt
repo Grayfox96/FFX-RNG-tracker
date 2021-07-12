@@ -1,186 +1,273 @@
 # Usage:
-# kill [enemy] [killer] [party]
-# steal [enemy] [successful steals]
+# kill [enemy_name] [killer] [party]
+# steal [enemy_name] [successful steals]
 # death [character]
-# waste/advance [rng#] [number of times]
+# waste/advance/roll [rng#] [succ. steals]
+#
 # add comments with a # at the start
 # of the line
 #
-# blank lines are also skipped
-# and create a blank line
+# blank lines create a blank line
 #
+
 # Zanarkand
-waste rng10 45
+# 45 rng10 rolls before klikk
+roll rng10 45
 
 # Baaj Temple
-kill klikk tidus tyakwlr
-kill piranha tidus tyakwlr
-kill piranha-2 tidus tyakwlr
-kill piranha-3 tidus tyakwlr
-kill tros tidus tyakwlr
+steal klikk 0
+steal klikk 1
+steal klikk 1
+steal klikk 1
+kill klikk tidus tr
+# all piranha groups have the same items
+steal piranha 0
+steal piranha 0
+# single
+kill piranha tidus tr
+# double
+kill piranha_2 tidus tr
+# triple
+kill piranha_3 tidus tr
+# forced fight
+steal piranha_3 0
+steal piranha_3 0
+kill piranha_3 tidus tr
+kill piranha_3 tidus tr
+kill tros tidus tr
 
 # Besaid
-kill piranha tidus tyakwlr
-kill piranha-2 tidus tyakwlr
-kill piranha-3 tidus tyakwlr
-kill Dingo tidus tyakwlr
-kill Condor tidus tyakwlr
-kill Water-Flan tidus tyakwlr
-kill ??? tidus tyakwlr
-kill Garuda tidus tyakwlr
-kill dingo-2 tidus tyakwlr
-kill condor-2 tidus tyakwlr
-kill water-flan-2 tidus tyakwlr
+kill piranha tidus tw
+kill piranha_2 tidus tw
+kill Dingo tidus tywl
+kill Condor wakka tywl
+kill Water_Flan lulu tywl
+kill ??? tidus tywl
+kill Garuda_2 valefor tywl
+kill dingo_2 tidus tywl
+kill condor_2 wakka tywl
+kill water_flan_2 lulu tywl
 
 # S.S. Liki
-kill Sin tidus tyakwlr
-kill Sinspawn-Echuilles tidus tyakwlr
-kill sinscale tidus tyakwlr
-kill sinscale-2 tidus tyakwlr
-kill sinscale-3 tidus tyakwlr
-kill sinscale-4 tidus tyakwlr
+kill Sin valefor tykwl
+kill Sinspawn_Echuilles tidus tykwl
+kill sinscale_3 tidus tykwl
+kill sinscale_3 tidus tykwl
 
 # Kilika
-kill Ragora tidus tyakwlr
-kill Dinonix tidus tyakwlr
-kill Killer-Bee tidus tyakwlr
-kill Yellow-Element tidus tyakwlr
-kill Dinonix tidus tyakwlr
-kill Killer-Bee tidus tyakwlr
-kill Dinonix tidus tyakwlr
-kill Killer-Bee tidus tyakwlr
-kill Geneaux's-Tentacle tidus tyakwlr
-kill Geneaux's-Tentacle tidus tyakwlr
-kill Sinspawn-Geneaux tidus tyakwlr
-kill Dinonix tidus tyakwlr
-kill Killer-Bee tidus tyakwlr
-kill Dinonix tidus tyakwlr
-kill Killer-Bee tidus tyakwlr
+# forced fight
+kill Ragora tidus tykwl
+#
+kill Dinonix tidus tykwl
+kill Killer_Bee wakka tykwl
+kill Yellow_Element valefor tykwl
+kill Dinonix valefor tykwl
+kill Killer_Bee valefor tykwl
+#kill Ragora valefor tykwl
+
+kill Geneaux's_Tentacle valefor tykwl
+kill Geneaux's_Tentacle valefor tykwl
+kill Sinspawn_Geneaux valefor tykwl
+
+kill Dinonix tidus tykwl
+kill Killer_Bee wakka tykwl
+kill Dinonix tidus tykwl
+kill Killer_Bee wakka tykwl
 
 # Luca
-kill Worker lulu tyakwlr
-kill Worker lulu tyakwlr
-kill Worker lulu tyakwlr
-kill Worker lulu tyakwlr
-kill Worker tidus tyakwlr
-kill Worker tidus tyakwlr
-kill Worker tidus tyakwlr
-kill Worker tidus tyakwlr
-kill Worker tidus tyakwlr
-kill Worker tidus tyakwlr
-kill Oblitzerator tidus tyakwlr
-kill Sahagin-Chief tidus tyakwlr
-# 16 Sahagin-Chief kills, 16*3 rng10 rolls
-waste rng10 48
-kill Vouivre tidus tyakwlr
-kill Garuda-3 tidus tyakwlr
+# fight 1
+kill Worker lulu tykwl
+kill Worker lulu tykwl
+# fight 2
+kill Worker lulu tykwl
+kill Worker lulu tykwl
+# fight 3
+kill Worker lulu tykwl
+kill Worker kimahri tykwl
+kill Worker lulu tykwl
+kill Worker lulu tykwl
+kill Worker lulu tykwl
+kill Worker tidus tykwl
+kill Oblitzerator tidus tykwl
+kill Sahagin_Chief tidus tykwl
+# 16 Sahagin Chief kills, 16*3 rng10 rolls
+roll rng10 48
+# forced fights
+kill Vouivre tidus tyakwl
+kill Garuda_3 tidus tyakwl
 
 # Mi'ihen Highroad
-kill Raldo tidus tyakwlr
+kill Raldo auron tyakwl
 
 # Mushroom Rock Road
-kill Gandarewa tidus tyakwlr
-kill Raptor tidus tyakwlr
-kill Lamashtu tidus tyakwlr
-kill Red-Element tidus tyakwlr
-kill Funguar tidus tyakwlr
-kill arm tidus tyakwlr
-kill arm tidus tyakwlr
-kill head tidus tyakwlr
-kill Sinspawn-Gui tidus tyakwlr
-kill head tidus tyakwlr
-kill sinspawn-gui tidus tyakwlr
-kill arm tidus tyakwlr
-kill arm tidus tyakwlr
+# valefor od
+kill Gandarewa valefor tyakwl
+kill Raptor valefor tyakwl
+# kill Lamashtu valefor tyakwl
+# kill Red_Element valefor tyakwl
+kill Funguar valefor tyakwl
+
+# recharge fight
+# kill Gandarewa wakka tyakwl
+kill Raptor wakka tyakwl
+# kill Lamashtu valefor tyakwl
+kill Red_Element valefor tyakwl
+kill Funguar valefor tyakwl
+
+# additional kills
+# kill Gandarewa wakka tyakwl
+# kill Raptor wakka tyakwl
+
+kill arm_2 valefor tyakwl
+kill arm_2 valefor tyakwl
+kill head_2 valefor tyakwl
+kill Sinspawn_Gui valefor tyakwl
+kill head_2 seymour tyakwl
+kill sinspawn_gui seymour tyakwl
+kill arm_2 seymour tyakwl
+kill arm_2 seymour tyakwl
 
 # Moonflow
-kill Extractor tidus tyakwlr
-kill Bunyip tidus tyakwlr
+kill Extractor wakka tyakwl
+#kill Bunyip rikku tyakwlr
 
 # Thunder Plains
-kill buer tidus tyakwlr
-steal iron-giant 0
+# kill buer rikku tyakwlr
+# kill buer rikku tyakwlr
+steal iron_giant 0
 # steal larva 0
+# steal melusine 0
+
 
 # Macalania Woods
-steal melusine 0
 steal chimera 0
-steal blue-Element 0
-kill Spherimorph tidus tyakwlr
+steal blue_Element 0
+kill Spherimorph rikku tyakwlr
 
 # Lake Macalania
-kill Negator tidus tyakwlr
-kill Crawler tidus tyakwlr
-kill Negator tidus tyakwlr
-kill Guado-Guardian tidus tyakwlr
-kill Guado-Guardian tidus tyakwlr
+kill Negator rikku tyakwlr
+kill Crawler rikku tyakwlr
+kill Negator rikku tyakwlr
+kill Guado_Guardian tidus tyakwlr
+kill Guado_Guardian tidus tyakwlr
 kill Anima tidus tyakwlr
 kill Seymour tidus tyakwlr
-kill Snow-Wolf tidus tyakwlr
-# guado-guardian-2
-kill Mafdet tidus tyakwlr
-kill Evil-Eye tidus tyakwlr
-kill Ice-Flan tidus tyakwlr
-kill Guado-Guardian-2 tidus tyakwlr
+
+# Guado Guardian 2 for macalania fights
+# and wendigo fight
+# kill guado_guardian_2 rikku tyakwlr
+# kill Snow_Wolf rikku tyakwlr
+# kill Mafdet rikku tyakwlr
+# kill Evil_Eye rikku tyakwlr
+# kill Ice_Flan rikku tyakwlr
+kill Guado_Guardian_2 tidus tyakwlr
 kill Wendigo tidus tyakwlr
-kill Guado-Guardian-2 tidus tyakwlr
+kill Guado_Guardian_2 tidus tyakwlr
 
 # Bikanel Desert
 # bikanel desert monsters
-# sand wolf
-# alcyone
-# mushussu
-# zu-2
-# sand-worm
-# cactuar
-kill Sandragora tidus tyakwlr
-kill Sandragora tidus tyakwlr
+# steal zu_2 0
+# steal sand_wolf 0
+# steal alcyone 0
+# kill sand_wolf rikku tyakwlr
+# kill alcyone rikku tyakwlr
+# kill mushussu rikku tyakwlr
+kill Sandragora kimahri tyakwlr
+kill Sandragora auron tyakwlr
 
 # Home
-kill Bomb-2 tidus tyakwlr
-kill Guado-Guardian-3 tidus tyakwlr
-kill Dual-Horn-2 tidus tyakwlr
-kill Chimera-2 tidus tyakwlr
+# guado guardian 3 is in home
+# and airship encounters
+# fight 1
+kill Guado_Guardian_3 tidus tyakwlr
+kill Bomb_2 tidus tyakwlr
+# fight 2
+kill Guado_Guardian_3 kimahri tyakwlr
+kill Dual_Horn_2 kimahri tyakwlr
+kill Dual_Horn_2 kimahri tyakwlr
+# fight 3
+kill Guado_Guardian_3 kimahri tyakwlr
+kill Chimera_2 kimahri tyakwlr
+kill Chimera_2 kimahri tyakwlr
 
 # Airship
 kill Evrae tidus tyakwlr
 
 # Bevelle
-kill Warrior-Monk tidus tyakwlr
-kill warrior-monk-2 tidus tyakwlr
+# fight 1
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+kill warrior_monk_2 tidus tyakwlr
+kill fire_rifle tidus tyakwlr
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+# fight 2
 kill YKT-63 tidus tyakwlr
-kill YAT-99 tidus tyakwlr
+kill warrior_monk_2 kimahri tyakwlr
+kill warrior_monk_2 kimahri tyakwlr
+kill fire_rifle kimahri tyakwlr
+kill fire_rifle kimahri tyakwlr
+# fight 3
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+kill warrior_monk_2 tidus tyakwlr
+kill fire_rifle tidus tyakwlr
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+# fight 4
+kill YKT-63 tidus tyakwlr
+kill warrior_monk_2 kimahri tyakwlr
+kill warrior_monk_2 kimahri tyakwlr
+kill fire_rifle kimahri tyakwlr
+kill fire_rifle kimahri tyakwlr
+# fight 5
+# using bomb cores
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+kill YAT-99 rikku tyakwlr
+
+# using aoe throwables
+# kill Warrior_Monk rikku tyakwlr
+# kill Warrior_Monk rikku tyakwlr
+# kill rifle rikku tyakwlr
+# kill rifle rikku tyakwlr
+# kill YAT-99 rikku tyakwlr
 
 # Via Purifico
-kill Maze-Larva tidus tyakwlr
+kill Maze_dLarva tidus tyakwlr
+kill Maze_Larva tidus tyakwlr
+kill Maze_Larva tidus tyakwlr
+
 # isaaru summons
 kill Phlegyas tidus tyakwlr
-kill Sahagin-4 tidus tyakwlr
-kill Evrae-Altana tidus tyakwlr
+kill Sahagin_4 tidus tyakwlr
+kill Evrae_Altana tidus tyakwlr
 
 # Highbridge
-kill Seymour-Natus tidus tyakwlr
+kill Seymour_Natus tidus tyakwlr
 
 # Calm Lands
-# steal flame-flan 0
-kill Defender-X tidus tyakwlr
+# steal flame_flan 0
+kill Defender_X tidus tyakwlr
 
 # Cavern of the Stolen Fayth
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
-kill Ghost bahamut tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
 
 # Mt. Gagazet
-kill Biran-Ronso kimahri k
-kill Yenke-Ronso kimahri k
+kill Biran_Ronso kimahri k
+kill Yenke_Ronso kimahri k

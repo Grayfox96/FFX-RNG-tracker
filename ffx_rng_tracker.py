@@ -2,6 +2,8 @@ from get_spoils import *
 import tkinter as tk
 from tkinter import font
 
+# needs ffxhd-raw-rng10-values.csv, ffxhd-raw-rng12-values.csv and ffxhd-raw-rng13-values.csv placed in the same folder to work
+
 damage_rolls = get_damage_rolls()
 
 current_steal_drop_seed, seed_found, seed_number = get_current_seed('ffxhd-raw-rng10-values.csv', damage_rolls)
@@ -23,8 +25,170 @@ text_characters_array = get_characters_array('ffxhd-characters.csv')
 
 monsters_array = get_monsters_array('ffxhd-mon_data.csv', text_characters_array)
 
+def patch_monsters_array_for_hd(monsters_array):
+
+	# 0 for weapon, 1 for armor
+	def patch_abilities(monster_array, abilities_tuple, equipment_type=0):
+		base_address = 178
+		for character_index in range(7):
+			character_offset = (equipment_type + (character_index * 2)) * 16
+			for ability_slot in range(7):
+				ability_slot_offset = (ability_slot + 1) * 2
+				monster_array[base_address + character_offset + ability_slot_offset] = hex(abilities_tuple[ability_slot])
+
+		return monster_array
+
+	# droprates from 3% to 4%
+	for monster in ['condor', 'dingo', 'water_flan', 'condor_2', 'dingo_2', 'water_flan_2',
+						'dinonix', 'killer_bee', 'yellow_element',
+						'worker', 'vouivre', 'raldo',
+						'floating_eye', 'ipiria', "mi'ihen_fang", 'raldo_2', 'white_element',
+						'funguar', 'gandarewa', 'lamashtu', 'raptor', 'red_element', 'thunder_flan',
+						'bite_bug', 'bunyip', 'garm', 'simurgh', 'snow_flan',
+						'bunyip_2',
+						'aerouge', 'buer', 'gold_element', 'kusariqqu', 'melusine',
+						'blue_element', 'iguion', 'murussu', 'wasp',
+						'evil_eye', 'ice_flan', 'mafdet', 'snow_wolf', 'guado_guardian_2',
+						'alcyone', 'mech_guard', 'mushussu', 'sand_wolf', 'bomb_2', 'evil_eye_2', 'guado_guardian_3',
+						'warrior_monk', 'warrior_monk_2',
+						'aqua_flan', 'bat_eye', 'cave_iguion', 'sahagin_2', 'swamp_mafdet', 'sahagin_3',
+						'flame_flan', 'mech_scouter_2', 'nebiros', 'shred', 'skoll',
+						'flame_flan', 'nebiros', 'shred', 'skoll',
+						'dark_element', 'imp', 'nidhogg', 'yowie']:
+		monsters_array[monster][139] = hex(12)
+
+	monsters_array['defender_x'][139] = hex(255)
+
+	# abilities
+	# besaid
+	monsters_array['condor'] = patch_abilities(monsters_array['condor'], (0, 0, 0, 0, 126, 126, 126))
+	monsters_array['dingo'] = patch_abilities(monsters_array['dingo'], (0, 0, 0, 30, 34, 38, 42))
+	monsters_array['water_flan'] = patch_abilities(monsters_array['water_flan'], (42, 42, 42, 42, 125, 125, 125))
+	monsters_array['condor_2'] = patch_abilities(monsters_array['condor_2'], (0, 0, 0, 0, 126, 126, 126))
+	monsters_array['dingo_2'] = patch_abilities(monsters_array['dingo_2'], (0, 0, 0, 30, 34, 38, 42))
+
+	# kilika
+	monsters_array['dinonix'] = patch_abilities(monsters_array['dinonix'], (126, 126, 126, 38, 38, 30, 42))
+	monsters_array['killer_bee'] = patch_abilities(monsters_array['killer_bee'], (126, 126, 126, 30, 34, 38, 42))
+	monsters_array['yellow_element'] = patch_abilities(monsters_array['yellow_element'], (38, 38, 38, 38, 125, 125, 125))
+
+	# luca
+	monsters_array['raldo'] = patch_abilities(monsters_array['raldo'], (124, 124, 124, 30, 34, 38, 42))
+
+	# mi'ihen
+	# bomb
+	# dual_horn
+	# floating_eye
+	# ipiria
+	# mi'ihen_fang
+	monsters_array['raldo_2'] = patch_abilities(monsters_array['raldo_2'], (124, 124, 124, 30, 34, 38, 42))
+	monsters_array['vouivre_2'] = patch_abilities(monsters_array['vouivre_2'], (124, 124, 124, 30, 34, 38, 42))
+	monsters_array['white_element'] = patch_abilities(monsters_array['white_element'], (34, 34, 34, 34, 125, 125, 125))
+
+	# mushroom rock road
+	monsters_array['gandarewa'] = patch_abilities(monsters_array['gandarewa'], (38, 38, 38, 38, 125, 125, 125))
+	monsters_array['lamashtu'] = patch_abilities(monsters_array['lamashtu'], (124, 124, 124, 30, 34, 38, 42))
+	monsters_array['raptor'] = patch_abilities(monsters_array['raptor'], (126, 126, 126, 38, 38, 30, 42))
+	monsters_array['red_element'] = patch_abilities(monsters_array['red_element'], (30, 30, 30, 30, 125, 125, 125))
+	monsters_array['thunder_flan'] = patch_abilities(monsters_array['thunder_flan'], (38, 38, 38, 38, 125, 125, 125))
+
+	# djose highroad
+	# bite_bug
+	monsters_array['bunyip'] = patch_abilities(monsters_array['bunyip'], (124, 124, 124, 30, 34, 38, 42))
+	# garm
+	# simurgh
+	# snow_flan
+
+	# moonflow
+	monsters_array['bunyip_2'] = patch_abilities(monsters_array['bunyip_2'], (124, 124, 124, 30, 34, 38, 42))
+
+	# thunder plains
+	# aerouge
+	monsters_array['buer'] = patch_abilities(monsters_array['buer'], (126, 126, 30, 34, 38, 42, 99))
+	# gold_element
+	# kusariqqu
+	# melusine
+
+	# macalania woods
+	# blue_element
+	# chimera
+	# iguion
+	# murussu
+	# wasp
+
+	# lake macalania
+	monsters_array['evil_eye'] = patch_abilities(monsters_array['evil_eye'], (126, 126, 30, 34, 38, 42, 99))
+	monsters_array['ice_flan'] = patch_abilities(monsters_array['ice_flan'], (34, 34, 34, 34, 125, 125, 125))
+	monsters_array['mafdet'] = patch_abilities(monsters_array['mafdet'], (124, 124, 124, 30, 34, 38, 42))
+	monsters_array['snow_wolf'] = patch_abilities(monsters_array['snow_wolf'], (124, 124, 124, 30, 34, 38, 42))
+
+	# bikanel
+	monsters_array['alcyone'] = patch_abilities(monsters_array['alcyone'], (0, 0, 0, 0, 126, 126, 126))
+	monsters_array['mushussu'] = patch_abilities(monsters_array['mushussu'], (124, 124, 124, 30, 34, 38, 42))
+	monsters_array['sand_wolf'] = patch_abilities(monsters_array['sand_wolf'], (124, 124, 124, 30, 34, 38, 42))
+
+	monsters_array['bomb_2'] = patch_abilities(monsters_array['bomb_2'], (30, 30, 30, 30, 30, 30, 124))
+	monsters_array['chimera_2'] = patch_abilities(monsters_array['chimera_2'], (103, 103, 103, 103, 104, 104, 125))
+	monsters_array['dual_horn_2'] = patch_abilities(monsters_array['dual_horn_2'], (67, 67, 67, 30, 30, 127, 127))
+	monsters_array['evil_eye_2'] = patch_abilities(monsters_array['evil_eye_2'], (126, 126, 30, 34, 38, 42, 99))
+
+	# via purifico
+	# aqua_flan
+	# bat_eye
+	# cave_iguion
+	# swamp_mafdet
+
+	# calm lands
+	# chimera_brain
+	# flame_flan
+	# nebiros
+	# shred
+	# skoll
+	monsters_array['defender_x'] = patch_abilities(monsters_array['defender_x'], (99, 99, 99, 99, 99, 100, 124))
+
+	# cavern of the stolen fayth
+	monsters_array['dark_element'] = patch_abilities(monsters_array['dark_element'], (125, 125, 125, 30, 30, 34, 42))
+	monsters_array['defender'] = patch_abilities(monsters_array['defender'], (99, 99, 99, 99, 98, 98, 124))
+	monsters_array['ghost'] = patch_abilities(monsters_array['ghost'], (103, 103, 103, 104, 104, 104, 125))
+	monsters_array['imp'] = patch_abilities(monsters_array['imp'], (38, 38, 38, 38, 125, 125, 125))
+	monsters_array['nidhogg'] = patch_abilities(monsters_array['nidhogg'], (124, 124, 124, 30, 34, 38, 42))
+	monsters_array['valaha'] = patch_abilities(monsters_array['valaha'], (67, 67, 67, 30, 30, 127, 127))
+	monsters_array['yowie'] = patch_abilities(monsters_array['yowie'], (126, 126, 126, 38, 38, 30, 42))
+
+
+	return monsters_array
+
+monsters_array = patch_monsters_array_for_hd(monsters_array)
+
+
+def get_equipment_types(rng_equipment):
+	equipment_types = {}
+	for i in range(30):
+		next(rng_equipment)
+
+		rng_weapon_or_armor = next(rng_equipment)
+		equipment_type = rng_weapon_or_armor & 1
+		equipment_type = 'weapon' if (equipment_type) == 0 else 'armor'
+
+		next(rng_equipment)
+		next(rng_equipment)
+
+		equipment_types[i + 1] = equipment_type
+
+	return equipment_types
+
+for equipment, type in get_equipment_types(get_rng_generator(current_equipment_seed)).items():
+	print(f'Equipment drop {equipment:2}: {type}')
+
 def parse_notes(abilities_array, items_array, monsters_array, data_text):
 
+	def get_equipment_counter():
+		i = 0
+		while True:
+			i += 1
+			yield i
+
+	equipment_counter = get_equipment_counter()
 	rng_steal_drop = get_rng_generator(current_steal_drop_seed)
 	# rng_common_rare = get_rng_generator(current_common_rare_seed)
 	rng_equipment = get_rng_generator(current_equipment_seed)
@@ -34,7 +198,9 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 	data = ''
 	for line in notes_lines_array:
 		if line != '':
-			if line[0] == '#': continue
+			if line[0] == '#':
+				data += f'{line}\n'
+				continue
 			try:
 				line = line.lower()
 				event, params = [split for split in line.split(' ', 1)]
@@ -44,9 +210,12 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 					successful_steals = int(successful_steals)
 					prize_struct = get_prize_struct(monster, monsters_array)
 					if prize_struct == False:
-						data += 'Monster not in the database'
+						data += f'No monster named "{monster}"'
 						next(rng_steal_drop)
-					else: data += get_stolen_item(prize_struct, items_array, successful_steals, rng_steal_drop)
+					else:
+						monster = monster.replace('_', ' ')
+						monster = ' '.join([word[0].upper() + word[1:] for word in monster.split(' ')])
+						data += f'Steal from {monster}: ' + get_stolen_item(prize_struct, items_array, successful_steals, rng_steal_drop)
 
 				elif event == 'kill':
 					monster, killer, characters_enabled_string = [split for split in params.split(' ', 3)]
@@ -63,7 +232,7 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 					prize_struct = get_prize_struct(monster, monsters_array)
 
 					if prize_struct == False:
-						data += 'Monster not in the database, if equipment drop -> waste rng12 4 + waste rng13 1'
+						data += f'No monster named "{monster}", if equipment drop -> roll rng12 4 + roll rng13 1'
 						# roll rng10 3 times
 						next(rng_steal_drop)
 						next(rng_steal_drop)
@@ -73,8 +242,10 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 						item1, item2, equipment = get_spoils(prize_struct, abilities_array, items_array, characters_enabled_string, killer_index, rng_steal_drop, rng_equipment, rng_abilities)
 						if item1 == False: item1 = 'no Item1'
 						if item2 == False: item2 = 'no Item2'
-						if equipment: data += f'{monster} drops: {item1}, {item2}, {equipment["type"]} for {equipment["character"]} {[ability for slot, ability in equipment["abilities"].items()]}'
-						else: data += f'{monster} drops: {item1}, {item2}, no Equipment'
+						monster = monster.replace('_', ' ')
+						monster = ' '.join([word[0].upper() + word[1:] for word in monster.split(' ')])
+						if equipment: data += f'{monster} drops: {item1}, {item2}, Equipment n{next(equipment_counter)}: {equipment["type"]} for {equipment["character"]} {[ability for slot, ability in equipment["abilities"].items()]}'
+						else: data += f'{monster} drops: {item1}, {item2}'
 
 				elif event == 'death':
 					data += 'Character death'
@@ -82,7 +253,7 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 					next(rng_steal_drop)
 					next(rng_steal_drop)
 
-				elif event == 'waste' or event == 'advance':
+				elif event == 'waste' or event == 'advance' or event == 'roll':
 					rng, number_of_times = [split for split in params.split(' ', 1)]
 					for i in range(int(number_of_times)):
 						if rng == 'rng10':
@@ -91,7 +262,7 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 							next(rng_equipment)
 						elif rng == 'rng13':
 							next(rng_abilities)
-					data += f'{event}d {rng} {number_of_times} times'
+					data += f'Advanced {rng} {number_of_times} times'
 
 
 				else: data += 'Invalid formatting'
@@ -105,6 +276,9 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 	data_text.delete(1.0,'end')
 	data_text.insert(1.0, data)
 	data_text.config(state='disabled')
+
+	# on_notes_scroll(notes_scroll_position)
+	data_text.yview('moveto', data_text_scroll_position)
 
 # GUI
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -133,13 +307,22 @@ notes.pack(fill='y', side='left')
 
 notes.bind('<KeyRelease>', lambda _: parse_notes(abilities_array, items_array, monsters_array, data_text))
 
-# def on_data_text_scroll(*args):
-# 	notes.yview('moveto', args[0])
+data_text_scroll_position = 0.0
+
+def on_data_text_scroll(*args):
+	global data_text_scroll_position
+	data_text_scroll_position = args[0]
+	# notes.yview('moveto', args[0])
+
+
+# notes_scroll_position = 0.0
 
 # def on_notes_scroll(*args):
+# 	global notes_scroll_position
+# 	notes_scroll_position = args[0]
 # 	data_text.yview('moveto', args[0])
 
-# data_text.configure(yscrollcommand=on_data_text_scroll)
+data_text.configure(yscrollcommand=on_data_text_scroll)
 # notes.configure(yscrollcommand=on_notes_scroll)
 
 data_text.config(state='disabled')
