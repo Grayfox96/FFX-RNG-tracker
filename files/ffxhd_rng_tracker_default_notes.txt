@@ -1,0 +1,288 @@
+# Usage:
+# kill [enemy_name] [killer] [party]
+# steal [enemy_name] [successful steals]
+# death [character]
+# waste/advance/roll [rng#] [succ. steals]
+#
+# add comments with a # at the start
+# of the line
+#
+# blank lines create a blank line
+#
+
+# Zanarkand
+# 45 rng10 rolls before klikk
+roll rng10 45
+
+# Baaj Temple
+steal klikk 0
+steal klikk 1
+steal klikk 1
+steal klikk 1
+kill klikk tidus tr
+# all piranha groups have the same items
+steal piranha 0
+steal piranha 0
+# single
+kill piranha tidus tr
+# double
+kill piranha_2 tidus tr
+# triple
+kill piranha_3 tidus tr
+# forced fight
+steal piranha_3 0
+steal piranha_3 0
+kill piranha_3 tidus tr
+kill piranha_3 tidus tr
+kill tros tidus tr
+
+# Besaid
+kill piranha tidus tw
+kill piranha_2 tidus tw
+kill Dingo tidus tywl
+kill Condor wakka tywl
+kill Water_Flan lulu tywl
+kill ??? tidus tywl
+kill Garuda_3 valefor tywl
+kill dingo_2 tidus tywl
+kill condor_2 wakka tywl
+kill water_flan_2 lulu tywl
+
+# S.S. Liki
+kill Sin valefor tykwl
+kill Sinspawn_Echuilles tidus tykwl
+kill sinscale_3 tidus tykwl
+kill sinscale_3 tidus tykwl
+
+# Kilika
+# forced fight
+kill Ragora tidus tykwl
+#
+kill Dinonix tidus tykwl
+kill Killer_Bee wakka tykwl
+kill Yellow_Element valefor tykwl
+kill Dinonix valefor tykwl
+kill Killer_Bee valefor tykwl
+#kill Ragora valefor tykwl
+
+kill Geneaux's_Tentacle valefor tykwl
+kill Geneaux's_Tentacle valefor tykwl
+kill Sinspawn_Geneaux valefor tykwl
+
+kill Dinonix tidus tykwl
+kill Killer_Bee wakka tykwl
+kill Dinonix tidus tykwl
+kill Killer_Bee wakka tykwl
+
+# Luca
+# fight 1
+kill Worker lulu tykwl
+kill Worker lulu tykwl
+# fight 2
+kill Worker lulu tykwl
+kill Worker lulu tykwl
+# fight 3
+kill Worker lulu tykwl
+kill Worker kimahri tykwl
+kill Worker lulu tykwl
+kill Worker lulu tykwl
+kill Worker lulu tykwl
+kill Worker tidus tykwl
+kill Oblitzerator tidus tykwl
+kill Sahagin_Chief tidus tykwl
+# 16 Sahagin Chief kills, 16*3 rng10 rolls
+roll rng10 48
+# forced fights
+kill Vouivre auron tyakwl
+kill Garuda_2 auron tyakwl
+
+# Mi'ihen Highroad
+kill Raldo auron tyakwl
+
+# Mushroom Rock Road
+# valefor od
+kill Gandarewa valefor tyakwl
+kill Raptor valefor tyakwl
+# kill Lamashtu valefor tyakwl
+# kill Red_Element valefor tyakwl
+kill Funguar valefor tyakwl
+
+# recharge fight
+# kill Gandarewa wakka tyakwl
+kill Raptor wakka tyakwl
+# kill Lamashtu valefor tyakwl
+kill Funguar valefor tyakwl
+kill Red_Element valefor tyakwl
+
+# additional kills
+# kill Gandarewa wakka tyakwl
+# kill Raptor wakka tyakwl
+
+kill arm_2 valefor tyakwl
+kill arm_2 valefor tyakwl
+kill head_2 valefor tyakwl
+# kill Sinspawn_Gui valefor tyakwl
+roll rng10 3
+kill head_2 seymour tyakwl
+kill sinspawn_gui seymour tyakwl
+kill arm_2 seymour tyakwl
+kill arm_2 seymour tyakwl
+
+# Moonflow
+kill Extractor wakka tyakwl
+# ??? 3 is the tutorial chest
+# it dies when you steal from it
+steal ???_3 0
+kill ???_3 rikku tyakwlr
+#kill Bunyip rikku tyakwlr
+
+# Thunder Plains
+# kill buer rikku tyakwlr
+# kill buer rikku tyakwlr
+steal iron_giant 0
+death rikku
+# steal larva 0
+# steal melusine 0
+
+
+# Macalania Woods
+steal chimera 0
+steal blue_Element 0
+kill Spherimorph rikku tyakwlr
+
+# Lake Macalania
+kill Negator rikku tyakwlr
+death rikku
+death rikku
+kill Crawler rikku tyakwlr
+kill Negator negator tyakwlr
+kill Guado_Guardian tidus tyakwlr
+kill Guado_Guardian tidus tyakwlr
+death ???
+kill Anima tidus tyakwlr
+death rikku
+kill Seymour tidus tyakwlr
+
+# Guado Guardian 2 for macalania fights
+# and wendigo fight
+# kill guado_guardian_2 rikku tyakwlr
+# kill Snow_Wolf rikku tyakwlr
+# kill Mafdet rikku tyakwlr
+# kill Evil_Eye rikku tyakwlr
+# kill Ice_Flan rikku tyakwlr
+kill Guado_Guardian_2 tidus tyakwlr
+kill Wendigo tidus tyakwlr
+kill Guado_Guardian_2 tidus tyakwlr
+
+# Bikanel Desert
+# bikanel desert monsters
+# steal zu_2 0
+# steal sand_wolf 0
+# steal alcyone 0
+# kill sand_wolf rikku tyakwlr
+# kill alcyone rikku tyakwlr
+# kill mushussu rikku tyakwlr
+kill Sandragora kimahri tyakwlr
+kill Sandragora auron tyakwlr
+
+# Home
+# guado guardian 3 is in home
+# and airship encounters
+# fight 1
+kill Guado_Guardian_3 tidus tyakwlr
+kill Bomb_2 tidus tyakwlr
+kill Bomb_2 tidus tyakwlr
+kill Bomb_2 tidus tyakwlr
+# fight 2
+kill Guado_Guardian_3 kimahri tyakwlr
+kill Dual_Horn_2 kimahri tyakwlr
+kill Dual_Horn_2 kimahri tyakwlr
+# fight 3
+kill Guado_Guardian_3 kimahri tyakwlr
+kill Chimera_2 kimahri tyakwlr
+kill Chimera_2 kimahri tyakwlr
+
+# Airship
+kill Evrae tidus tyakwlr
+
+# Bevelle
+# fight 1
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+kill warrior_monk_2 tidus tyakwlr
+kill fire_rifle tidus tyakwlr
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+# fight 2
+kill YKT-63 tidus tyakwlr
+kill warrior_monk_2 kimahri tyakwlr
+kill warrior_monk_2 kimahri tyakwlr
+kill fire_rifle kimahri tyakwlr
+kill fire_rifle kimahri tyakwlr
+# fight 3
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+kill warrior_monk_2 tidus tyakwlr
+kill fire_rifle tidus tyakwlr
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+# fight 4
+kill YKT-63 tidus tyakwlr
+kill warrior_monk_2 kimahri tyakwlr
+kill warrior_monk_2 kimahri tyakwlr
+kill fire_rifle kimahri tyakwlr
+kill fire_rifle kimahri tyakwlr
+# fight 5
+# using bomb cores
+kill YAT-99 rikku tyakwlr
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+kill Warrior_Monk tidus tyakwlr
+kill rifle tidus tyakwlr
+
+# using aoe throwables
+# kill Warrior_Monk rikku tyakwlr
+# kill Warrior_Monk rikku tyakwlr
+# kill rifle rikku tyakwlr
+# kill rifle rikku tyakwlr
+# kill YAT-99 rikku tyakwlr
+
+# Via Purifico
+kill Maze_Larva tidus tyakwlr
+kill Maze_Larva tidus tyakwlr
+kill Maze_Larva tidus tyakwlr
+
+# isaaru summons
+roll rng10 9
+
+# kill Phlegyas tidus tyakwlr
+# kill Sahagin_4 tidus tyakwlr
+
+kill Evrae_Altana tidus tyakwlr
+
+# Highbridge
+kill Seymour_Natus bahamut tyakwlr
+
+# Calm Lands
+# steal flame_flan 0
+kill Defender_X bahamut tyakwlr
+
+# Cavern of the Stolen Fayth
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+kill Ghost ixion tyakwlr
+
+# Mt. Gagazet
+kill Biran_Ronso kimahri k
+kill Yenke_Ronso kimahri k
