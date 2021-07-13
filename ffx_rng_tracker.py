@@ -309,6 +309,7 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 
 				elif event == 'party':
 					characters_enabled_string = params.split(' ', 1)[0]
+					data += 'Party changed'
 
 				else: data += 'Invalid formatting'
 			except ValueError as error:
@@ -324,6 +325,8 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 	highlight_pattern(data_text, 'Equipment', 'equipment')
 	highlight_pattern(data_text, 'No Encounters', 'no_encounters')
 	highlight_pattern(data_text, '^#(.+?)?$', 'comment', regexp=True)
+	highlight_pattern(data_text, '^Advanced rng.+$', 'rng_rolls', regexp=True)
+	
 
 	data_text.config(state='disabled')
 
@@ -354,6 +357,7 @@ data_text.pack(expand=True, fill='both', side='right')
 data_text.tag_configure('equipment', foreground='#0000ff')
 data_text.tag_configure('no_encounters', foreground='#00ff00')
 data_text.tag_configure('comment', foreground='#888888')
+data_text.tag_configure('rng_rolls', background='#ff0000')
 
 
 notes = tk.Text(root, font=texts_font, width=43)

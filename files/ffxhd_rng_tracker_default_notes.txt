@@ -115,8 +115,10 @@ kill Worker tidus
 kill Oblitzerator tidus
 
 kill Sahagin_Chief tidus
-# 16 Sahagin Chief kills, 16*3 rng10 rolls
+# 16 Sahagin Chief kills
+# 16*3 rng10 rolls
 roll rng10 48
+roll rng11 16
 
 # forced fights
 party tyakwl
@@ -153,6 +155,8 @@ kill arm_2 valefor
 kill head_2 valefor
 # gui 1 drops nothing
 roll rng10 3
+# kill arm_2 valefor
+# kill arm_2 valefor
 
 # gui 2
 kill head_2 seymour
@@ -163,9 +167,9 @@ kill arm_2 seymour
 # Moonflow
 kill Extractor wakka
 
+party tyakwlr
 # ??? 3 is the tutorial chest
 # it dies when you steal from it
-party tyakwlr
 steal ???_3 0
 kill ???_3 rikku
 #kill Bunyip rikku
@@ -188,15 +192,19 @@ kill Negator rikku
 death rikku
 # death kimahri
 death rikku
-kill Crawler rikku
 # an additional negator dies
 # at the end of the fight
 kill Negator negator
+kill Crawler rikku
 
 # seymour 1
 kill Guado_Guardian tidus
 kill Guado_Guardian tidus
 death ???
+steal anima 0
+steal anima 1
+# steal anima 1
+# steal anima 2
 kill Anima tidus
 death rikku
 kill Seymour tidus
@@ -324,6 +332,12 @@ kill Seymour_Natus bahamut
 # steal flame_flan 0
 kill Defender_X bahamut
 
+# Mt. Gagazet
+# if you need 2 more equipment
+# drops go to gagazet first
+#kill Biran_Ronso kimahri
+#kill Yenke_Ronso kimahri
+
 # Cavern of the Stolen Fayth
 kill Ghost ixion
 kill Ghost ixion
@@ -353,5 +367,5 @@ kill Ghost ixion
 kill Ghost ixion
 
 # Mt. Gagazet
-kill Biran_Ronso kimahri k
-kill Yenke_Ronso kimahri k
+kill Biran_Ronso kimahri
+kill Yenke_Ronso kimahri
