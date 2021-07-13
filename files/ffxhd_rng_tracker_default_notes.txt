@@ -16,6 +16,7 @@
 ///
 # Zanarkand
 party ta
+# sinscales, ammes, tanker, sahagins
 # 45 rng10 rolls before klikk
 roll rng10 45
 
@@ -23,19 +24,19 @@ roll rng10 45
 party tr
 steal klikk 0
 steal klikk 1
-steal klikk 1
-steal klikk 1
+# steal klikk 1
+# steal klikk 1
 kill klikk tidus
 
 # chain encounter
-# all piranha groups have the same items
-steal piranha 0
-
 # 2 piranhas encounter
+steal piranha 0
+steal piranha_2 0
 kill piranha tidus
 kill piranha_2 tidus
 
 # single piranha encounter
+# steal piranha_3 0
 # kill piranha_3 tidus
 
 # forced fight
@@ -128,6 +129,9 @@ kill Garuda_2 auron
 # Mi'ihen Highroad
 # piercing tutorial
 kill Raldo auron
+# death ???
+# death ???
+# death ???
 
 # Mushroom Rock Road
 # valefor od
@@ -165,6 +169,7 @@ kill arm_2 seymour
 kill arm_2 seymour
 
 # Moonflow
+# death ???
 kill Extractor wakka
 
 party tyakwlr
@@ -172,7 +177,7 @@ party tyakwlr
 # it dies when you steal from it
 steal ???_3 0
 kill ???_3 rikku
-#kill Bunyip rikku
+# kill Bunyip rikku
 
 # Thunder Plains
 # kill buer rikku
@@ -246,9 +251,9 @@ kill Bomb_2 tidus
 kill Bomb_2 tidus
 
 # fight 2
+kill Dual_Horn_2 kimahri
+kill Dual_Horn_2 kimahri
 kill Guado_Guardian_3 kimahri
-kill Dual_Horn_2 kimahri
-kill Dual_Horn_2 kimahri
 
 # fight 3
 kill Guado_Guardian_3 kimahri
@@ -256,6 +261,7 @@ kill Chimera_2 kimahri
 kill Chimera_2 kimahri
 
 # Airship
+# death ???
 kill Evrae tidus
 
 # Bevelle
@@ -323,7 +329,7 @@ kill Evrae_Altana tidus
 # Highbridge
 party tyawlr
 kill YKT-63 yuna
-# kill YKT-63 yuna
+kill YKT-63 yuna
 
 party tyakwlr
 kill Seymour_Natus bahamut
@@ -335,8 +341,8 @@ kill Defender_X bahamut
 # Mt. Gagazet
 # if you need 2 more equipment
 # drops go to gagazet first
-#kill Biran_Ronso kimahri
-#kill Yenke_Ronso kimahri
+# kill Biran_Ronso kimahri
+# kill Yenke_Ronso kimahri
 
 # Cavern of the Stolen Fayth
 kill Ghost ixion
@@ -369,3 +375,12 @@ kill Ghost ixion
 # Mt. Gagazet
 kill Biran_Ronso kimahri
 kill Yenke_Ronso kimahri
+
+kill Seymour_Flux bahamut
+
+kill Sanctuary_Keeper
+
+# Zanarkand
+kill Spectral_Keeper
+
+kill Yunalesca
