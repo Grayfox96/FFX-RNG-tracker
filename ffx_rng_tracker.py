@@ -6,14 +6,16 @@ import os
 
 # needs ffxhd-raw-rng10-values.csv, ffxhd-raw-rng12-values.csv and ffxhd-raw-rng13-values.csv placed in the same folder to work
 
+
 def get_resource_path(relative_path):
 	base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
 	return os.path.join(base_path, relative_path)
 
+
 damage_rolls = get_damage_rolls()
 
 current_steal_drop_seed, seed_found, seed_number = get_current_seed('ffxhd-raw-rng10-values.csv', damage_rolls)
-# current_common_rare_seed, seed_found, seed_number = get_current_seed('ffxhd-raw-rng11-values.csv', damage_rolls)
+current_common_rare_seed, seed_found, seed_number = get_current_seed('ffxhd-raw-rng11-values.csv', damage_rolls)
 current_equipment_seed, seed_found, seed_number = get_current_seed('ffxhd-raw-rng12-values.csv', damage_rolls)
 current_abilities_seed, seed_found, seed_number = get_current_seed('ffxhd-raw-rng13-values.csv', damage_rolls)
 
@@ -167,26 +169,47 @@ def patch_monsters_array_for_hd(monsters_array):
 monsters_array = patch_monsters_array_for_hd(monsters_array)
 
 
-def get_equipment_types(rng_equipment):
-	equipment_types = {}
-	for i in range(30):
-		next(rng_equipment)
+def get_predictions(rng_equipment):
 
-		rng_weapon_or_armor = next(rng_equipment)
-		equipment_type = rng_weapon_or_armor & 1
-		equipment_type = 'weapon' if (equipment_type) == 0 else 'armor'
+	def get_equipment_types(rng_equipment):
+		equipment_types = {}
+		for i in range(40):
+			next(rng_equipment)
 
-		next(rng_equipment)
-		next(rng_equipment)
+			rng_weapon_or_armor = next(rng_equipment)
+			equipment_type = rng_weapon_or_armor & 1
+			equipment_type = 'weapon' if (equipment_type) == 0 else 'armor'
 
-		equipment_types[i + 1] = equipment_type
+			next(rng_equipment)
+			next(rng_equipment)
 
-	return equipment_types
+			equipment_types[i + 1] = equipment_type
 
-for equipment, type in get_equipment_types(get_rng_generator(current_equipment_seed)).items():
-	print(f'Equipment drop {equipment:2}: {type}')
+		return equipment_types
+
+
+	for equipment_n, equipment_type in get_equipment_types(get_rng_generator(rng_equipment)).items():
+			print(f'Equipment {"#" + str(equipment_n):>3}: {equipment_type}')
+
+get_predictions(current_equipment_seed)
+
 
 def parse_notes(abilities_array, items_array, monsters_array, data_text):
+
+	def highlight_pattern(text, pattern, tag, start='1.0', end='end', regexp=False):
+		start = text.index(start)
+		end = text.index(end)
+		text.mark_set('matchStart', start)
+		text.mark_set('matchEnd', start)
+		text.mark_set('searchLimit', end)
+		count = tk.IntVar()
+		while True:
+			index = text.search(pattern, 'matchEnd','searchLimit', count=count, regexp=regexp)
+			if index == '': break
+			if count.get() == 0: break # degenerate pattern which matches zero-length strings
+			text.mark_set('matchStart', index)
+			text.mark_set('matchEnd', f'{index}+{count.get()}c')
+			text.tag_add(tag, 'matchStart', 'matchEnd')
 
 	def get_equipment_counter():
 		i = 0
@@ -196,18 +219,19 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 
 	equipment_counter = get_equipment_counter()
 	rng_steal_drop = get_rng_generator(current_steal_drop_seed)
-	# rng_common_rare = get_rng_generator(current_common_rare_seed)
+	rng_common_rare = get_rng_generator(current_common_rare_seed)
 	rng_equipment = get_rng_generator(current_equipment_seed)
 	rng_abilities = get_rng_generator(current_abilities_seed)
 
 	notes_lines_array = notes.get('1.0', 'end').split('\n')
 	data = ''
+	characters_enabled_string = 't'
 	for line in notes_lines_array:
 		if line != '':
 			# fixes double spaces
 			line = " ".join(line.split())
 
-			if line[0:2] == '///':
+			if line[:3] == '///':
 				data = ''
 				continue
 
@@ -226,13 +250,14 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 					if prize_struct == False:
 						data += f'No monster named "{monster}"'
 						next(rng_steal_drop)
+						next(rng_common_rare)
 					else:
 						monster = monster.replace('_', ' ')
 						monster = ' '.join([word[0].upper() + word[1:] for word in monster.split(' ')])
-						data += f'Steal from {monster}: ' + get_stolen_item(prize_struct, items_array, successful_steals, rng_steal_drop)
+						data += f'Steal from {monster}: ' + get_stolen_item(prize_struct, items_array, successful_steals, rng_steal_drop, rng_common_rare)
 
 				elif event == 'kill':
-					monster, killer, characters_enabled_string = [split for split in params.split(' ', 3)]
+					monster, killer = [split for split in params.split(' ', 2)]
 
 					killer_index = (	0 if killer.lower() == 'tidus' else 
 										1 if killer.lower() == 'yuna' else 
@@ -246,20 +271,26 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 					prize_struct = get_prize_struct(monster, monsters_array)
 
 					if prize_struct == False:
-						data += f'No monster named "{monster}", if equipment drop -> roll rng12 4 + roll rng13 1'
-						# roll rng10 3 times
-						next(rng_steal_drop)
-						next(rng_steal_drop)
-						next(rng_steal_drop)
+						data += f'No monster named "{monster}"'
 
 					else:
-						item1, item2, equipment = get_spoils(prize_struct, abilities_array, items_array, characters_enabled_string, killer_index, rng_steal_drop, rng_equipment, rng_abilities)
-						if item1 == False: item1 = 'no Item1'
-						if item2 == False: item2 = 'no Item2'
+						item1, item2, equipment = get_spoils(prize_struct, abilities_array, items_array, characters_enabled_string, killer_index, rng_steal_drop, rng_common_rare, rng_equipment, rng_abilities)
+
 						monster = monster.replace('_', ' ')
 						monster = ' '.join([word[0].upper() + word[1:] for word in monster.split(' ')])
-						if equipment: data += f'{monster} drops: {item1}, {item2}, Equipment n{next(equipment_counter)}: {equipment["type"]} for {equipment["character"]} {[ability for slot, ability in equipment["abilities"].items()]}'
-						else: data += f'{monster} drops: {item1}, {item2}'
+
+						data += f'{monster} drops: '
+
+						if item1: data += f'{item1}'
+
+						if item2: data += f', {item2}'
+
+						if equipment:
+							guaranteed_equipment = ' (guaranteed)' if equipment["guaranteed"] else '' 
+							data += f', Equipment #{next(equipment_counter)}{guaranteed_equipment}: {equipment["type"]} for {equipment["character"]} {[ability for slot, ability in equipment["abilities"].items()]}'
+
+						# if all 3 are False
+						if any((item1, item2, equipment)) == False: data += 'No drops'
 
 				elif event == 'death':
 					data += 'Character death'
@@ -270,14 +301,14 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 				elif event == 'waste' or event == 'advance' or event == 'roll':
 					rng, number_of_times = [split for split in params.split(' ', 1)]
 					for i in range(int(number_of_times)):
-						if rng == 'rng10':
-							next(rng_steal_drop)
-						elif rng == 'rng12':
-							next(rng_equipment)
-						elif rng == 'rng13':
-							next(rng_abilities)
+						if rng == 'rng10': next(rng_steal_drop)
+						elif rng == 'rng11': next(rng_common_rare)
+						elif rng == 'rng12': next(rng_equipment)
+						elif rng == 'rng13': next(rng_abilities)
 					data += f'Advanced {rng} {number_of_times} times'
 
+				elif event == 'party':
+					characters_enabled_string = params.split(' ', 1)[0]
 
 				else: data += 'Invalid formatting'
 			except ValueError as error:
@@ -289,6 +320,11 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 	data_text.config(state='normal')
 	data_text.delete(1.0,'end')
 	data_text.insert(1.0, data)
+
+	highlight_pattern(data_text, 'Equipment', 'equipment')
+	highlight_pattern(data_text, 'No Encounters', 'no_encounters')
+	highlight_pattern(data_text, '^#(.+?)?$', 'comment', regexp=True)
+
 	data_text.config(state='disabled')
 
 	# on_notes_scroll(notes_scroll_position)
@@ -314,12 +350,17 @@ texts_font = font.Font(family='Courier New', size=9)
 
 data_text = tk.Text(root, font=texts_font, width=55)
 data_text.pack(expand=True, fill='both', side='right')
-# data_text.insert('end', data)
+
+data_text.tag_configure('equipment', foreground='#0000ff')
+data_text.tag_configure('no_encounters', foreground='#00ff00')
+data_text.tag_configure('comment', foreground='#888888')
+
 
 notes = tk.Text(root, font=texts_font, width=43)
 notes.pack(fill='y', side='left')
 
 notes.bind('<KeyRelease>', lambda _: parse_notes(abilities_array, items_array, monsters_array, data_text))
+
 
 data_text_scroll_position = 0.0
 

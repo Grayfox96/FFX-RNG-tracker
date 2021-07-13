@@ -34,6 +34,7 @@ def get_damage_rolls():
 
 	return damage_rolls
 
+
 # not useful for now
 def get_number_of_dropped_equipment():
 	for i in range(8):
@@ -140,16 +141,21 @@ def get_prize_struct(monster, monsters_array):
 		return False
 
 
-def get_item1(prize_struct, items_array):
-	common_item, common_item_quantity = items_array[prize_struct[140]], prize_struct[148]
-	rare_item, rare_item_quantity = items_array[prize_struct[142]], prize_struct[149]
-	return f'{common_item} x{common_item_quantity} or {rare_item} x{rare_item_quantity}'
+def get_item1(prize_struct, items_array, item_common):
+	if item_common:
+		item, item_quantity = items_array[prize_struct[140]], prize_struct[148]
+	else:
+		item, item_quantity = items_array[prize_struct[142]], prize_struct[149]
+	return f'{item} x{item_quantity}'
 
 
-def get_item2(prize_struct, items_array):
-	common_item, common_item_quantity = items_array[prize_struct[144]], prize_struct[150]
-	rare_item, rare_item_quantity = items_array[prize_struct[146]], prize_struct[151]
-	return f'{common_item} x{common_item_quantity} or {rare_item} x{rare_item_quantity}'
+def get_item2(prize_struct, items_array, item_common):
+	if item_common:
+		item, item_quantity = items_array[prize_struct[144]], prize_struct[150]
+	else:
+		item, item_quantity = items_array[prize_struct[146]], prize_struct[151]
+	return f'{item} x{item_quantity}'
+
 
 
 # uses rng12 and rng13 to generate an equipment drop from a specific enemy
@@ -256,12 +262,13 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 	# weapon_or_armor = (uint)*(byte *)(NumberOfDroppedEquipment + 0x103 + SomeAddress)
 	# killer_index = (uint)*(byte *)(NumberOfDroppedEquipment + 0x102 + SomeAddress)
 	possible_auto_abilities_array_address = 178 + ((equipment_type + (killer_index * 2)) * 16)
-	# the first ability in the array is always 0 for armors, its either 0 or piercing/sensor (11/0) for weapons
+	# the first ability in the array is always 0x0000 for armors, its either 0x0000 or piercing/sensor (0x800b/0x8000) for weapons
 	piercing_auto_ability_value = prize_struct[possible_auto_abilities_array_address] + (prize_struct[possible_auto_abilities_array_address + 1] * 256)
 
 	equipment['abilities'] = {}
 
 	# if the first ability is piercing it always gets added, only the case for auron and kimahri weapons
+	# weapons dropped from the kimahri boss enemy (???) always have sensor in the first slot so it gets added in the same way
 	if number_of_slots == 0 or piercing_auto_ability_value == 0:
 		number_of_abilities_added = 0
 	else:
@@ -278,7 +285,7 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 			# if all the slots are filled break
 			if number_of_abilities_added >= number_of_slots: break
 
-			# get a random ability, picks from ability 1 to ability 7, ability 0 is always piercing if present
+			# get a random ability, picks from ability 1 to ability 7, ability 0 is always added without rng12 rolls if present
 			rng_abilities_array_index = next(rng_abilities)
 			ability_to_add = prize_struct[possible_auto_abilities_array_address + (((rng_abilities_array_index % 7) + 1) * 2)] + (prize_struct[possible_auto_abilities_array_address + (((rng_abilities_array_index % 7) + 1) * 2) + 1] * 256)
 			add_ability = True
@@ -311,48 +318,52 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 		# null remaining ability slots, shouldnt be important, it never overwrites filled slots
 		pass
 
-	# delete 
+	# delete nonexistent slots
 	for i in range(number_of_slots - number_of_abilities_added):
 		equipment['abilities'][number_of_abilities_added + 1 + i] = '-'
+
+	# add other info
+	# if enemy equipment droprate is 100%
+	equipment['guaranteed'] = True if (prize_struct[139] == 255) else False
 
 	return equipment
 
 
-def get_spoils(prize_struct, abilities_array, items_array, characters_enabled_string, killer_index, rng_steal_drop, rng_equipment, rng_abilities):
+def get_spoils(prize_struct, abilities_array, items_array, characters_enabled_string, killer_index, rng_steal_drop, rng_common_rare, rng_equipment, rng_abilities):
 
-	item1_dropped, item2_dropped, equipment_dropped = False, False, False
 	item1, item2, equipment = False, False, False
 
 	rng_item1 = next(rng_steal_drop)
 	item1_drop_chance = prize_struct[136]
 	if item1_drop_chance > (rng_item1 % 255):
-		item1_dropped = True
+		rng_item1_rarity = next(rng_common_rare)
+		item1_common = True if ((rng_item1_rarity & 255) > 32) else False
+		item1 = get_item1(prize_struct, items_array, item1_common)
 
 	rng_item2 = next(rng_steal_drop)
 	item2_drop_chance = prize_struct[137]
 	if item2_drop_chance > (rng_item2 % 255):
-		item2_dropped = True
+		rng_item2_rarity = next(rng_common_rare)
+		item2_common = True if ((rng_item2_rarity & 255) > 32) else False
+		item2 = get_item2(prize_struct, items_array, item2_common)
 
 	rng_equipment_drop = next(rng_steal_drop)
 	equipment_drop_chance = prize_struct[139]
 	if equipment_drop_chance > (rng_equipment_drop % 255):
-		equipment_dropped = True
-
-	if item1_dropped:
-		item1 = get_item1(prize_struct, items_array)
-	if item2_dropped:
-		item2 = get_item2(prize_struct, items_array)
-	if equipment_dropped:
 		equipment = create_dropped_equipment(prize_struct, abilities_array, characters_enabled_string, killer_index, rng_equipment, rng_abilities)
 
 	return item1, item2, equipment
 
 
-def get_stolen_item(prize_struct, items_array, successful_steals, rng_steal_drop):
+def get_stolen_item(prize_struct, items_array, successful_steals, rng_steal_drop, rng_common_rare):
 	rng_steal = next(rng_steal_drop)
 	steal_chance = prize_struct[138] / (2 ** successful_steals)
 	if steal_chance > (rng_steal % 255):
-		common_item, common_item_quantity = items_array[prize_struct[164]], prize_struct[168]
-		rare_item, rare_item_quantity = items_array[prize_struct[166]], prize_struct[169]
-		return f'{common_item} x{common_item_quantity} or {rare_item} x{rare_item_quantity}'
+		rng_steal_rarity = next(rng_common_rare)
+		item_common = True if ((rng_steal_rarity & 255) > 32) else False
+		if item_common:
+			item, item_quantity = items_array[prize_struct[164]], prize_struct[168]
+		else:
+			item, item_quantity = items_array[prize_struct[166]], prize_struct[169]
+		return f'{item} x{item_quantity}'
 	else: return 'failed'
