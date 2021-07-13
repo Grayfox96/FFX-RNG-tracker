@@ -1,8 +1,14 @@
 from get_spoils import *
 import tkinter as tk
 from tkinter import font
+import sys
+import os
 
 # needs ffxhd-raw-rng10-values.csv, ffxhd-raw-rng12-values.csv and ffxhd-raw-rng13-values.csv placed in the same folder to work
+
+def get_resource_path(relative_path):
+	base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+	return os.path.join(base_path, relative_path)
 
 damage_rolls = get_damage_rolls()
 
@@ -18,17 +24,18 @@ else:
 	print('Seed not found!')
 	quit()
 
-abilities_array = get_ids_array('ffxhd-abilities.csv')
-items_array = get_ids_array('ffxhd-items.csv')
+abilities_array = get_ids_array(get_resource_path('files/ffxhd-abilities.csv'))
+items_array = get_ids_array(get_resource_path('files/ffxhd-items.csv'))
+text_characters_array = get_characters_array(get_resource_path('files/ffxhd-characters.csv'))
+monsters_array = get_monsters_array(get_resource_path('files/ffxhd-mon_data.csv'), text_characters_array)
 
-text_characters_array = get_characters_array('ffxhd-characters.csv')
-
-monsters_array = get_monsters_array('ffxhd-mon_data.csv', text_characters_array)
 
 def patch_monsters_array_for_hd(monsters_array):
 
 	# 0 for weapon, 1 for armor
 	def patch_abilities(monster_array, abilities_tuple, equipment_type=0):
+		# do nothing, ability orders are wrong
+		return monster_array
 		base_address = 178
 		for character_index in range(7):
 			character_offset = (equipment_type + (character_index * 2)) * 16
@@ -56,8 +63,6 @@ def patch_monsters_array_for_hd(monsters_array):
 						'flame_flan', 'nebiros', 'shred', 'skoll',
 						'dark_element', 'imp', 'nidhogg', 'yowie']:
 		monsters_array[monster][139] = hex(12)
-
-	monsters_array['defender_x'][139] = hex(255)
 
 	# abilities
 	# besaid
@@ -158,6 +163,7 @@ def patch_monsters_array_for_hd(monsters_array):
 
 	return monsters_array
 
+
 monsters_array = patch_monsters_array_for_hd(monsters_array)
 
 
@@ -198,9 +204,17 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 	data = ''
 	for line in notes_lines_array:
 		if line != '':
+			# fixes double spaces
+			line = " ".join(line.split())
+
+			if line[0:2] == '///':
+				data = ''
+				continue
+
 			if line[0] == '#':
 				data += f'{line}\n'
 				continue
+
 			try:
 				line = line.lower()
 				event, params = [split for split in line.split(' ', 1)]
@@ -290,7 +304,7 @@ def on_ui_close():
 	quit()
 
 root.protocol('WM_DELETE_WINDOW', on_ui_close)
-root.title('ffx_seed_finder')
+root.title('ffx_rng_tracker')
 root.geometry('1368x800')
 
 # Texts
@@ -332,10 +346,15 @@ def get_default_notes(default_notes_file):
 	with open(default_notes_file) as notes_file:
 		return notes_file.read()
 
-default_notes = get_default_notes('ffxhd_rng_tracker_default_notes.txt')
+try:
+	default_notes = get_default_notes('ffxhd_rng_tracker_notes.txt')
+except FileNotFoundError:
+	default_notes = get_default_notes(get_resource_path('files/ffxhd_rng_tracker_default_notes.txt'))
 
 notes.insert('end', default_notes)
 
 parse_notes(abilities_array, items_array, monsters_array, data_text)
 
 root.mainloop()
+
+input('...')

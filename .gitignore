@@ -1,7 +1,8 @@
-
 ffxhd-raw-rng10-values.csv
 ffxhd-raw-rng12-values.csv
 ffxhd-raw-rng13-values.csv
-__pycache__/get_spoils.cpython-39.pyc
+__pycache__/*
+binary/*
 ffx_rng_tracker.sublime-project
 ffx_rng_tracker.sublime-workspace
+

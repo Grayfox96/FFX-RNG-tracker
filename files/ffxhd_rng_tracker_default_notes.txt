@@ -2,14 +2,17 @@
 # kill [enemy_name] [killer] [party]
 # steal [enemy_name] [successful steals]
 # death [character]
-# waste/advance/roll [rng#] [succ. steals]
+# waste/advance/roll [rng#] [amount]
 #
 # add comments with a # at the start
 # of the line
 #
 # blank lines create a blank line
 #
-
+# type /// to hide everything
+# above that line
+#
+///
 # Zanarkand
 # 45 rng10 rolls before klikk
 roll rng10 45
@@ -20,25 +23,33 @@ steal klikk 1
 steal klikk 1
 steal klikk 1
 kill klikk tidus tr
+
+# chain encounter
 # all piranha groups have the same items
 steal piranha 0
-steal piranha 0
-# single
+
+# 2 piranhas encounter
 kill piranha tidus tr
-# double
 kill piranha_2 tidus tr
-# triple
-kill piranha_3 tidus tr
+
+# single piranha encounter
+# kill piranha_3 tidus tr
+
 # forced fight
 steal piranha_3 0
 steal piranha_3 0
 kill piranha_3 tidus tr
 kill piranha_3 tidus tr
+
+# steal tros 0
 kill tros tidus tr
 
 # Besaid
 kill piranha tidus tw
-kill piranha_2 tidus tw
+kill piranha_2 wakka tw
+# kill piranha_3 wakka tw
+
+# forced encounters
 kill Dingo tidus tywl
 kill Condor wakka tywl
 kill Water_Flan lulu tywl
@@ -57,18 +68,22 @@ kill sinscale_3 tidus tykwl
 # Kilika
 # forced fight
 kill Ragora tidus tykwl
-#
+
+# valefor od charge
 kill Dinonix tidus tykwl
-kill Killer_Bee wakka tykwl
+kill Killer_Bee valefor tykwl
 kill Yellow_Element valefor tykwl
+#kill Ragora valefor tykwl
+
+# additional kills
 kill Dinonix valefor tykwl
 kill Killer_Bee valefor tykwl
-#kill Ragora valefor tykwl
 
 kill Geneaux's_Tentacle valefor tykwl
 kill Geneaux's_Tentacle valefor tykwl
 kill Sinspawn_Geneaux valefor tykwl
 
+# additional kills
 kill Dinonix tidus tykwl
 kill Killer_Bee wakka tykwl
 kill Dinonix tidus tykwl
@@ -78,9 +93,11 @@ kill Killer_Bee wakka tykwl
 # fight 1
 kill Worker lulu tykwl
 kill Worker lulu tykwl
+
 # fight 2
 kill Worker lulu tykwl
 kill Worker lulu tykwl
+
 # fight 3
 kill Worker lulu tykwl
 kill Worker kimahri tykwl
@@ -88,15 +105,19 @@ kill Worker lulu tykwl
 kill Worker lulu tykwl
 kill Worker lulu tykwl
 kill Worker tidus tykwl
+
 kill Oblitzerator tidus tykwl
+
 kill Sahagin_Chief tidus tykwl
 # 16 Sahagin Chief kills, 16*3 rng10 rolls
 roll rng10 48
+
 # forced fights
 kill Vouivre auron tyakwl
 kill Garuda_2 auron tyakwl
 
 # Mi'ihen Highroad
+# piercing tutorial
 kill Raldo auron tyakwl
 
 # Mushroom Rock Road
@@ -110,6 +131,7 @@ kill Funguar valefor tyakwl
 # recharge fight
 # kill Gandarewa wakka tyakwl
 kill Raptor wakka tyakwl
+# kill gandarewa valefor tyakwl
 # kill Lamashtu valefor tyakwl
 kill Funguar valefor tyakwl
 kill Red_Element valefor tyakwl
@@ -118,11 +140,14 @@ kill Red_Element valefor tyakwl
 # kill Gandarewa wakka tyakwl
 # kill Raptor wakka tyakwl
 
+# gui 1
 kill arm_2 valefor tyakwl
 kill arm_2 valefor tyakwl
 kill head_2 valefor tyakwl
 # kill Sinspawn_Gui valefor tyakwl
 roll rng10 3
+
+# gui 2
 kill head_2 seymour tyakwl
 kill sinspawn_gui seymour tyakwl
 kill arm_2 seymour tyakwl
@@ -130,6 +155,7 @@ kill arm_2 seymour tyakwl
 
 # Moonflow
 kill Extractor wakka tyakwl
+
 # ??? 3 is the tutorial chest
 # it dies when you steal from it
 steal ???_3 0
@@ -144,7 +170,6 @@ death rikku
 # steal larva 0
 # steal melusine 0
 
-
 # Macalania Woods
 steal chimera 0
 steal blue_Element 0
@@ -153,9 +178,14 @@ kill Spherimorph rikku tyakwlr
 # Lake Macalania
 kill Negator rikku tyakwlr
 death rikku
+# death kimahri
 death rikku
 kill Crawler rikku tyakwlr
+# an additional negator dies
+# at the end of the fight
 kill Negator negator tyakwlr
+
+# seymour 1
 kill Guado_Guardian tidus tyakwlr
 kill Guado_Guardian tidus tyakwlr
 death ???
@@ -163,13 +193,15 @@ kill Anima tidus tyakwlr
 death rikku
 kill Seymour tidus tyakwlr
 
-# Guado Guardian 2 for macalania fights
+# Guado Guardian 2 is in macalania fights
 # and wendigo fight
 # kill guado_guardian_2 rikku tyakwlr
 # kill Snow_Wolf rikku tyakwlr
 # kill Mafdet rikku tyakwlr
 # kill Evil_Eye rikku tyakwlr
 # kill Ice_Flan rikku tyakwlr
+
+# wendigo
 kill Guado_Guardian_2 tidus tyakwlr
 kill Wendigo tidus tyakwlr
 kill Guado_Guardian_2 tidus tyakwlr
@@ -182,21 +214,25 @@ kill Guado_Guardian_2 tidus tyakwlr
 # kill sand_wolf rikku tyakwlr
 # kill alcyone rikku tyakwlr
 # kill mushussu rikku tyakwlr
+
 kill Sandragora kimahri tyakwlr
 kill Sandragora auron tyakwlr
 
 # Home
 # guado guardian 3 is in home
 # and airship encounters
+
 # fight 1
 kill Guado_Guardian_3 tidus tyakwlr
 kill Bomb_2 tidus tyakwlr
 kill Bomb_2 tidus tyakwlr
 kill Bomb_2 tidus tyakwlr
+
 # fight 2
 kill Guado_Guardian_3 kimahri tyakwlr
 kill Dual_Horn_2 kimahri tyakwlr
 kill Dual_Horn_2 kimahri tyakwlr
+
 # fight 3
 kill Guado_Guardian_3 kimahri tyakwlr
 kill Chimera_2 kimahri tyakwlr
@@ -213,12 +249,14 @@ kill warrior_monk_2 tidus tyakwlr
 kill fire_rifle tidus tyakwlr
 kill Warrior_Monk tidus tyakwlr
 kill rifle tidus tyakwlr
+
 # fight 2
 kill YKT-63 tidus tyakwlr
 kill warrior_monk_2 kimahri tyakwlr
 kill warrior_monk_2 kimahri tyakwlr
 kill fire_rifle kimahri tyakwlr
 kill fire_rifle kimahri tyakwlr
+
 # fight 3
 kill Warrior_Monk tidus tyakwlr
 kill rifle tidus tyakwlr
@@ -226,12 +264,14 @@ kill warrior_monk_2 tidus tyakwlr
 kill fire_rifle tidus tyakwlr
 kill Warrior_Monk tidus tyakwlr
 kill rifle tidus tyakwlr
+
 # fight 4
 kill YKT-63 tidus tyakwlr
 kill warrior_monk_2 kimahri tyakwlr
 kill warrior_monk_2 kimahri tyakwlr
 kill fire_rifle kimahri tyakwlr
 kill fire_rifle kimahri tyakwlr
+
 # fight 5
 # using bomb cores
 kill YAT-99 rikku tyakwlr
@@ -250,17 +290,21 @@ kill rifle tidus tyakwlr
 # Via Purifico
 kill Maze_Larva tidus tyakwlr
 kill Maze_Larva tidus tyakwlr
-kill Maze_Larva tidus tyakwlr
+# kill Maze_Larva tidus tyakwlr
 
 # isaaru summons
 roll rng10 9
 
+# via purifico underwater fiends
 # kill Phlegyas tidus tyakwlr
 # kill Sahagin_4 tidus tyakwlr
 
 kill Evrae_Altana tidus tyakwlr
 
 # Highbridge
+kill YKT-63 yuna tyakwlr
+# kill YKT-63 yuna tyakwlr
+
 kill Seymour_Natus bahamut tyakwlr
 
 # Calm Lands
