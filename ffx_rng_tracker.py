@@ -1,16 +1,10 @@
 from get_spoils import *
 import tkinter as tk
 from tkinter import font
-import sys
-import os
-
-# needs ffxhd-raw-rng10-values.csv, ffxhd-raw-rng12-values.csv and ffxhd-raw-rng13-values.csv placed in the same folder to work
 
 
-def get_resource_path(relative_path):
-	base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-	return os.path.join(base_path, relative_path)
-
+# needs ffxhd-raw-rng10-values.csv, ffxhd-raw-rng11-values.csv, ffxhd-raw-rng12-values.csv and ffxhd-raw-rng13-values.csv
+# placed in the same folder to work
 
 damage_rolls = get_damage_rolls()
 
@@ -187,9 +181,9 @@ def get_predictions(rng_equipment):
 
 		return equipment_types
 
-
 	for equipment_n, equipment_type in get_equipment_types(get_rng_generator(rng_equipment)).items():
 			print(f'Equipment {"#" + str(equipment_n):>3}: {equipment_type}')
+
 
 get_predictions(current_equipment_seed)
 
@@ -225,7 +219,7 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 
 	notes_lines_array = notes.get('1.0', 'end').split('\n')
 	data = ''
-	characters_enabled_string = 't'
+	characters_enabled_string = 'ta'
 	for line in notes_lines_array:
 		if line != '':
 			# fixes double spaces
@@ -365,8 +359,8 @@ notes.pack(fill='y', side='left')
 
 notes.bind('<KeyRelease>', lambda _: parse_notes(abilities_array, items_array, monsters_array, data_text))
 
-
 data_text_scroll_position = 0.0
+
 
 def on_data_text_scroll(*args):
 	global data_text_scroll_position
@@ -390,6 +384,7 @@ data_text.config(state='disabled')
 def get_default_notes(default_notes_file):
 	with open(default_notes_file) as notes_file:
 		return notes_file.read()
+
 
 try:
 	default_notes = get_default_notes('ffxhd_rng_tracker_notes.txt')

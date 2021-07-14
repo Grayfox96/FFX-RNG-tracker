@@ -15,13 +15,29 @@
 #
 ///
 # Zanarkand
-party ta
-# sinscales, ammes, tanker, sahagins
-# 45 rng10 rolls before klikk
-roll rng10 45
+kill sinscale_2 auron
+kill sinscale_2 tidus
+kill sinscale_2 auron
+kill sinscale_2 tidus
+kill sinscale_2 auron
+kill sinscale_2 tidus
+
+kill sinscale_2 auron
+kill sinscale_2 auron
+kill sinscale_2 auron
+kill sinscale_2 auron
+kill sinscale_2 auron
+kill sinspawn_ammes auron
+
+kill tanker tidus
 
 # Baaj Temple
-party tr
+party t
+kill sahagin tidus
+kill sahagin tidus
+
+# Geosgaeno doesn't roll rng
+///
 steal klikk 0
 steal klikk 1
 # steal klikk 1
@@ -116,10 +132,22 @@ kill Worker tidus
 kill Oblitzerator tidus
 
 kill Sahagin_Chief tidus
-# 16 Sahagin Chief kills
-# 16*3 rng10 rolls
-roll rng10 48
-roll rng11 16
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
+kill Sahagin_Chief tidus
 
 # forced fights
 party tyakwl
@@ -378,9 +406,9 @@ kill Yenke_Ronso kimahri
 
 kill Seymour_Flux bahamut
 
-kill Sanctuary_Keeper
+kill Sanctuary_Keeper bahamut
 
 # Zanarkand
-kill Spectral_Keeper
+kill Spectral_Keeper bahamut
 
-kill Yunalesca
+kill Yunalesca bahamut

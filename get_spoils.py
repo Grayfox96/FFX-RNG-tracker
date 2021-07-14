@@ -1,4 +1,10 @@
 import csv
+import sys
+import os
+
+def get_resource_path(relative_path):
+	base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+	return os.path.join(base_path, relative_path)
 
 def get_damage_rolls():
 
@@ -10,21 +16,20 @@ def get_damage_rolls():
 				else:
 					damage_rolls[character][key] = roll // 2
 
-	damage_rolls = {}
-	damage_rolls['auron'] = {}
-	damage_rolls['tidus'] = {}
-	possible_rolls = {}
+	damage_rolls = {'tidus': {}, 'auron': {}}
 
-	possible_rolls['tidus'] = (125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141)
-	possible_rolls['auron'] = (260, 261, 262, 263, 264, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 278,
-								279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294)
+	possible_rolls = {	'tidus':(125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141),
+						'auron':(260, 261, 262, 263, 264, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 278,
+									279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 291, 292, 293, 294)
+						}
+
 
 	# get damage rolls and check them
 	damage_rolls_input = input('Damage rolls (Auron1 Tidus1 A2 T2 A3 T3): ')
-	damage_rolls_input = damage_rolls_input.replace(',', ' ')
-	damage_rolls_input = damage_rolls_input.replace('-', ' ')
-	damage_rolls_input = damage_rolls_input.replace('/', ' ')
-	damage_rolls_input = damage_rolls_input.replace('\\', ' ')
+
+	# replace different symbols with spaces
+	for symbol in (',', '-', '/', '\\'):
+		damage_rolls_input = damage_rolls_input.replace(symbol, ' ')
 
 	damage_rolls['auron'][1], damage_rolls['tidus'][1], damage_rolls['auron'][2], damage_rolls['tidus'][2], damage_rolls['auron'][3], \
 		damage_rolls['tidus'][3] = [int(roll) for roll in damage_rolls_input.split()]
@@ -157,6 +162,13 @@ def get_item2(prize_struct, items_array, item_common):
 	return f'{item} x{item_quantity}'
 
 
+def fix_out_of_bounds_value(value, lower_bound, higher_bound):
+		if value < lower_bound:
+			value = lower_bound
+		if value > higher_bound:
+			value = higher_bound
+		return value
+
 
 # uses rng12 and rng13 to generate an equipment drop from a specific enemy
 def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_string, killer_index, rng_equipment, rng_abilities):
@@ -175,13 +187,6 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 		return characters_enabled
 
 	characters_enabled = get_characters_enabled(characters_enabled_string)
-
-	def fix_out_of_bounds_value(value, lower_bound, higher_bound):
-		if value < lower_bound:
-			value = lower_bound
-		if value > higher_bound:
-			value = higher_bound
-		return value
 
 	equipment = {}
 
@@ -225,7 +230,6 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 				killer_index = party_member_index_loop
 				break
 		party_member_index_loop += 1
-
 
 	equipment['character'] = (		'Tidus' if killer_index == 0 else 
 									'Yuna' if killer_index == 1 else 
