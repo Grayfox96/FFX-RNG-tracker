@@ -270,8 +270,6 @@ def make_predictions(steal_drop_seed, common_rare_seed, equipment_seed, abilitie
 make_predictions(current_steal_drop_seed, current_common_rare_seed, current_equipment_seed, current_abilities_seed,
 				abilities_array, items_array, monsters_array)
 
-quit()
-
 
 def parse_notes(abilities_array, items_array, monsters_array, data_text):
 
