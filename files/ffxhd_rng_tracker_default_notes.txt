@@ -62,7 +62,7 @@ kill piranha_3 tidus
 kill piranha_3 tidus
 
 # steal tros 0
-kill tros tidus
+kill tros rikku
 
 # Besaid
 party tw
@@ -182,19 +182,20 @@ kill Red_Element valefor
 # kill Raptor wakka
 
 # gui 1
-kill arm_2 valefor
-kill arm_2 valefor
-kill head_2 valefor
-# gui 1 drops nothing
-roll rng10 3
-# kill arm_2 valefor
-# kill arm_2 valefor
+# gui 1 has drops disabled
+# if the arms dont respawn
+roll rng10 12
+# if the arms do respawn
+# roll rng10 18
+
 
 # gui 2
-kill head_2 seymour
+# normal fight
+# gui 2 head
+roll rng10 3
 kill sinspawn_gui seymour
-kill arm_2 seymour
-kill arm_2 seymour
+# if you use valefor overdrive
+# roll rng10 6
 
 # Moonflow
 # death ???
@@ -218,6 +219,7 @@ death rikku
 # Macalania Woods
 steal chimera 0
 steal blue_Element 0
+# steal iguion 0
 kill Spherimorph rikku
 
 # Lake Macalania
@@ -290,6 +292,8 @@ kill Chimera_2 kimahri
 
 # Airship
 # death ???
+# steal evrae 0
+# steal evrae 1
 kill Evrae tidus
 
 # Bevelle
