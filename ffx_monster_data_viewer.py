@@ -105,7 +105,7 @@ def print_monster_data(monster_index, items_array, monsters_array, monster_names
 	monster_data += '\n' + ' '.join([f'[{hex(byte_index + i)[2:]:>3}]' for i in range(16)]) + '\n'
 
 	for byte in prize_struct:
-		monster_data += f' {byte:>3}  '
+		monster_data += f' {hex(byte)[2:]:>3}  '
 		# sections
 		if byte_index == 0x80 - 1: monster_data += '\nPrize struct'
 		elif byte_index == 0xB0 - 1: monster_data += '\n             start of equipment'
@@ -121,7 +121,7 @@ def print_monster_data(monster_index, items_array, monsters_array, monster_names
 	monster_data_text.config(state='disabled')
 
 
-items_array = get_ids_array(get_resource_path('files/ffxhd-items.csv'))
+items_array = get_items_array(get_resource_path('files/ffxhd-items.csv'))
 text_characters_array = get_characters_array(get_resource_path('files/ffxhd-characters.csv'))
 monsters_array = get_monsters_array(get_resource_path('files/ffxhd-mon_data.csv'), text_characters_array)
 monster_names_list = sorted(list(monsters_array.keys()))

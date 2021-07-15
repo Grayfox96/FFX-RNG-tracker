@@ -1,257 +1,257 @@
-Ability ID,Ability Name
-0,Sensor
-1,First Strike
-2,Initiative
-3,Counterattack
-4,Evade & Counter
-5,Magic Counter
-6,Magic Booster
-7,Alchemy
-8,Auto-Potion
-9,Auto-Med
-10,Auto-Phoenix
-11,Piercing
-12,Half MP Cost
-13,One MP Cost
-14,Double Overdrive
-15,Triple Overdrive
-16,SOS Overdrive
-17,Overdrive → AP
-18,Double AP
-19,Triple AP
-20,No AP
-21,Pickpocket
-22,Master Thief
-23,Break HP Limit
-24,Break MP Limit
-25,Break Damage Limit
-26,Gillionaire
-27,HP Stroll
-28,MP Stroll
-29,No Encounters
-30,Firestrike
-31,Fire Ward
-32,Fireproof
-33,Fire Eater
-34,Icestrike
-35,Ice Ward
-36,Iceproof
-37,Ice Eater
-38,Lightningstrike
-39,Lightning Ward
-40,Lightningproof
-41,Lightning Eater
-42,Waterstrike
-43,Water Ward
-44,Waterproof
-45,Water Eater
-46,Deathstrike
-47,Deathtouch
-48,Deathproof
-49,Death Ward
-50,Zombiestrike
-51,Zombietouch
-52,Zombieproof
-53,Zombie Ward
-54,Stonestrike
-55,Stonetouch
-56,Stoneproof
-57,Stone Ward
-58,Poisonstrike
-59,Poisontouch
-60,Poisonproof
-61,Poison Ward
-62,Sleepstrike
-63,Sleeptouch
-64,Sleepproof
-65,Sleep Ward
-66,Silencestrike
-67,Silencetouch
-68,Silenceproof
-69,Silence Ward
-70,Darkstrike
-71,Darktouch
-72,Darkproof
-73,Dark Ward
-74,Slowstrike
-75,Slowtouch
-76,Slowproof
-77,Slow Ward
-78,Confuseproof
-79,Confuse Ward
-80,Berserkproof
-81,Berserk Ward
-82,Curseproof
-83,Curse Ward
-84,Auto-Shell
-85,Auto-Protect
-86,Auto-Haste
-87,Auto-Regen
-88,Auto-Reflect
-89,SOS Shell
-90,SOS Protect
-91,SOS Haste
-92,SOS Regen
-93,SOS Reflect
-94,SOS NulTide
-95,SOS NulFrost
-96,SOS NulShock
-97,SOS NulBlaze
-98,Strength +3%
-99,Strength +5%
-100,Strength +10%
-101,Strength +20%
-102,Magic +3%
-103,Magic +5%
-104,Magic +10%
-105,Magic +20%
-106,Defense +3%
-107,Defense +5%
-108,Defense +10%
-109,Defense +20%
-110,Magic Def +3%
-111,Magic Def +5%
-112,Magic Def +10%
-113,Magic Def +20%
-114,HP +5%
-115,HP +10%
-116,HP +20%
-117,HP +30%
-118,MP +5%
-119,MP +10%
-120,MP +20%
-121,MP +30%
-122,Capture
-123,(Nameless ability)
-124,Distill Power
-125,Distill Mana
-126,Distill Speed
-127,Distill Ability
-128,Ribbon
-129,Extra 1
-130,Extra 2
-131,Extra 3
-132,Extra 4
-133,Extra 5
-134,Sensor
-135,Sensor
-136,Sensor
-137,Sensor
-138,Sensor
-139,Sensor
-140,Sensor
-141,Sensor
-142,Sensor
-143,Sensor
-144,Sensor
-145,Sensor
-146,Sensor
-147,Sensor
-148,Sensor
-149,Sensor
-150,Sensor
-151,Sensor
-152,Sensor
-153,Sensor
-154,Sensor
-155,Sensor
-156,Sensor
-157,Sensor
-158,Sensor
-159,Sensor
-160,Sensor
-161,Sensor
-162,Sensor
-163,Sensor
-164,Sensor
-165,Sensor
-166,Sensor
-167,Sensor
-168,Sensor
-169,Sensor
-170,Sensor
-171,Sensor
-172,Sensor
-173,Sensor
-174,Sensor
-175,Sensor
-176,Sensor
-177,Sensor
-178,Sensor
-179,Sensor
-180,Sensor
-181,Sensor
-182,Sensor
-183,Sensor
-184,Sensor
-185,Sensor
-186,Sensor
-187,Sensor
-188,Sensor
-189,Sensor
-190,Sensor
-191,Sensor
-192,Sensor
-193,Sensor
-194,Sensor
-195,Sensor
-196,Sensor
-197,Sensor
-198,Sensor
-199,Sensor
-200,Sensor
-201,Sensor
-202,Sensor
-203,Sensor
-204,Sensor
-205,Sensor
-206,Sensor
-207,Sensor
-208,Sensor
-209,Sensor
-210,Sensor
-211,Sensor
-212,Sensor
-213,Sensor
-214,Sensor
-215,Sensor
-216,Sensor
-217,Sensor
-218,Sensor
-219,Sensor
-220,Sensor
-221,Sensor
-222,Sensor
-223,Sensor
-224,Sensor
-225,Sensor
-226,Sensor
-227,Sensor
-228,Sensor
-229,Sensor
-230,Sensor
-231,Sensor
-232,Sensor
-233,Sensor
-234,Sensor
-235,Sensor
-236,Sensor
-237,Sensor
-238,Sensor
-239,Sensor
-240,Sensor
-241,Sensor
-242,Sensor
-243,Sensor
-244,Sensor
-245,Sensor
-246,Sensor
-247,Sensor
-248,Sensor
-249,Sensor
-250,Sensor
-251,Sensor
-252,Sensor
-253,Sensor
-254,Sensor
-255,Sensor
+Ability ID,Ability Name,Ability Value
+0,Sensor,200
+1,First Strike,6000
+2,Initiative,6000
+3,Counterattack,4000
+4,Evade & Counter,22000
+5,Magic Counter,25000
+6,Magic Booster,17000
+7,Alchemy,8000
+8,Auto-Potion,12000
+9,Auto-Med,10000
+10,Auto-Phoenix,20000
+11,Piercing,0
+12,Half MP Cost,20000
+13,One MP Cost,30000
+14,Double Overdrive,30000
+15,Triple Overdrive,40000
+16,SOS Overdrive,20000
+17,Overdrive → AP,25000
+18,Double AP,40000
+19,Triple AP,60000
+20,No AP,0
+21,Pickpocket,40000
+22,Master Thief,60000
+23,Break HP Limit,0
+24,Break MP Limit,0
+25,Break Damage Limit,0
+26,Gillionaire,0
+27,HP Stroll,6000
+28,MP Stroll,6000
+29,No Encounters,6500
+30,Firestrike,700
+31,Fire Ward,1500
+32,Fireproof,3000
+33,Fire Eater,10000
+34,Icestrike,700
+35,Ice Ward,1500
+36,Iceproof,3000
+37,Ice Eater,10000
+38,Lightningstrike,700
+39,Lightning Ward,1500
+40,Lightningproof,3000
+41,Lightning Eater,10000
+42,Waterstrike,700
+43,Water Ward,1500
+44,Waterproof,3000
+45,Water Eater,10000
+46,Deathstrike,20000
+47,Deathtouch,8000
+48,Deathproof,4000
+49,Death Ward,2000
+50,Zombiestrike,12000
+51,Zombietouch,8000
+52,Zombieproof,4000
+53,Zombie Ward,2000
+54,Stonestrike,12000
+55,Stonetouch,5000
+56,Stoneproof,2500
+57,Stone Ward,1200
+58,Poisonstrike,10000
+59,Poisontouch,1500
+60,Poisonproof,1500
+61,Poison Ward,400
+62,Sleepstrike,8000
+63,Sleeptouch,1000
+64,Sleepproof,800
+65,Sleep Ward,200
+66,Silencestrike,8000
+67,Silencetouch,3000
+68,Silenceproof,3000
+69,Silence Ward,500
+70,Darkstrike,4000
+71,Darktouch,2000
+72,Darkproof,2000
+73,Dark Ward,500
+74,Slowstrike,7000
+75,Slowtouch,3000
+76,Slowproof,3000
+77,Slow Ward,1000
+78,Confuseproof,4000
+79,Confuse Ward,1000
+80,Berserkproof,6000
+81,Berserk Ward,1000
+82,Curseproof,8000
+83,Curse Ward,0
+84,Auto-Shell,22000
+85,Auto-Protect,22000
+86,Auto-Haste,50000
+87,Auto-Regen,60000
+88,Auto-Reflect,14000
+89,SOS Shell,4000
+90,SOS Protect,4000
+91,SOS Haste,20000
+92,SOS Regen,20000
+93,SOS Reflect,1000
+94,SOS NulTide,500
+95,SOS NulFrost,500
+96,SOS NulShock,500
+97,SOS NulBlaze,500
+98,Strength +3%,100
+99,Strength +5%,500
+100,Strength +10%,5000
+101,Strength +20%,10000
+102,Magic +3%,100
+103,Magic +5%,500
+104,Magic +10%,5000
+105,Magic +20%,10000
+106,Defense +3%,200
+107,Defense +5%,500
+108,Defense +10%,5000
+109,Defense +20%,10000
+110,Magic Def +3%,200
+111,Magic Def +5%,500
+112,Magic Def +10%,5000
+113,Magic Def +20%,10000
+114,HP +5%,100
+115,HP +10%,1000
+116,HP +20%,6000
+117,HP +30%,15000
+118,MP +5%,1200
+119,MP +10%,6000
+120,MP +20%,8000
+121,MP +30%,18000
+122,Capture,6000
+123,(Nameless ability),0
+124,Distill Power,10
+125,Distill Mana,10
+126,Distill Speed,10
+127,Distill Ability,10
+128,Ribbon,5000
+129,Extra 1,0
+130,Extra 2,0
+131,Extra 3,0
+132,Extra 4,0
+133,Extra 5,0
+134,Sensor,200
+135,Sensor,200
+136,Sensor,200
+137,Sensor,200
+138,Sensor,200
+139,Sensor,200
+140,Sensor,200
+141,Sensor,200
+142,Sensor,200
+143,Sensor,200
+144,Sensor,200
+145,Sensor,200
+146,Sensor,200
+147,Sensor,200
+148,Sensor,200
+149,Sensor,200
+150,Sensor,200
+151,Sensor,200
+152,Sensor,200
+153,Sensor,200
+154,Sensor,200
+155,Sensor,200
+156,Sensor,200
+157,Sensor,200
+158,Sensor,200
+159,Sensor,200
+160,Sensor,200
+161,Sensor,200
+162,Sensor,200
+163,Sensor,200
+164,Sensor,200
+165,Sensor,200
+166,Sensor,200
+167,Sensor,200
+168,Sensor,200
+169,Sensor,200
+170,Sensor,200
+171,Sensor,200
+172,Sensor,200
+173,Sensor,200
+174,Sensor,200
+175,Sensor,200
+176,Sensor,200
+177,Sensor,200
+178,Sensor,200
+179,Sensor,200
+180,Sensor,200
+181,Sensor,200
+182,Sensor,200
+183,Sensor,200
+184,Sensor,200
+185,Sensor,200
+186,Sensor,200
+187,Sensor,200
+188,Sensor,200
+189,Sensor,200
+190,Sensor,200
+191,Sensor,200
+192,Sensor,200
+193,Sensor,200
+194,Sensor,200
+195,Sensor,200
+196,Sensor,200
+197,Sensor,200
+198,Sensor,200
+199,Sensor,200
+200,Sensor,200
+201,Sensor,200
+202,Sensor,200
+203,Sensor,200
+204,Sensor,200
+205,Sensor,200
+206,Sensor,200
+207,Sensor,200
+208,Sensor,200
+209,Sensor,200
+210,Sensor,200
+211,Sensor,200
+212,Sensor,200
+213,Sensor,200
+214,Sensor,200
+215,Sensor,200
+216,Sensor,200
+217,Sensor,200
+218,Sensor,200
+219,Sensor,200
+220,Sensor,200
+221,Sensor,200
+222,Sensor,200
+223,Sensor,200
+224,Sensor,200
+225,Sensor,200
+226,Sensor,200
+227,Sensor,200
+228,Sensor,200
+229,Sensor,200
+230,Sensor,200
+231,Sensor,200
+232,Sensor,200
+233,Sensor,200
+234,Sensor,200
+235,Sensor,200
+236,Sensor,200
+237,Sensor,200
+238,Sensor,200
+239,Sensor,200
+240,Sensor,200
+241,Sensor,200
+242,Sensor,200
+243,Sensor,200
+244,Sensor,200
+245,Sensor,200
+246,Sensor,200
+247,Sensor,200
+248,Sensor,200
+249,Sensor,200
+250,Sensor,200
+251,Sensor,200
+252,Sensor,200
+253,Sensor,200
+254,Sensor,200
+255,Sensor,200

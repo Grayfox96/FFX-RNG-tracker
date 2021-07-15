@@ -20,8 +20,8 @@ else:
 	print('Seed not found!')
 	quit()
 
-abilities_array = get_ids_array(get_resource_path('files/ffxhd-abilities.csv'))
-items_array = get_ids_array(get_resource_path('files/ffxhd-items.csv'))
+abilities_array = get_abilities_array(get_resource_path('files/ffxhd-abilities.csv'))
+items_array = get_items_array(get_resource_path('files/ffxhd-items.csv'))
 text_characters_array = get_characters_array(get_resource_path('files/ffxhd-characters.csv'))
 monsters_array = get_monsters_array(get_resource_path('files/ffxhd-mon_data.csv'), text_characters_array)
 
@@ -30,8 +30,7 @@ def patch_monsters_array_for_hd(monsters_array):
 
 	# 0 for weapon, 1 for armor
 	def patch_abilities(monster_array, abilities_tuple, equipment_type=0):
-		# do nothing, ability orders are wrong
-		return monster_array
+
 		base_address = 178
 		for character_index in range(7):
 			character_offset = (equipment_type + (character_index * 2)) * 16
@@ -62,19 +61,20 @@ def patch_monsters_array_for_hd(monsters_array):
 
 	# abilities
 	# besaid
+	monsters_array['dingo'] = patch_abilities(monsters_array['dingo'], (38, 42, 34, 30, 124, 124, 124))
 	monsters_array['condor'] = patch_abilities(monsters_array['condor'], (0, 0, 0, 0, 126, 126, 126))
-	monsters_array['dingo'] = patch_abilities(monsters_array['dingo'], (0, 0, 0, 30, 34, 38, 42))
 	monsters_array['water_flan'] = patch_abilities(monsters_array['water_flan'], (42, 42, 42, 42, 125, 125, 125))
+	monsters_array['dingo_2'] = patch_abilities(monsters_array['dingo_2'], (38, 42, 34, 30, 124, 124, 124))
 	monsters_array['condor_2'] = patch_abilities(monsters_array['condor_2'], (0, 0, 0, 0, 126, 126, 126))
-	monsters_array['dingo_2'] = patch_abilities(monsters_array['dingo_2'], (0, 0, 0, 30, 34, 38, 42))
+	monsters_array['water_flan_2'] = patch_abilities(monsters_array['water_flan_2'], (42, 42, 42, 42, 125, 125, 125))
 
 	# kilika
-	monsters_array['dinonix'] = patch_abilities(monsters_array['dinonix'], (126, 126, 126, 38, 38, 30, 42))
-	monsters_array['killer_bee'] = patch_abilities(monsters_array['killer_bee'], (126, 126, 126, 30, 34, 38, 42))
-	monsters_array['yellow_element'] = patch_abilities(monsters_array['yellow_element'], (38, 38, 38, 38, 125, 125, 125))
+	# monsters_array['dinonix'] = patch_abilities(monsters_array['dinonix'], (126, 126, 126, 38, 38, 30, 42))
+	# monsters_array['killer_bee'] = patch_abilities(monsters_array['killer_bee'], (126, 126, 126, 30, 34, 38, 42))
+	# monsters_array['yellow_element'] = patch_abilities(monsters_array['yellow_element'], (38, 38, 38, 38, 125, 125, 125))
 
 	# luca
-	monsters_array['raldo'] = patch_abilities(monsters_array['raldo'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['raldo'] = patch_abilities(monsters_array['raldo'], (124, 124, 124, 30, 34, 38, 42))
 
 	# mi'ihen
 	# bomb
@@ -82,30 +82,30 @@ def patch_monsters_array_for_hd(monsters_array):
 	# floating_eye
 	# ipiria
 	# mi'ihen_fang
-	monsters_array['raldo_2'] = patch_abilities(monsters_array['raldo_2'], (124, 124, 124, 30, 34, 38, 42))
-	monsters_array['vouivre_2'] = patch_abilities(monsters_array['vouivre_2'], (124, 124, 124, 30, 34, 38, 42))
-	monsters_array['white_element'] = patch_abilities(monsters_array['white_element'], (34, 34, 34, 34, 125, 125, 125))
+	# monsters_array['raldo_2'] = patch_abilities(monsters_array['raldo_2'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['vouivre_2'] = patch_abilities(monsters_array['vouivre_2'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['white_element'] = patch_abilities(monsters_array['white_element'], (34, 34, 34, 34, 125, 125, 125))
 
 	# mushroom rock road
-	monsters_array['gandarewa'] = patch_abilities(monsters_array['gandarewa'], (38, 38, 38, 38, 125, 125, 125))
-	monsters_array['lamashtu'] = patch_abilities(monsters_array['lamashtu'], (124, 124, 124, 30, 34, 38, 42))
-	monsters_array['raptor'] = patch_abilities(monsters_array['raptor'], (126, 126, 126, 38, 38, 30, 42))
-	monsters_array['red_element'] = patch_abilities(monsters_array['red_element'], (30, 30, 30, 30, 125, 125, 125))
-	monsters_array['thunder_flan'] = patch_abilities(monsters_array['thunder_flan'], (38, 38, 38, 38, 125, 125, 125))
+	# monsters_array['gandarewa'] = patch_abilities(monsters_array['gandarewa'], (38, 38, 38, 38, 125, 125, 125))
+	# monsters_array['lamashtu'] = patch_abilities(monsters_array['lamashtu'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['raptor'] = patch_abilities(monsters_array['raptor'], (126, 126, 126, 38, 38, 30, 42))
+	# monsters_array['red_element'] = patch_abilities(monsters_array['red_element'], (30, 30, 30, 30, 125, 125, 125))
+	# monsters_array['thunder_flan'] = patch_abilities(monsters_array['thunder_flan'], (38, 38, 38, 38, 125, 125, 125))
 
 	# djose highroad
 	# bite_bug
-	monsters_array['bunyip'] = patch_abilities(monsters_array['bunyip'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['bunyip'] = patch_abilities(monsters_array['bunyip'], (124, 124, 124, 30, 34, 38, 42))
 	# garm
 	# simurgh
 	# snow_flan
 
 	# moonflow
-	monsters_array['bunyip_2'] = patch_abilities(monsters_array['bunyip_2'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['bunyip_2'] = patch_abilities(monsters_array['bunyip_2'], (124, 124, 124, 30, 34, 38, 42))
 
 	# thunder plains
 	# aerouge
-	monsters_array['buer'] = patch_abilities(monsters_array['buer'], (126, 126, 30, 34, 38, 42, 99))
+	# monsters_array['buer'] = patch_abilities(monsters_array['buer'], (126, 126, 30, 34, 38, 42, 99))
 	# gold_element
 	# kusariqqu
 	# melusine
@@ -118,20 +118,20 @@ def patch_monsters_array_for_hd(monsters_array):
 	# wasp
 
 	# lake macalania
-	monsters_array['evil_eye'] = patch_abilities(monsters_array['evil_eye'], (126, 126, 30, 34, 38, 42, 99))
-	monsters_array['ice_flan'] = patch_abilities(monsters_array['ice_flan'], (34, 34, 34, 34, 125, 125, 125))
-	monsters_array['mafdet'] = patch_abilities(monsters_array['mafdet'], (124, 124, 124, 30, 34, 38, 42))
-	monsters_array['snow_wolf'] = patch_abilities(monsters_array['snow_wolf'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['evil_eye'] = patch_abilities(monsters_array['evil_eye'], (126, 126, 30, 34, 38, 42, 99))
+	# monsters_array['ice_flan'] = patch_abilities(monsters_array['ice_flan'], (34, 34, 34, 34, 125, 125, 125))
+	# monsters_array['mafdet'] = patch_abilities(monsters_array['mafdet'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['snow_wolf'] = patch_abilities(monsters_array['snow_wolf'], (124, 124, 124, 30, 34, 38, 42))
 
 	# bikanel
-	monsters_array['alcyone'] = patch_abilities(monsters_array['alcyone'], (0, 0, 0, 0, 126, 126, 126))
-	monsters_array['mushussu'] = patch_abilities(monsters_array['mushussu'], (124, 124, 124, 30, 34, 38, 42))
-	monsters_array['sand_wolf'] = patch_abilities(monsters_array['sand_wolf'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['alcyone'] = patch_abilities(monsters_array['alcyone'], (0, 0, 0, 0, 126, 126, 126))
+	# monsters_array['mushussu'] = patch_abilities(monsters_array['mushussu'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['sand_wolf'] = patch_abilities(monsters_array['sand_wolf'], (124, 124, 124, 30, 34, 38, 42))
 
-	monsters_array['bomb_2'] = patch_abilities(monsters_array['bomb_2'], (30, 30, 30, 30, 30, 30, 124))
-	monsters_array['chimera_2'] = patch_abilities(monsters_array['chimera_2'], (103, 103, 103, 103, 104, 104, 125))
-	monsters_array['dual_horn_2'] = patch_abilities(monsters_array['dual_horn_2'], (67, 67, 67, 30, 30, 127, 127))
-	monsters_array['evil_eye_2'] = patch_abilities(monsters_array['evil_eye_2'], (126, 126, 30, 34, 38, 42, 99))
+	# monsters_array['bomb_2'] = patch_abilities(monsters_array['bomb_2'], (30, 30, 30, 30, 30, 30, 124))
+	# monsters_array['chimera_2'] = patch_abilities(monsters_array['chimera_2'], (103, 103, 103, 103, 104, 104, 125))
+	# monsters_array['dual_horn_2'] = patch_abilities(monsters_array['dual_horn_2'], (67, 67, 67, 30, 30, 127, 127))
+	# monsters_array['evil_eye_2'] = patch_abilities(monsters_array['evil_eye_2'], (126, 126, 30, 34, 38, 42, 99))
 
 	# via purifico
 	# aqua_flan
@@ -145,16 +145,16 @@ def patch_monsters_array_for_hd(monsters_array):
 	# nebiros
 	# shred
 	# skoll
-	monsters_array['defender_x'] = patch_abilities(monsters_array['defender_x'], (99, 99, 99, 99, 99, 100, 124))
+	# monsters_array['defender_x'] = patch_abilities(monsters_array['defender_x'], (99, 99, 99, 99, 99, 100, 124))
 
 	# cavern of the stolen fayth
-	monsters_array['dark_element'] = patch_abilities(monsters_array['dark_element'], (125, 125, 125, 30, 30, 34, 42))
-	monsters_array['defender'] = patch_abilities(monsters_array['defender'], (99, 99, 99, 99, 98, 98, 124))
-	monsters_array['ghost'] = patch_abilities(monsters_array['ghost'], (103, 103, 103, 104, 104, 104, 125))
-	monsters_array['imp'] = patch_abilities(monsters_array['imp'], (38, 38, 38, 38, 125, 125, 125))
-	monsters_array['nidhogg'] = patch_abilities(monsters_array['nidhogg'], (124, 124, 124, 30, 34, 38, 42))
-	monsters_array['valaha'] = patch_abilities(monsters_array['valaha'], (67, 67, 67, 30, 30, 127, 127))
-	monsters_array['yowie'] = patch_abilities(monsters_array['yowie'], (126, 126, 126, 38, 38, 30, 42))
+	# monsters_array['dark_element'] = patch_abilities(monsters_array['dark_element'], (125, 125, 125, 30, 30, 34, 42))
+	# monsters_array['defender'] = patch_abilities(monsters_array['defender'], (99, 99, 99, 99, 98, 98, 124))
+	# monsters_array['ghost'] = patch_abilities(monsters_array['ghost'], (103, 103, 103, 104, 104, 104, 125))
+	# monsters_array['imp'] = patch_abilities(monsters_array['imp'], (38, 38, 38, 38, 125, 125, 125))
+	# monsters_array['nidhogg'] = patch_abilities(monsters_array['nidhogg'], (124, 124, 124, 30, 34, 38, 42))
+	# monsters_array['valaha'] = patch_abilities(monsters_array['valaha'], (67, 67, 67, 30, 30, 127, 127))
+	# monsters_array['yowie'] = patch_abilities(monsters_array['yowie'], (126, 126, 126, 38, 38, 30, 42))
 
 
 	return monsters_array
@@ -163,9 +163,11 @@ def patch_monsters_array_for_hd(monsters_array):
 monsters_array = patch_monsters_array_for_hd(monsters_array)
 
 
-def get_predictions(rng_equipment):
+def make_predictions(steal_drop_seed, common_rare_seed, equipment_seed, abilities_seed, abilities_array, items_array, monsters_array):
 
-	def get_equipment_types(rng_equipment):
+
+	def get_equipment_types():
+		rng_equipment = get_rng_generator(equipment_seed)
 		equipment_types = {}
 		for i in range(40):
 			next(rng_equipment)
@@ -181,11 +183,94 @@ def get_predictions(rng_equipment):
 
 		return equipment_types
 
-	for equipment_n, equipment_type in get_equipment_types(get_rng_generator(rng_equipment)).items():
-			print(f'Equipment {"#" + str(equipment_n):>3}: {equipment_type}')
+
+	def get_good_early_game_drops(abilities_to_test, characters_to_test, number_of_kills_range, number_of_steals_range):
 
 
-get_predictions(current_equipment_seed)
+		def get_good_equipment(enemy, characters_enabled_string, killer_index, abilities_to_test):
+			prize_struct = get_prize_struct(enemy, monsters_array)
+			if prize_struct[139] > (next(rng_steal_drop) % 255):
+				equipment = create_dropped_equipment(prize_struct, abilities_array, characters_enabled_string, killer_index, rng_equipment, rng_abilities)
+				if equipment['type'] == 'weapon' and equipment['character'] in characters_to_test:
+					for i in range(4):
+						try:
+							# if the weapon has lightning- water- or ice-strike
+							if equipment['abilities'][i] in abilities_to_test:
+								return equipment
+						except KeyError as error:
+							return False
+
+			return False
+
+
+		good_early_game_drops = []
+
+		for number_of_kills in range(number_of_kills_range[0] + 2, number_of_kills_range[1] + 2 + 1):
+
+			for number_of_steals in range(number_of_steals_range[0], number_of_steals_range[1] + 1):
+
+				# get all rng arrays
+				rng_steal_drop = get_rng_generator(steal_drop_seed)
+				rng_common_rare = get_rng_generator(common_rare_seed)
+				rng_equipment = get_rng_generator(equipment_seed)
+				rng_abilities = get_rng_generator(abilities_seed)
+
+				# 15 kills before klikk
+				for i in range((15 + number_of_kills) * 3):
+					next(rng_steal_drop)
+
+				for j in range(number_of_steals):
+					next(rng_steal_drop)
+
+				early_game_kills_tuple = (	('dingo', 'tywl', 0),
+											('condor', 'tywl', 4),
+											('water_flan', 'tywl', 5),
+											('???', 'tywl', 0),
+											('garuda_3', 'tywl', 7),
+											('dingo_2', 'tywl', 0),
+											('condor_2', 'tywl', 4),
+											('water_flan_2', 'tywl', 5)
+											)
+
+				for enemy, characters_enabled_string, killer_index in early_game_kills_tuple:
+					# roll for item1 and item2
+					for k in range(2):
+						next(rng_steal_drop)
+					equipment = get_good_equipment(enemy, characters_enabled_string, killer_index, abilities_to_test)
+					if equipment:
+						good_early_game_drops.append({'enemy': enemy, 'number_of_piranhas': number_of_kills - 2, 
+							'number_of_steals': number_of_steals, 'equipment': equipment})
+
+		return good_early_game_drops
+
+
+	for equipment_n, equipment_type in get_equipment_types().items():
+		print(f'Equipment {"#" + str(equipment_n):>3}: {equipment_type}')
+
+	abilities_to_test = ('Lightningstrike', 'Icestrike')
+	characters_to_test = ('Tidus', 'Wakka')
+	number_of_kills_range = (2, 14)
+	number_of_steals_range = (2, 10)
+
+	print(f'Testing all scenarios with {number_of_kills_range[0]}-{number_of_kills_range[1]} piranha kills and '
+		f'{number_of_steals_range[0]}-{number_of_steals_range[1]} steals '
+		f'for weapon drops for {"/".join(characters_to_test)} in Besaid '
+		f'with at least 1 of these abilities: {", ".join(abilities_to_test)}')
+
+	good_early_game_drops = get_good_early_game_drops(abilities_to_test, characters_to_test, number_of_kills_range, number_of_steals_range)
+
+	# if the list is not empty
+	if good_early_game_drops:
+		for scenario in good_early_game_drops:
+			print(f'Killing {scenario["number_of_piranhas"]} piranhas and stealing {scenario["number_of_steals"]} times, '
+				f'{scenario["enemy"]} will drop {[ability for slot, ability in scenario["equipment"]["abilities"].items()]} for {scenario["equipment"]["character"]}')
+	else: print(f'No weapons found')
+
+
+make_predictions(current_steal_drop_seed, current_common_rare_seed, current_equipment_seed, current_abilities_seed,
+				abilities_array, items_array, monsters_array)
+
+quit()
 
 
 def parse_notes(abilities_array, items_array, monsters_array, data_text):
@@ -268,7 +353,8 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 						data += f'No monster named "{monster}"'
 
 					else:
-						item1, item2, equipment = get_spoils(prize_struct, abilities_array, items_array, characters_enabled_string, killer_index, rng_steal_drop, rng_common_rare, rng_equipment, rng_abilities)
+						item1, item2, equipment = get_spoils(prize_struct, abilities_array, items_array,
+							characters_enabled_string, killer_index, rng_steal_drop, rng_common_rare, rng_equipment, rng_abilities)
 
 						monster = monster.replace('_', ' ')
 						monster = ' '.join([word[0].upper() + word[1:] for word in monster.split(' ')])
@@ -281,7 +367,8 @@ def parse_notes(abilities_array, items_array, monsters_array, data_text):
 
 						if equipment:
 							guaranteed_equipment = ' (guaranteed)' if equipment["guaranteed"] else '' 
-							data += f', Equipment #{next(equipment_counter)}{guaranteed_equipment}: {equipment["type"]} for {equipment["character"]} {[ability for slot, ability in equipment["abilities"].items()]}'
+							data += (	f', Equipment #{next(equipment_counter)}{guaranteed_equipment}: {equipment["type"]} for {equipment["character"]} '
+										f'{[ability for slot, ability in equipment["abilities"].items()]} [{equipment["sell_gil_value"]} gil]')
 
 						# if all 3 are False
 						if any((item1, item2, equipment)) == False: data += 'No drops'

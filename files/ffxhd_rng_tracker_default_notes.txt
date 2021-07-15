@@ -90,7 +90,7 @@ kill sinscale_3 tidus
 
 # Kilika
 # forced fight
-kill Ragora tidus
+kill Ragora_2 tidus
 
 # valefor od charge
 kill Dinonix tidus
@@ -99,8 +99,8 @@ kill Yellow_Element valefor
 #kill Ragora valefor
 
 # additional kills
-kill Dinonix valefor
-kill Killer_Bee valefor
+kill Dinonix tidus
+kill Killer_Bee wakka
 
 kill Geneaux's_Tentacle valefor
 kill Geneaux's_Tentacle valefor
@@ -151,12 +151,12 @@ kill Sahagin_Chief tidus
 
 # forced fights
 party tyakwl
-kill Vouivre auron
+kill Vouivre_2 auron
 kill Garuda_2 auron
 
 # Mi'ihen Highroad
 # piercing tutorial
-kill Raldo auron
+kill Raldo_2 auron
 # death ???
 # death ???
 # death ???
@@ -345,7 +345,9 @@ kill Maze_Larva ixion
 # kill Maze_Larva ixion
 
 # isaaru summons
-roll rng10 9
+kill ifrit_2 bahamut
+kill valefor bahamut
+kill bahamut bahamut
 
 # via purifico underwater fiends
 party twr
@@ -404,7 +406,9 @@ kill Ghost ixion
 kill Biran_Ronso kimahri
 kill Yenke_Ronso kimahri
 
-kill Seymour_Flux bahamut
+# if flux dies from poison
+# the killer is seymour_flux
+kill Seymour_Flux yuna
 
 kill Sanctuary_Keeper bahamut
 

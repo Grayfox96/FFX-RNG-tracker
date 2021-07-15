@@ -63,20 +63,36 @@ def get_current_seed(rng_file, damage_rolls_dict):
 	return False, False, False
 
 
-def get_ids_array(ids_file):
-	ids_array = {}
-	with open(ids_file) as ids:
-		ids_file_reader = csv.reader(ids, delimiter=',')
+def get_abilities_array(abilities_file):
+	abilities_array = {}
+	with open(abilities_file) as abilities:
+		abilities_file_reader = csv.reader(abilities, delimiter=',')
 		skip_line = True
-		for line in ids_file_reader:
+		for line in abilities_file_reader:
 
 			if skip_line:
 				skip_line = False
 				continue
 
-			ids_array[int(line[0])] = line[1]
+			abilities_array[int(line[0])] = {'name': line[1], 'gil_value': int(line[2])}
 
-	return ids_array
+	return abilities_array
+
+
+def get_items_array(items_file):
+	items_array = {}
+	with open(items_file) as items:
+		items_file_reader = csv.reader(items, delimiter=',')
+		skip_line = True
+		for line in items_file_reader:
+
+			if skip_line:
+				skip_line = False
+				continue
+
+			items_array[int(line[0])] = line[1]
+
+	return items_array
 
 
 def get_characters_array(characters_file):
@@ -267,18 +283,21 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 	# killer_index = (uint)*(byte *)(NumberOfDroppedEquipment + 0x102 + SomeAddress)
 	possible_auto_abilities_array_address = 178 + ((equipment_type + (killer_index * 2)) * 16)
 	# the first ability in the array is always 0x0000 for armors, its either 0x0000 or piercing/sensor (0x800b/0x8000) for weapons
-	piercing_auto_ability_value = prize_struct[possible_auto_abilities_array_address] + (prize_struct[possible_auto_abilities_array_address + 1] * 256)
+	forced_auto_ability_value = prize_struct[possible_auto_abilities_array_address] + (prize_struct[possible_auto_abilities_array_address + 1] * 256)
 
 	equipment['abilities'] = {}
+	equipment['abilities_index'] = {}
+	equipment['base_gil_value'] = 0
 
 	# if the first ability is piercing it always gets added, only the case for auron and kimahri weapons
 	# weapons dropped from the kimahri boss enemy (???) always have sensor in the first slot so it gets added in the same way
-	if number_of_slots == 0 or piercing_auto_ability_value == 0:
+	if number_of_slots == 0 or forced_auto_ability_value == 0:
 		number_of_abilities_added = 0
 	else:
-		piercing_auto_ability_value -= 128 * 256
-		equipment['ability_0_index'] = piercing_auto_ability_value
-		equipment['abilities'][0] = abilities_array[piercing_auto_ability_value]
+		forced_auto_ability_value -= 128 * 256
+		equipment['abilities_index'][0] = forced_auto_ability_value
+		equipment['abilities'][0] = abilities_array[forced_auto_ability_value]['name']
+		equipment['base_gil_value'] += abilities_array[forced_auto_ability_value]['gil_value']
 		number_of_abilities_added = 1
 
 	if number_of_abilities_max > 0:
@@ -301,7 +320,7 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 				if number_of_abilities_added > 0:
 					current_equipment_slot = 0
 					while number_of_abilities_added > number_of_checked_abilities:
-						ability_to_check = equipment[f'ability_{current_equipment_slot}_index']
+						ability_to_check = equipment['abilities_index'][current_equipment_slot]
 						if ability_to_check == ability_to_add:
 							add_ability = False
 							break
@@ -310,8 +329,9 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 
 				# if the ability is not a duplicate add it to the current slot and advance both slot count and ability count
 				if add_ability:
-					equipment[f'ability_{current_dropped_equipment_ability}_index'] = ability_to_add
-					equipment['abilities'][current_dropped_equipment_ability] = abilities_array[ability_to_add]
+					equipment['abilities_index'][current_dropped_equipment_ability] = ability_to_add
+					equipment['abilities'][current_dropped_equipment_ability] = abilities_array[ability_to_add]['name']
+					equipment['base_gil_value'] += abilities_array[ability_to_add]['gil_value']
 					number_of_abilities_added += 1
 					current_dropped_equipment_ability += 1
 
@@ -329,6 +349,12 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 	# add other info
 	# if enemy equipment droprate is 100%
 	equipment['guaranteed'] = True if (prize_struct[139] == 255) else False
+
+	# calculate buy and sell gil values
+	slots_factor = (1, 1.5, 3, 5)
+	empty_slots_factor = (1, 1.5, 3, 400)
+	equipment['gil_value'] = int((50 + equipment['base_gil_value']) * slots_factor[number_of_slots - 1] * empty_slots_factor[number_of_slots - number_of_abilities_added])
+	equipment['sell_gil_value'] = equipment['gil_value'] // 4
 
 	return equipment
 
