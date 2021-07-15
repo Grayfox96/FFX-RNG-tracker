@@ -352,7 +352,7 @@ def create_dropped_equipment(prize_struct, abilities_array, characters_enabled_s
 
 	# calculate buy and sell gil values
 	slots_factor = (1, 1.5, 3, 5)
-	empty_slots_factor = (1, 1.5, 3, 400)
+	empty_slots_factor = (1, 1, 1.5, 3, 400)
 	equipment['gil_value'] = int((50 + equipment['base_gil_value']) * slots_factor[number_of_slots - 1] * empty_slots_factor[number_of_slots - number_of_abilities_added])
 	equipment['sell_gil_value'] = equipment['gil_value'] // 4
 
