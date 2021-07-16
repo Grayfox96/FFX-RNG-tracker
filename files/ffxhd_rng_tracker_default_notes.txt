@@ -377,6 +377,7 @@ kill Defender_X bahamut
 
 # Mt. Gagazet
 # if you need 2 more equipment drops
+# steal Biran_Ronso 0
 # kill Biran_Ronso kimahri
 # kill Yenke_Ronso kimahri
 
@@ -409,6 +410,7 @@ kill Ghost ixion
 kill Ghost ixion
 
 # Mt. Gagazet
+steal Biran_Ronso 0
 kill Biran_Ronso kimahri
 kill Yenke_Ronso kimahri
 
