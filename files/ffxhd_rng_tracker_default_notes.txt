@@ -2,7 +2,7 @@
 # party [party members initials]
 # kill [enemy_name] [killer]
 # steal [enemy_name] [successful steals]
-# death [character]
+# death (character)
 # waste/advance/roll [rng#] [amount]
 #
 # add comments with a # at the start
@@ -15,6 +15,7 @@
 #
 ///
 # Zanarkand
+party ta
 kill sinscale_2 auron
 kill sinscale_2 tidus
 kill sinscale_2 auron
@@ -172,7 +173,7 @@ kill Funguar valefor
 # recharge fight
 # kill Gandarewa wakka
 kill Raptor wakka
-# kill gandarewa valefor
+# kill Gandarewa valefor
 # kill Lamashtu valefor
 kill Funguar valefor
 kill Red_Element valefor
@@ -183,19 +184,21 @@ kill Red_Element valefor
 
 # gui 1
 # gui 1 has drops disabled
-# if the arms dont respawn
 roll rng10 12
-# if the arms do respawn
-# roll rng10 18
 
+# if the arms respawn
+# roll rng10 6
 
 # gui 2
-# normal fight
-# gui 2 head
+# gui 2 head always dies
 roll rng10 3
+
+# if seymour kills
 kill sinspawn_gui seymour
-# if you use valefor overdrive
+
+# if valefor kills with overdrive
 # roll rng10 6
+# kill sinspawn_gui valefor
 
 # Moonflow
 # death ???
@@ -246,7 +249,7 @@ kill Seymour tidus
 
 # Guado Guardian 2 is in macalania fights
 # and wendigo fight
-# kill guado_guardian_2 rikku
+# kill Guado_Guardian_2 rikku
 # kill Snow_Wolf rikku
 # kill Mafdet rikku
 # kill Evil_Eye rikku
@@ -328,19 +331,19 @@ kill fire_rifle kimahri
 kill fire_rifle kimahri
 
 # fight 5
-# using bomb cores
-kill YAT-99 rikku
-kill Warrior_Monk tidus
-kill rifle tidus
-kill Warrior_Monk tidus
-kill rifle tidus
-
 # using aoe throwables
-# kill Warrior_Monk rikku
-# kill Warrior_Monk rikku
-# kill rifle rikku
-# kill rifle rikku
+kill Warrior_Monk rikku
+kill Warrior_Monk rikku
+kill rifle rikku
+kill rifle rikku
+kill YAT-99 rikku
+
+# using bomb cores
 # kill YAT-99 rikku
+# kill Warrior_Monk tidus
+# kill rifle tidus
+# kill Warrior_Monk tidus
+# kill rifle tidus
 
 # Via Purifico
 party ya
@@ -373,8 +376,7 @@ kill Seymour_Natus bahamut
 kill Defender_X bahamut
 
 # Mt. Gagazet
-# if you need 2 more equipment
-# drops go to gagazet first
+# if you need 2 more equipment drops
 # kill Biran_Ronso kimahri
 # kill Yenke_Ronso kimahri
 
