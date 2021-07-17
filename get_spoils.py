@@ -58,7 +58,8 @@ def get_current_seed(rng_file, damage_rolls_dict):
 		else:
 			if all([damage_rolls_dict['auron'][1] == int(line[0]), damage_rolls_dict['auron'][2] == int(line[2]), damage_rolls_dict['auron'][3] == int(line[4]),
 					damage_rolls_dict['tidus'][1] == int(line[1]), damage_rolls_dict['tidus'][2] == int(line[3]), damage_rolls_dict['tidus'][3] == int(line[5])]):
-				return line, True, line_count
+				# first 6 values of the array are the seed damage rolls
+				return line[6:], True, line_count
 		line_count += 1
 	return False, False, False
 
@@ -98,9 +99,15 @@ def get_items_array(items_file):
 def get_characters_array(characters_file):
 	with open(characters_file) as text_characters_file:
 		text_characters_file_reader = csv.reader(text_characters_file, delimiter=',')
+		skip_line = True
 		text_characters_array = {}
 		for line in text_characters_file_reader:
-			text_characters_array[line[1]] = line[2]
+
+			if skip_line:
+				skip_line = False
+				continue
+
+			text_characters_array[int(line[0])] = line[2]
 	return text_characters_array
 
 
@@ -115,40 +122,73 @@ def get_monsters_array(monster_data, text_characters_array):
 				skip_line = False
 				continue
 
+			prize_struct = [int(value, 16) for value in line]
+
 			monster_name = ''
 			for i in range(20):
-				if line[408 + i] == '00': break
-				monster_name += text_characters_array[line[408 + i]]
+				if prize_struct[408 + i] == 0: break
+				monster_name += text_characters_array[prize_struct[408 + i]]
 
 			monster_name = monster_name.lower().replace(' ', '_')
 
 			monsters_list = monsters_array.keys()
 			if f'{monster_name}_7' in monsters_list:
-				monsters_array[f'{monster_name}_8'] = line
+				monsters_array[f'{monster_name}_8'] = prize_struct
 			elif f'{monster_name}_6' in monsters_list:
-				monsters_array[f'{monster_name}_7'] = line
+				monsters_array[f'{monster_name}_7'] = prize_struct
 			elif f'{monster_name}_5' in monsters_list:
-				monsters_array[f'{monster_name}_6'] = line
+				monsters_array[f'{monster_name}_6'] = prize_struct
 			elif f'{monster_name}_4' in monsters_list:
-				monsters_array[f'{monster_name}_5'] = line
+				monsters_array[f'{monster_name}_5'] = prize_struct
 			elif f'{monster_name}_3' in monsters_list:
-				monsters_array[f'{monster_name}_4'] = line
+				monsters_array[f'{monster_name}_4'] = prize_struct
 			elif f'{monster_name}_2' in monsters_list:
-				monsters_array[f'{monster_name}_3'] = line
+				monsters_array[f'{monster_name}_3'] = prize_struct
 			elif monster_name in monsters_list:
-				monsters_array[f'{monster_name}_2'] = line
-			else: monsters_array[monster_name] = line
+				monsters_array[f'{monster_name}_2'] = prize_struct
+			else: monsters_array[monster_name] = prize_struct
 
 	return monsters_array
 
 
-# gives a generator object
+# returns a generator object
 def get_rng_generator(seed_array):
-	# first 6 values of the array are the seed damage rolls
-	i = 6
+
+	i = 0
+
 	while True:
 		yield int(seed_array[i])
 		i += 1
+
+# returns a generator object
+def get_rng_calculator_generator(rng_index, rng_initial_values):
+
+	def s32(integer):
+		integer = integer & 0xffffffff
+		return (integer ^ 0x80000000) - 0x80000000
+
+	rng_constants_1 = (2100005341, 1700015771, 247163863, 891644838, 1352476256, 1563244181, 1528068162, 511705468, 1739927914, 398147329, 1278224951, 
+		20980264, 1178761637, 802909981, 1130639188, 1599606659, 952700148, -898770777, -1097979074, -2013480859, -338768120, -625456464, -2049746478, 
+		-550389733, -5384772, -128808769, -1756029551, 1379661854, 904938180, -1209494558, -1676357703, -1287910319, 1653802906, 393811311, 
+		-824919740, 1837641861, 946029195, 1248183957, -1684075875, -2108396259, -681826312, 1003979812, 1607786269, -585334321, 1285195346, 
+		1997056081, -106688232, 1881479866, 476193932, 307456100, 1290745818, 162507240, -213809065, -1135977230, -1272305475, 1484222417, -1559875058, 
+		1407627502, 1206176750, -1537348094, 638891383, 581678511, 1164589165, -1436620514, 1412081670, -1538191350, -284976976, 706005400)
+
+	rng_constants_2 = (10259, 24563, 11177, 56952, 46197, 49826, 27077, 1257, 44164, 56565, 31009, 46618, 64397, 46089, 58119, 13090, 19496, 47700, 
+		21163, 16247, 574, 18658, 60495, 42058, 40532, 13649, 8049, 25369, 9373, 48949, 23157, 32735, 29605, 44013, 16623, 15090, 43767, 51346, 
+		28485, 39192, 40085, 32893, 41400, 1267, 15436, 33645, 37189, 58137, 16264, 59665, 53663, 11528, 37584, 18427, 59827, 49457, 22922, 
+		24212, 62787, 56241, 55318, 9625, 57622, 7580, 56469, 49208, 41671, 36458)
+
+	rng_value = int(rng_initial_values[rng_index])
+
+	rng_constant_1 = s32(rng_constants_1[rng_index])
+
+	rng_constant_2 = rng_constants_2[rng_index]
+
+	while True:
+		rng_value = s32(s32(rng_value) * rng_constant_1 ^ rng_constant_2)
+		rng_value = s32((rng_value >> 0x10) + (rng_value << 0x10))
+		yield rng_value & 0x7fffffff
 
 
 # returns the prize struct byte array
@@ -156,8 +196,7 @@ def get_prize_struct(monster, monsters_array):
 	monster = monster.lower().replace(' ', '_')
 	# monster = ''.join([word[0].upper() + word[1:] for word in monster.split()])
 	try:
-		prize_struct = [int(value, 16) for value in monsters_array[monster]]
-		return prize_struct
+		return monsters_array[monster]
 	except KeyError:
 		return False
 
@@ -367,14 +406,14 @@ def get_spoils(prize_struct, abilities_array, items_array, characters_enabled_st
 	item1_drop_chance = prize_struct[136]
 	if item1_drop_chance > (rng_item1 % 255):
 		rng_item1_rarity = next(rng_common_rare)
-		item1_common = True if ((rng_item1_rarity & 255) > 32) else False
+		item1_common = False if ((rng_item1_rarity & 255) < 32) else True
 		item1 = get_item1(prize_struct, items_array, item1_common)
 
 	rng_item2 = next(rng_steal_drop)
 	item2_drop_chance = prize_struct[137]
 	if item2_drop_chance > (rng_item2 % 255):
 		rng_item2_rarity = next(rng_common_rare)
-		item2_common = True if ((rng_item2_rarity & 255) > 32) else False
+		item2_common = False if ((rng_item2_rarity & 255) < 32) else True
 		item2 = get_item2(prize_struct, items_array, item2_common)
 
 	rng_equipment_drop = next(rng_steal_drop)
@@ -387,13 +426,220 @@ def get_spoils(prize_struct, abilities_array, items_array, characters_enabled_st
 
 def get_stolen_item(prize_struct, items_array, successful_steals, rng_steal_drop, rng_common_rare):
 	rng_steal = next(rng_steal_drop)
-	steal_chance = prize_struct[138] / (2 ** successful_steals)
+	steal_chance = prize_struct[138] // (2 ** successful_steals)
 	if steal_chance > (rng_steal % 255):
 		rng_steal_rarity = next(rng_common_rare)
-		item_common = True if ((rng_steal_rarity & 255) > 32) else False
+		item_common = False if ((rng_steal_rarity & 255) < 32) else True
 		if item_common:
 			item, item_quantity = items_array[prize_struct[164]], prize_struct[168]
 		else:
 			item, item_quantity = items_array[prize_struct[166]], prize_struct[169]
 		return f'{item} x{item_quantity}'
 	else: return 'failed'
+
+
+def make_predictions(steal_drop_seed, common_rare_seed, equipment_seed, abilities_seed, abilities_array, items_array, monsters_array):
+
+	def get_good_equipments(abilities_to_test, characters_to_test, number_of_kills_ranges, number_of_steals_range):
+
+		def check_drops(enemy, characters_enabled_string, killer_index, kilika_in_kills=0, number_of_sinscales=0, kilika_out_kills=0):
+			# roll for item1 and item2
+			for k in range(2):
+				next(rng_steal_drop)
+
+			prize_struct = get_prize_struct(enemy, monsters_array)
+
+			if prize_struct[139] > (next(rng_steal_drop) % 255):
+				equipment = create_dropped_equipment(prize_struct, abilities_array, characters_enabled_string, killer_index, rng_equipment, rng_abilities)
+
+				if equipment['type'] == 'weapon' and equipment['character'] in characters_to_test:
+					for i in range(4):
+						try:
+							if equipment['abilities'][i] in abilities_to_test:
+
+								good_equipment = {'enemy': enemy, 'number_of_piranhas': number_of_piranha_kills - 4, 
+									'number_of_steals': number_of_steals, 'equipment': equipment, 'killer_index': killer_index, 
+									'kilika_in_kills': kilika_in_kills, 'number_of_sinscales': number_of_sinscales, 
+									'kilika_out_kills': kilika_out_kills}
+
+								if good_equipment not in good_equipments:
+									good_equipments.append(good_equipment)
+
+						except KeyError as error:
+							pass
+
+		good_equipments = []
+
+		# check for every possible number of steals
+		for number_of_steals in range(number_of_steals_range[0], number_of_steals_range[1] + 1):
+			# check every possible number of piranha kills + klikk and tros
+			for number_of_piranha_kills in range(number_of_kills_ranges['piranhas'][0] + 4, number_of_kills_ranges['piranhas'][1] + 4 + 1):
+				# check for kilika possible equipments to be from these enemies
+				kilika_enemies = ('killer_bee', 'dinonix', 'yellow_element')
+				for kilika_enemy in kilika_enemies:
+
+					# get the possible killers based on the enemy
+					if kilika_enemy == 'killer_bee':		kilika_killers = (4, 7)
+					elif kilika_enemy == 'dinonix':			kilika_killers = (0, 4, 7)
+					elif kilika_enemy == 'yellow_element':	kilika_killers = (7,)
+					else:									kilika_killers = (0, 4, 7)
+
+					# check for kilika kills
+					for kilika_killer in kilika_killers:
+						for number_of_sinscales in (2, 4):
+							# check for every possible number of kills before geneaux
+							for kilika_in_kills in range(number_of_kills_ranges['kilika_in'][0], number_of_kills_ranges['kilika_in'][1] + 1):
+
+								# check for every possible number of kills after geneaux
+								for kilika_out_kills in range(number_of_kills_ranges['kilika_out'][0], number_of_kills_ranges['kilika_out'][1] + 1):
+
+									# get all rng arrays
+									rng_steal_drop = get_rng_generator(steal_drop_seed)
+									rng_common_rare = get_rng_generator(common_rare_seed)
+									rng_equipment = get_rng_generator(equipment_seed)
+									rng_abilities = get_rng_generator(abilities_seed)
+
+									# 15 kills before klikk
+									for i in range((15 + number_of_piranha_kills) * 3):
+										next(rng_steal_drop)
+
+									for i in range(number_of_steals):
+										next(rng_steal_drop)
+
+									besaid_forced_kills = (	('dingo', 'tywl', 0),
+															('condor', 'tywl', 4),
+															('water_flan', 'tywl', 5),
+															('???', 'tywl', 0),
+															('garuda_3', 'tywl', 7),
+															('dingo_2', 'tywl', 0),
+															('condor_2', 'tywl', 4),
+															('water_flan_2', 'tywl', 5)
+															)
+
+									for enemy, characters_enabled_string, killer_index in besaid_forced_kills:
+										check_drops(enemy, characters_enabled_string, killer_index)
+
+									boat_kilika_forced_kills = (	('sin', 'tykwl', 7),
+																	('sinspawn_echuilles', 'tykwl', 0),
+																	('ragora_2', 'tykwl', 0)
+																	)
+
+									for enemy, characters_enabled_string, killer_index in boat_kilika_forced_kills:
+										check_drops(enemy, characters_enabled_string, killer_index)
+
+									for i in range(kilika_in_kills):
+										check_drops(kilika_enemy, 'tykwl', kilika_killer, kilika_in_kills)
+
+									kilika_forced_kills = (	("geneaux's_tentacle", 'tykwl', 7),
+															("geneaux's_tentacle", 'tykwl', 7),
+															('sinspawn_geneaux', 'tykwl', 7)
+															)
+
+									for enemy, characters_enabled_string, killer_index in kilika_forced_kills:
+										check_drops(enemy, characters_enabled_string, killer_index, kilika_in_kills)
+
+									for i in range(kilika_out_kills):
+
+										# at least 4 kills in kilika
+										if kilika_out_kills + kilika_in_kills < 4:
+											kilika_out_kills = 4 - kilika_in_kills
+
+										check_drops(kilika_enemy, 'tykwl', kilika_killer, kilika_in_kills, number_of_sinscales, kilika_out_kills)
+
+									luca_forced_kills = (	('Worker', 'tykwl', 5),
+															('Worker', 'tykwl', 5),
+															('Worker', 'tykwl', 5),
+															('Worker', 'tykwl', 5),
+															('Worker', 'tykwl', 5),
+															('Worker', 'tykwl', 3),
+															('Worker', 'tykwl', 5),
+															('Worker', 'tykwl', 5),
+															('Worker', 'tykwl', 5),
+															('Worker', 'tykwl', 0),
+															('Oblitzerator', 'tykwl', 0)
+															)
+
+									for enemy, characters_enabled_string, killer_index in luca_forced_kills:
+										check_drops(enemy, characters_enabled_string, killer_index, kilika_in_kills, number_of_sinscales, kilika_out_kills)
+
+									# sahagin chiefs
+									for i in range(17 * 3):
+										next(rng_steal_drop)
+
+									luca_miihen_forced_kills = (	('Vouivre_2', 'tyakwl', 2),
+																	('Garuda_2', 'tyakwl', 2),
+																	('Raldo_2', 'tyakwl', 2),
+																	)
+
+									for enemy, characters_enabled_string, killer_index in luca_miihen_forced_kills:
+										check_drops(enemy, characters_enabled_string, killer_index, kilika_in_kills, number_of_sinscales, kilika_out_kills)
+
+		return good_equipments
+
+	def get_equipment_types():
+		rng_equipment = get_rng_generator(equipment_seed)
+		equipment_types = {}
+		for i in range(40):
+			next(rng_equipment)
+
+			rng_weapon_or_armor = next(rng_equipment)
+			equipment_type = rng_weapon_or_armor & 1
+			equipment_type = 'weapon' if (equipment_type) == 0 else 'armor'
+
+			next(rng_equipment)
+			next(rng_equipment)
+
+			equipment_types[i + 1] = equipment_type
+
+		return equipment_types
+
+	abilities_to_test = ('Lightningstrike', 'Icestrike')
+	characters_to_test = ('Tidus', 'Wakka')
+	number_of_kills_ranges = {'piranhas': (0, 6), 'kilika_in': (2, 7),'kilika_out': (0, 6)}
+	number_of_steals_range = (4, 9)
+
+	print(
+		f'Testing all scenarios with '
+		f'{number_of_steals_range[0]}-{number_of_steals_range[1]} steals, '
+		f'{number_of_kills_ranges["piranhas"][0]}-{number_of_kills_ranges["piranhas"][1]} optional piranha kills, '
+		f'2-4 Sinscales kills, '
+		f'{number_of_kills_ranges["kilika_in"][0]}-{number_of_kills_ranges["kilika_in"][1]} Kilika(In) kills, '
+		f'{number_of_kills_ranges["kilika_out"][0]}-{number_of_kills_ranges["kilika_out"][1]} Kilika(Out) kills, '
+		f'for weapon drops for {"/".join(characters_to_test)} in Besaid, Kilika and Luca '
+		f'with at least 1 of these abilities: {", ".join(abilities_to_test)}'
+		)
+
+	good_equipments = get_good_equipments(abilities_to_test, characters_to_test, number_of_kills_ranges, number_of_steals_range)
+
+	# if the list is not empty
+	if good_equipments:
+		output = '------------------------------------------------------------------------------------------------------------------------\n'
+		output += 'Steals | Piranhas | Sinscales | Kilika In | Kilika Out |          Enemy |  Killer | Owner | Abilities\n'
+		output += '------------------------------------------------------------------------------------------------------------------------\n'
+		for scenario in good_equipments:
+
+			scenario['killer'] = (	'Tidus' if scenario['killer_index'] == 0 else 
+									'Yuna' if scenario['killer_index'] == 1 else 
+									'Auron' if scenario['killer_index'] == 2 else 
+									'Kimahri' if scenario['killer_index'] == 3 else 
+									'Wakka' if scenario['killer_index'] == 4 else 
+									'Lulu' if scenario['killer_index'] == 5 else 
+									'Rikku' if scenario['killer_index'] == 6 else 
+									'Valefor'  if scenario['killer_index'] == 7 else 
+									'???'
+									)
+
+			output += f'{scenario["number_of_steals"]:>6} | {scenario["number_of_piranhas"]:>8} | '
+			output += f'{scenario["number_of_sinscales"]:>9} | '
+			output += f'{scenario["kilika_in_kills"]:>9} | '
+			output += f'{scenario["kilika_out_kills"]:>10} | '
+			output += f'{scenario["enemy"]:>14} | {scenario["killer"]:>7} | {scenario["equipment"]["character"]:>5} | '
+			output += f'{", ".join([ability for slot, ability in scenario["equipment"]["abilities"].items()])}\n'
+
+		output += '------------------------------------------------------------------------------------------------------------------------'
+		print(output)
+
+	else: print(f'No weapons found')
+
+	for equipment_n, equipment_type in get_equipment_types().items():
+		print(f'Equipment {"#" + str(equipment_n):>3}: {equipment_type}')

@@ -48,8 +48,8 @@ kill klikk tidus
 # chain encounter
 # 2 piranhas encounter
 steal piranha 0
-steal piranha_2 0
 kill piranha tidus
+steal piranha_2 0
 kill piranha_2 tidus
 
 # single piranha encounter
