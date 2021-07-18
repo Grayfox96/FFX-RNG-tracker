@@ -1,4 +1,4 @@
-from get_spoils import *
+from ffx_rng_tracker import *
 import threading
 import tkinter as tk
 from tkinter import font
