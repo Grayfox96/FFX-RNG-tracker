@@ -73,7 +73,12 @@ def parse_notes(data_text):
 
 	def event_death(*params):
 
-		rng_tracker.add_death_event(params[0])
+		if len(params) == 0:
+			character = '???'
+		else:
+			character = params[0]
+
+		rng_tracker.add_death_event(character)
 
 	def event_roll(*params):
 
@@ -111,6 +116,10 @@ def parse_notes(data_text):
 
 		new_party_formation = ''.join(params)
 
+		if any(character in new_party_formation for character in ('t', 'y', 'a', 'k', 'w', 'l', 'r')) is False:
+			rng_tracker.add_comment_event('Usage: party [party members initials]')
+			return
+
 		rng_tracker.add_change_party_event(new_party_formation)
 
 	rng_tracker.reset_variables()
@@ -138,13 +147,13 @@ def parse_notes(data_text):
 
 			event, *params = [split for split in line.split(' ')]
 
-			# # call the appropriate event function
-			# try:
-			locals()[f'event_{event}'](*params)
+			# call the appropriate event function
+			try:
+				locals()[f'event_{event}'](*params)
 
-			# # if event doesnt exists add a comment with an error message
-			# except KeyError as error:
-			# 	rng_tracker.add_comment_event(f'No event called {event}')
+			# if event doesnt exists add a comment with an error message
+			except KeyError as error:
+				rng_tracker.add_comment_event(f'No event called {event}')
 
 
 	equipment_counter = get_equipment_counter()
@@ -206,10 +215,11 @@ def parse_notes(data_text):
 
 		elif event['name'] == 'comment':
 
+			data += event['text']
+
 			# if the text contains /// it hides the lines before it
 			if '///' in event['text']:
 				data = ''
-			data += event['text']
 
 		data += '\n'
 

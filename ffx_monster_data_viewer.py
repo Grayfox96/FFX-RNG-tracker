@@ -18,9 +18,9 @@ def print_monster_data(monster_index, monster_data_text):
 	except IndexError:
 		return
 
-	prize_struct = ffx_info.monsters_data[monster_names_list[monster_index]]
+	prize_struct = ffx_info.monsters_data[monster_names[monster_index]]
 
-	monster_data = monster_names_list[monster_index] + '\n'
+	monster_data = monster_names[monster_index] + '\n'
 
 	monster_data += f'HP = {(prize_struct[23] * 256 * 256 * 256) + (prize_struct[22] * 256 * 256) + (prize_struct[21] * 256) + prize_struct[20]}\n'
 	monster_data += f'MP = {(prize_struct[27] * 256 * 256 * 256) + (prize_struct[26] * 256 * 256) + (prize_struct[25] * 256) + prize_struct[24]}\n'
@@ -131,7 +131,7 @@ def print_monster_data(monster_index, monster_data_text):
 
 ffx_info = FFXInfo()
 
-monster_names_list = sorted(list(ffx_info.monsters_data.keys()))
+monster_names = sorted(list(ffx_info.monsters_data.keys()))
 
 
 # GUI
@@ -155,7 +155,7 @@ texts_font = font.Font(family='Courier New', size=9)
 monster_data_text = tk.Text(root, font=texts_font, width=55)
 monster_data_text.pack(expand=True, fill='both', side='right')
 
-monsters_listbox_var = tk.StringVar(value=monster_names_list)
+monsters_listbox_var = tk.StringVar(value=monster_names)
 monsters_listbox = tk.Listbox(root, width=30, height=800, listvariable=monsters_listbox_var)
 monsters_listbox.bind("<<ListboxSelect>>", lambda _: print_monster_data(monsters_listbox.curselection(), monster_data_text))
 monsters_listbox.pack(fill='y', side='left')
