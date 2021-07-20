@@ -1,7 +1,7 @@
 # Usage:
 # party [party members initials]
 # kill [enemy_name] [killer]
-# steal [enemy_name] [successful steals]
+# steal [enemy_name] (successful steals)
 # death (character)
 # waste/advance/roll [rng#] [amount]
 #
@@ -39,7 +39,7 @@ kill sahagin tidus
 
 # Geosgaeno doesn't roll rng
 ///
-steal klikk 0
+steal klikk
 steal klikk 1
 # steal klikk 1
 # steal klikk 1
@@ -47,22 +47,23 @@ kill klikk tidus
 
 # chain encounter
 # 2 piranhas encounter
-steal piranha 0
+steal piranha
 kill piranha tidus
-steal piranha_2 0
+steal piranha_2
 kill piranha_2 tidus
 
 # single piranha encounter
-# steal piranha_3 0
+# steal piranha_3
+# steal piranha_3 1
 # kill piranha_3 tidus
 
 # forced fight
-steal piranha_3 0
-steal piranha_3 0
+steal piranha_3
+steal piranha_3
 kill piranha_3 tidus
 kill piranha_3 tidus
 
-# steal tros 0
+# steal tros
 kill tros rikku
 
 # Besaid
@@ -158,6 +159,7 @@ kill Garuda_2 auron
 # Mi'ihen Highroad
 # piercing tutorial
 kill Raldo_2 auron
+
 # death ???
 # death ???
 # death ???
@@ -207,22 +209,22 @@ kill Extractor wakka
 party tyakwlr
 # ??? 3 is the tutorial chest
 # it dies when you steal from it
-steal ???_3 0
+steal ???_3
 kill ???_3 rikku
 # kill Bunyip rikku
 
 # Thunder Plains
 # kill buer rikku
 # kill buer rikku
-steal iron_giant 0
+steal iron_giant
 death rikku
-# steal larva 0
-# steal melusine 0
+# steal larva
+# steal melusine
 
 # Macalania Woods
-steal chimera 0
-steal blue_Element 0
-# steal iguion 0
+steal chimera
+steal blue_Element
+# steal iguion
 kill Spherimorph rikku
 
 # Lake Macalania
@@ -238,8 +240,8 @@ kill Crawler rikku
 # seymour 1
 kill Guado_Guardian tidus
 kill Guado_Guardian tidus
+steal anima
 death ???
-steal anima 0
 steal anima 1
 # steal anima 1
 # steal anima 2
@@ -263,9 +265,9 @@ kill Guado_Guardian_2 tidus
 # Bikanel Desert
 party takwlr
 # bikanel desert monsters
-# steal zu_2 0
-# steal sand_wolf 0
-# steal alcyone 0
+# steal zu_2
+# steal sand_wolf
+# steal alcyone
 # kill sand_wolf rikku
 # kill alcyone rikku
 # kill mushussu rikku
@@ -295,7 +297,7 @@ kill Chimera_2 kimahri
 
 # Airship
 # death ???
-# steal evrae 0
+# steal evrae
 # steal evrae 1
 kill Evrae tidus
 
@@ -354,7 +356,7 @@ kill Maze_Larva ixion
 # isaaru summons
 kill ifrit_2 bahamut
 kill valefor bahamut
-kill bahamut bahamut
+kill bahamut ixion
 
 # via purifico underwater fiends
 party twr
@@ -372,14 +374,14 @@ party tyakwlr
 kill Seymour_Natus bahamut
 
 # Calm Lands
-# steal flame_flan 0
+# steal flame_flan
 kill Defender_X bahamut
 
 # Mt. Gagazet
 # if you need 2 more equipment drops
-# steal Biran_Ronso 0
-# kill Biran_Ronso kimahri
+# steal Biran_Ronso
 # kill Yenke_Ronso kimahri
+# kill Biran_Ronso kimahri
 
 # Cavern of the Stolen Fayth
 kill Ghost ixion
@@ -410,9 +412,9 @@ kill Ghost ixion
 kill Ghost ixion
 
 # Mt. Gagazet
-steal Biran_Ronso 0
-kill Biran_Ronso kimahri
+steal Biran_Ronso
 kill Yenke_Ronso kimahri
+kill Biran_Ronso kimahri
 
 # if flux dies from poison
 # the killer is seymour_flux
@@ -424,3 +426,11 @@ kill Sanctuary_Keeper bahamut
 kill Spectral_Keeper bahamut
 
 kill Yunalesca bahamut
+
+kill right_fin bahamut
+
+kill left_fin bahamut
+
+kill sin_2 bahamut
+
+kill sin_3 bahamut

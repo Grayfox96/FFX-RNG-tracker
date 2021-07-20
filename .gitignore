@@ -1,8 +1,5 @@
 ffxhd-raw-rng-arrays.csv
-ffxhd-raw-rng10-values.csv
-ffxhd-raw-rng11-values.csv
-ffxhd-raw-rng12-values.csv
-ffxhd-raw-rng13-values.csv
+
 __pycache__/*
 binary/*
 ffx_rng_tracker.sublime-project

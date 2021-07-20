@@ -1,16 +1,24 @@
-from get_spoils import *
+import ffx_rng_tracker
 import tkinter as tk
 from tkinter import font
 
+class FFXInfo(ffx_rng_tracker.FFXRNGTracker):
 
-def print_monster_data(monster_index, items_array, monsters_array, monster_names_list, monster_data_text):
+	def __init__(self) -> None:
+		self.abilities = self.get_ability_names('files/ffxhd-abilities.csv')
+		self.items = self.get_item_names('files/ffxhd-items.csv')
+		self.text_characters = self.get_text_characters('files/ffxhd-characters.csv')
+		self.monsters_data = self.get_monsters_data('files/ffxhd-mon_data.csv')
+
+
+def print_monster_data(monster_index, monster_data_text):
 
 	try:
 		monster_index = monster_index[0]
 	except IndexError:
 		return
 
-	prize_struct = get_prize_struct(monster_names_list[monster_index], monsters_array)
+	prize_struct = ffx_info.monsters_data[monster_names_list[monster_index]]
 
 	monster_data = monster_names_list[monster_index] + '\n'
 
@@ -47,7 +55,7 @@ def print_monster_data(monster_index, items_array, monsters_array, monster_names
 		elif i == 3: monster_data += f'Rare Item 2 drop = '
 
 		if prize_struct[141 + (i * 2)] == 32:
-			monster_data += f'{items_array[prize_struct[140 + (i * 2)]]} x{prize_struct[148 + i]}\n'
+			monster_data += f'{ffx_info.items[prize_struct[140 + (i * 2)]]} x{prize_struct[148 + i]}\n'
 		else: monster_data += f'Nothing\n'
 
 	monster_data += f'\n'
@@ -60,23 +68,23 @@ def print_monster_data(monster_index, items_array, monsters_array, monster_names
 		elif i == 3: monster_data += f'Overkill Rare Item 2 drop = '
 
 		if prize_struct[153 + (i * 2)] == 32:
-			monster_data += f'{items_array[prize_struct[152 + (i * 2)]]} x{prize_struct[160 + i]}\n'
+			monster_data += f'{ffx_info.items[prize_struct[152 + (i * 2)]]} x{prize_struct[160 + i]}\n'
 		else: monster_data += f'Nothing\n'
 
 	# steal
 	if prize_struct[165] == 32:
-		monster_data += f'Common Steal: {items_array[prize_struct[164]]} x{prize_struct[168]}\n'
+		monster_data += f'Common Steal: {ffx_info.items[prize_struct[164]]} x{prize_struct[168]}\n'
 	else: monster_data += f'Common Steal: Nothing\n'
 
 	if prize_struct[167] == 32:
-		monster_data += f'Rare Steal: {items_array[prize_struct[166]]} x{prize_struct[169]}\n'
+		monster_data += f'Rare Steal: {ffx_info.items[prize_struct[166]]} x{prize_struct[169]}\n'
 	else: monster_data += f'Rare Steal: Nothing\n'
 
 	monster_data += f'\n'
 
 	# bribe
 	if prize_struct[171] == 32:
-		monster_data += f'Bribe drop: {items_array[prize_struct[170]]} x{prize_struct[172]}(max)\n'
+		monster_data += f'Bribe drop: {ffx_info.items[prize_struct[170]]} x{prize_struct[172]}(max)\n'
 	else: monster_data += f'Bribe drop: Nothing\n'
 
 	monster_data += f'\n'
@@ -85,8 +93,8 @@ def print_monster_data(monster_index, items_array, monsters_array, monster_names
 	if prize_struct[174] == 1:
 		number_of_slots_modifier_min = prize_struct[173] + 0 - 4
 		number_of_slots_modifier_max = prize_struct[173] + 7 - 4
-		number_of_slots_min = fix_out_of_bounds_value(((number_of_slots_modifier_min + ((number_of_slots_modifier_min >> 31) & 3)) >> 2), 1, 4)
-		number_of_slots_max = fix_out_of_bounds_value(((number_of_slots_modifier_max + ((number_of_slots_modifier_max >> 31) & 3)) >> 2), 1, 4)
+		number_of_slots_min = ffx_info._fix_out_of_bounds_value(((number_of_slots_modifier_min + ((number_of_slots_modifier_min >> 31) & 3)) >> 2), 1, 4)
+		number_of_slots_max = ffx_info._fix_out_of_bounds_value(((number_of_slots_modifier_max + ((number_of_slots_modifier_max >> 31) & 3)) >> 2), 1, 4)
 		monster_data += f'Number of equipment slots range: {number_of_slots_min}-{number_of_slots_max}\n'
 
 		monster_data += f'Equipment additional crit chance: {prize_struct[175]}\n'
@@ -121,10 +129,10 @@ def print_monster_data(monster_index, items_array, monsters_array, monster_names
 	monster_data_text.config(state='disabled')
 
 
-items_array = get_items_array(get_resource_path('files/ffxhd-items.csv'))
-text_characters_array = get_characters_array(get_resource_path('files/ffxhd-characters.csv'))
-monsters_array = get_monsters_array(get_resource_path('files/ffxhd-mon_data.csv'), text_characters_array)
-monster_names_list = sorted(list(monsters_array.keys()))
+ffx_info = FFXInfo()
+
+monster_names_list = sorted(list(ffx_info.monsters_data.keys()))
+
 
 # GUI
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -149,7 +157,7 @@ monster_data_text.pack(expand=True, fill='both', side='right')
 
 monsters_listbox_var = tk.StringVar(value=monster_names_list)
 monsters_listbox = tk.Listbox(root, width=30, height=800, listvariable=monsters_listbox_var)
-monsters_listbox.bind("<<ListboxSelect>>", lambda _: print_monster_data(monsters_listbox.curselection(), items_array, monsters_array, monster_names_list, monster_data_text))
+monsters_listbox.bind("<<ListboxSelect>>", lambda _: print_monster_data(monsters_listbox.curselection(), monster_data_text))
 monsters_listbox.pack(fill='y', side='left')
 
 root.mainloop()
