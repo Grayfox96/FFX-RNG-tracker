@@ -6,6 +6,13 @@ from typing import Iterator, Union, Optional
 Value = Union[str, int]
 
 
+def get_resource_path(relative_path: str) -> str:
+	'''Converts a relative path to an absolute path, necessary for https://github.com/brentvollebregt/auto-py-to-exe .'''
+	base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+
+	return os.path.join(base_path, relative_path)
+
+
 class FFXRNGTracker:
 
 	# static variables
@@ -88,18 +95,11 @@ class FFXRNGTracker:
 		return damage_rolls
 
 
-	def get_resource_path(self, relative_path: str) -> str:
-		'''Converts a relative path to an absolute path, necessary for https://github.com/brentvollebregt/auto-py-to-exe .'''
-		base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-
-		return os.path.join(base_path, relative_path)
-
-
 	def get_rng_seed(self, rng_file: str) -> tuple[list[Optional[int]], int]:
 		'''Retrieves the initial rng array values.'''
 		damage_rolls = self.damage_rolls
 
-		with open(self.get_resource_path(rng_file)) as abilities_file_object:
+		with open(get_resource_path(rng_file)) as abilities_file_object:
 			rng_file_reader = csv.reader(abilities_file_object, delimiter=',')
 
 			seed_number = 0
@@ -195,7 +195,7 @@ class FFXRNGTracker:
 
 	def get_ability_names(self, abilities_file: str) -> list[dict[str, Value]]:
 		'''Retrieves the abilities names and their base gil values used in the equipment price formula.'''
-		with open(self.get_resource_path(abilities_file)) as abilities_file_object:
+		with open(get_resource_path(abilities_file)) as abilities_file_object:
 			abilities_file_reader = csv.reader(abilities_file_object, delimiter=',')
 
 			# skips first line
@@ -208,7 +208,7 @@ class FFXRNGTracker:
 
 	def get_item_names(self, items_file: str) -> list[str]:
 		'''Retrieves the items names.'''
-		with open(self.get_resource_path(items_file)) as items_file_object:
+		with open(get_resource_path(items_file)) as items_file_object:
 			items_file_reader = csv.reader(items_file_object, delimiter=',')
 
 			# skips first line
@@ -221,7 +221,7 @@ class FFXRNGTracker:
 
 	def get_text_characters(self, characters_file: str) -> dict[int, str]:
 		'''Retrieves the character encoding chart used in prize structs and other text.'''
-		with open(self.get_resource_path(characters_file)) as characters_file_object:
+		with open(get_resource_path(characters_file)) as characters_file_object:
 			text_characters_file_reader = csv.reader(characters_file_object, delimiter=',')
 
 			# skips first line
@@ -234,7 +234,7 @@ class FFXRNGTracker:
 
 	def get_monsters_data(self, monster_data_file: str) -> dict[str, list[int]]:
 		'''Retrieves the prize structs for enemies.'''
-		with open(self.get_resource_path(monster_data_file)) as monster_data_file_object:
+		with open(get_resource_path(monster_data_file)) as monster_data_file_object:
 			monster_data_file_reader = csv.reader(monster_data_file_object, delimiter=',')
 
 			# skips first line

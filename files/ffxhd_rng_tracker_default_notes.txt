@@ -3,7 +3,6 @@
 # kill [enemy_name] [killer]
 # steal [enemy_name] (successful steals)
 # death (character)
-# waste/advance/roll [rng#] [amount]
 #
 # add comments with a # at the start
 # of the line

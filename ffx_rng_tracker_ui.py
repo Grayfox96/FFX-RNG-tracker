@@ -316,14 +316,14 @@ data_text.configure(yscrollcommand=data_scrollbar.set)
 
 data_text.config(state='disabled')
 
-def get_default_notes(default_notes_file):
-	with open(default_notes_file) as notes_file:
+def get_notes(default_notes_file):
+	with open(ffx_rng_tracker.get_resource_path(default_notes_file)) as notes_file:
 		return notes_file.read()
 
 try:
-	default_notes = get_default_notes('ffxhd_rng_tracker_notes.txt')
+	default_notes = get_notes('ffxhd_rng_tracker_notes.txt')
 except FileNotFoundError:
-	default_notes = get_default_notes('files/ffxhd_rng_tracker_default_notes.txt')
+	default_notes = get_notes('files/ffxhd_rng_tracker_default_notes.txt')
 
 notes_text.insert('end', default_notes)
 
