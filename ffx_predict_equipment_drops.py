@@ -19,8 +19,6 @@ def predict_equipment_drops(damage_rolls_input, abilities, characters, steals_ra
 
 						if scenario not in scenarios:
 							scenarios.append(scenario)
-							# print(scenario)
-							# quit()
 
 	rng_tracker = ffx_rng_tracker.FFXRNGTracker(damage_rolls_input)
 
@@ -144,7 +142,10 @@ if __name__ == '__main__':
 	for symbol in (',', '-', '/', '\\'):
 		damage_rolls_input = damage_rolls_input.replace(symbol, ' ')
 
-	damage_rolls_input = [int(damage_roll) for damage_roll in damage_rolls_input.split(' ')]
+	# fixes double spaces
+	damage_rolls_input = ' '.join(damage_rolls_input.split())
+
+	damage_rolls_input = tuple([int(damage_roll) for damage_roll in damage_rolls_input.split(' ')])
 
 	abilities = ('Lightningstrike', 'Icestrike')
 	characters = ('Tidus', 'Wakka')

@@ -8,7 +8,10 @@ damage_rolls_input = input('Damage rolls (Auron1 Tidus1 A2 T2 A3 T3): ')
 for symbol in (',', '-', '/', '\\'):
 	damage_rolls_input = damage_rolls_input.replace(symbol, ' ')
 
-damage_rolls_input = [int(damage_roll) for damage_roll in damage_rolls_input.split(' ')]
+# fixes double spaces
+damage_rolls_input = ' '.join(damage_rolls_input.split())
+
+damage_rolls_input = tuple([int(damage_roll) for damage_roll in damage_rolls_input.split(' ')])
 
 rng_tracker = ffx_rng_tracker.FFXRNGTracker(damage_rolls_input)
 
@@ -52,6 +55,7 @@ def parse_notes(data_text):
 			successful_steals = int(successful_steals)
 		except ValueError:
 			rng_tracker.add_comment_event('Usage: steal [enemy_name] (successful steals)')
+			return
 
 		try:
 			rng_tracker.add_steal_event(monster_name, successful_steals)
@@ -98,6 +102,7 @@ def parse_notes(data_text):
 			rng_index, number_of_times = int(rng_index), int(number_of_times)
 		except ValueError:
 			rng_tracker.add_comment_event('Usage: waste/advance/roll [rng#] [amount]')
+			return
 
 		if rng_index in rng_tracker.rng_current_positions:
 			rng_tracker.add_advance_rng_event(rng_index, number_of_times)
@@ -171,7 +176,9 @@ def parse_notes(data_text):
 
 			if event['item']:
 
-				data += f'{event["item"]["name"]} x{event["item"]["quantity"]}'
+				rarity = '' if event['item']['rarity'] == 'common' else ' (rare)'
+
+				data += f'{event["item"]["name"]} x{event["item"]["quantity"]}{rarity}'
 
 			else:
 
@@ -185,10 +192,16 @@ def parse_notes(data_text):
 			data += f'{monster_name} drops: '
  
 			if event['item1']:
-				data += f'{event["item1"]["name"]} x{event["item1"]["quantity"]}'
+
+				rarity = '' if event['item1']['rarity'] == 'common' else ' (rare)'
+
+				data += f'{event["item1"]["name"]} x{event["item1"]["quantity"]}{rarity}'
 
 			if event['item2']:
-				data += f', {event["item2"]["name"]} x{event["item2"]["quantity"]}'
+
+				rarity = '' if event['item2']['rarity'] == 'common' else ' (rare)'
+
+				data += f', {event["item2"]["name"]} x{event["item2"]["quantity"]}{rarity}'
 
 			if event['equipment']:
 

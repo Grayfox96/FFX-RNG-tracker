@@ -25,9 +25,14 @@ class FFXRNGTracker:
 
 	CHARACTERS = (TIDUS, YUNA, AURON, KIMAHRI, WAKKA, LULU, RIKKU, SEYMOUR, VALEFOR, IFRIT, IXION, SHIVA, BAHAMUT)
 
-	
+
 	class SeedNotFoundError(Exception):
 		'''Raised when no seed is found.'''
+		pass
+
+
+	class InvalidDamageRollError(Exception):
+		'''Raised when a damage roll provided as input is not a possible damage roll.'''
 		pass
 
 
@@ -40,12 +45,12 @@ class FFXRNGTracker:
 		self.rng_initial_values, self.seed_number = self.get_rng_seed('files/ffxhd-raw-rng-arrays.csv')
 
 		if self.seed_number == 0:
-			raise SeedNotFoundError('Seed not found')
+			raise self.SeedNotFoundError('Seed not found')
 
-		self.rng_arrays = {	10: self.get_rng_array(10, 1000),
-							11: self.get_rng_array(11, 200),
-							12: self.get_rng_array(12, 200),
-							13: self.get_rng_array(13, 100),
+		self.rng_arrays = {	10: self.get_rng_array(10),
+							11: self.get_rng_array(11),
+							12: self.get_rng_array(12),
+							13: self.get_rng_array(13),
 							}
 
 		self.abilities = self.get_ability_names('files/ffxhd-abilities.csv')
@@ -76,7 +81,7 @@ class FFXRNGTracker:
 			for index, damage_roll in damage_rolls[character].items():
 				if damage_roll not in possible_rolls[character]:
 					if damage_roll // 2 not in possible_rolls[character]:
-						raise Exception(f'Invalid damage roll: {damage_roll}')
+						raise self.InvalidDamageRollError(f'Invalid damage roll: {character} {damage_roll}')
 					else:
 						damage_rolls[character][index] = damage_roll // 2
 
@@ -281,8 +286,8 @@ class FFXRNGTracker:
 		# in the HD version equipment droprates were modified from 8/255 to 12/255 for these enemies
 		for monster_name in ['condor', 'dingo', 'water_flan', 'condor_2', 'dingo_2', 'water_flan_2',
 							'dinonix', 'killer_bee', 'yellow_element',
-							'worker', 'vouivre', 'raldo',
-							'floating_eye', 'ipiria', "mi'ihen_fang", 'raldo_2', 'white_element',
+							'worker', 'vouivre_2', 'raldo_2',
+							'floating_eye', 'ipiria', "mi'ihen_fang", 'raldo', 'vouivre', 'white_element',
 							'funguar', 'gandarewa', 'lamashtu', 'raptor', 'red_element', 'thunder_flan',
 							'bite_bug', 'bunyip', 'garm', 'simurgh', 'snow_flan',
 							'bunyip_2',
@@ -449,7 +454,11 @@ class FFXRNGTracker:
 			item_name_address = 142 + overkill_offset
 			item_quantity_address = 149 + overkill_offset
 
-		item = {'name': self.items[prize_struct[item_name_address]], 'quantity': prize_struct[item_quantity_address]}
+		item_rarity = 'common' if item_common else 'rare'
+
+		item = {'name': self.items[prize_struct[item_name_address]], 
+			'quantity': prize_struct[item_quantity_address], 
+			'rarity': item_rarity}
 
 		return item
 
@@ -470,7 +479,11 @@ class FFXRNGTracker:
 			item_name_address = 146 + overkill_offset
 			item_quantity_address = 151 + overkill_offset
 
-		item = {'name': self.items[prize_struct[item_name_address]], 'quantity': prize_struct[item_quantity_address]}
+		item_rarity = 'common' if item_common else 'rare'
+
+		item = {'name': self.items[prize_struct[item_name_address]], 
+			'quantity': prize_struct[item_quantity_address], 
+			'rarity': item_rarity}
 
 		return item
 
@@ -641,7 +654,13 @@ class FFXRNGTracker:
 			else:
 				item_name, item_quantity = self.items[prize_struct[166]], prize_struct[169]
 
-			item = {'name': item_name, 'quantity': item_quantity}
+
+			item_rarity = 'common' if item_common else 'rare'
+
+			item = {'name': item_name, 
+				'quantity': item_quantity, 
+				'rarity': item_rarity
+				}
 
 		else:
 			item = None

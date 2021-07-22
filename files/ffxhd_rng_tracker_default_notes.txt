@@ -249,8 +249,8 @@ kill Anima tidus
 death rikku
 kill Seymour tidus
 
-# Guado Guardian 2 is in macalania fights
-# and wendigo fight
+# Guado Guardian 2 is in macalania
+# and wendigo fights
 # kill Guado_Guardian_2 rikku
 # kill Snow_Wolf rikku
 # kill Mafdet rikku
@@ -259,6 +259,10 @@ kill Seymour tidus
 
 # wendigo
 kill Guado_Guardian_2 tidus
+# death ???
+# death ???
+# death ???
+# death ???
 kill Wendigo tidus
 kill Guado_Guardian_2 tidus
 
@@ -341,11 +345,11 @@ kill rifle rikku
 kill YAT-99 rikku
 
 # using bomb cores
-# kill YAT-99 rikku
 # kill Warrior_Monk tidus
 # kill rifle tidus
 # kill Warrior_Monk tidus
 # kill rifle tidus
+# kill YAT-99 kimahri
 
 # Via Purifico
 party ya
@@ -357,6 +361,9 @@ kill Maze_Larva ixion
 kill ifrit_2 bahamut
 kill valefor bahamut
 kill bahamut ixion
+# bahamut drops 2 items
+# but the items are both nothing
+roll rng11 2
 
 # via purifico underwater fiends
 party twr
