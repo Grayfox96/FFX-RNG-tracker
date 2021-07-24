@@ -209,7 +209,7 @@ def parse_notes(data_text):
 
 				guaranteed_equipment = ' (guaranteed)' if equipment['guaranteed'] else ''
 
-				data += (	f', Equipment #{next(equipment_counter)}{guaranteed_equipment}: {equipment["type"]} for {equipment["owner"]} '
+				data += (	f', Equipment #{next(equipment_counter)}{guaranteed_equipment}: {equipment["name"]} ({equipment["owner"]}) '
 							f'{equipment["abilities"]} [{equipment["sell_gil_value"]} gil]')
 
 			# if all 3 are None

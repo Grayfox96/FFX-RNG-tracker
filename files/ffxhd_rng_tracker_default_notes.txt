@@ -367,7 +367,7 @@ roll rng11 2
 # via purifico underwater fiends
 party twr
 # kill Phlegyas tidus
-# kill Sahagin_4 tidus
+# kill Sahagin_3 tidus
 
 kill Evrae_Altana tidus
 
@@ -433,10 +433,12 @@ kill Spectral_Keeper bahamut
 
 kill Yunalesca bahamut
 
-kill right_fin bahamut
-
 kill left_fin bahamut
+
+kill right_fin bahamut
 
 kill sin_2 bahamut
 
 kill sin_3 bahamut
+
+kill seymour_omnis bahamut
