@@ -243,15 +243,22 @@ def parse_notes(data_text):
                 else:
                     guaranteed_equipment = ''
 
+                if equipment['killer_is_owner']:
+                    for_killer = ' (for killer)'
+                else:
+                    for_killer = ''
+
                 data += (f', Equipment #{next(equipment_counter)}'
-                         f'{guaranteed_equipment}: {equipment["name"]} '
-                         f'({equipment["owner"]}) {equipment["abilities"]} '
+                         f'{guaranteed_equipment}{for_killer}: '
+                         f'{equipment["name"]} '
+                         f'({equipment["owner"]}) '
+                         f'[{", ".join(equipment["abilities"])}]'
                          f'[{equipment["sell_gil_value"]} gil]')
 
             # if all 3 are None
             if (event['item1'] is None
-                and event['item2'] is None
-                and event['equipment'] is None):
+                    and event['item2'] is None
+                    and event['equipment'] is None):
                 data += 'No drops'
 
         elif event['name'] == 'death':

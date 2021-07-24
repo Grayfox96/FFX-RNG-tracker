@@ -228,7 +228,6 @@ if __name__ == '__main__':
                   f'{"".join(["-" for i in range(120)])}\n')
         for scenario in good_equipments_scenarios:
 
-            
             if scenario['equipment']['killer_index'] == 0:
                 scenario['killer'] = 'Tidus'
             elif scenario['equipment']['killer_index'] == 1:

@@ -384,8 +384,8 @@ class FFXRNGTracker:
             for owner_index in range(7):
                 offset = (type_offset + (owner_index * 2)) * 16
                 for slot in range(7):
-                    offset += (slot + 1) * 2
-                    address = base_address + offset
+                    slot_offset = (slot + 1) * 2
+                    address = base_address + offset + slot_offset
                     self.monsters_data[name][address] = abilities[slot]
 
         # in the HD version equipment droprates were modified
@@ -1020,6 +1020,16 @@ class FFXRNGTracker:
             if characters_enabled[party_member_index]:
                 equipment_owner_base += 1
 
+        rng_equipment_owner = self.advance_rng(12)
+
+        # check if killing with a party member
+        # always gives the equipment to that character
+        killer_is_owner_test = rng_equipment_owner % (equipment_owner_base + 3)
+        if killer_is_owner_test > equipment_owner_base:
+            equipment['killer_is_owner'] = True
+        else:
+            equipment['killer_is_owner'] = False
+
         # if the killer is a party member (0-6)
         # it gives them a bonus chance for the equipment to be theirs
         if killer_index < 7:
@@ -1028,7 +1038,7 @@ class FFXRNGTracker:
         else:
             owner_index = 0
 
-        rng_equipment_owner = self.advance_rng(12) % equipment_owner_base
+        rng_equipment_owner = rng_equipment_owner % equipment_owner_base
         number_of_enabled_party_members = 0
 
         # get equipment owner

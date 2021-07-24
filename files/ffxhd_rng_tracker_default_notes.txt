@@ -88,6 +88,8 @@ kill Sin valefor
 kill Sinspawn_Echuilles tidus
 kill sinscale_3 tidus
 kill sinscale_3 tidus
+# kill sinscale_3 tidus
+# kill sinscale_3 tidus
 
 # Kilika
 # forced fight
