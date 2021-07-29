@@ -72,11 +72,28 @@ class FFXRNGTracker:
             raise self.SeedNotFoundError('Seed not found')
 
         self.rng_arrays = {
+            # drop/steal chance
             10: self.get_rng_array(10),
+            # rare item chance
             11: self.get_rng_array(11),
+            # equipment owner,type, number of slots and abilities
             12: self.get_rng_array(12),
+            # abilities
             13: self.get_rng_array(13),
         }
+
+        # used to keep track of the rng positions
+        self.rng_current_positions = {}
+
+        # get the party's damage/crit/escape arrays
+        for i in range(20, 28):
+            self.rng_arrays[i] = self.get_rng_array(i, 5000)
+            self.rng_current_positions[i] = 0
+
+        # get all the status chance arrays
+        for i in range(52, 68):
+            self.rng_arrays[i] = self.get_rng_array(i)
+            self.rng_current_positions[i] = 0
 
         self.abilities = self.get_ability_names('files/ffxhd-abilities.csv')
         self.equipment_names = self.get_equipment_names(
@@ -229,13 +246,10 @@ class FFXRNGTracker:
 
     def reset_variables(self) -> None:
         '''Sets the state of some variables to their starting position.'''
-        # used to keep track of the rng positions
-        self.rng_current_positions = {
-            10: 0,
-            11: 0,
-            12: 0,
-            13: 0,
-        }
+        self.rng_current_positions[10] = 0
+        self.rng_current_positions[11] = 0
+        self.rng_current_positions[12] = 0
+        self.rng_current_positions[13] = 0
 
         # used to store all the events that roll rng
         self.events_sequence = []
@@ -757,7 +771,7 @@ class FFXRNGTracker:
         elif slots == 4:  # 4-slot weapon
             index = 55
         # Magic +X% and Strength +X%
-        elif strength_bonuses > 0 and magic_bonuses > 0:
+        elif strength_bonuses >= 1 and magic_bonuses >= 1:
             index = 56
         elif slots == 2 or slots == 3:  # 2 or 3 slot weapon
             index = 57
@@ -900,7 +914,7 @@ class FFXRNGTracker:
         elif mp_bonuses == 3:  # Any three MP +X%
             index = 40
         # Any two elemental -proof or -eater of different elements
-        elif elemental_eaters + elemental_proofs > 2:
+        elif elemental_eaters + elemental_proofs >= 2:
             index = 41
         elif status_proofs == 2:  # Any two status -proof abilities
             index = 42
@@ -956,7 +970,7 @@ class FFXRNGTracker:
         elif slots == 4:  # Four slots
             index = 67
         # Defense +X% and Magic Defense +X%
-        elif defense_bonuses > 0 and magic_defense_bonuses > 0:
+        elif defense_bonuses >= 1 and magic_defense_bonuses >= 1:
             index = 68
         elif defense_bonuses == 2:  # Any two Defense +X%
             index = 69
@@ -1234,6 +1248,18 @@ class FFXRNGTracker:
             equipment_types.append(equipment_type)
 
         return equipment_types
+
+    def get_status_chance_rolls(
+            self, amount: int = 30) -> dict[int, list[int]]:
+        '''Get the first n rolls of the status rng arrays
+        for both party members and enemies
+        '''
+        status_rolls = {}
+        for i in range(52, 68):
+            status_rolls[i] = []
+            for j in range(amount):
+                status_rolls[i].append(self.rng_arrays[i][j] % 101)
+        return status_rolls
 
     def add_steal_event(
             self, monster_name: str, successful_steals: int = 0) -> None:

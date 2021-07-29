@@ -264,6 +264,7 @@ kill Guado_Guardian_2 tidus
 # death ???
 # death ???
 # death ???
+# steal Guado_Guardian_2
 kill Wendigo tidus
 kill Guado_Guardian_2 tidus
 
@@ -301,9 +302,10 @@ kill Chimera_2 kimahri
 kill Chimera_2 kimahri
 
 # Airship
-# death ???
-# steal evrae
+steal evrae
+death ???
 # steal evrae 1
+# death ???
 kill Evrae tidus
 
 # Bevelle

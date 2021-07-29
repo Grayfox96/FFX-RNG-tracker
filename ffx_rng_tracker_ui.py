@@ -2,23 +2,50 @@ import ffx_rng_tracker
 import tkinter as tk
 from tkinter import font
 
-damage_rolls_input = input('Damage rolls (Auron1 Tidus1 A2 T2 A3 T3): ')
 
-# replace different symbols with spaces
-for symbol in (',', '-', '/', '\\'):
-    damage_rolls_input = damage_rolls_input.replace(symbol, ' ')
+def print_equipment_types(amount, columns=2):
+    equipment_types = rng_tracker.get_equipment_types(amount)
+    spacer = f'{"".join(["-" for i in range(16 * columns + 1)])}\n'
+    output = f'First {amount} equipment types\n{spacer}'
+    for _ in range(columns):
+        output += f'| [##] |   Type '
+    output += f'|\n{spacer}'
+    for i in range(amount // columns):
+        for j in range(columns):
+            j = j * (amount // columns)
+            output += f'| [{i + j + 1:2}] | {equipment_types[i + j]:>6} '
+        output += '|\n'
+    output += spacer
+    print(output)
 
-# fixes double spaces
-damage_rolls_input = ' '.join(damage_rolls_input.split())
 
-damage_rolls_input = tuple(
-    [int(damage_roll) for damage_roll in damage_rolls_input.split(' ')])
-
-rng_tracker = ffx_rng_tracker.FFXRNGTracker(damage_rolls_input)
-
-for equipment_number, equipment_type in enumerate(
-        rng_tracker.get_equipment_types(50)):
-    print(f'Equipment {equipment_number + 1:>2}: {equipment_type}')
+def print_status_chance_rolls(rolls):
+    status_chance_rolls = rng_tracker.get_status_chance_rolls(rolls)
+    spacer = f'{"".join(["-" for i in range(93)])}\n'
+    output = ('Status chance rolls\nIf status chance is 50%, 0-49 means succeed'
+              ' and 50-100 means fail.\nAbilities and attacks with 100% status '
+              'chance fail with a roll of 100.\n')
+    output += spacer
+    output += ('| Roll [##] |   Tidus |    Yuna |   Auron | Kimahri '
+               '|   Wakka |    Lulu |   Rikku |   Aeons |\n')
+    output += spacer
+    for i in range(rolls):
+        output += f'| Roll [{i + 1:>2}] | '
+        for j in range(52, 60):
+            output += f'{status_chance_rolls[j][i]:>7} | '
+        output += '\n'
+    output += f'{spacer}\n{spacer}'
+    output += f'| Roll [##] | '
+    for i in range(8):
+        output += f'Enemy {i} | '
+    output += f'\n{spacer}'
+    for i in range(rolls):
+        output += f'| Roll [{i + 1:>2}] | '
+        for j in range(60, 68):
+            output += f'{status_chance_rolls[j][i]:>7} | '
+        output += '\n'
+    output += spacer
+    print(output)
 
 
 def parse_notes(data_text):
@@ -196,7 +223,10 @@ def parse_notes(data_text):
 
             if event['item']:
 
-                rarity = '' if event['item']['rarity'] == 'common' else ' (rare)'
+                if event['item']['rarity'] == 'common':
+                    rarity = ''
+                else:
+                    rarity = ' (rare)'
 
                 data += (f'{event["item"]["name"]} '
                          f'x{event["item"]["quantity"]}{rarity}')
@@ -316,6 +346,17 @@ def parse_notes(data_text):
     data_text.yview('moveto', saved_position[0])
 
 
+damage_rolls_input = input('Damage rolls (Auron1 Tidus1 A2 T2 A3 T3): ')
+# replace different symbols with spaces
+for symbol in (',', '-', '/', '\\'):
+    damage_rolls_input = damage_rolls_input.replace(symbol, ' ')
+# fixes double spaces
+damage_rolls_input = ' '.join(damage_rolls_input.split())
+damage_rolls_input = tuple(
+    [int(damage_roll) for damage_roll in damage_rolls_input.split(' ')])
+
+rng_tracker = ffx_rng_tracker.FFXRNGTracker(damage_rolls_input)
+
 # GUI
 root = tk.Tk()
 
@@ -389,5 +430,7 @@ except FileNotFoundError:
 notes_text.insert('end', default_notes)
 
 parse_notes(data_text)
+print_equipment_types(40, 2)
+print_status_chance_rolls(40)
 
 root.mainloop()
