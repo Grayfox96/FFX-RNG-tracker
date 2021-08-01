@@ -1,5 +1,5 @@
 # FFX RNG Tracker
-* ffx_rng_tracker_ui: main program that shows
+* ffx_rng_tracker_ui: main program that shows all the widgets at once.
 * ffx_rng_drops_tracker: tracks rng related to items and equipment drops.
 * ffx_monster_data_viewer: shows general information about monsters retrieved from the game directly.
 * ffx_predict_equipment_drops: iterates through possible early game kills and steals amounts to find good early game weapon drops.
