@@ -72,14 +72,16 @@ class FFXRNGTracker:
             raise self.SeedNotFoundError('Seed not found')
 
         self.rng_arrays = {
+            # encouter formations and preempt/ambush chance
+            0: self.get_rng_array(0, 5000),
             # drop/steal chance
-            10: self.get_rng_array(10),
+            10: self.get_rng_array(10, 5000),
             # rare item chance
-            11: self.get_rng_array(11),
+            11: self.get_rng_array(11, 5000),
             # equipment owner,type, number of slots and abilities
-            12: self.get_rng_array(12),
+            12: self.get_rng_array(12, 5000),
             # abilities
-            13: self.get_rng_array(13),
+            13: self.get_rng_array(13, 5000),
         }
 
         # used to keep track of the rng positions
@@ -103,6 +105,7 @@ class FFXRNGTracker:
             'files/ffxhd-characters.csv')
         self.monsters_data = self.get_monsters_data(
             'files/ffxhd-mon_data.csv')
+        self.formations = self.get_formations('files/ffxhd-formations.csv')
 
         # temporary workaround
         # ffxhd-mon_data.csv has PS2 NA version monsters information
@@ -150,7 +153,6 @@ class FFXRNGTracker:
 
         with open(get_resource_path(rng_file)) as abilities_file_object:
             rng_file_reader = csv.reader(abilities_file_object, delimiter=',')
-
             seed_number = 0
             for seed in rng_file_reader:
                 if seed_number == 0:
@@ -162,16 +164,11 @@ class FFXRNGTracker:
                             and damage_rolls['tidus'][1] == int(seed[1])
                             and damage_rolls['tidus'][2] == int(seed[3])
                             and damage_rolls['tidus'][3] == int(seed[5])):
-
                         # first 6 values of the array are the damage rolls
                         seed = seed[6:]
-
                         current_seed_values = [int(value) for value in seed]
-
                         return current_seed_values, seed_number
-
                 seed_number += 1
-
         # if no seed found
         return [None], 0
 
@@ -179,7 +176,6 @@ class FFXRNGTracker:
         '''Returns a generator object that yields rng values for a given rng
         index. This is the actual ShuffleRNGSeed function used in the game.
         '''
-
         def s32(integer: int) -> int:
             '''Used as part of the ShuffleRNGSeed function.'''
             integer = integer & 0xffffffff
@@ -226,34 +222,29 @@ class FFXRNGTracker:
             self, rng_index: int, number_of_values: int = 1000) -> list[int]:
         '''Returns the first n number of values for the given rng index.'''
         rng_generator = self.rng_array_generator(rng_index)
-
         rng_values = []
-
         for _ in range(number_of_values):
             rng_values.append(next(rng_generator))
-
         return rng_values
 
     def advance_rng(self, rng_index: int) -> int:
-        '''Advances the position of the given rng index and returns the next value for that index.'''
+        '''Advances the position of the given rng index and returns
+        the next value for that index.
+        '''
         position = self.rng_current_positions[rng_index]
-
         rng_value = self.rng_arrays[rng_index][position]
-
         self.rng_current_positions[rng_index] += 1
-
         return rng_value
 
     def reset_variables(self) -> None:
         '''Sets the state of some variables to their starting position.'''
+        self.rng_current_positions[0] = 0
         self.rng_current_positions[10] = 0
         self.rng_current_positions[11] = 0
         self.rng_current_positions[12] = 0
         self.rng_current_positions[13] = 0
-
         # used to store all the events that roll rng
         self.events_sequence = []
-
         # used to keep track of characters eligible for equipment drops
         self.current_party_formation = {
             self.TIDUS: True,
@@ -273,55 +264,58 @@ class FFXRNGTracker:
         with open(get_resource_path(abilities_file)) as abilities_file_object:
             abilities_file_reader = csv.reader(
                 abilities_file_object, delimiter=',')
-
             # skips first line
             next(abilities_file_reader)
-
-            ability_names = [{'name': line[1], 'gil_value': int(
-                line[2])} for line in abilities_file_reader]
-
+            ability_names = [{'name': line[1], 'gil_value': int(line[2])}
+                             for line in abilities_file_reader]
         return ability_names
 
     def get_equipment_names(
             self, equipment_names_file: str) -> dict[str, list[str]]:
         '''Retrieves the equipment names.'''
         equipment_names = {'weapon': [], 'armor': []}
-
         with open(get_resource_path(equipment_names_file)) as \
                 equipment_names_file_object:
             equipment_names_file_reader = csv.reader(
                 equipment_names_file_object, delimiter=',')
-
             # skips first 3 lines
             for _ in range(3):
                 next(equipment_names_file_reader)
-
             # get weapons' names lists
             for _ in range(66):
                 equipment_names['weapon'].append(
                     next(equipment_names_file_reader))
-
             # skips empty line
             next(equipment_names_file_reader)
-
             # get armors' names lists
             for _ in range(84):
                 equipment_names['armor'].append(
                     next(equipment_names_file_reader))
-
         return equipment_names
 
     def get_item_names(self, items_file: str) -> list[str]:
         '''Retrieves the items names.'''
         with open(get_resource_path(items_file)) as items_file_object:
             items_file_reader = csv.reader(items_file_object, delimiter=',')
-
             # skips first line
             next(items_file_reader)
-
             items_list = [line[1] for line in items_file_reader]
-
         return items_list
+
+    def get_formations(self, formations_file):
+        '''Retrieves the encounter formations.'''
+        formations_list = {}
+        with open(get_resource_path(formations_file)) as formations_file_object:
+            formations_file_reader = csv.reader(
+                formations_file_object, delimiter=',')
+            for line in formations_file_reader:
+                for index, cell in enumerate(line):
+                    if index == 0:
+                        zone = cell
+                        formations_list[zone] = []
+                    else:
+                        formations_list[zone].append(cell)
+        return formations_list
 
     def get_text_characters(self, characters_file: str) -> dict[int, str]:
         '''Retrieves the character encoding chart used in prize structs.'''
@@ -329,15 +323,11 @@ class FFXRNGTracker:
                 characters_file_object:
             text_characters_file_reader = csv.reader(
                 characters_file_object, delimiter=',')
-
             # skips first line
             next(text_characters_file_reader)
-
             text_characters_dict = {}
-
             for line in text_characters_file_reader:
                 text_characters_dict[int(line[0])] = line[2]
-
         return text_characters_dict
 
     def get_monsters_data(
@@ -347,15 +337,12 @@ class FFXRNGTracker:
                 monster_data_file_object:
             monster_data_file_reader = csv.reader(
                 monster_data_file_object, delimiter=',')
-
             # skips first line
             next(monster_data_file_reader)
-
             monsters_data = {}
 
             for line in monster_data_file_reader:
                 prize_struct = [int(value, 16) for value in line]
-
                 # gets the name of the monster from the prize struct itself
                 # name is null (0x00) terminated
                 monster_name = ''
@@ -363,9 +350,10 @@ class FFXRNGTracker:
                     if prize_struct[i] == 0:
                         break
                     monster_name += self.text_characters[prize_struct[i]]
-
                 monster_name = monster_name.lower().replace(' ', '_')
-
+                # if the name is already in the dictionary
+                # appends it with an underscore and a number
+                # from 2 to 8
                 if monster_name in monsters_data:
                     for i in range(2, 9):
                         new_name = f'{monster_name}_{i}'
@@ -374,14 +362,12 @@ class FFXRNGTracker:
                             break
                 else:
                     monsters_data[monster_name] = prize_struct
-
         return monsters_data
 
     def _patch_monsters_dict_for_hd(self) -> None:
         '''Temporary workaround,
         ffxhd-mon_data.csv has PS2 NA version monsters information.
         '''
-
         def patch_abilities(
                 name: str,
                 abilities: tuple[int, int, int, int, int, int, int],
@@ -391,9 +377,7 @@ class FFXRNGTracker:
             '''
             # base address for abilities in the prize struct
             base_address = 178
-
             type_offset = 0 if equipment_type == 'weapon' else 1
-
             # place the abilities values at the correct offsets
             for owner_index in range(7):
                 offset = (type_offset + (owner_index * 2)) * 16
@@ -417,9 +401,9 @@ class FFXRNGTracker:
             'mech_guard', 'mushussu', 'sand_wolf', 'bomb_2', 'evil_eye_2',
             'guado_guardian_3', 'warrior_monk', 'warrior_monk_2', 'aqua_flan',
             'bat_eye', 'cave_iguion', 'sahagin_2', 'swamp_mafdet',
-            'sahagin_3', 'flame_flan', 'mech_scouter_2', 'nebiros', 'shred',
-            'skoll', 'flame_flan', 'nebiros', 'shred', 'skoll',
-            'dark_element', 'imp', 'nidhogg', 'yowie'
+            'sahagin_3', 'flame_flan', 'mech_scouter', 'mech_scouter_2',
+            'nebiros', 'shred', 'skoll', 'flame_flan', 'nebiros', 'shred',
+            'skoll', 'dark_element', 'imp', 'nidhogg', 'yowie',
         )
         for monster_name in monster_names:
             self.monsters_data[monster_name][139] = 12
@@ -532,7 +516,6 @@ class FFXRNGTracker:
 
         item1_drop_chance = prize_struct[136]
         rng_item1_drop = self.advance_rng(10)
-
         if item1_drop_chance > (rng_item1_drop % 255):
             rng_item1_rarity = self.advance_rng(11)
             item1_common = False if ((rng_item1_rarity & 255) < 32) else True
@@ -542,7 +525,6 @@ class FFXRNGTracker:
 
         item2_drop_chance = prize_struct[137]
         rng_item2_drop = self.advance_rng(10)
-
         if item2_drop_chance > (rng_item2_drop % 255):
             rng_item2_rarity = self.advance_rng(11)
             item2_common = False if ((rng_item2_rarity & 255) < 32) else True
@@ -552,7 +534,6 @@ class FFXRNGTracker:
 
         equipment_drop_chance = prize_struct[139]
         rng_equipment_drop = self.advance_rng(10)
-
         if equipment_drop_chance > (rng_equipment_drop % 255):
             equipment = self.create_dropped_equipment(
                 monster_name, killer_index, current_party_formation)
@@ -631,7 +612,6 @@ class FFXRNGTracker:
             value = lower_bound
         elif value > higher_bound:
             value = higher_bound
-
         return value
 
     def _get_weapon_name(
@@ -1202,15 +1182,10 @@ class FFXRNGTracker:
             return None
 
         steal_chance = prize_struct[138] // (2 ** successful_steals)
-
         rng_steal = self.advance_rng(10)
-
         if steal_chance > (rng_steal % 255):
-
             rng_steal_rarity = self.advance_rng(11)
-
             item_common = False if ((rng_steal_rarity & 255) < 32) else True
-
             if item_common:
                 item_name_address = 164
                 item_quantity_address = 168
@@ -1236,7 +1211,6 @@ class FFXRNGTracker:
         one of the properties of equipment that can't be changed.
         '''
         equipment_types = []
-
         for i in range(amount):
             # the equipment type is only determined by the seed
             # the rng position used to determine it is the second one
@@ -1244,9 +1218,7 @@ class FFXRNGTracker:
             rng_weapon_or_armor = self.rng_arrays[12][(i * 4) + 1]
             equipment_type = rng_weapon_or_armor & 1
             equipment_type = 'weapon' if (equipment_type) == 0 else 'armor'
-
             equipment_types.append(equipment_type)
-
         return equipment_types
 
     def get_status_chance_rolls(
@@ -1268,21 +1240,17 @@ class FFXRNGTracker:
             'name': 'steal',
             'monster_name': monster_name,
         }
-
         event['item'] = self.get_stolen_item(monster_name, successful_steals)
-
         self.events_sequence.append(event)
 
     def add_kill_event(self, monster_name: str, killer: str) -> None:
         '''Creates a enemy kill event and appends it to the events list.'''
         monster_name = monster_name.lower().replace(' ', '_')
-
         event = {
             'name': 'kill',
             'monster_name': monster_name,
             'killer': killer,
         }
-
         killer = f'{killer[0].upper()}{killer[1:].lower()}'
 
         try:
@@ -1292,7 +1260,6 @@ class FFXRNGTracker:
 
         event['item1'], event['item2'], event['equipment'] = self.get_spoils(
             monster_name, killer_index, self.current_party_formation)
-
         self.events_sequence.append(event)
 
     def add_death_event(self, dead_character: str = 'Unknown') -> None:
@@ -1303,9 +1270,7 @@ class FFXRNGTracker:
             'name': 'death',
             'dead_character': dead_character,
         }
-
         self.rng_current_positions[10] += 3
-
         self.events_sequence.append(event)
 
     def add_advance_rng_event(
@@ -1318,9 +1283,7 @@ class FFXRNGTracker:
             'rng_index': rng_index,
             'number_of_times': number_of_times,
         }
-
         self.rng_current_positions[rng_index] += number_of_times
-
         self.events_sequence.append(event)
 
     def add_change_party_event(self, party_formation: str) -> None:
@@ -1342,36 +1305,28 @@ class FFXRNGTracker:
         if 't' in party_formation:
             self.current_party_formation[self.TIDUS] = True
             new_party_formation.append(self.TIDUS)
-
         if 'y' in party_formation:
             self.current_party_formation[self.YUNA] = True
             new_party_formation.append(self.YUNA)
-
         if 'a' in party_formation:
             self.current_party_formation[self.AURON] = True
             new_party_formation.append(self.AURON)
-
         if 'k' in party_formation:
             self.current_party_formation[self.KIMAHRI] = True
             new_party_formation.append(self.KIMAHRI)
-
         if 'w' in party_formation:
             self.current_party_formation[self.WAKKA] = True
             new_party_formation.append(self.WAKKA)
-
         if 'l' in party_formation:
             self.current_party_formation[self.LULU] = True
             new_party_formation.append(self.LULU)
-
         if 'r' in party_formation:
             self.current_party_formation[self.RIKKU] = True
             new_party_formation.append(self.RIKKU)
-
         event = {
             'name': 'change_party',
             'party': new_party_formation,
         }
-
         self.events_sequence.append(event)
 
     def add_comment_event(self, text: str) -> None:
@@ -1380,5 +1335,4 @@ class FFXRNGTracker:
             'name': 'comment',
             'text': text,
         }
-
         self.events_sequence.append(event)
