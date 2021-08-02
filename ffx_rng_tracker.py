@@ -73,7 +73,7 @@ class FFXRNGTracker:
 
         self.rng_arrays = {
             # encouter formations and preempt/ambush chance
-            0: self.get_rng_array(0, 5000),
+            1: self.get_rng_array(1, 5000),
             # drop/steal chance
             10: self.get_rng_array(10, 5000),
             # rare item chance
@@ -238,7 +238,7 @@ class FFXRNGTracker:
 
     def reset_variables(self) -> None:
         '''Sets the state of some variables to their starting position.'''
-        self.rng_current_positions[0] = 0
+        self.rng_current_positions[1] = 0
         self.rng_current_positions[10] = 0
         self.rng_current_positions[11] = 0
         self.rng_current_positions[12] = 0

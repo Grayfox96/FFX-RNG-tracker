@@ -89,7 +89,7 @@ class FFXEncountersRNGTrackerUI():
         widget['text'].tag_configure('ambush', foreground='#ff0000')
         widget['text'].tag_configure('preemptive', foreground='#00ff00')
         widget['text'].tag_configure('ghost', foreground='#ff0000')
-        widget['text'].tag_configure('enemy', background='#ff00ff')
+        widget['text'].tag_configure('enemy', background='#ffff00')
         widget['text'].pack(expand=True, fill='both', side='left')
         widget['scrollbar'] = tk.Scrollbar(widget['frame'])
         widget['scrollbar'].pack(fill='y', side='right')
@@ -158,7 +158,7 @@ class FFXEncountersRNGTrackerUI():
         containing encounters information.
         '''
         def get_condition(initiative=False):
-            condition_rng = self.rng_tracker.advance_rng(0) & 255
+            condition_rng = self.rng_tracker.advance_rng(1) & 255
             condition = 2
             if initiative:
                 condition_rng += -32 - 1
@@ -174,7 +174,7 @@ class FFXEncountersRNGTrackerUI():
 
         def get_formation(zone, rng_value=None):
             if rng_value is None:
-                rng_value = self.rng_tracker.advance_rng(0)
+                rng_value = self.rng_tracker.advance_rng(1)
             formation_number = rng_value % len(self.formations[zone])
             return self.formations[zone][formation_number]
 
@@ -189,15 +189,12 @@ class FFXEncountersRNGTrackerUI():
                          f'{formation:{padding}}{condition}\n')
 
         def add_forced_encounters(
-                encounter_names, show=True, initiative=False):
+                encounter_names, initiative=False):
             nonlocal text
             for encounter_name in encounter_names:
                 condition = get_condition(initiative)
-                if show:
-                    text += (f'{next(total_counter):3}: '
-                             f'{encounter_name:{padding + 5}}{condition}\n')
-                else:
-                    next(total_counter)
+                text += (f'{next(total_counter):3}: '
+                         f'{encounter_name:{padding + 5}}{condition}\n')
 
         def add_optional_forced_encounters(encounter_name, initiative=False):
             nonlocal text
@@ -223,7 +220,7 @@ class FFXEncountersRNGTrackerUI():
             nonlocal text
             encounters = self.encounters['sliders']['Cave'].get()
             for number in range(encounters):
-                rng_value = self.rng_tracker.advance_rng(0)
+                rng_value = self.rng_tracker.advance_rng(1)
                 formation_white = get_formation('Cave (White Zone)', rng_value)
                 formation_green = get_formation('Cave (Green Zone)', rng_value)
                 formation = formation_white + '/' + formation_green
@@ -232,7 +229,7 @@ class FFXEncountersRNGTrackerUI():
                          f'[{number + 1}]\n   `-{next(random_counter):3}:'
                          f' {formation:{padding}}{condition}\n')
 
-        self.rng_tracker.rng_current_positions[0] = 0
+        self.rng_tracker.rng_current_positions[1] = 0
         text = ''
         total_counter = count(1)
         random_counter = count(1)
