@@ -83,13 +83,13 @@ class FFXEncountersRNGTrackerUI():
         '''
         widget = {}
         widget['frame'] = tk.Frame(self.parent)
-        widget['frame'].pack(expand=True, fill='both', side='left')
+        widget['frame'].pack(expand=True, fill='both', side='right')
         widget['text'] = BetterText(
             widget['frame'], font=self.main_font, width=57, state='disabled')
         widget['text'].tag_configure('ambush', foreground='#ff0000')
         widget['text'].tag_configure('preemptive', foreground='#00ff00')
-        widget['text'].tag_configure('ghost', foreground='#ff0000')
-        widget['text'].tag_configure('enemy', background='#ffff00')
+        widget['text'].tag_configure(
+            'enemy', background='#ffff00', selectforeground='#000000')
         widget['text'].pack(expand=True, fill='both', side='left')
         widget['scrollbar'] = tk.Scrollbar(widget['frame'])
         widget['scrollbar'].pack(fill='y', side='right')
@@ -103,7 +103,12 @@ class FFXEncountersRNGTrackerUI():
         '''
         def make_sliders(parent):
             widget = {}
-            row_counter = count()
+            widget['variable'] = tk.StringVar()
+            row_counter = count(1)
+            radiobutton = tk.Radiobutton(
+                parent, text='Start', variable=widget['variable'],
+                value='Start', command=self.print_data)
+            radiobutton.grid(row=0, column=1, columnspan=2, sticky='sw')
             for zone, settings in self.sliders_settings.items():
                 row = next(row_counter)
                 min = settings['min']
@@ -115,18 +120,15 @@ class FFXEncountersRNGTrackerUI():
                     command=lambda _: self.print_data())
                 widget[zone].set(default)
                 widget[zone].grid(row=row, column=0)
-                tk.Label(
-                    parent,
-                    text=zone).grid(
-                    row=row,
-                    column=1,
-                    sticky='sw')
-                # parent.rowconfigure(next(row), weight=1)
+                radiobutton = tk.Radiobutton(
+                    parent, text=zone, variable=widget['variable'], value=zone,
+                    command=self.print_data)
+                radiobutton.grid(row=row, column=1, sticky='sw')
             return widget
 
         widget = {}
         widget['outer_frame'] = tk.Frame(self.parent)
-        widget['outer_frame'].pack(fill='y', side='right')
+        widget['outer_frame'].pack(fill='y', side='left')
         widget['canvas'] = tk.Canvas(widget['outer_frame'], width=280)
         widget['canvas'].pack(side='left', fill='both', expand=True)
         widget['scrollbar'] = tk.Scrollbar(
@@ -179,45 +181,48 @@ class FFXEncountersRNGTrackerUI():
             return self.formations[zone][formation_number]
 
         def add_random_encounters(zone, initiative=False):
-            nonlocal text
+            if self.encounters['sliders']['variable'].get() == zone:
+                data.clear()
             encounters = self.encounters['sliders'][zone].get()
             for number in range(encounters):
                 formation = get_formation(zone)
                 condition = get_condition(initiative)
-                text += (f'{next(total_counter):3}: {zone} [{number + 1}]\n'
-                         f'   `-{next(random_counter):3}: '
-                         f'{formation:{padding}}{condition}\n')
+                data.append(f'{next(total_counter):3}: {zone} [{number + 1}]')
+                data.append(
+                    f'   `-{next(random_counter):3}: {formation:{padding}}'
+                    f'{condition}')
 
-        def add_forced_encounters(
-                encounter_names, initiative=False):
-            nonlocal text
+        def add_forced_encounters(encounter_names, initiative=False):
             for encounter_name in encounter_names:
                 condition = get_condition(initiative)
-                text += (f'{next(total_counter):3}: '
-                         f'{encounter_name:{padding + 5}}{condition}\n')
+                data.append(
+                    f'{next(total_counter):3}: {encounter_name:{padding + 5}}'
+                    f'{condition}')
 
         def add_optional_forced_encounters(encounter_name, initiative=False):
-            nonlocal text
+            if self.encounters['sliders']['variable'].get() == encounter_name:
+                data.clear()
             encounters = self.encounters['sliders'][encounter_name].get()
             for number in range(encounters):
-                number = ' ' + str(number + 1)
                 condition = get_condition(initiative)
-                text += (f'{next(total_counter):3}: '
-                         f'{encounter_name + number:{padding}}{condition}\n')
+                data.append(
+                    f'{next(total_counter):3}: {encounter_name:{padding + 5}}'
+                    f'{condition}')
 
-        def add_simulated_encounters(encounter_name, initiative=False):
-            nonlocal text
+        def add_simulated_encounters(encounter_name):
+            if self.encounters['sliders']['variable'].get() == encounter_name:
+                data.clear()
             encounters = self.encounters['sliders'][encounter_name].get()
             for number in range(encounters):
-                number = ' ' + str(number + 1)
-                self.rng_tracker.advance_rng(0)
-                text += f'     {encounter_name}\n'
+                self.rng_tracker.advance_rng(1)
+                data.append(f'   : {encounter_name}')
 
         def add_cave_encounters(initiative=False):
             '''Prints 2 encounters from the two different zones
             of the cave at the same time.
             '''
-            nonlocal text
+            if self.encounters['sliders']['variable'].get() == 'Cave':
+                data.clear()
             encounters = self.encounters['sliders']['Cave'].get()
             for number in range(encounters):
                 rng_value = self.rng_tracker.advance_rng(1)
@@ -225,12 +230,13 @@ class FFXEncountersRNGTrackerUI():
                 formation_green = get_formation('Cave (Green Zone)', rng_value)
                 formation = formation_white + '/' + formation_green
                 condition = get_condition(initiative)
-                text += (f'{next(total_counter):3}: Cave '
-                         f'[{number + 1}]\n   `-{next(random_counter):3}:'
-                         f' {formation:{padding}}{condition}\n')
+                data.append(f'{next(total_counter):3}: Cave [{number + 1}]')
+                data.append(
+                    f'   `-{next(random_counter):3}: {formation:{padding}}'
+                    f'{condition}')
 
         self.rng_tracker.rng_current_positions[1] = 0
-        text = ''
+        data = []
         total_counter = count(1)
         random_counter = count(1)
         padding = 37
@@ -239,118 +245,86 @@ class FFXEncountersRNGTrackerUI():
             ('Sinscales', 'Ammes', 'Tanker', 'Sahagins', 'Geosgaeno', 'Klikk 1',
              'Klikk 2'))
         add_random_encounters('Underwater Ruins')
-
         add_forced_encounters(('Piranhas', 'Tros'))
         add_random_encounters('Besaid Lagoon')
-
         add_forced_encounters(
             ('Dingo/Condor', 'Water Flan', 'Kimahri', 'Garuda 1', 'Garuda 2',
              'Condor/Dingo/Water Flan'))
         add_random_encounters('Besaid Road')
-
         add_forced_encounters(('Sin Fin', 'Echuilles', 'Lancet tutorial'))
         add_optional_forced_encounters('Lord Ochu (Way In)')
-
         add_random_encounters('Kilika Woods (Way In)')
-
         add_forced_encounters(('Geneaux',))
         add_optional_forced_encounters('Lord Ochu (Way Out)')
-
         add_random_encounters('Kilika Woods (Way Out)')
-
         add_forced_encounters(
             ('Machina 1', 'Machina 2', 'Machina 3', 'Oblitzerator',
              'Sahagin Chiefs', 'Vouivre', 'Garuda', 'Pierce tutorial'))
         add_random_encounters('Miihen Screen 1')
-
         add_random_encounters('Miihen Screen 2/3')
         add_simulated_encounters('Simulation (Miihen)')
-
         add_forced_encounters(('Chocobo Eater',))
         add_random_encounters('Old Road')
         add_simulated_encounters('Simulation (Old Road)')
-
         add_random_encounters('Clasko Skip Screen')
-
         add_random_encounters('MRR - Valley')
-
         add_random_encounters('MRR - Precipice')
-
         add_forced_encounters(('Sinspawn Gui 1', 'Sinspawn Gui 2'))
         add_random_encounters('Djose Highroad (Front Half)', initiative=True)
-
         add_random_encounters('Djose Highroad (Back Half)', initiative=True)
-
         add_random_encounters('Moonflow (South)', initiative=True)
-
         add_forced_encounters(('Extractor', 'Rikku tutorial'))
         add_random_encounters('Moonflow (North)', initiative=True)
-
         add_random_encounters('Thunder Plains (South)', initiative=True)
-
         add_random_encounters('Thunder Plains (North)', initiative=True)
-
         add_random_encounters('Macalania Woods')
-
         add_forced_encounters(('Spherimorph',))
         add_random_encounters('Lake Macalania')
-
         add_forced_encounters(('Crawler', 'Seymour'))
         add_optional_forced_encounters('Guado Encounter')
-
         add_random_encounters('Crevasse')
-
         add_forced_encounters(('Wendigo', 'Zu'))
         add_random_encounters('Bikanel (Pre Machina)', initiative=True)
-
         add_forced_encounters(('Machina Steal tutorial',))
         add_random_encounters('Bikanel (Post Machina)', initiative=True)
-
         add_random_encounters('Bikanel (Central)', initiative=True)
-
         add_random_encounters('Bikanel (Ruins)', initiative=True)
-
         add_random_encounters('Bikanel (Pre Sandragora)', initiative=True)
-
-        add_forced_encounters(('Sandragora 1',))
+        add_forced_encounters(('Sandragora 1',), initiative=True)
         add_optional_forced_encounters('Sandragora 1 refight', initiative=True)
-
         add_random_encounters('Bikanel (Post Sandragora)', initiative=True)
-
         add_forced_encounters(
             ('Sandragora 2', 'Guado + 3 Bombs', 'Guado + 2 Dual Horn 1',
-             'Guado + 2 Chimera', 'Evrae', 'Bevelle Guards 1',
-             'Bevelle Guards 2', 'Bevelle Guards 3', 'Bevelle Guards 4',
-             'Bevelle Guards 5'))
+             'Guado + 2 Chimera'), initiative=True)
+        add_random_encounters('Airship')
+        add_forced_encounters(
+            ('Evrae', 'Bevelle Guards 1', 'Bevelle Guards 2',
+             'Bevelle Guards 3', 'Bevelle Guards 4', 'Bevelle Guards 5'))
         add_random_encounters('Via Purifico', initiative=True)
-
         add_forced_encounters(
             ('Isaaru Grothia', 'Isaaru Pterya', 'Isaaru Spathi'))
         add_random_encounters('Via Purifico Underwater')
-
         add_forced_encounters(('Evrae Altana',))
         add_random_encounters('Highbridge', initiative=True)
-
         add_forced_encounters(('Seymour Natus',))
+        add_simulated_encounters('Simulation (Calm Lands)')
         add_random_encounters('Calm Lands', initiative=True)
-
-        add_forced_encounters(('Defender X',))
-
+        add_forced_encounters(('Defender X',), initiative=True)
         add_optional_forced_encounters('Biran & Yenke')
-
         add_cave_encounters(initiative=True)
+
+        data = '\n'.join(data)
 
         saved_position = self.data['scrollbar'].get()
 
         self.data['text'].configure(state='normal', yscrollcommand=None)
         self.data['text'].delete(1.0, 'end')
-        self.data['text'].insert(1.0, text)
+        self.data['text'].insert(1.0, data)
 
         self.data['text'].highlight_pattern('Preemptive', 'preemptive')
         self.data['text'].highlight_pattern('Ambush', 'ambush')
-        self.data['text'].highlight_pattern('Ghost', 'ghost')
 
-        for enemy in ('Bomb', 'Basilisk', 'Funguar', 'Iron Giant'):
+        for enemy in ('Bomb', 'Basilisk', 'Funguar', 'Iron Giant', 'Ghost'):
             self.data['text'].highlight_pattern(enemy, 'enemy')
 
         self.data['text'].configure(
@@ -835,6 +809,7 @@ class FFXMonsterDataViewerUI():
         }
         # items
         data['Spoils']['Item 1'] = {
+            'Drop chance': prize_struct[136],
             'Normal': {
                 'Common': get_item(140, 0),
                 'Rare': get_item(140, 1),
@@ -845,6 +820,7 @@ class FFXMonsterDataViewerUI():
             },
         }
         data['Spoils']['Item 2'] = {
+            'Drop chance': prize_struct[137],
             'Normal': {
                 'Common': get_item(140, 2),
                 'Rare': get_item(140, 3),
@@ -854,7 +830,9 @@ class FFXMonsterDataViewerUI():
                 'Rare': get_item(152, 3),
             },
         }
-        data['Spoils']['Steal'] = {}
+        data['Spoils']['Steal'] = {
+            'Base chance': prize_struct[138],
+        }
 
         if prize_struct[165] == 32:
             data['Spoils']['Steal']['Common'] = {
@@ -928,6 +906,7 @@ class FFXMonsterDataViewerUI():
         # check if the monster can drop equipment
         if prize_struct[174] == 1:
             data['Equipment'] = {
+                'Drop chance': prize_struct[139],
                 'Bonus critical chance': prize_struct[175],
                 'Base damage': prize_struct[176],
                 'Slots range': [],

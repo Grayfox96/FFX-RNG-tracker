@@ -1,6 +1,5 @@
 import ffx_rng_tracker
 import tkinter as tk
-from tkinter import font
 from ffx_rng_tracker_ui import on_ui_close, FFXMonsterDataViewerUI
 
 
