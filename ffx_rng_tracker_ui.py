@@ -1,6 +1,6 @@
 from ffx_rng_tracker import *
 import tkinter as tk
-from tkinter import font, ttk
+from tkinter import font, ttk, simpledialog
 from itertools import count
 
 
@@ -44,6 +44,60 @@ class BetterSpinbox(tk.Spinbox):
         self.delete(0, 'end')
         self.insert(0, text)
         self.config(state='readonly')
+
+
+class FFXSeedInfoUI():
+    '''Widget that shows general information
+    about the seed.
+    '''
+
+    def __init__(self, parent, rng_tracker):
+        self.parent = parent
+        self.rng_tracker = rng_tracker
+        self.main_font = font.Font(family='Courier New', size=9)
+        self.text = self.make_equipmnent_types_widget()
+
+    def make_equipmnent_types_widget(self):
+        data = [
+            f'Seed number: {self.rng_tracker.seed_number}',
+            f'Damage rolls: {self.get_damage_rolls()}',
+            self.get_equipment_types(50, 5),
+        ]
+        data = '\n\n'.join(data)
+        widget = BetterText(self.parent, font=self.main_font, wrap='none')
+        widget.pack(expand=True, fill='both')
+        widget.insert('end', data)
+        widget.tag_configure('armor', foreground='#0000ff')
+        widget.highlight_pattern('armor', 'armor')
+        widget.config(state='disabled')
+        return widget
+
+    def get_equipment_types(self, amount, columns=2):
+        equipment_types = self.rng_tracker.get_equipment_types(amount)
+        spacer = f'{"".join(["-" for i in range(16 * columns + 1)])}\n'
+        data = f'First {amount} equipment types\n{spacer}'
+        for _ in range(columns):
+            data += f'| [##] |   Type '
+        data += f'|\n{spacer}'
+        for i in range(amount // columns):
+            for j in range(columns):
+                j = j * (amount // columns)
+                data += f'| [{i + j + 1:2}] | {equipment_types[i + j]:>6} '
+            data += '|\n'
+        data += spacer
+        return data
+
+    def get_damage_rolls(self):
+        damage_rolls = (
+            self.rng_tracker.damage_rolls['auron'][1],
+            self.rng_tracker.damage_rolls['tidus'][1],
+            self.rng_tracker.damage_rolls['auron'][2],
+            self.rng_tracker.damage_rolls['tidus'][2],
+            self.rng_tracker.damage_rolls['auron'][3],
+            self.rng_tracker.damage_rolls['tidus'][3],
+        )
+        damage_rolls = ', '.join([str(i) for i in damage_rolls])
+        return damage_rolls
 
 
 class FFXEncountersRNGTrackerUI():
@@ -142,7 +196,7 @@ class FFXEncountersRNGTrackerUI():
                 scrollregion=widget['canvas'].bbox('all')))
         widget['canvas'].create_window(
             (0, 0), window=widget['inner_frame'], anchor='nw')
-        # when the mouse enters the canvas it bounds the mousewheel to scroll
+        # when the mouse enters the canvas it binds the mousewheel to scroll
         widget['canvas'].bind(
             '<Enter>',
             lambda _: widget['canvas'].bind_all(
@@ -354,28 +408,6 @@ class FFXDropsRNGTrackerUI():
         notes = notes_file.read()
         notes_file.close()
         return notes
-
-    def make_equipmnent_types_widget(self, parent, amount, columns=2):
-        equipment_types = self.rng_tracker.get_equipment_types(amount)
-        spacer = f'{"".join(["-" for i in range(16 * columns + 1)])}\n'
-        data = ()
-        data = f'First {amount} equipment types\n{spacer}'
-        for _ in range(columns):
-            data += f'| [##] |   Type '
-        data += f'|\n{spacer}'
-        for i in range(amount // columns):
-            for j in range(columns):
-                j = j * (amount // columns)
-                data += f'| [{i + j + 1:2}] | {equipment_types[i + j]:>6} '
-            data += '|\n'
-        data += spacer
-        widget = BetterText(parent, font=self.main_font, wrap='none')
-        widget.pack(expand=True, fill='both')
-        widget.insert('end', data)
-        widget.tag_configure('armor', foreground='#0000ff')
-        widget.highlight_pattern('armor', 'armor')
-        widget.config(state='disabled')
-        return widget
 
     def make_notes_widget(self):
         '''Add the notes widget to the UI and returns a dictionary
@@ -1010,6 +1042,304 @@ class FFXMonsterDataViewerUI():
         return widget
 
 
+class FFXDamageRNGTrackerUI():
+    '''Widget used to track damage rolls, critical chance
+    and escape chance rng.
+    '''
+
+    def __init__(self, parent, rng_tracker):
+        self.parent = parent
+        self.rng_tracker = rng_tracker
+        self.main_font = font.Font(family='Courier New', size=9)
+
+        # when the mouse enters the parent widget it binds the mousewheel
+        self.parent.bind(
+            '<Enter>',
+            lambda _: self.parent.bind_all('<MouseWheel>', self.on_mousewheel))
+        # when the mouse leaves the parent widget it unbinds the mousewheel
+        self.parent.bind(
+            '<Leave>', lambda _: self.parent.unbind_all('<MouseWheel>'))
+
+        for i in range(1, 9):
+            self.parent.columnconfigure(i, weight=1)
+        self.parent.rowconfigure(1, weight=1)
+
+        self.monster_names = sorted(
+            list(self.rng_tracker.monsters_data.keys()))
+
+        self.encounters = self.make_labeled_spinbox(
+            'Encounters:', self.parent, 0, 0,
+            from_=0, to=1000, command=self.update_tracker)
+        self.preemptives = self.make_labeled_spinbox(
+            'Preemptives/ambushes:', self.parent, 0, 2,
+            from_=0, to=1000, command=self.update_tracker)
+        tk.Label(self.parent, text='Monster:').grid(
+            row=0, column=4, sticky='e')
+        self.monster = tk.Spinbox(
+            self.parent, values=self.monster_names,
+            command=self.get_monster_luck)
+        self.monster.grid(row=0, column=5, sticky='w')
+        self.monster.bind('<KeyRelease>', lambda _: self.get_monster_luck())
+        self.monster_luck = self.make_labeled_spinbox(
+            'Enemy Luck:', self.parent, 0, 6,
+            from_=0, to=255, command=self.update_tracker)
+
+        self.character_trackers = self.make_character_trackers(1, 8)
+
+        # initialize the ui
+        self.encounters.set(2)
+        self.character_trackers['tidus']['actions']['attack'].set(3)
+        self.character_trackers['auron']['actions']['attack'].set(3)
+        self.monster.delete(0, 'end')
+        self.monster.insert(0, 'sinspawn_ammes')
+        self.get_monster_luck()
+
+    def make_character_trackers(self, row: int, columnspan: int):
+
+        def make_character_tracker(parent, index: int):
+            '''Setup spinboxes and a text to track character rng.'''
+            def get_character_rng_position():
+                '''Get the rng position based on character index
+                and number of actions.
+                '''
+                actions = tracker['actions']
+                position = int(self.encounters.get())
+                position -= int(self.preemptives.get())
+
+                if position < 0:
+                    position = 0
+
+                if index > 6:
+                    position = position * 11
+
+                position += int(actions['attack'].get()) * 2
+
+                if index == 0:
+                    position += int(actions['haste'].get())
+                    position += int(actions['armor_break'].get()) * 2
+                    position += int(actions['spiral_cut'].get()) * 4
+                elif index == 1:
+                    position += int(actions['cure'].get())
+                elif index == 2:
+                    position += int(actions['power_break'].get()) * 2
+                    position += int(actions['overdrive'].get()) * 4
+                elif index == 3:
+                    position += int(actions['lancet'].get()) * 2
+                    position += int(actions['grenade'].get()) * 2
+                    position += int(actions['tier_2_grenade'].get())
+                    position += int(actions['overdrive'].get()) * 2
+                elif index == 4:
+                    position += int(actions['dark_attack'].get()) * 2
+                    position += int(actions['elemental_reels'].get()) * 2
+                elif index == 5:
+                    position += int(actions['magic'].get())
+                    position += int(actions['elemental_fury'].get()) * 16
+                elif index == 6:
+                    position += int(actions['grenade'].get()) * 2
+                    position += int(actions['tier_2_grenade'].get())
+                    position += int(actions['aoe_mixes'].get()) * 2
+                    position += int(actions['9_hit_mixes'].get()) * 9
+                elif index == 7:
+                    position += int(actions['special_attack'].get()) * 2
+                    position += int(actions['magic'].get())
+                    position += int(actions['overdrives'].get())
+
+                position += int(actions['healing_items'].get())
+                position += int(actions['escapes'].get())
+                position += int(actions['manual_rng'].get())
+
+                return position
+
+            def spinbox_command():
+                '''Update the text based on the spinboxes values.'''
+                position = get_character_rng_position()
+                rng_array = self.rng_tracker.rng_arrays[20 + index]
+                data = []
+                for i in range(0, 40):
+
+                    if i % 2 == 0:
+                        result = f'[{(i // 2) + 1:2}]'
+                    else:
+                        result = '    '
+
+                    damage_roll = rng_array[position + i] & 31
+                    result += f'{damage_roll:>2}/31'
+
+                    crit_roll = rng_array[position + i + 1] % 101
+                    luck = int(tracker['luck'].get())
+                    target_luck = int(self.monster_luck.get())
+                    equipment_crit = int(tracker['equipment_crit'].get())
+
+                    crit_chance = luck - target_luck + equipment_crit
+                    if crit_roll < crit_chance:
+                        result += '[C]'
+                    else:
+                        result += '[ ]'
+
+                    od_crit_chance = luck - target_luck
+                    if crit_roll < od_crit_chance:
+                        result += '[ODC]'
+                    else:
+                        result += '[   ]'
+
+                    escape_roll = rng_array[position + i] & 255
+                    if escape_roll < 191:
+                        result += '[E]'
+                    else:
+                        result += '[ ]'
+
+                    data.append(result)
+
+                data = '\n'.join(data)
+                tracker['text'].config(state='normal')
+                tracker['text'].delete(1.0, 'end')
+                tracker['text'].insert(1.0, data)
+                tracker['text'].config(state='disabled')
+
+            tracker = {
+                'spinbox_command': spinbox_command,
+                'frame': tk.Frame(parent),
+                'actions': {},
+            }
+
+            tracker['frame'].grid(row=0, column=index, sticky='nsew')
+
+            if index < 7:
+                character = self.rng_tracker.CHARACTERS[index]
+            elif index == 7:
+                character = 'Aeons'
+
+            tk.Label(tracker['frame'], text=character).grid(
+                row=0, column=0, columnspan=2, sticky='we')
+
+            actions = {
+                'attack': ('Attack', 1)
+            }
+
+            if index == 0:
+                actions['haste'] = ('Haste', 2)
+                actions['armor_break'] = ('Armor Break', 3)
+                actions['spiral_cut'] = ('Spiral Cut', 4)
+            elif index == 1:
+                actions['cure'] = ('Cure', 2)
+            elif index == 2:
+                actions['power_break'] = ('Power Break', 2)
+                actions['overdrive'] = ('Overdrive', 3)
+            elif index == 3:
+                actions['lancet'] = ('Lancet', 2)
+                actions['grenade'] = ('Grenade', 3)
+                actions['tier_2_grenade'] = ('Tier 2 Grenade', 4)
+                actions['overdrive'] = ('Overdrive', 5)
+            elif index == 4:
+                actions['dark_attack'] = ('Dark Attack', 2)
+                actions['elemental_reels'] = ('Elemental Reels', 3)
+            elif index == 5:
+                actions['magic'] = ('ST Magic', 2)
+                actions['elemental_fury'] = ('Elemental Fury', 3)
+            elif index == 6:
+                actions['grenade'] = ('Grenade', 2)
+                actions['tier_2_grenade'] = ('Tier 2 Grenade', 3)
+                actions['aoe_mixes'] = ('AoE Damage Mixes', 4)
+                actions['9_hit_mixes'] = ('9-Hit Mixes', 5)
+            else:
+                actions['special_attack'] = ('Special Attack', 2)
+                actions['magic'] = ('ST Magic', 3)
+                actions['overdrives'] = ('Overdrive', 4)
+
+            actions['healing_items'] = ('Healing Items', 17)
+            actions['escapes'] = ('Escapes', 18)
+            actions['manual_rng'] = ('Manual RNG', 19)
+
+            for key, value in actions.items():
+                tracker['actions'][key] = self.make_labeled_spinbox(
+                    value[0], tracker['frame'], value[1], 0, from_=0, to=1000,
+                    command=spinbox_command)
+
+            if len(actions) < 8:
+                for row in range(len(actions) + 1, 9):
+                    tk.Label(tracker['frame'], text='').grid(row=row, column=0)
+
+            tracker['text'] = tk.Text(
+                tracker['frame'], font=self.main_font, state='disabled')
+            tracker['text'].grid(row=20, column=0, columnspan=2, sticky='nsew')
+
+            tracker['luck'] = self.make_labeled_spinbox(
+                'Luck', tracker['frame'], 21, 0, from_=0, to=1000,
+                command=spinbox_command)
+            base_luck = (18, 17, 17, 18, 19, 17, 18, 17)
+            tracker['luck'].set(base_luck[index])
+
+            tracker['equipment_crit'] = self.make_labeled_spinbox(
+                'Equipment Crit', tracker['frame'], 22, 0, from_=0, to=1000,
+                command=spinbox_command)
+            default_equipment_crit = (6, 6, 6, 3, 3, 6, 6, 6)
+            tracker['equipment_crit'].set(default_equipment_crit[index])
+
+            tracker['frame'].columnconfigure(1, weight=1)
+            tracker['frame'].rowconfigure(20, weight=1)
+
+            return tracker
+
+        trackers = {}
+
+        frame = tk.Frame(self.parent)
+        frame.grid(row=row, column=0, columnspan=columnspan, sticky='nsew')
+        frame.rowconfigure(0, weight=1)
+
+        characters = (
+            'tidus', 'yuna', 'auron', 'kimahri',
+            'wakka', 'lulu', 'rikku', 'aeons'
+        )
+
+        for index, character in enumerate(characters):
+            trackers[character] = make_character_tracker(
+                frame, index)
+
+        for i in range(len(characters)):
+            frame.columnconfigure(i, weight=1)
+
+        return trackers
+
+    def make_labeled_spinbox(self, text, parent, row, column, **kwargs):
+        tk.Label(parent, text=text).grid(row=row, column=column, sticky='e')
+        spinbox = BetterSpinbox(parent, **kwargs)
+        spinbox.grid(row=row, column=column + 1, sticky='w')
+        return spinbox
+
+    def on_mousewheel(self, event):
+        '''If the widget under the cursor is a spinbox,
+        it increments/decrements it on wheelup/wheeldown.
+        '''
+        # get widget under cursor
+        x, y = self.parent.winfo_pointerxy()
+        widget = self.parent.winfo_containing(x, y)
+        # increment or decrement based on scroll direction
+        if (isinstance(widget, BetterSpinbox)
+                or isinstance(widget, tk.Spinbox)):
+            if event.delta == 120:
+                widget.invoke('buttonup')
+            elif event.delta == -120:
+                widget.invoke('buttondown')
+
+    def update_tracker(self):
+        '''Update every character's text.'''
+        for tracker in self.character_trackers.values():
+            tracker['spinbox_command']()
+
+    def get_monster_luck(self):
+        '''Get a monster's Luck stat from it's prize struct.'''
+        name = self.monster.get()
+        try:
+            prize_struct = self.rng_tracker.monsters_data[name]
+        except KeyError:
+            return
+        luck = prize_struct[37]
+        if luck < 1:
+            luck = 1
+        self.monster_luck.set(luck)
+        self.update_tracker()
+
+
 class FFXRNGTrackerUI():
     '''Widget that contains all the other RNG tracking widgets.'''
 
@@ -1018,6 +1348,11 @@ class FFXRNGTrackerUI():
         self.rng_tracker = rng_tracker
         self.notebook = ttk.Notebook(self.parent)
         self.notebook.pack(expand=True, fill='both')
+
+        self.seed_info_page = tk.Frame(self.notebook)
+        self.notebook.add(self.seed_info_page, text='Seed info')
+        self.seed_info_ui = FFXSeedInfoUI(
+            self.seed_info_page, self.rng_tracker)
 
         self.drops_tracker_page = tk.Frame(self.notebook)
         self.notebook.add(self.drops_tracker_page, text='Drops')
@@ -1029,10 +1364,10 @@ class FFXRNGTrackerUI():
         self.encounters_tracker_ui = FFXEncountersRNGTrackerUI(
             self.encounters_tracker_page, self.rng_tracker)
 
-        self.equipment_types_page = tk.Frame(self.notebook)
-        self.notebook.add(self.equipment_types_page, text='Equipment Types')
-        self.equipment_types_text = self.drops_tracker_ui.make_equipmnent_types_widget(
-            self.equipment_types_page, 50, 5)
+        self.damage_tracker_page = tk.Frame(self.notebook)
+        self.notebook.add(self.damage_tracker_page, text='Damage and crits')
+        self.damage_tracker_ui = FFXDamageRNGTrackerUI(
+            self.damage_tracker_page, self.rng_tracker)
 
         self.status_tracker_page = tk.Frame(self.notebook)
         self.notebook.add(self.status_tracker_page, text='Status')
@@ -1045,19 +1380,62 @@ class FFXRNGTrackerUI():
             self.monster_data_viewer_page, self.rng_tracker)
 
 
-def get_damage_rolls() -> tuple[int, int, int, int, int, int]:
-    '''Get a string containing 6 numbers and convert it
-    to a tuple of integers.
-    '''
-    damage_rolls_input = input('Damage rolls (Auron1 Tidus1 A2 T2 A3 T3): ')
-    # replace different symbols with spaces
-    for symbol in (',', '-', '/', '\\'):
-        damage_rolls_input = damage_rolls_input.replace(symbol, ' ')
-    # fixes double spaces
-    damage_rolls = ' '.join(damage_rolls_input.split())
-    damage_rolls = damage_rolls.split(' ')
-    damage_rolls = tuple([int(damage_roll) for damage_roll in damage_rolls])
-    return damage_rolls
+class DamageRollsDialogue(simpledialog.Dialog):
+    '''Input dialogue used to get damage rolls.'''
+
+    def __init__(self, *args, **kwargs):
+        self.warning_label = False
+        super().__init__(*args, **kwargs)
+
+    def body(self, parent):
+        tk.Label(parent, text='Damage rolls (Auron1 Tidus1 A2 T2 A3 T3)').pack()
+        self.entry = tk.Entry(parent, width=25)
+        self.entry.pack(fill='x')
+        return self.entry
+
+    def buttonbox(self):
+        tk.Button(self, text='Submit', command=self.validate_input).pack()
+        self.bind('<Return>', lambda _: self.validate_input())
+        self.bind('<Escape>', lambda _: on_ui_close(self.parent))
+
+    def validate_input(self):
+        input_string = self.entry.get()
+        # replace different symbols with spaces
+        for symbol in (',', '-', '/', '\\'):
+            input_string = input_string.replace(symbol, ' ')
+        # fixes double spaces
+        damage_rolls = ' '.join(input_string.split())
+        damage_rolls = damage_rolls.split(' ')
+        try:
+            damage_rolls = [int(damage_roll) for damage_roll in damage_rolls]
+        except ValueError as error:
+            error = str(error).split(':', 1)[1]
+            self.show_warning(f'{error} is not a valid damage roll.')
+            return
+        if len(damage_rolls) < 6:
+            self.show_warning('Need at least 6 damage rolls.')
+            return
+        elif len(damage_rolls) > 6:
+            self.show_warning(
+                f'Submitted too many values: {len(damage_rolls)}')
+            return
+        try:
+            self.rng_tracker = FFXRNGTracker(damage_rolls)
+        except (FFXRNGTracker.InvalidDamageRollError,
+                FFXRNGTracker.SeedNotFoundError) as error:
+            self.show_warning(error)
+            return
+
+        print('Damage rolls: ', ', '.join([str(i) for i in damage_rolls]))
+
+        self.destroy()
+
+    def show_warning(self, text):
+        if self.warning_label:
+            self.warning_label.config(text=text)
+        else:
+            self.warning_label = tk.Label(self, text=text)
+            self.warning_label.pack(fill='x')
 
 
 def on_ui_close(main_window):
@@ -1070,17 +1448,14 @@ def main(widget, title='ffx_rng_tracker', size='1280x830'):
     '''Creates a Tkinter main window, initializes the rng tracker
     and passes them to the rng tracking widget.
     '''
-    while True:
-        damage_rolls = get_damage_rolls()
-        try:
-            rng_tracker = FFXRNGTracker(damage_rolls)
-        except (FFXRNGTracker.InvalidDamageRollError,
-                FFXRNGTracker.SeedNotFoundError) as error:
-            print(error)
-        else:
-            break
-
     root = tk.Tk()
+    root.withdraw()
+    entry_widget = DamageRollsDialogue(root, title=title)
+    try:
+        rng_tracker = entry_widget.rng_tracker
+    except AttributeError:
+        on_ui_close(root)
+
     root.protocol(
         'WM_DELETE_WINDOW', lambda: on_ui_close(root))
     root.title(title)
@@ -1088,6 +1463,7 @@ def main(widget, title='ffx_rng_tracker', size='1280x830'):
 
     ui = widget(root, rng_tracker)
 
+    root.deiconify()
     root.mainloop()
 
 

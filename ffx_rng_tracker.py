@@ -141,7 +141,8 @@ class FFXRNGTracker:
                 if damage_roll not in possible_rolls[character]:
                     if damage_roll // 2 not in possible_rolls[character]:
                         raise self.InvalidDamageRollError(
-                            f'Invalid damage roll: {character} {damage_roll}')
+                            f'Invalid damage roll for {character}: '
+                            f'{damage_roll}')
                     else:
                         damage_rolls[character][index] = damage_roll // 2
 
@@ -1087,8 +1088,8 @@ class FFXRNGTracker:
         # the forced ability gets applied only if this byte is 0x80
         forced_ability_check = prize_struct[abilities_array_offset + 1]
 
-        equipment['abilities'] = []
-        equipment['abilities_index'] = []
+        abilities = []
+        abilities_indexes = []
         equipment['base_gil_value'] = 0
 
         # if there is an ability in the first slot of the abilities array
@@ -1096,8 +1097,8 @@ class FFXRNGTracker:
         if number_of_slots == 0 or forced_ability_check == 0:
             number_of_abilities_added = 0
         else:
-            equipment['abilities_index'].append(forced_ability)
-            equipment['abilities'].append(
+            abilities_indexes.append(forced_ability)
+            abilities.append(
                 self.abilities[forced_ability]['name'])
             equipment['base_gil_value'] += self.abilities[forced_ability]['gil_value']
             number_of_abilities_added = 1
@@ -1125,7 +1126,7 @@ class FFXRNGTracker:
                     # check for duplicate abilities
                     for slot in range(number_of_abilities_added):
 
-                        ability_to_check = equipment['abilities_index'][slot]
+                        ability_to_check = abilities_indexes[slot]
 
                         # if the ability has already been added stop checking
                         if ability_to_check == ability_to_add:
@@ -1135,15 +1136,18 @@ class FFXRNGTracker:
                     # if the ability is not a duplicate add it to the current
                     # slot and advance both slot count and ability added count
                     if add_ability:
-                        equipment['abilities_index'].append(ability_to_add)
-                        equipment['abilities'].append(
+                        abilities_indexes.append(ability_to_add)
+                        abilities.append(
                             self.abilities[ability_to_add]['name'])
                         equipment['base_gil_value'] += self.abilities[ability_to_add]['gil_value']
                         number_of_abilities_added += 1
 
         # set empty slots
         for _ in range(number_of_slots - number_of_abilities_added):
-            equipment['abilities'].append('-')
+            abilities.append('-')
+
+        equipment['abilities'] = tuple(abilities)
+        equipment['abilities_indexes'] = tuple(abilities_indexes)
 
         # if enemy equipment droprate is 100%
         if prize_struct[139] == 255:
@@ -1163,10 +1167,10 @@ class FFXRNGTracker:
         # get equipment name
         if equipment['type'] == 'weapon':
             equipment['name'] = self._get_weapon_name(
-                owner_index, equipment['abilities_index'], number_of_slots)
+                owner_index, abilities_indexes, number_of_slots)
         elif equipment['type'] == 'armor':
             equipment['name'] = self._get_armor_name(
-                owner_index, equipment['abilities_index'], number_of_slots)
+                owner_index, abilities_indexes, number_of_slots)
 
         return equipment
 
