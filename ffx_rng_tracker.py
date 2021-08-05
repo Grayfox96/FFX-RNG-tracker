@@ -92,6 +92,11 @@ class FFXRNGTracker:
             self.rng_arrays[i] = self.get_rng_array(i, 5000)
             self.rng_current_positions[i] = 0
 
+        # get the party's hit arrays
+        for i in range(36, 44):
+            self.rng_arrays[i] = self.get_rng_array(i, 5000)
+            self.rng_current_positions[i] = 0
+
         # get all the status chance arrays
         for i in range(52, 68):
             self.rng_arrays[i] = self.get_rng_array(i)

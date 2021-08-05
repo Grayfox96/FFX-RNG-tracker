@@ -61,6 +61,7 @@ class FFXSeedInfoUI():
         data = [
             f'Seed number: {self.rng_tracker.seed_number}',
             f'Damage rolls: {self.get_damage_rolls()}',
+            self.get_status_misses(),
             self.get_equipment_types(50, 5),
         ]
         data = '\n\n'.join(data)
@@ -98,6 +99,20 @@ class FFXSeedInfoUI():
         )
         damage_rolls = ', '.join([str(i) for i in damage_rolls])
         return damage_rolls
+
+    def get_status_misses(self):
+        output = []
+        if (self.rng_tracker.rng_arrays[54][0] % 101) == 100:
+            output.append('Auron\'s Power Break Miss: Yes')
+        else:
+            output.append('Auron\'s Power Break Miss: No')
+
+        if (self.rng_tracker.rng_arrays[56][0] % 101) == 100:
+            output.append('Wakka\'s Dark Attack Miss: Yes')
+        else:
+            output.append('Wakka\'s Dark Attack Miss: No')
+
+        return '\n'.join(output)
 
 
 class FFXEncountersRNGTrackerUI():
@@ -1077,14 +1092,17 @@ class FFXDamageRNGTrackerUI():
             row=0, column=4, sticky='e')
         self.monster = tk.Spinbox(
             self.parent, values=self.monster_names,
-            command=self.get_monster_luck)
+            command=self.get_monster_stats)
         self.monster.grid(row=0, column=5, sticky='w')
-        self.monster.bind('<KeyRelease>', lambda _: self.get_monster_luck())
+        self.monster.bind('<KeyRelease>', lambda _: self.get_monster_stats())
         self.monster_luck = self.make_labeled_spinbox(
             'Enemy Luck:', self.parent, 0, 6,
             from_=0, to=255, command=self.update_tracker)
+        self.monster_evasion = self.make_labeled_spinbox(
+            'Enemy Evasion:', self.parent, 0, 8,
+            from_=0, to=255, command=self.update_tracker)
 
-        self.character_trackers = self.make_character_trackers(1, 8)
+        self.character_trackers = self.make_character_trackers(1, 10)
 
         # initialize the ui
         self.encounters.set(2)
@@ -1092,14 +1110,14 @@ class FFXDamageRNGTrackerUI():
         self.character_trackers['auron']['actions']['attack'].set(3)
         self.monster.delete(0, 'end')
         self.monster.insert(0, 'sinspawn_ammes')
-        self.get_monster_luck()
+        self.get_monster_stats()
 
     def make_character_trackers(self, row: int, columnspan: int):
 
         def make_character_tracker(parent, index: int):
             '''Setup spinboxes and a text to track character rng.'''
-            def get_character_rng_position():
-                '''Get the rng position based on character index
+            def get_damage_rng_position():
+                '''Get the damage rng position based on character index
                 and number of actions.
                 '''
                 actions = tracker['actions']
@@ -1137,58 +1155,104 @@ class FFXDamageRNGTrackerUI():
                 elif index == 6:
                     position += int(actions['grenade'].get()) * 2
                     position += int(actions['tier_2_grenade'].get())
-                    position += int(actions['aoe_mixes'].get()) * 2
-                    position += int(actions['9_hit_mixes'].get()) * 9
+                    position += int(actions['aoe_mix'].get()) * 2
+                    position += int(actions['9_hit_mix'].get()) * 9
                 elif index == 7:
                     position += int(actions['special_attack'].get()) * 2
                     position += int(actions['magic'].get())
-                    position += int(actions['overdrives'].get())
+                    position += int(actions['overdrive'].get())
 
-                position += int(actions['healing_items'].get())
-                position += int(actions['escapes'].get())
+                position += int(actions['healing_item'].get())
+                position += int(actions['escape'].get())
                 position += int(actions['manual_rng'].get())
+
+                return position
+
+            def get_hit_rng_position():
+                '''Get the hit rng position based on character index
+                and number of actions.
+                '''
+                actions = tracker['actions']
+
+                position = 0
+
+                position += int(actions['attack'].get())
+
+                if index == 0:
+                    position += int(actions['armor_break'].get())
+                elif index == 2:
+                    position += int(actions['power_break'].get())
+                elif index == 4:
+                    position += int(actions['dark_attack'].get())
+
+                position += int(actions['miss'].get())
 
                 return position
 
             def spinbox_command():
                 '''Update the text based on the spinboxes values.'''
-                position = get_character_rng_position()
-                rng_array = self.rng_tracker.rng_arrays[20 + index]
+                damage_rng_position = get_damage_rng_position()
+                damage_rng = self.rng_tracker.rng_arrays[20 + index]
+                hit_rng_position = get_hit_rng_position()
+                hit_rng = self.rng_tracker.rng_arrays[36 + index]
+                luck = int(tracker['luck'].get())
+                target_luck = int(self.monster_luck.get())
+                equipment_crit = int(tracker['equipment_crit'].get())
+                evasion = int(self.monster_evasion.get())
+                accuracy = int(tracker['accuracy'].get())
+
+                crit_chance = luck - target_luck + equipment_crit
+                od_crit_chance = luck - target_luck
+
+                # similar to accuracy * 4 // 10
+                accuracy = accuracy * 2
+                accuracy = (accuracy * 0x66666667) // 0xffffffff
+                accuracy = accuracy // 2
+                hit_chance_index = accuracy // 0xffffffffffffffffffffffffff
+                hit_chance_index += accuracy - evasion + 10
+                if hit_chance_index < 0:
+                    hit_chance_index = 0
+                elif hit_chance_index > 8:
+                    hit_chance_index = 8
+                hit_chance_table = (25, 30, 30, 40, 40, 50, 50, 80, 100)
+                hit_chance = hit_chance_table[hit_chance_index]
+                hit_chance += luck - target_luck
+
                 data = []
+
                 for i in range(0, 40):
 
                     if i % 2 == 0:
-                        result = f'[{(i // 2) + 1:2}]'
+                        result = [f'[{(i // 2) + 1:2}]']
                     else:
-                        result = '    '
+                        result = ['    ']
 
-                    damage_roll = rng_array[position + i] & 31
-                    result += f'{damage_roll:>2}/31'
+                    damage_roll = damage_rng[damage_rng_position + i] & 31
+                    result.append(f'{damage_roll:>2}/31')
 
-                    crit_roll = rng_array[position + i + 1] % 101
-                    luck = int(tracker['luck'].get())
-                    target_luck = int(self.monster_luck.get())
-                    equipment_crit = int(tracker['equipment_crit'].get())
-
-                    crit_chance = luck - target_luck + equipment_crit
+                    crit_roll = damage_rng[damage_rng_position + i + 1] % 101
                     if crit_roll < crit_chance:
-                        result += '[C]'
+                        result.append('C')
                     else:
-                        result += '[ ]'
-
-                    od_crit_chance = luck - target_luck
+                        result.append(' ')
                     if crit_roll < od_crit_chance:
-                        result += '[ODC]'
+                        result.append('ODC')
                     else:
-                        result += '[   ]'
+                        result.append('   ')
 
-                    escape_roll = rng_array[position + i] & 255
+                    escape_roll = damage_rng[damage_rng_position + i] & 255
                     if escape_roll < 191:
-                        result += '[E]'
+                        result.append('E')
                     else:
-                        result += '[ ]'
+                        result.append(' ')
 
-                    data.append(result)
+                    hit_roll = hit_rng[hit_rng_position + (i // 2)] % 101
+                    if hit_chance > hit_roll:
+                        result.append(' ')
+                    else:
+                        result.append('M')
+
+                    data.append('|'.join(result))
 
                 data = '\n'.join(data)
                 tracker['text'].config(state='normal')
@@ -1239,15 +1303,16 @@ class FFXDamageRNGTrackerUI():
             elif index == 6:
                 actions['grenade'] = ('Grenade', 2)
                 actions['tier_2_grenade'] = ('Tier 2 Grenade', 3)
-                actions['aoe_mixes'] = ('AoE Damage Mixes', 4)
-                actions['9_hit_mixes'] = ('9-Hit Mixes', 5)
+                actions['aoe_mix'] = ('AoE Damage Mix', 4)
+                actions['9_hit_mix'] = ('9-Hit Mix', 5)
             else:
                 actions['special_attack'] = ('Special Attack', 2)
                 actions['magic'] = ('ST Magic', 3)
-                actions['overdrives'] = ('Overdrive', 4)
+                actions['overdrive'] = ('Overdrive', 4)
 
-            actions['healing_items'] = ('Healing Items', 17)
-            actions['escapes'] = ('Escapes', 18)
+            actions['miss'] = ('Miss', 16)
+            actions['healing_item'] = ('Healing Item', 17)
+            actions['escape'] = ('Escape', 18)
             actions['manual_rng'] = ('Manual RNG', 19)
 
             for key, value in actions.items():
@@ -1255,22 +1320,27 @@ class FFXDamageRNGTrackerUI():
                     value[0], tracker['frame'], value[1], 0, from_=0, to=1000,
                     command=spinbox_command)
 
-            if len(actions) < 8:
-                for row in range(len(actions) + 1, 9):
-                    tk.Label(tracker['frame'], text='').grid(row=row, column=0)
+            for row in range(len(actions) + 1, 10):
+                tk.Label(tracker['frame'], text='').grid(row=row, column=0)
 
             tracker['text'] = tk.Text(
                 tracker['frame'], font=self.main_font, state='disabled')
             tracker['text'].grid(row=20, column=0, columnspan=2, sticky='nsew')
 
+            tracker['accuracy'] = self.make_labeled_spinbox(
+                'Accuracy', tracker['frame'], 21, 0, from_=0, to=255,
+                command=spinbox_command)
+            base_accuracy = (10, 3, 3, 5, 25, 3, 5, 14)
+            tracker['accuracy'].set(base_accuracy[index])
+
             tracker['luck'] = self.make_labeled_spinbox(
-                'Luck', tracker['frame'], 21, 0, from_=0, to=1000,
+                'Luck', tracker['frame'], 22, 0, from_=0, to=255,
                 command=spinbox_command)
             base_luck = (18, 17, 17, 18, 19, 17, 18, 17)
             tracker['luck'].set(base_luck[index])
 
             tracker['equipment_crit'] = self.make_labeled_spinbox(
-                'Equipment Crit', tracker['frame'], 22, 0, from_=0, to=1000,
+                'Equipment Crit', tracker['frame'], 23, 0, from_=0, to=1000,
                 command=spinbox_command)
             default_equipment_crit = (6, 6, 6, 3, 3, 6, 6, 6)
             tracker['equipment_crit'].set(default_equipment_crit[index])
@@ -1326,7 +1396,7 @@ class FFXDamageRNGTrackerUI():
         for tracker in self.character_trackers.values():
             tracker['spinbox_command']()
 
-    def get_monster_luck(self):
+    def get_monster_stats(self):
         '''Get a monster's Luck stat from it's prize struct.'''
         name = self.monster.get()
         try:
@@ -1334,9 +1404,13 @@ class FFXDamageRNGTrackerUI():
         except KeyError:
             return
         luck = prize_struct[37]
+        evasion = prize_struct[38]
         if luck < 1:
             luck = 1
+        if evasion < 1:
+            evasion = 1
         self.monster_luck.set(luck)
+        self.monster_evasion.set(evasion)
         self.update_tracker()
 
 
@@ -1365,7 +1439,8 @@ class FFXRNGTrackerUI():
             self.encounters_tracker_page, self.rng_tracker)
 
         self.damage_tracker_page = tk.Frame(self.notebook)
-        self.notebook.add(self.damage_tracker_page, text='Damage and crits')
+        self.notebook.add(
+            self.damage_tracker_page, text='Damage/crits/escapes/misses')
         self.damage_tracker_ui = FFXDamageRNGTrackerUI(
             self.damage_tracker_page, self.rng_tracker)
 
