@@ -46,12 +46,13 @@ class BetterSpinbox(tk.Spinbox):
         self.config(state='readonly')
 
 
-class FFXSeedInfoUI():
+class FFXSeedInfoUI(tk.Frame):
     '''Widget that shows general information
     about the seed.
     '''
 
-    def __init__(self, parent, rng_tracker):
+    def __init__(self, parent, rng_tracker, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
         self.parent = parent
         self.rng_tracker = rng_tracker
         self.main_font = font.Font(family='Courier New', size=9)
@@ -65,7 +66,7 @@ class FFXSeedInfoUI():
             self.get_equipment_types(50, 5),
         ]
         data = '\n\n'.join(data)
-        widget = BetterText(self.parent, font=self.main_font, wrap='none')
+        widget = BetterText(self, font=self.main_font, wrap='none')
         widget.pack(expand=True, fill='both')
         widget.insert('end', data)
         widget.tag_configure('armor', foreground='#0000ff')
@@ -115,10 +116,11 @@ class FFXSeedInfoUI():
         return '\n'.join(output)
 
 
-class FFXEncountersRNGTrackerUI():
+class FFXEncountersRNGTrackerUI(tk.Frame):
     '''Widget used to track encounters RNG.'''
 
-    def __init__(self, parent, rng_tracker):
+    def __init__(self, parent, rng_tracker, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
         self.parent = parent
         self.rng_tracker = rng_tracker
         self.formations = rng_tracker.formations
@@ -151,7 +153,7 @@ class FFXEncountersRNGTrackerUI():
         containing the widget's components.
         '''
         widget = {}
-        widget['frame'] = tk.Frame(self.parent)
+        widget['frame'] = tk.Frame(self)
         widget['frame'].pack(expand=True, fill='both', side='right')
         widget['text'] = BetterText(
             widget['frame'], font=self.main_font, width=57, state='disabled')
@@ -196,7 +198,7 @@ class FFXEncountersRNGTrackerUI():
             return widget
 
         widget = {}
-        widget['outer_frame'] = tk.Frame(self.parent)
+        widget['outer_frame'] = tk.Frame(self)
         widget['outer_frame'].pack(fill='y', side='left')
         widget['canvas'] = tk.Canvas(widget['outer_frame'], width=280)
         widget['canvas'].pack(side='left', fill='both', expand=True)
@@ -402,10 +404,11 @@ class FFXEncountersRNGTrackerUI():
         self.data['text'].yview('moveto', saved_position[0])
 
 
-class FFXDropsRNGTrackerUI():
+class FFXDropsRNGTrackerUI(tk.Frame):
     '''Widget used to track enemy drops RNG.'''
 
-    def __init__(self, parent, rng_tracker):
+    def __init__(self, parent, rng_tracker, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
         self.parent = parent
         self.rng_tracker = rng_tracker
         self.main_font = font.Font(family='Courier New', size=9)
@@ -429,7 +432,7 @@ class FFXDropsRNGTrackerUI():
         containing the widget's components.
         '''
         widget = {}
-        widget['frame'] = tk.Frame(self.parent, width=40)
+        widget['frame'] = tk.Frame(self, width=40)
         widget['frame'].pack(fill='y', side='left')
         widget['text'] = tk.Text(
             widget['frame'], font=self.main_font, width=40)
@@ -448,7 +451,7 @@ class FFXDropsRNGTrackerUI():
         containing the widget's components.
         '''
         widget = {}
-        widget['frame'] = tk.Frame(self.parent)
+        widget['frame'] = tk.Frame(self)
         widget['frame'].pack(expand=True, fill='both', side='right')
         widget['text'] = BetterText(
             widget['frame'], font=self.main_font, state='disabled', wrap='word')
@@ -531,11 +534,7 @@ class FFXDropsRNGTrackerUI():
                     'Usage: waste/advance/roll [rng#] [amount]')
                 return
 
-            if rng_index in self.rng_tracker.rng_current_positions:
-                self.rng_tracker.add_advance_rng_event(rng_index, times)
-            else:
-                self.rng_tracker.add_comment_event(
-                    f'Can\'t advance rng{rng_index}')
+            self.rng_tracker.add_advance_rng_event(rng_index, times)
 
         # aliases
         event_advance = event_roll
@@ -701,7 +700,6 @@ class FFXDropsRNGTrackerUI():
             'No event called',
             'Usage:',
             'No monster named',
-            'Can\'t advance',
         )
         for error_message in error_messages:
             self.data['text'].highlight_pattern(
@@ -715,10 +713,11 @@ class FFXDropsRNGTrackerUI():
         self.data['text'].yview('moveto', saved_position[0])
 
 
-class FFXStatusRNGTrackerUI():
+class FFXStatusRNGTrackerUI(tk.Frame):
     '''Widget that shows status RNG rolls.'''
 
-    def __init__(self, parent, rng_tracker):
+    def __init__(self, parent, rng_tracker, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
         self.parent = parent
         self.rng_tracker = rng_tracker
         self.main_font = font.Font(family='Courier New', size=9)
@@ -745,7 +744,7 @@ class FFXStatusRNGTrackerUI():
                 data += f'| {status_chance_rolls[j][i]:>10}'
             data += '|\n'
         data += spacer
-        text = BetterText(self.parent, font=self.main_font, wrap='none')
+        text = BetterText(self, font=self.main_font, wrap='none')
         text.insert(1.0, data)
         text.config(state='disabled')
         text.pack(expand=True, fill='both')
@@ -754,18 +753,19 @@ class FFXStatusRNGTrackerUI():
         return text
 
 
-class FFXMonsterDataViewerUI():
+class FFXMonsterDataViewerUI(tk.Frame):
     '''Widget used to display information
     from the mon_data game file.
     '''
 
-    def __init__(self, parent, ffx_info):
+    def __init__(self, parent, rng_tracker, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
         self.parent = parent
-        self.ffx_info = ffx_info
-        self.abilities = ffx_info.abilities
-        self.items = ffx_info.items
-        self.text_characters = ffx_info.text_characters
-        self.monsters_data = ffx_info.monsters_data
+        self.ffx_info = rng_tracker
+        self.abilities = rng_tracker.abilities
+        self.items = rng_tracker.items
+        self.text_characters = rng_tracker.text_characters
+        self.monsters_data = rng_tracker.monsters_data
         self.main_font = font.Font(family='Courier New', size=9)
         self.monsters_names = sorted(list(self.monsters_data.keys()))
         self.monster_data_widget = self.make_monster_data_widget()
@@ -1035,11 +1035,10 @@ class FFXMonsterDataViewerUI():
     def make_monster_data_widget(self):
 
         widget = {}
-        widget['scrollbar'] = tk.Scrollbar(self.parent)
+        widget['scrollbar'] = tk.Scrollbar(self)
         widget['scrollbar'].pack(fill='y', side='right')
 
-        widget['text'] = tk.Text(
-            self.parent, font=self.main_font, width=55)
+        widget['text'] = tk.Text(self, font=self.main_font, width=55)
         widget['text'].pack(expand=True, fill='both', side='right')
         widget['text'].config(
             yscrollcommand=widget['scrollbar'].set)
@@ -1048,7 +1047,7 @@ class FFXMonsterDataViewerUI():
 
         widget['listvar'] = tk.StringVar(value=self.monsters_names)
         widget['listbox'] = tk.Listbox(
-            self.parent, width=30, listvariable=widget['listvar'])
+            self, width=30, listvariable=widget['listvar'])
         widget['listbox'].bind(
             '<<ListboxSelect>>', lambda _: self.print_monster_data())
 
@@ -1057,27 +1056,28 @@ class FFXMonsterDataViewerUI():
         return widget
 
 
-class FFXDamageRNGTrackerUI():
+class FFXDamageRNGTrackerUI(tk.Frame):
     '''Widget used to track damage rolls, critical chance
     and escape chance rng.
     '''
 
-    def __init__(self, parent, rng_tracker):
+    def __init__(self, parent, rng_tracker, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
         self.parent = parent
         self.rng_tracker = rng_tracker
         self.main_font = font.Font(family='Courier New', size=9)
 
         # when the mouse enters the parent widget it binds the mousewheel
-        self.parent.bind(
+        self.bind(
             '<Enter>',
-            lambda _: self.parent.bind_all('<MouseWheel>', self.on_mousewheel))
+            lambda _: self.bind_all('<MouseWheel>', self.on_mousewheel))
         # when the mouse leaves the parent widget it unbinds the mousewheel
-        self.parent.bind(
-            '<Leave>', lambda _: self.parent.unbind_all('<MouseWheel>'))
+        self.bind(
+            '<Leave>', lambda _: self.unbind_all('<MouseWheel>'))
 
         for i in range(1, 9):
-            self.parent.columnconfigure(i, weight=1)
-        self.parent.rowconfigure(1, weight=1)
+            self.columnconfigure(i, weight=1)
+        self.rowconfigure(1, weight=1)
 
         self.monster_names = sorted(
             list(self.rng_tracker.monsters_data.keys()))
@@ -1085,23 +1085,22 @@ class FFXDamageRNGTrackerUI():
         self.possible_stats = self.get_possible_stat_values()
 
         self.encounters = self.make_labeled_spinbox(
-            'Encounters:', self.parent, 0, 0,
+            'Encounters:', self, 0, 0,
             from_=0, to=1000, command=self.update_tracker)
         self.preemptives = self.make_labeled_spinbox(
-            'Preemptives/ambushes:', self.parent, 0, 2,
+            'Preemptives/ambushes:', self, 0, 2,
             from_=0, to=1000, command=self.update_tracker)
-        tk.Label(self.parent, text='Monster:').grid(
-            row=0, column=4, sticky='e')
+        tk.Label(self, text='Monster:').grid(row=0, column=4, sticky='e')
         self.monster = tk.Spinbox(
-            self.parent, values=self.monster_names,
+            self, values=self.monster_names,
             command=self.get_monster_stats)
         self.monster.grid(row=0, column=5, sticky='w')
         self.monster.bind('<KeyRelease>', lambda _: self.get_monster_stats())
         self.monster_luck = self.make_labeled_spinbox(
-            'Enemy Luck:', self.parent, 0, 6,
+            'Enemy Luck:', self, 0, 6,
             values=self.possible_stats['luck'], command=self.update_tracker)
         self.monster_evasion = self.make_labeled_spinbox(
-            'Enemy Evasion:', self.parent, 0, 8,
+            'Enemy Evasion:', self, 0, 8,
             values=self.possible_stats['evasion'], command=self.update_tracker)
 
         self.character_trackers = self.make_character_trackers(1, 10)
@@ -1354,7 +1353,7 @@ class FFXDamageRNGTrackerUI():
 
         trackers = {}
 
-        frame = tk.Frame(self.parent)
+        frame = tk.Frame(self)
         frame.grid(row=row, column=0, columnspan=columnspan, sticky='nsew')
         frame.rowconfigure(0, weight=1)
 
@@ -1383,8 +1382,8 @@ class FFXDamageRNGTrackerUI():
         it increments/decrements it on wheelup/wheeldown.
         '''
         # get widget under cursor
-        x, y = self.parent.winfo_pointerxy()
-        widget = self.parent.winfo_containing(x, y)
+        x, y = self.winfo_pointerxy()
+        widget = self.winfo_containing(x, y)
         # increment or decrement based on scroll direction
         if (isinstance(widget, BetterSpinbox)
                 or isinstance(widget, tk.Spinbox)):
@@ -1442,36 +1441,29 @@ class FFXRNGTrackerUI():
         self.notebook = ttk.Notebook(self.parent)
         self.notebook.pack(expand=True, fill='both')
 
-        self.seed_info_page = tk.Frame(self.notebook)
+        self.seed_info_page = FFXSeedInfoUI(self.notebook, self.rng_tracker)
         self.notebook.add(self.seed_info_page, text='Seed info')
-        self.seed_info_ui = FFXSeedInfoUI(
-            self.seed_info_page, self.rng_tracker)
 
-        self.drops_tracker_page = tk.Frame(self.notebook)
+        self.drops_tracker_page = FFXDropsRNGTrackerUI(
+            self.notebook, self.rng_tracker)
         self.notebook.add(self.drops_tracker_page, text='Drops')
-        self.drops_tracker_ui = FFXDropsRNGTrackerUI(
-            self.drops_tracker_page, self.rng_tracker)
 
-        self.encounters_tracker_page = tk.Frame(self.notebook)
+        self.encounters_tracker_page = FFXEncountersRNGTrackerUI(
+            self.notebook, self.rng_tracker)
         self.notebook.add(self.encounters_tracker_page, text='Encounters')
-        self.encounters_tracker_ui = FFXEncountersRNGTrackerUI(
-            self.encounters_tracker_page, self.rng_tracker)
 
-        self.damage_tracker_page = tk.Frame(self.notebook)
+        self.damage_tracker_page = FFXDamageRNGTrackerUI(
+            self.notebook, self.rng_tracker)
         self.notebook.add(
             self.damage_tracker_page, text='Damage/crits/escapes/misses')
-        self.damage_tracker_ui = FFXDamageRNGTrackerUI(
-            self.damage_tracker_page, self.rng_tracker)
 
-        self.status_tracker_page = tk.Frame(self.notebook)
+        self.status_tracker_page = FFXStatusRNGTrackerUI(
+            self.notebook, self.rng_tracker)
         self.notebook.add(self.status_tracker_page, text='Status')
-        self.status_tracker_ui = FFXStatusRNGTrackerUI(
-            self.status_tracker_page, self.rng_tracker)
 
-        self.monster_data_viewer_page = tk.Frame(self.notebook)
+        self.monster_data_viewer_page = FFXMonsterDataViewerUI(
+            self.notebook, self.rng_tracker)
         self.notebook.add(self.monster_data_viewer_page, text='Monster Data')
-        self.monster_data_viewer = FFXMonsterDataViewerUI(
-            self.monster_data_viewer_page, self.rng_tracker)
 
 
 class DamageRollsDialogue(simpledialog.Dialog):
