@@ -71,36 +71,19 @@ class FFXRNGTracker:
         if self.seed_number == 0:
             raise self.SeedNotFoundError('Seed not found')
 
-        self.rng_arrays = {
-            # encouter formations and preempt/ambush chance
-            1: self.get_rng_array(1, 5000),
-            # drop/steal chance
-            10: self.get_rng_array(10, 5000),
-            # rare item chance
-            11: self.get_rng_array(11, 5000),
-            # equipment owner,type, number of slots and abilities
-            12: self.get_rng_array(12, 5000),
-            # abilities
-            13: self.get_rng_array(13, 5000),
-        }
+        # calculate the first n values of all the rng arrays
+        # 1: encouter formations and preempt/ambush
+        # 10: drop/steal chance
+        # 11: rare item chance
+        # 12: equipment owner,type, number of slots and abilities
+        # 13: abilities
+        # 20-27: party's damage/crit/escape
+        # 36-43: party's hit arrays
+        # 52-67: status hit arrays
+        self.rng_arrays = tuple([self.get_rng_array(i) for i in range(68)])
 
         # used to keep track of the rng positions
-        self.rng_current_positions = {}
-
-        # get the party's damage/crit/escape arrays
-        for i in range(20, 28):
-            self.rng_arrays[i] = self.get_rng_array(i, 5000)
-            self.rng_current_positions[i] = 0
-
-        # get the party's hit arrays
-        for i in range(36, 44):
-            self.rng_arrays[i] = self.get_rng_array(i, 5000)
-            self.rng_current_positions[i] = 0
-
-        # get all the status chance arrays
-        for i in range(52, 68):
-            self.rng_arrays[i] = self.get_rng_array(i)
-            self.rng_current_positions[i] = 0
+        self.rng_current_positions = [0 for _ in range(68)]
 
         self.abilities = self.get_ability_names('files/ffxhd-abilities.csv')
         self.equipment_names = self.get_equipment_names(
@@ -225,13 +208,11 @@ class FFXRNGTracker:
             yield rng_value & 0x7fffffff
 
     def get_rng_array(
-            self, rng_index: int, number_of_values: int = 1000) -> list[int]:
+            self, rng_index: int, number_of_values: int = 3000) -> tuple[int]:
         '''Returns the first n number of values for the given rng index.'''
         rng_generator = self.rng_array_generator(rng_index)
-        rng_values = []
-        for _ in range(number_of_values):
-            rng_values.append(next(rng_generator))
-        return rng_values
+        rng_values = [next(rng_generator) for _ in range(number_of_values)]
+        return tuple(rng_values)
 
     def advance_rng(self, rng_index: int) -> int:
         '''Advances the position of the given rng index and returns
@@ -263,7 +244,7 @@ class FFXRNGTracker:
         }
 
     def get_ability_names(
-            self, abilities_file: str) -> list[dict[str, Value]]:
+            self, abilities_file: str) -> tuple[dict[str, Value]]:
         '''Retrieves the abilities names and their base gil values
         used in the equipment price formula.
         '''
@@ -272,14 +253,15 @@ class FFXRNGTracker:
                 abilities_file_object, delimiter=',')
             # skips first line
             next(abilities_file_reader)
-            ability_names = [{'name': line[1], 'gil_value': int(line[2])}
-                             for line in abilities_file_reader]
+            ability_names = tuple([{'name': line[1], 'gil_value': int(line[2])}
+                                   for line in abilities_file_reader])
         return ability_names
 
     def get_equipment_names(
-            self, equipment_names_file: str) -> dict[str, list[str]]:
+            self, equipment_names_file: str) -> dict[str, tuple[str]]:
         '''Retrieves the equipment names.'''
-        equipment_names = {'weapon': [], 'armor': []}
+        weapon_names = []
+        armor_names = []
         with open(get_resource_path(equipment_names_file)) as \
                 equipment_names_file_object:
             equipment_names_file_reader = csv.reader(
@@ -289,23 +271,26 @@ class FFXRNGTracker:
                 next(equipment_names_file_reader)
             # get weapons' names lists
             for _ in range(66):
-                equipment_names['weapon'].append(
-                    next(equipment_names_file_reader))
+                weapon_names.append(next(equipment_names_file_reader))
             # skips empty line
             next(equipment_names_file_reader)
             # get armors' names lists
             for _ in range(84):
-                equipment_names['armor'].append(
-                    next(equipment_names_file_reader))
+                armor_names.append(next(equipment_names_file_reader))
+
+        equipment_names = {
+            'weapon': tuple(weapon_names),
+            'armor': tuple(armor_names),
+        }
         return equipment_names
 
-    def get_item_names(self, items_file: str) -> list[str]:
+    def get_item_names(self, items_file: str) -> tuple[str]:
         '''Retrieves the items names.'''
         with open(get_resource_path(items_file)) as items_file_object:
             items_file_reader = csv.reader(items_file_object, delimiter=',')
             # skips first line
             next(items_file_reader)
-            items_list = [line[1] for line in items_file_reader]
+            items_list = tuple([line[1] for line in items_file_reader])
         return items_list
 
     def get_formations(self, formations_file):
@@ -1025,7 +1010,7 @@ class FFXRNGTracker:
         # check if killing with a party member
         # always gives the equipment to that character
         killer_is_owner_test = rng_equipment_owner % (equipment_owner_base + 3)
-        if killer_is_owner_test > equipment_owner_base:
+        if killer_is_owner_test >= equipment_owner_base:
             equipment['killer_is_owner'] = True
         else:
             equipment['killer_is_owner'] = False

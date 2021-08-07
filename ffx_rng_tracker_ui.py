@@ -1082,6 +1082,8 @@ class FFXDamageRNGTrackerUI():
         self.monster_names = sorted(
             list(self.rng_tracker.monsters_data.keys()))
 
+        self.possible_stats = self.get_possible_stat_values()
+
         self.encounters = self.make_labeled_spinbox(
             'Encounters:', self.parent, 0, 0,
             from_=0, to=1000, command=self.update_tracker)
@@ -1097,10 +1099,10 @@ class FFXDamageRNGTrackerUI():
         self.monster.bind('<KeyRelease>', lambda _: self.get_monster_stats())
         self.monster_luck = self.make_labeled_spinbox(
             'Enemy Luck:', self.parent, 0, 6,
-            from_=0, to=255, command=self.update_tracker)
+            values=self.possible_stats['luck'], command=self.update_tracker)
         self.monster_evasion = self.make_labeled_spinbox(
             'Enemy Evasion:', self.parent, 0, 8,
-            from_=0, to=255, command=self.update_tracker)
+            values=self.possible_stats['evasion'], command=self.update_tracker)
 
         self.character_trackers = self.make_character_trackers(1, 10)
 
@@ -1148,7 +1150,7 @@ class FFXDamageRNGTrackerUI():
                     position += int(actions['overdrive'].get()) * 2
                 elif index == 4:
                     position += int(actions['dark_attack'].get()) * 2
-                    position += int(actions['elemental_reels'].get()) * 2
+                    position += int(actions['elemental_reels'].get())
                 elif index == 5:
                     position += int(actions['magic'].get())
                     position += int(actions['elemental_fury'].get()) * 16
@@ -1412,6 +1414,23 @@ class FFXDamageRNGTrackerUI():
         self.monster_luck.set(luck)
         self.monster_evasion.set(evasion)
         self.update_tracker()
+
+    def get_possible_stat_values(self):
+        # using sets avoid duplicates
+        stats = {
+            'luck': {1},
+            'evasion': {1},
+        }
+        # get the value of each stat from every enemy
+        for prize_struct in self.rng_tracker.monsters_data.values():
+            stats['luck'].add(prize_struct[37])
+            stats['evasion'].add(prize_struct[38])
+
+        # sort the values from lowest to highest
+        possible_stats = {}
+        for stat, values in stats.items():
+            possible_stats[stat] = sorted(values)
+        return possible_stats
 
 
 class FFXRNGTrackerUI():
