@@ -1,12 +1,11 @@
 # FFX RNG Tracker
-* ffx_rng_tracker_ui: main program that shows all the widgets at once.
-* ffx_rng_drops_tracker: tracks rng related to items and equipment drops.
-* ffx_monster_data_viewer: shows general information about monsters retrieved from the game directly.
-* ffx_predict_equipment_drops: iterates through possible early game kills and steals amounts to find good early game weapon drops.
-* ffx_rng_damage_tracker: tracks rng related to damage, crits and escapes.
-* ffx_rng_encounters_tracker: tracks rng related to encounter formations and preemptives/ambushes.
+* ffx_rng_tracker_ui: main program.
+* monster_data_viewer: shows information about monsters retrieved from the game directly.
+* encounters_tracker: tracks rng related to encounter formations and preemptives/ambushes.
 
-Place personalized notes in a file called *ffxhd_rng_tracker_notes.txt* in the main directory.
+To track a PS2 run, open with the *-ps2* command line option.
+
+Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*) in the main directory to override default ones.
 
 Contact [Grayfox#4644](https://discordapp.com/users/195955977223143426/) on Discord for help.
 

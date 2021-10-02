@@ -12,7 +12,7 @@ Character ID,Character Hex,Character
 57,39,9
 58,3a, 
 59,3b,!
-60,3c,[double quotes]
+60,3c,""""
 61,3d,#
 62,3e,$
 63,3f,%

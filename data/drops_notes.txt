@@ -1,6 +1,6 @@
 # Usage:
 # party [party members initials]
-# kill [enemy_name] [killer]
+# kill [enemy_name] [killer] (overkill/ok)
 # steal [enemy_name] (successful steals)
 # death (character)
 #
@@ -33,8 +33,8 @@ kill tanker tidus
 
 # Baaj Temple
 party t
-kill sahagin tidus
-kill sahagin tidus
+kill sahagin_4 tidus
+kill sahagin_4 tidus
 
 # Geosgaeno doesn't roll rng
 ///
@@ -392,13 +392,24 @@ kill Seymour_Natus bahamut
 # steal flame_flan
 kill Defender_X bahamut
 
-# Mt. Gagazet
-# if you need 2 more equipment drops
+# if you need more equipment drops
+# biran and yenke always drop 2 equipment
 # steal Biran_Ronso
 # kill Yenke_Ronso kimahri
 # kill Biran_Ronso kimahri
 
+# malboros drop equipment with 2 abilities
+# kill malboro bahamut
+
+# you can find epaajs outside the cave
+# they have 50% chance to drop equipment
+# kill epaaj ixion
+
 # Cavern of the Stolen Fayth
+# killing enemies with a party member
+# might change the equipment owner
+# kill Ghost yuna
+# kill Ghost tidus
 kill Ghost ixion
 kill Ghost ixion
 kill Ghost ixion

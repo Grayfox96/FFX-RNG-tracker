@@ -1,4 +1,5 @@
-__pycache__/*
+*.pyc
 binary/*
-ffx_rng_tracker.sublime-project
-ffx_rng_tracker.sublime-workspace
+.vscode/*
+ffx_rng_tracker_ui_autopytoexe.json
+ffx_rng_tracker_errors.log

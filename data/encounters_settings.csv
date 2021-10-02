@@ -1,6 +1,6 @@
 zone,min,default,max
 Underwater Ruins,0,1,1
-Besaid Lagoon,1,2,4
+Besaid Lagoon,0,2,4
 Besaid Road,0,0,1
 Lord Ochu (Way In),0,0,1
 Kilika Woods (Way In),0,3,6
@@ -14,8 +14,8 @@ Simulation (Old Road),0,0,1
 Clasko Skip Screen,0,2,3
 MRR - Valley,0,5,10
 MRR - Precipice,0,1,3
-Djose Highroad (Front Half),0,2,3
-Djose Highroad (Back Half),0,3,6
+Djose Highroad (Front Half),0,2,4
+Djose Highroad (Back Half),0,3,5
 Moonflow (South),0,8,10
 Moonflow (North),0,2,10
 Thunder Plains (South),0,7,10
@@ -31,11 +31,15 @@ Bikanel (Ruins),0,0,5
 Bikanel (Pre Sandragora),0,1,2
 Sandragora 1 refight,0,0,1
 Bikanel (Post Sandragora),0,0,2
+Home,0,0,2
 Airship,0,0,1
-Via Purifico,1,2,4
+Via Purifico,0,2,4
 Via Purifico Underwater,0,1,3
 Highbridge,0,3,5
+Calm Lands (Slope),0,2,10
+Calm Lands (South),0,4,10
 Simulation (Calm Lands),0,0,1
-Calm Lands,0,10,12
+Calm Lands (Central/North-East),0,4,10
 Biran & Yenke,0,0,1
-Cave,0,20,100
+Calm Lands (Gorge),0,0,10
+Cave (White Zone)/Cave (Green Zone),0,20,50

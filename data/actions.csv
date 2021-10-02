@@ -1,0 +1,299 @@
+name,has target,can miss,does damage,can crit,uses bonus crit,damage type,base damage
+Attack,true,true,true,true,true,Strength,0
+Stand By,true,false,true,false,-,Fixed,50
+#Summon,-,-,-,-,-,-,-
+#Skill,-,-,-,-,-,-,-
+Sleep Attack,true,true,true,true,true,Strength,0
+Silence Attack,true,true,true,true,true,Strength,0
+Dark Attack,true,true,true,true,true,Strength,0
+Sleep Buster,true,true,true,true,true,Strength,0
+Silence Buster,true,true,true,true,true,Strength,0
+Dark Buster,true,true,true,true,true,Strength,0
+Zombie Attack,true,true,true,true,true,Strength,0
+Triple Foul,true,true,true,true,true,Strength,0
+Delay Attack,true,true,true,true,true,Strength,0
+Delay Buster,true,true,true,true,true,Strength,0
+Power Break,true,true,true,true,true,Strength,0
+Magic Break,true,true,true,true,true,Strength,0
+Armor Break,true,true,true,true,true,Strength,0
+Mental Break,true,true,true,true,true,Strength,0
+Extract Power,true,true,true,true,true,Strength,0
+Extract Mana,true,true,true,true,true,Strength,0
+Extract Speed,true,true,true,true,true,Strength,0
+Extract Ability,true,true,true,true,true,Strength,0
+Full Break,true,true,true,true,true,Strength,0
+Mug,true,true,true,true,true,Strength,0
+Nab Gil,true,true,true,true,true,Strength,0
+Quick Hit,true,true,true,true,true,Strength,0
+#Special,-,-,-,-,-,-,-
+Flee,true,false,false,-,-,-,-
+Steal,true,false,false,-,-,-,-
+#Use,-,-,-,-,-,-,-
+Al Bhed Potion,true,false,true,false,-,Fixed,1000
+Healing Water,true,false,true,false,-,Percentage,100
+Tetra Element,true,false,true,false,-,Percentage,100
+Antarctic Wind,true,false,true,false,-,Item,12
+Arctic Wind,true,false,true,false,-,Item,20
+Ice Gem,true,false,true,false,-,Item,12
+Bomb Fragment,true,false,true,false,-,Item,12
+Bomb Core,true,false,true,false,-,Item,20
+Fire Gem,true,false,true,false,-,Item,12
+Electro Marble,true,false,true,false,-,Item,12
+Lightning Marble,true,false,true,false,-,Item,20
+Lightning Gem,true,false,true,false,-,Item,12
+Fish Scale,true,false,true,false,-,Item,12
+Dragon Scale,true,false,true,false,-,Item,20
+Water Gem,true,false,true,false,-,Item,12
+Grenade,true,false,true,true,false,Item,7
+Frag Grenade,true,false,true,true,false,Item,16
+Sleeping Powder,true,false,true,false,-,Item,15
+Dream Powder,true,false,true,false,-,Item,20
+Silence Grenade,true,false,true,false,-,Item,15
+Smoke Bomb,true,false,true,false,-,Item,15
+Shadow Gem,true,false,true,false,-,Percentage,50
+Shining Gem,true,false,true,false,-,Item,120
+Blessed Gem,true,false,true,false,-,Item,160
+Supreme Gem,true,false,true,false,-,Item,200
+Poison Fang,true,false,true,false,-,Item,40
+Silver Hourglass,true,false,true,false,-,Fixed,0
+#,,,,,,,
+#Gold Hourglass,true,false,true,false,-,Fixed+Item,0+20
+#,,,,,,,
+Candle of Life,true,false,false,-,-,-,-
+Petrify Grenade,true,false,false,-,-,-,-
+Farplane Shadow,true,false,false,-,-,-,-
+Farplane Wind,true,false,false,-,-,-,-
+Dark Matter,true,false,true,false,-,Item,255
+Chocobo Feather,true,false,true,false,-,Fixed,0
+Chocobo Wing,true,false,true,false,-,Fixed,0
+Lunar Curtain,true,false,false,-,-,-,-
+Light Curtain,true,false,false,-,-,-,-
+Star Curtain,true,false,false,-,-,-,-
+Healing Spring,true,false,false,-,-,-,-
+Mana Spring,true,false,true,false,-,Item,20
+Stamina Spring,true,false,true,false,-,Item,8
+Soul Spring,true,false,true,false,-,Item,30
+Purifying Salt,true,false,true,false,-,Item,22
+Stamina Tablet,true,false,false,-,-,-,-
+Mana Tablet,true,false,false,-,-,-,-
+Twin Stars,true,false,false,-,-,-,-
+Stamina Tonic,true,false,false,-,-,-,-
+Mana Tonic,true,false,false,-,-,-,-
+Three Stars,true,false,false,-,-,-,-
+Pray,true,false,true,false,-,Healing,8
+Cheer,true,false,false,-,-,-,-
+Aim,true,false,false,-,-,-,-
+Focus,true,false,false,-,-,-,-
+Reflex,true,false,false,-,-,-,-
+Luck,true,false,false,-,-,-,-
+Jinx,true,false,false,-,-,-,-
+Lancet,true,false,true,false,-,Magic,6
+Guard,true,false,false,-,-,-,-
+Sentinel,true,false,false,-,-,-,-
+Spare Change,true,false,true,false,-,Gil,10
+Threaten,true,false,false,-,-,-,-
+Provoke,true,false,false,-,-,-,-
+Entrust,true,false,false,-,-,-,-
+#Copycat,-,-,-,-,-,-,-
+#,,,,,,,
+#Pilfer Gil,,,,,,,
+#,,,,,,,
+#Quick Pockets,-,-,-,-,-,-,-
+#Doublecast,-,-,-,-,-,-,-
+#,,,,,,,
+#Bribe,,,,,,,
+#,,,,,,,
+#Blk Magic,-,-,-,-,-,-,-
+Fire,true,false,true,false,-,Magic,12
+Thunder,true,false,true,false,-,Magic,12
+Water,true,false,true,false,-,Magic,12
+Blizzard,true,false,true,false,-,Magic,12
+Fira,true,false,true,false,-,Magic,24
+Thundara,true,false,true,false,-,Magic,24
+Watera,true,false,true,false,-,Magic,24
+Blizzara,true,false,true,false,-,Magic,24
+Firaga,true,false,true,false,-,Magic,42
+Thundaga,true,false,true,false,-,Magic,42
+Waterga,true,false,true,false,-,Magic,42
+Blizzaga,true,false,true,false,-,Magic,42
+Bio,true,false,false,-,-,-,-
+Demi,true,false,true,false,-,Percentage,25
+Death,true,false,false,-,-,-,-
+Drain,true,false,true,false,-,Magic,20
+Osmose,true,false,true,false,-,Magic,10
+Flare,true,false,true,false,-,Magic,60
+Ultima,true,false,true,false,-,Magic,70
+#Wht Magic,-,-,-,-,-,-,-
+Cure,true,false,true,false,-,Healing,24
+Cura,true,false,true,false,-,Healing,40
+Curaga,true,false,true,false,-,Healing,80
+Scan,true,false,false,-,-,-,-
+NulBlaze,true,false,false,-,-,-,-
+NulShock,true,false,false,-,-,-,-
+NulTide,true,false,false,-,-,-,-
+NulFrost,true,false,false,-,-,-,-
+Esuna,true,false,false,-,-,-,-
+Life,true,false,true,false,-,Percentage,50
+Full-Life,true,false,true,false,-,Percentage,100
+Haste,true,false,true,false,-,Fixed,0
+Hastega,true,false,true,false,-,Fixed,0
+Slow,true,false,true,false,-,Fixed,0
+Slowga,true,false,true,false,-,Fixed,0
+Shell,true,false,false,-,-,-,-
+Protect,true,false,false,-,-,-,-
+Reflect,true,false,false,-,-,-,-
+Dispel,true,false,false,-,-,-,-
+Regen,true,false,false,-,-,-,-
+Holy,true,false,true,false,-,Magic,100
+Auto-Life,true,false,false,-,-,-,-
+#Item,-,-,-,-,-,-,-
+Potion,true,false,true,false,-,Fixed,200
+Hi-Potion,true,false,true,false,-,Fixed,1000
+X-Potion,true,false,true,false,-,Percentage,100
+Mega-Potion,true,false,true,false,-,Fixed,2000
+Ether,true,false,true,false,-,Fixed,100
+Turbo Ether,true,false,true,false,-,Fixed,500
+Phoenix Down,true,false,true,false,-,Percentage,50
+Mega Phoenix,true,false,true,false,-,Percentage,100
+Elixir,true,false,true,false,-,Percentage,100
+Megalixir,true,false,true,false,-,Percentage,100
+Antidote,true,false,false,-,-,-,-
+Soft,true,false,false,-,-,-,-
+Eye Drops,true,false,false,-,-,-,-
+Echo Screen,true,false,false,-,-,-,-
+Holy Water,true,false,false,-,-,-,-
+Remedy,true,false,false,-,-,-,-
+Power Distiller,true,false,false,-,-,-,-
+Mana Distiller,true,false,false,-,-,-,-
+Speed Distiller,true,false,false,-,-,-,-
+Ability Distiller,true,false,false,-,-,-,-
+Sonic Wings,true,false,true,true,false,Strength,8
+Meteor Strike,true,false,true,true,false,Strength,17
+Aerospark,true,false,true,true,false,Strength,16
+Heavenly Strike,true,false,true,true,false,Strength,17
+Impulse,true,false,true,true,false,Strength,16
+Pain,true,false,true,true,false,Special Magic,20
+Daigoro,true,false,true,true,false,Strength,10
+Kozuka,true,false,true,true,false,Strength,13
+Wakizashi,true,false,true,true,false,Strength,18
+Zanmato,true,false,false,-,-,-,-
+Camisade,true,false,true,true,false,Strength,21
+Razzia,true,false,true,true,false,Strength,21
+Passado,true,false,true,true,false,Strength,2
+Spiral Cut,true,false,true,true,false,Strength,32
+#Slice & Dice,true,false,true,true,false,Strength,6
+#Energy Rain,true,false,true,true,false,Strength,26
+#Blitz Ace,true,false,true,true,false,Strength,4
+#Grand Summon,-,-,-,-,-,-,-
+Dragon Fang,true,false,true,true,false,Strength,17
+Shooting Star,true,false,true,true,false,Strength,24
+#Banishing Blade,,,,,,,28
+#Tornado,,,,,,,20
+Jump,true,false,true,true,false,Strength,32
+Fire Breath,true,false,true,true,false,Special Magic,24
+Seed Cannon,true,false,true,true,false,Strength,33
+Self-Destruct,true,false,true,true,false,HP,300
+Thrust Kick,true,false,true,true,false,Strength,33
+Stone Breath,true,false,false,-,-,-,-
+Aqua Breath,true,false,true,true,false,Special Magic,26
+Doom,true,false,false,-,-,-,-
+White Wind,true,false,true,false,false,Healing,40
+Bad Breath,true,false,false,-,-,-,-
+Mighty Guard,true,false,false,-,-,-,-
+Nova,true,false,true,true,false,Special Magic,70
+Element Reels,true,false,true,false,false,Strength,34
+#Attack Reels,,,,,,Strength,10
+#Status Reels,,,,,,Strength,34
+#Aurochs Reels,,,,,,Strength,72
+Fire Fury,true,false,true,-,-,Magic,5
+Thunder Fury,true,false,true,-,-,Magic,5
+Water Fury,true,false,true,-,-,Magic,5
+Blizzard Fury,true,false,true,-,-,Magic,5
+Fira Fury,true,false,true,-,-,Magic,10
+Thundara Fury,true,false,true,-,-,Magic,10
+Watera Fury,true,false,true,-,-,Magic,10
+Blizzara Fury,true,false,true,-,-,Magic,10
+Firaga Fury,true,false,true,-,-,Magic,18
+Thundaga Fury,true,false,true,-,-,Magic,18
+Waterga Fury,true,false,true,-,-,Magic,18
+Blizzaga Fury,true,false,true,-,-,Magic,18
+Bio Fury,true,false,false,-,-,-,-
+#Demi Fury,true,false,true,false,-,Percentage,12.5
+Death Fury,true,false,false,-,-,-,-
+Drain Fury,true,false,true,-,-,Magic,9
+Osmose Fury,true,false,true,-,-,Magic,4
+Flare Fury,true,false,true,-,-,Magic,22
+Ultima Fury,true,false,true,false,-,Magic,26
+Ultra Potion,true,false,true,false,-,Percentage,100
+Panacea,true,false,false,-,-,-,-
+Ultra Cure,true,false,true,false,-,Percentage,50
+Mega Phoenix,true,false,true,false,-,Percentage,100
+Final Phoenix,true,false,true,false,-,Percentage,100
+Elixir,true,false,true,false,-,Percentage,100
+Megalixir,true,false,true,false,-,Percentage,100
+Super Elixir,true,false,true,false,-,Percentage,100
+Final Elixir,true,false,true,false,-,Percentage,100
+NulAll,true,false,false,false,-,-,-
+Mega NulAll,true,false,false,false,-,-,-
+Hyper NulAll,true,false,false,false,-,-,-
+Ultra NulAll,true,false,false,false,-,-,-
+#Vitality,,,,,,,
+#Mega Vitality,,,,,,,
+#Hyper Vitality,,,,,,,
+#Mana,,,,,,,
+#Mega Mana,,,,,,,
+#Hyper Mana,,,,,,,
+Mighty Wall,true,false,false,false,false,-,-
+Mighty G,true,false,true,false,false,Fixed,0
+Super Mighty G,true,false,true,false,false,Fixed,0
+Hyper Mighty G,true,false,true,false,false,Fixed,0
+#Freedom,,,,,,,
+#Freedom X,,,,,,,
+#Hero Drink,,,,,,,
+#Miracle Drink,,,,,,,
+#Quartet of 9,,,,,,,
+#Trio of 9999,,,,,,,
+#Hot Spurs,,,,,,,
+#Eccentrick,,,,,,,
+#Grenade,true,false,true,true,false,Item,7
+#Frag Grenade,true,false,true,true,false,Item,16
+#Blaster Mine,,,,,,Item,22
+#Hazardous Shell,,,,,,Item,45
+#Pineapple,,,,,,Item,27
+#Calamity Bomb,,,,,,Item,72
+#Cluster Bomb,,,,,,Item,100
+#Potato Masher,,,,,,Item,54
+#Tallboy,,,,,,Item,180
+#Chaos Grenade,,,,,,Item,146
+#Nega Burst,true,false,true,false,-,Percentage,75
+#Black Hole,true,false,true,false,-,Percentage,94
+#Sunburst,true,false,true,false,-,Fixed,19998
+#Heat Blaster,,,,,,Item,8
+#Firestorm,,,,,,Item,14
+#Burning Soul,,,,,,Item,18
+#Brimstone,,,,,,Item,8
+#Abaddon Flame,,,,,,Item,18
+#Thunderbolt,,,,,,Item,8
+#Rolling Thunder,,,,,,Item,14
+#Lightning Bolt,,,,,,Item,18
+#Electroshock,,,,,,Item,8
+#Thunderblast,,,,,,Item,18
+#Waterfall,,,,,,Item,8
+#Flash Flood,,,,,,Item,14
+#Tidal Wave,,,,,,Item,18
+#Aqua Toxin,,,,,,Item,8
+#Dark Rain,,,,,,Item,18
+#Snow Flurry,,,,,,Item,8
+#Icefall,,,,,,Item,14
+#Winter Storm,,,,,,Item,18
+#Black Ice,,,,,,Item,8
+#Krysta,,,,,,Item,18
+#Requiem,true,false,true,,,Magic,40
+Energy Ray,true,false,true,false,false,Special Magic,55
+Energy Blast,true,false,true,false,false,Special Magic,75
+Hellfire,true,false,true,false,false,Special Magic,58
+Thor's Hammer,true,false,true,false,false,Special Magic,60
+Diamond Dust,true,false,true,false,false,Special Magic,60
+Mega Flare,true,false,true,false,false,Special Magic,72
+Oblivion,true,false,true,false,false,Strength,4
+Delta Attack,true,false,true,false,false,Strength,10

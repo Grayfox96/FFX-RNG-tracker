@@ -1,0 +1,320 @@
+# Usage:
+# encounter (preemptive/ambush)
+#
+# stat [character] [stat] [(+/-)amount]
+# stats:
+# hp, mp, strength, defense, magic,
+# magic_defense, agility, luck, evasion,
+# accuracy, weapon_damage, bonus_crit,
+# bonus_strength, bonus_magic, piercing
+#
+# [character name] [action] (target)
+
+encounter
+auron attack sinscale_2
+tidus attack sinscale_2
+auron attack sinscale_2
+tidus attack sinscale_2
+auron attack sinscale_2
+tidus attack sinscale_2
+
+encounter
+# auron od
+# ignore these
+auron dragon_fang sinspawn_ammes
+auron dragon_fang sinscale_2
+auron dragon_fang sinscale_2
+auron dragon_fang sinscale_2
+auron dragon_fang sinscale_2
+auron dragon_fang sinscale_2
+
+# actual rolls
+# damage is calculated as if you had 0 seconds left
+# actual damage is 1.5 times more or less
+auron dragon_fang sinspawn_ammes
+auron dragon_fang sinscale_2
+auron dragon_fang sinscale_2
+auron dragon_fang sinscale_2
+auron dragon_fang sinscale_2
+auron dragon_fang sinscale_2
+
+tidus attack sinspawn_ammes
+
+# tidus od
+# ignore this
+tidus spiral_cut sinspawn_ammes
+# actual roll
+tidus spiral_cut sinspawn_ammes
+
+auron attack sinspawn_ammes
+tidus attack sinspawn_ammes
+auron attack sinspawn_ammes
+tidus attack sinspawn_ammes
+auron attack sinspawn_ammes
+tidus attack sinspawn_ammes
+
+encounter
+auron attack auron
+tidus attack tanker
+auron attack tanker
+tidus attack tanker
+
+encounter
+tidus attack sahagin_4
+tidus attack sahagin_4
+
+encounter
+#tidus attack geosgaeno
+#tidus attack geosgaeno
+#tidus attack geosgaeno
+
+encounter
+tidus attack klikk
+tidus attack klikk
+tidus attack klikk
+tidus attack klikk
+tidus attack klikk
+tidus attack klikk
+
+encounter
+rikku grenade klikk
+tidus attack klikk
+rikku attack klikk
+tidus attack klikk
+rikku attack klikk
+tidus attack klikk
+rikku attack klikk
+tidus attack klikk
+rikku attack klikk
+tidus attack klikk
+
+# chain encounter
+encounter
+tidus attack piranha
+tidus attack piranha_2
+#tidus attack piranha_3
+
+encounter
+rikku attack piranha_3
+tidus attack piranha_3
+tidus attack piranha_3
+rikku attack piranha_3
+
+encounter
+rikku grenade tros
+tidus attack tros
+tidus stand_by tidus
+rikku grenade tros
+rikku grenade tros
+rikku grenade tros
+rikku grenade tros
+rikku grenade tros
+
+# lagoon encounters
+encounter
+tidus attack piranha_2
+wakka attack piranha
+tidus attack piranha_3
+wakka attack piranha_3
+# tidus escape
+# wakka escape
+
+# tidus equips brotherhood
+stat tidus bonus_strength 5
+
+encounter
+tidus attack dingo
+wakka attack condor
+
+encounter
+# attacks have crits disabled
+# at the start of the water_flan
+# fight, they get reenabled at the end
+# this is tidus' attack
+# miss chance roll
+roll rng36
+# damage roll
+roll rng20
+lulu thunder water_flan
+
+# besaid grid
+# add this at some point
+# before echuilles
+# stat tidus strength +1
+
+encounter
+tidus attack ???
+tidus attack ???
+tidus attack ???
+tidus attack ???
+tidus attack ???
+tidus attack ???
+
+encounter
+valefor thunder Garuda_3
+valefor thunder Garuda_3
+valefor thunder Garuda_3
+valefor thunder Garuda_3
+valefor thunder Garuda_3
+valefor thunder Garuda_3
+
+encounter
+tidus escape
+yuna escape
+lulu escape
+
+encounter
+tidus attack dingo_2
+wakka attack condor_2
+lulu thunder water_flan_2
+
+encounter
+lulu thunder sin
+kimahri lancet sin
+kimahri lancet sin
+kimahri lancet sin
+kimahri lancet sin
+lulu thunder sin
+valefor energy_blast sin
+
+encounter
+# for cheer add 1 strength
+# and then remove it
+stat tidus strength +1
+stat wakka strength +1
+wakka dark_attack sinspawn_echuilles
+stat tidus strength +1
+stat wakka strength +1
+wakka attack sinspawn_echuilles
+tidus attack sinspawn_echuilles
+wakka attack sinspawn_echuilles
+tidus attack sinspawn_echuilles
+# blender
+wakka attack sinspawn_echuilles
+tidus attack sinspawn_echuilles
+tidus attack sinspawn_echuilles
+wakka attack sinspawn_echuilles
+
+tidus spiral_cut sinspawn_echuilles
+tidus spiral_cut sinspawn_echuilles
+
+# remove strength from cheers
+stat tidus strength -2
+stat wakka strength -2
+
+encounter
+kimahri lancet Ragora_2
+kimahri lancet Ragora_2
+tidus attack Ragora_2
+lulu fire Ragora_2
+
+# kilika in encounters
+# if wakka equips an armguard
+# stat wakka bonus_crit +3
+
+# if tidus equips an icebrand
+# stat tidus bonus_strength 0
+
+encounter
+tidus attack dinonix
+valefor thunder killer_bee
+valefor water yellow_element
+# valefor fire ragora
+
+encounter
+tidus attack dinonix
+wakka attack killer_bee
+
+encounter
+valefor energy_blast sinspawn_geneaux
+valefor energy_blast geneaux's_tentacle
+valefor energy_blast geneaux's_tentacle
+valefor fire sinspawn_geneaux
+valefor fire sinspawn_geneaux
+valefor fire sinspawn_geneaux
+valefor fire sinspawn_geneaux
+
+# kilika out encounters
+encounter
+tidus attack dinonix
+wakka attack killer_bee
+
+encounter
+# haste does "atb" damage
+# tidus haste lulu
+lulu thunder worker
+lulu thunder worker
+
+encounter
+# tidus haste lulu
+lulu thunder worker
+lulu thunder worker
+
+encounter
+# tidus haste lulu
+tidus attack worker
+kimahri attack worker
+lulu thunder worker
+tidus attack worker
+kimahri seed_cannon worker
+
+lulu thunder worker
+lulu thunder worker
+
+tidus attack worker
+kimahri attack worker
+lulu thunder worker
+tidus attack worker
+kimahri attack worker
+tidus attack worker
+
+encounter
+#tidus haste lulu
+lulu thunder crane
+lulu thunder crane
+lulu thunder crane
+kimahri attack oblitzerator
+lulu thunder oblitzerator
+# tidus attack oblitzerator
+
+# haste grid
+stat tidus strength +1
+# if tidus equips lightning steel
+# stat tidus bonus_strength 0
+
+encounter
+tidus haste tidus
+wakka attack sahagin_chief
+tidus haste wakka
+wakka attack sahagin_chief
+wakka attack sahagin_chief
+tidus attack sahagin_chief
+
+wakka attack sahagin_chief
+tidus attack sahagin_chief
+wakka attack sahagin_chief
+tidus attack sahagin_chief
+tidus attack sahagin_chief
+wakka attack sahagin_chief
+
+tidus attack sahagin_chief
+wakka attack sahagin_chief
+tidus attack sahagin_chief
+wakka attack sahagin_chief
+tidus attack sahagin_chief
+wakka attack sahagin_chief
+tidus attack sahagin_chief
+wakka attack sahagin_chief
+
+encounter
+auron attack Vouivre_2
+
+encounter
+tidus haste auron
+auron attack Garuda_2
+auron attack Garuda_2
+tidus attack Garuda_2
+auron attack Garuda_2
+auron attack Garuda_2
+auron attack Garuda_2
+auron attack Garuda_2
