@@ -56,7 +56,10 @@ class YojimboTracker(BaseWidget):
         self.output_widget.set(data)
         self.output_widget.highlight_pattern(
             '^Advanced rng.+$', 'red', regexp=True)
-        self.output_widget.highlight_pattern('[0-9]{10,}', 'red', regexp=True)
+        self.output_widget.highlight_pattern(
+            ' [0-9]{1,7}(?= gil) ', 'green', regexp=True)
+        self.output_widget.highlight_pattern(
+            ' [0-9]{10,}(?= gil) ', 'red', regexp=True)
         self.output_widget.highlight_pattern(
             '^.+$', 'wrap_margin', regexp=True)
         error_messages = (

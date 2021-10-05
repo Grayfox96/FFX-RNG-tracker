@@ -1,5 +1,6 @@
 import sys
 import tkinter as tk
+from tkinter.scrolledtext import ScrolledText
 from abc import ABC, abstractmethod
 from tkinter import font, simpledialog
 from typing import Union
@@ -8,9 +9,9 @@ from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..tracker import get_tracker
 
 
-class BetterText(tk.Text):
-    """Upgraded Text widget with an highlight_pattern method
-    and a set method.
+class BetterText(ScrolledText):
+    """Upgraded ScrolledText widget with an highlight_pattern
+    method and a set method.
     """
 
     def highlight_pattern(
@@ -94,32 +95,22 @@ class BaseWidget(tk.Frame, ABC):
 
     def make_input_widget(self) -> BetterText:
         """Initializes input widget."""
-        frame = tk.Frame(self, width=40)
-        frame.pack(fill='y', side='left')
         text = BetterText(
-            frame, font=self.font, width=40, undo=True, autoseparators=True,
+            self, font=self.font, width=40, undo=True, autoseparators=True,
             maxundo=-1)
         text.pack(fill='y', side='left')
         text.bind('<KeyRelease>', lambda _: self.print_output())
-        scrollbar = tk.Scrollbar(frame, command=text.yview)
-        scrollbar.pack(fill='y', side='right')
-        text.config(yscrollcommand=scrollbar.set)
         return text
 
     def make_output_widget(self) -> BetterText:
         """Initialize output widget."""
-        frame = tk.Frame(self)
-        frame.pack(expand=True, fill='both', side='right')
-        text = BetterText(frame, font=self.font, state='disabled', wrap='word')
-        text.pack(expand=True, fill='both', side='left')
-        scrollbar = tk.Scrollbar(frame)
-        scrollbar.pack(fill='y', side='right')
-        scrollbar.config(command=text.yview)
-        text.config(yscrollcommand=scrollbar.set)
+        text = BetterText(self, font=self.font, state='disabled', wrap='word')
+        text.pack(expand=True, fill='both', side='right')
 
         text.tag_configure('red', foreground='#ff0000')
         text.tag_configure('green', foreground='#00ff00')
         text.tag_configure('blue', foreground='#0000ff')
+        text.tag_configure('yellow', foreground='#beb144')
         text.tag_configure('gray', foreground='#888888')
         text.tag_configure('red_background', background='#ff0000')
         text.tag_configure('wrap_margin', lmargin2='1c')

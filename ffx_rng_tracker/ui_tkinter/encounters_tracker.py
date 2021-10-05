@@ -107,7 +107,13 @@ class EncountersTracker(BaseWidget):
 
     def print_output(self):
         self.get_input()
-        data = [str(e)[10:] for e in self.rng_tracker.events_sequence]
+        data = []
+        for event in self.rng_tracker.events_sequence:
+            line = str(event)[10:]
+            # add a separator between zones
+            if '[1]' in line:
+                data.append('=' * 50)
+            data.append(line)
         data = '\n'.join(data)
         index = data.find(self.input_widget['zone'].get())
         if index > 0:

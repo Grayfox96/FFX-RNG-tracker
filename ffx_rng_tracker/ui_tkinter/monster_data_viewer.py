@@ -11,6 +11,8 @@ class MonsterDataViewer(BaseWidget):
 
     def __init__(self, parent, *args, **kwargs):
         self.monsters_names = sorted(list(MONSTERS.keys()))
+        self.monsters_data = {k: format_monster_data(v)
+                              for k, v in MONSTERS.items()}
         self.parent = parent
         self.font = font.Font(family='Courier New', size=9)
         tk.Frame.__init__(self, parent, *args, **kwargs)
@@ -19,10 +21,20 @@ class MonsterDataViewer(BaseWidget):
         self.print_output()
 
     def make_input_widget(self) -> tk.Listbox:
+        frame = tk.Frame(self)
+        frame.pack(fill='y', side='left')
+        inner_frame = tk.Frame(frame)
+        inner_frame.pack(fill='x')
+        tk.Label(inner_frame, text='Search:').pack(side='left')
+        entry = tk.Entry(inner_frame)
+        entry.bind('<KeyRelease>', lambda _: self.filter_monsters())
+        entry.pack(fill='x', side='right')
         listvar = tk.StringVar(value=self.monsters_names)
-        listbox = tk.Listbox(self, width=30, listvariable=listvar)
+        listbox = tk.Listbox(frame, width=30, listvariable=listvar)
         listbox.bind('<<ListboxSelect>>', lambda _: self.print_output())
-        listbox.pack(fill='y', side='left')
+        listbox.pack(expand=True, fill='y')
+        listbox.listvar = listvar
+        listbox.entry = entry
         return listbox
 
     def make_output_widget(self) -> BetterText:
@@ -30,7 +42,7 @@ class MonsterDataViewer(BaseWidget):
         widget.configure(wrap='none')
         return widget
 
-    def get_input(self) -> str:
+    def get_input(self) -> tuple[int]:
         return self.input_widget.curselection()
 
     def print_output(self) -> None:
@@ -43,10 +55,17 @@ class MonsterDataViewer(BaseWidget):
             return
         monster_name = self.monsters_names[monster_index]
         try:
-            monster = MONSTERS[monster_name]
+            monster_data = self.monsters_data[monster_name]
         except KeyError:
             return
-        monster_data = format_monster_data(monster)
         self.output_widget.config(state='normal')
         self.output_widget.set(monster_data)
         self.output_widget.config(state='disabled')
+
+    def filter_monsters(self) -> None:
+        input = self.input_widget.entry.get().lower()
+        self.monsters_names = [name
+                               for name, data in self.monsters_data.items()
+                               if input in name or input in data.lower()]
+        self.monsters_names.sort()
+        self.input_widget.listvar.set(self.monsters_names)

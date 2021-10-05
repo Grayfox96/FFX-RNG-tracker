@@ -70,6 +70,8 @@ class ActionsTracker(BaseWidget):
         self.output_widget.set(data)
         self.output_widget.highlight_pattern('Encounter', 'blue')
         self.output_widget.highlight_pattern('Crit', 'green')
+        self.output_widget.highlight_pattern(
+            '^.*changed to.+$', 'yellow', regexp=True)
         self.output_widget.highlight_pattern('^#(.+?)?$', 'gray', regexp=True)
         self.output_widget.highlight_pattern(
             '^Advanced rng.+$', 'red', regexp=True)

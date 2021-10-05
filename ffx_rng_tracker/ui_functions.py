@@ -189,13 +189,13 @@ def parse_stat_update(
 
 
 def parse_yojimbo_action(
-        attack_name: str = '', monster_name: str = '',
+        action_name: str = '', monster_name: str = '',
         overdrive: str = '', *_) -> Event:
-    usage = 'Usage: [attack] [zanmato level] (overdrive)'
-    if not attack_name or not monster_name:
+    usage = 'Usage: [action] [monster] (overdrive)'
+    if not action_name or not monster_name:
         return Comment(usage)
     try:
-        attack = YOJIMBO_ACTIONS[attack_name]
+        attack = YOJIMBO_ACTIONS[action_name]
     except KeyError as error:
         return Comment(f'No action named {error}')
 

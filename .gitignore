@@ -1,5 +1,7 @@
 *.pyc
-binary/*
+dist/*
+build/*
 .vscode/*
 ffx_rng_tracker_ui_autopytoexe.json
 ffx_rng_tracker_errors.log
+*.spec

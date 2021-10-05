@@ -72,7 +72,8 @@ YOJIMBO_ACTIONS = {
     'wakizashi_st': YojimboAction('Wakizashi ST', 1, 48),
     'wakizashi_mt': YojimboAction('Wakizashi MT', 3, 63),
     'zanmato': YojimboAction('Zanmato', 4, 80),
-    'dismiss': YojimboAction('Dismiss', -3),
+    'dismiss': YojimboAction('Dismiss', 0),
+    'first_turn_dismiss': YojimboAction('First turn Dismiss', -3),
     # 'death': YojimboAction('Death', -10),
     'autodismiss': YojimboAction('Autodismiss', -20),
 }

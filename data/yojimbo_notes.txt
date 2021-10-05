@@ -5,7 +5,8 @@
 # actions:
 # daigoro, kozuka, wakizashi_st,
 # wakizashi_mt, zanmato,
-# dismiss, autodismiss
+# dismiss, autodismiss,
+# first_turn_dismiss
 ///
 zanmato seymour_flux overdrive
 
