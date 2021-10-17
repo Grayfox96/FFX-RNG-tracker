@@ -1,8 +1,8 @@
 import sys
 import tkinter as tk
-from tkinter.scrolledtext import ScrolledText
 from abc import ABC, abstractmethod
 from tkinter import font, simpledialog
+from tkinter.scrolledtext import ScrolledText
 from typing import Union
 
 from ..errors import InvalidDamageValueError, SeedNotFoundError
@@ -115,7 +115,8 @@ class BaseWidget(tk.Frame, ABC):
         text.tag_configure('red_background', background='#ff0000')
         text.tag_configure('wrap_margin', lmargin2='1c')
         text.tag_configure(
-            'highlight', background='#ffff00', selectforeground='#000000')
+            'highlight', background='#ffff00', foreground='#000000',
+            selectforeground='#000000')
 
         return text
 

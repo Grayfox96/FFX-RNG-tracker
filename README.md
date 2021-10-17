@@ -9,6 +9,10 @@ Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo
 
 Contact [Grayfox#4644](https://discordapp.com/users/195955977223143426/) on Discord for help.
 
+# Theme
+Using the [Azure](https://github.com/rdbende/Azure-ttk-theme) theme for ttk. Use the *-darkmode* command line option to use dark mode.
+Use the *-notheme* command line option to use the default ttk theme.
+
 # Credits
 Credits to the #big-nerds channel in the FFX/X-2 Speedruns discord for ideas and useful discussions.
 

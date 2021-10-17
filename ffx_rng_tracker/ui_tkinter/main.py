@@ -2,6 +2,7 @@ import sys
 import tkinter as tk
 from tkinter import messagebox, ttk
 
+from ..data.file_functions import get_resource_path
 from ..logger import log_exceptions, log_tkinter_error, setup_logger
 from .actions_tracker import ActionsTracker
 from .base_widgets import DamageValuesDialogue
@@ -67,6 +68,15 @@ def main(widget: type[tk.Widget], title='ffx_rng_tracker', size='1280x830'):
         title += ' (ps2 mode)'
     root.title(title)
     root.geometry(size)
+
+    if '-notheme' not in sys.argv:
+        theme_path = get_resource_path(
+            'ffx_rng_tracker/ui_tkinter/azure_theme/azure.tcl')
+        root.tk.call('source', theme_path)
+        if '-darkmode' in sys.argv:
+            root.tk.call('set_theme', 'dark')
+        else:
+            root.tk.call('set_theme', 'light')
 
     entry_widget = DamageValuesDialogue(root, title=title)
     # if the entry widget was closed before initializing the tracker
