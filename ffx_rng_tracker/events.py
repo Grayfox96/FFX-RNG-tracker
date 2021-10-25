@@ -4,9 +4,9 @@ from typing import Optional, Union
 
 from .data.actions import YOJIMBO_ACTIONS, Action, YojimboAction
 from .data.characters import CHARACTERS, Character
-from .data.constants import (HIT_CHANCE_TABLE, ZANMATO_LEVELS, DamageType,
-                             EncounterCondition, EquipmentSlots, EquipmentType,
-                             Rarity, Stat)
+from .data.constants import (HIT_CHANCE_TABLE, ICV_BASE, ICV_VARIANCE,
+                             ZANMATO_LEVELS, DamageType, EncounterCondition,
+                             EquipmentSlots, EquipmentType, Rarity, Stat)
 from .data.encounter_formations import FORMATIONS, Formation
 from .data.equipment import Equipment, EquipmentDrop
 from .data.items import ItemDrop
@@ -290,12 +290,14 @@ class Encounter(Event):
     formation: Formation = field(init=False, repr=False)
     condition: EncounterCondition = field(init=False, repr=False)
     index: int = field(init=False, repr=False)
+    icvs: dict[Character, int] = field(
+        default_factory=dict, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.formation = self._get_formation()
         self.condition = self._get_condition()
         self.index = self._get_index()
-        self._advance_damage_rng()
+        self.icvs = self._get_icvs()
 
     def __str__(self) -> str:
         if self.condition == EncounterCondition.NORMAL:
@@ -329,13 +331,23 @@ class Encounter(Event):
         else:
             return EncounterCondition.AMBUSH
 
-    def _advance_damage_rng(self) -> None:
-        if self.condition != EncounterCondition.NORMAL:
-            return
-        for i in range(20, 28):
-            self._rng_tracker.advance_rng(i)
-        for _ in range(10):
-            self._rng_tracker.advance_rng(27)
+    def _get_icvs(self) -> dict[Character, int]:
+        icvs = {}
+        if self.condition is EncounterCondition.PREEMPTIVE:
+            for c in CHARACTERS.values():
+                icvs[c.name] = 0
+        elif self.condition is EncounterCondition.AMBUSH:
+            for c in CHARACTERS.values():
+                icvs[c.name] = ICV_BASE[c.stats[Stat.AGILITY]] * 3
+        else:
+            for c in CHARACTERS.values():
+                base = ICV_BASE[c.stats[Stat.AGILITY]] * 3
+                index = c.index + 20 if c.index < 7 else 27
+                variance_rng = self._rng_tracker.advance_rng(index)
+                variance = ICV_VARIANCE[c.stats[Stat.AGILITY]] + 1
+                variance = variance_rng % variance
+                icvs[c.name] = base - variance
+        return icvs
 
 
 @dataclass
@@ -511,7 +523,7 @@ class CharacterAction(Event):
             damage = f'{self.action.base_damage}%'
             return damage, damage_rng, crit
         elif damage_type == DamageType.HP:
-            damage = self.character.stats['hp']
+            damage = self.character.stats[Stat.HP]
             damage = damage * self.action.base_damage // 100
             if crit:
                 damage = int(damage * 2)
@@ -524,11 +536,8 @@ class CharacterAction(Event):
         # not used for now
         target_cheers = 0
         target_focuses = 0
-        # cheers or focuses are only relevant in damage calculations
-        # when strength/magic is near 255
-        # otherwise 1 cheer/focus == +1 strength/magic
-        cheers = 0
-        focuses = 0
+        cheers = self.character.stats[Stat.CHEER]
+        focuses = self.character.stats[Stat.FOCUS]
         if damage_type == DamageType.STRENGTH:
             if self.action.base_damage:
                 base_damage = self.action.base_damage
@@ -609,15 +618,15 @@ class ChangeStat(Event):
     stat_value: int
 
     def __post_init__(self) -> None:
-        self._set_stat()
+        self.stat_value = self._set_stat()
 
     def __str__(self) -> str:
         return (f'{self.character.name}\'s {self.stat} '
                 f'changed to {self.stat_value}')
 
-    def _set_stat(self) -> None:
-        self.stat_value = min(max(self.stat_value, 0), 255)
+    def _set_stat(self) -> int:
         self.character.set_stat(self.stat, self.stat_value)
+        return self.character.stats[self.stat]
 
 
 @dataclass

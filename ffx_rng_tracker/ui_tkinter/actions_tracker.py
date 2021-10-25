@@ -19,7 +19,7 @@ class ActionsTracker(BaseWidget):
 
     def make_input_widget(self) -> BetterText:
         widget = super().make_input_widget()
-        widget.insert('end', self.default_notes)
+        widget.set(self.default_notes)
         return widget
 
     def get_input(self):
@@ -50,7 +50,7 @@ class ActionsTracker(BaseWidget):
                     event = Comment(f'No event called {event_name!r}')
             self.rng_tracker.events_sequence.append(event)
 
-    def print_output(self):
+    def print_output(self) -> None:
         self.get_input()
         data = []
         for event in self.rng_tracker.events_sequence:
@@ -59,7 +59,12 @@ class ActionsTracker(BaseWidget):
             if '///' in line:
                 data.clear()
             elif 'Encounter' in line:
-                data.append(line[:14] + line[30:])
+                icvs = ''
+                for index, (c, icv) in enumerate(event.icvs.items()):
+                    if index >= 7:
+                        break
+                    icvs += f'{c[:2]}[{icv}] '
+                data.append(f'{line[:14]} {line[31:]} {icvs}')
             else:
                 data.append(line)
 
