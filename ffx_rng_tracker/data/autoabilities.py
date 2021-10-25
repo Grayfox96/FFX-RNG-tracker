@@ -1,5 +1,6 @@
 import csv
 from dataclasses import dataclass
+from typing import Tuple
 
 from .file_functions import get_resource_path
 
@@ -13,7 +14,7 @@ class Autoability:
         return self.name
 
 
-def _get_autoabilities(file_path: str) -> tuple[Autoability]:
+def _get_autoabilities(file_path: str) -> Tuple[Autoability]:
     """Retrieves the abilities names and their base gil values
     used in the equipment price formula.
     """

@@ -1,13 +1,13 @@
 import csv
-from typing import Union
+from typing import Dict, Tuple, Union
 
 from ..data.constants import EncounterCondition
 from .file_functions import get_resource_path
 
-Enc = dict[str, Union[str, bool, EncounterCondition, None]]
+Enc = Dict[str, Union[str, bool, EncounterCondition, None]]
 
 
-def _get_encounters(file_path: str) -> tuple[Enc]:
+def _get_encounters(file_path: str) -> Tuple[Enc]:
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
         file_reader = csv.reader(file_object, delimiter=',')

@@ -1,6 +1,6 @@
 import csv
 from dataclasses import dataclass
-from typing import Optional
+from typing import Dict, Optional
 
 from .constants import DamageType
 from .file_functions import get_resource_path
@@ -31,7 +31,7 @@ class YojimboAction:
         return self.name
 
 
-def _get_actions(file_path: str) -> dict[str, Action]:
+def _get_actions(file_path: str) -> Dict[str, Action]:
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
         file_reader = csv.reader(file_object, delimiter=',')

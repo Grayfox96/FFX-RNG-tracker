@@ -1,6 +1,7 @@
 import sys
 import tkinter as tk
 from tkinter import messagebox, ttk
+from typing import Type
 
 from ..data.file_functions import get_resource_path
 from ..logger import log_exceptions, log_tkinter_error, setup_logger
@@ -53,7 +54,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
 
 
 @log_exceptions()
-def main(widget: type[tk.Widget], title='ffx_rng_tracker', size='1280x830'):
+def main(widget: Type[tk.Widget], title='ffx_rng_tracker', size='1280x830'):
     """Creates a Tkinter main window, initializes the rng tracker
     and the root logger.
     """

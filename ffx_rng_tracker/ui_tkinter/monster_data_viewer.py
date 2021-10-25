@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import font
+from typing import Tuple
 
 from ..data.monsters import MONSTERS
 from ..ui_functions import format_monster_data
@@ -42,7 +43,7 @@ class MonsterDataViewer(BaseWidget):
         widget.configure(wrap='none')
         return widget
 
-    def get_input(self) -> tuple[int]:
+    def get_input(self) -> Tuple[int]:
         return self.input_widget.curselection()
 
     def print_output(self) -> None:

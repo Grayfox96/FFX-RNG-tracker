@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import List, Optional, Tuple, Union
 
 from .data.actions import YOJIMBO_ACTIONS, Action, YojimboAction
 from .data.characters import CHARACTERS, Character
@@ -13,7 +13,7 @@ from .data.items import ItemDrop
 from .data.monsters import Monster
 from .tracker import FFXRNGTracker, get_tracker
 
-Spoils = tuple[Optional[ItemDrop], Optional[ItemDrop], Optional[EquipmentDrop]]
+Spoils = Tuple[Optional[ItemDrop], Optional[ItemDrop], Optional[EquipmentDrop]]
 
 
 @dataclass
@@ -29,7 +29,7 @@ class Event(ABC):
 
 @dataclass
 class ChangeParty(Event):
-    party_formation: list[Character]
+    party_formation: List[Character]
 
     def __str__(self) -> str:
         character_names = [c.name for c in self.party_formation]
@@ -398,7 +398,7 @@ class MultizoneRandomEncounter(RandomEncounter):
                   f'\n   `-{self.random_index:3}: {formations}')
         return string
 
-    def _get_formation(self) -> list[Formation]:
+    def _get_formation(self) -> List[Formation]:
         rng_value = self._rng_tracker.advance_rng(1)
         formations = []
         for zone in self.zone:
@@ -487,7 +487,7 @@ class CharacterAction(Event):
             crit_chance += self.character.stats[Stat.BONUS_CRIT]
         return crit_roll < crit_chance
 
-    def _get_damage(self) -> tuple[int, int, bool]:
+    def _get_damage(self) -> Tuple[int, int, bool]:
         if not self.hit or not self.action.does_damage:
             return 0, 0, False
         index = min(20 + self.character.index, 27)
@@ -687,7 +687,7 @@ class YojimboTurn(Event):
         compatibility = self._rng_tracker.compatibility // 4
         return compatibility > rng
 
-    def _get_free_attack(self) -> tuple[YojimboAction, int]:
+    def _get_free_attack(self) -> Tuple[YojimboAction, int]:
         base_motivation = self._rng_tracker.compatibility // 4
         rng = self._rng_tracker.advance_rng(17) & 0x3f
         motivation = base_motivation + rng
@@ -703,7 +703,7 @@ class YojimboTurn(Event):
             attack = YOJIMBO_ACTIONS['wakizashi_mt']
         return attack, motivation
 
-    def _get_gil(self) -> tuple[int, int]:
+    def _get_gil(self) -> Tuple[int, int]:
         """"""
         base_motivation = self._rng_tracker.compatibility // 10
         zanmato_resistance = ZANMATO_LEVELS[self.monster.zanmato_level]

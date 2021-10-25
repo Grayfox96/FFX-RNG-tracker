@@ -1,7 +1,7 @@
 import csv
 import sys
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from .autoabilities import AUTOABILITIES
 from .characters import CHARACTERS, Character
@@ -15,26 +15,26 @@ from .text_characters import TEXT_CHARACTERS
 @dataclass
 class Monster:
     name: str
-    stats: dict[Stat, int]
-    elemental_affinities: dict[Element, ElementalAffinity]
-    status_resistances: dict[Status, int]
+    stats: Dict[Stat, int]
+    elemental_affinities: Dict[Element, ElementalAffinity]
+    status_resistances: Dict[Status, int]
     zanmato_level: int
     armored: bool
     undead: bool
-    auto_statuses: list[Status]
+    auto_statuses: List[Status]
     gil: int
-    ap: dict[str, int]
-    item_1: dict[str, Union[int, dict[Rarity, Optional[ItemDrop]]]]
-    item_2: dict[str, Union[int, dict[Rarity, Optional[ItemDrop]]]]
-    steal: dict[Union[str, Rarity], Union[int, Optional[ItemDrop]]]
-    bribe: dict[Union[str, Rarity], Union[int, Optional[ItemDrop]]]
-    equipment: dict[str, Union[int, list, dict[Character, list[int]]]]
+    ap: Dict[str, int]
+    item_1: Dict[str, Union[int, Dict[Rarity, Optional[ItemDrop]]]]
+    item_2: Dict[str, Union[int, Dict[Rarity, Optional[ItemDrop]]]]
+    steal: Dict[Union[str, Rarity], Union[int, Optional[ItemDrop]]]
+    bribe: Dict[Union[str, Rarity], Union[int, Optional[ItemDrop]]]
+    equipment: Dict[str, Union[int, List, Dict[Character, List[int]]]]
 
     def __str__(self):
         return self.name
 
 
-def _get_prize_structs(file_path: str) -> dict[str, list[int]]:
+def _get_prize_structs(file_path: str) -> Dict[str, List[int]]:
     """Retrieves the prize structs for enemies."""
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
@@ -68,11 +68,11 @@ def _get_prize_structs(file_path: str) -> dict[str, list[int]]:
 
 
 def _patch_prize_structs_for_hd(
-        prize_structs: dict[str, list[int]]) -> dict[str, list[int]]:
+        prize_structs: Dict[str, List[int]]) -> Dict[str, List[int]]:
     """Apply changes made in the HD version to the prize structs."""
     def patch_abilities(
             monster_name: str,
-            abilities: tuple[int, int, int, int, int, int, int],
+            abilities: Tuple[int, int, int, int, int, int, int],
             equipment_type: EquipmentType = EquipmentType.WEAPON) -> None:
         """Modifies ability values 1-7 of every character's weapon
         or armor ability array.
@@ -210,7 +210,7 @@ def _patch_prize_structs_for_hd(
     return prize_structs
 
 
-def get_raw_data_string(prize_struct: list[str]) -> str:
+def get_raw_data_string(prize_struct: List[str]) -> str:
     string = ''
     for index, byte in enumerate(prize_struct):
         # every 16 bytes make a new line
@@ -227,7 +227,7 @@ def get_raw_data_string(prize_struct: list[str]) -> str:
 
 
 def _get_monster_data(
-        internal_monster_name: str, prize_struct: list[int]) -> Monster:
+        internal_monster_name: str, prize_struct: List[int]) -> Monster:
     """Get a Monster from his prize struct."""
     def add_bytes(address: int, length: int) -> int:
         """Adds the value of adjacent bytes in a prize struct."""
@@ -236,7 +236,7 @@ def _get_monster_data(
             value += prize_struct[address + i] * (256 ** i)
         return value
 
-    def get_elements() -> dict[str, str]:
+    def get_elements() -> Dict[str, str]:
         elements = {
             Element.FIRE: 0b00001,
             Element.ICE: 0b00010,
@@ -258,7 +258,7 @@ def _get_monster_data(
                 affinities[element] = ElementalAffinity.NEUTRAL
         return affinities
 
-    def get_abilities(address: int) -> dict[str, list[Optional[str]]]:
+    def get_abilities(address: int) -> Dict[str, List[Optional[str]]]:
         abilities = {}
         equipment_types = (EquipmentType.WEAPON, 0), (EquipmentType.ARMOR, 16)
         for equipment_type, offset in equipment_types:

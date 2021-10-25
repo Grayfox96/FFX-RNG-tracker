@@ -1,11 +1,11 @@
 import csv
-from typing import Iterator, Optional, Union
+from typing import Dict, Iterator, List, Optional, Tuple, Union
 
 from .data.constants import RNG_CONSTANTS_1, RNG_CONSTANTS_2
 from .data.file_functions import get_resource_path
 from .errors import InvalidDamageValueError, SeedNotFoundError
 
-DmgValues = tuple[int, int, int, int, int, int]
+DmgValues = Tuple[int, int, int, int, int, int]
 SeedInfo = Union[DmgValues, int]
 
 
@@ -50,7 +50,7 @@ class FFXRNGTracker:
                   f'seed_info=({self.seed_info}))')
         return string
 
-    def check_damage_values(self) -> dict[str, dict[int, int]]:
+    def check_damage_values(self) -> Dict[str, Dict[int, int]]:
         """Checks if the damage values are valid."""
         possible_values = {
             'tidus': (
@@ -81,7 +81,7 @@ class FFXRNGTracker:
                 else:
                     self.damage_values[i + 1] = self.damage_values[i + 1] // 2
 
-    def get_rng_seed(self) -> tuple[list[int], int]:
+    def get_rng_seed(self) -> Tuple[List[int], int]:
         """Retrieves the initial rng array values."""
         damage_values = [str(i) for i in self.damage_values]
         absolute_file_path = get_resource_path('data/ffxhd_raw_rng_arrays.csv')
@@ -104,7 +104,7 @@ class FFXRNGTracker:
         integer = integer & 0xffffffff
         return (integer ^ 0x80000000) - 0x80000000
 
-    def get_rng_array(self) -> list[int]:
+    def get_rng_array(self) -> List[int]:
         """Calculates the starting values of the rng arrays."""
         rng_value = self.s32(self.seed_number)
         initial_values = []

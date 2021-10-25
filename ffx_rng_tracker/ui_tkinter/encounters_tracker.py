@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from typing import Union
+from typing import Dict, Union
 
 from ..data.encounters import ANY_ENCOUNTERS
 from ..data.file_functions import get_sliders_settings
@@ -18,7 +18,7 @@ class EncountersTracker(BaseWidget):
         super().__init__(parent, *args, **kwargs)
 
     def make_input_widget(
-            self) -> dict[str, Union[tk.Scale, tk.StringVar, ttk.Checkbutton]]:
+            self) -> Dict[str, Union[tk.Scale, tk.StringVar, ttk.Checkbutton]]:
         outer_frame = tk.Frame(self)
         outer_frame.pack(fill='y', side='left')
         canvas = tk.Canvas(outer_frame, width=280)

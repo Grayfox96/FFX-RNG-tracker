@@ -1,6 +1,7 @@
 import csv
 import os
 import sys
+from typing import Dict
 
 
 def get_resource_path(relative_path: str) -> str:
@@ -16,7 +17,7 @@ def get_resource_path(relative_path: str) -> str:
     return os.path.join(base_path, relative_path)
 
 
-def get_sliders_settings(file_path: str) -> dict[str, dict[str, str]]:
+def get_sliders_settings(file_path: str) -> Dict[str, Dict[str, str]]:
     sliders_settings = {}
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:

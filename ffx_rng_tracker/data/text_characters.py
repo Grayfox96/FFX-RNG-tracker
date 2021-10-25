@@ -1,9 +1,10 @@
 import csv
+from typing import Dict
 
 from .file_functions import get_resource_path
 
 
-def get_text_characters(file_path: str) -> dict[int, str]:
+def get_text_characters(file_path: str) -> Dict[int, str]:
     """Retrieves the character encoding chart used in prize structs."""
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:

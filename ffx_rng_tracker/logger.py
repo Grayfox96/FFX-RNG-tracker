@@ -2,7 +2,7 @@ import logging
 from functools import wraps
 from traceback import format_tb
 from types import TracebackType
-from typing import Optional
+from typing import Optional, Tuple
 
 
 def log_exceptions(logger: Optional[logging.Logger] = None):
@@ -35,7 +35,7 @@ def setup_logger(logger: Optional[logging.Logger] = None) -> None:
 
 
 def log_tkinter_error(
-        error: Exception, message: tuple[str], tb: TracebackType) -> None:
+        error: Exception, message: Tuple[str], tb: TracebackType) -> None:
     """Receives an error from Tkinter, prints it
     and logs it to the root logger.
     """

@@ -1,5 +1,6 @@
 import csv
 from dataclasses import dataclass
+from typing import Tuple
 
 from .file_functions import get_resource_path
 
@@ -26,7 +27,7 @@ class ItemDrop:
         return string
 
 
-def _get_items(file_path: str) -> tuple[str]:
+def _get_items(file_path: str) -> Tuple[str]:
     """Retrieves the items names."""
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:

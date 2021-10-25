@@ -1,5 +1,6 @@
 import csv
 from dataclasses import dataclass, field
+from typing import Dict
 
 from .constants import Stat
 from .file_functions import get_resource_path
@@ -9,8 +10,8 @@ from .file_functions import get_resource_path
 class Character:
     name: str
     index: int
-    _default_stats: dict[str, int] = field(default_factory=dict)
-    stats: dict[str, int] = field(default_factory=dict, init=False)
+    _default_stats: Dict[str, int] = field(default_factory=dict)
+    stats: Dict[str, int] = field(default_factory=dict, init=False)
 
     def __post_init__(self):
         self.reset_stats()
@@ -28,7 +29,7 @@ class Character:
             self.set_stat(stat, value)
 
 
-def _get_characters(file_path: str) -> dict[str, Character]:
+def _get_characters(file_path: str) -> Dict[str, Character]:
     """"""
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:

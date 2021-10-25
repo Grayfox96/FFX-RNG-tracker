@@ -1,12 +1,13 @@
 import csv
+from typing import Dict, List
 
 from .file_functions import get_resource_path
 from .monsters import MONSTERS, Monster
 
-Formation = list[Monster]
+Formation = List[Monster]
 
 
-def _get_formations(file_path: str) -> dict[str, list[Formation]]:
+def _get_formations(file_path: str) -> Dict[str, List[Formation]]:
     """Retrieves the encounter formations."""
     formations = {}
     absolute_file_path = get_resource_path(file_path)

@@ -1,5 +1,6 @@
 import csv
 from dataclasses import dataclass, field
+from typing import Dict, List, Tuple
 
 from .autoabilities import AUTOABILITIES, Autoability
 from .characters import Character
@@ -13,7 +14,7 @@ class Equipment:
     owner: Character
     type_: EquipmentType
     slots: int
-    abilities: tuple[Autoability]
+    abilities: Tuple[Autoability]
     base_weapon_damage: int
     bonus_crit: int
     name: str = field(init=False, repr=False)
@@ -71,7 +72,7 @@ class EquipmentDrop:
         return string
 
 
-def _get_equipment_names(file_path: str) -> dict[str, tuple[str]]:
+def _get_equipment_names(file_path: str) -> Dict[str, Tuple[str]]:
     """Retrieves the equipment names."""
     weapon_names = []
     armor_names = []
@@ -97,7 +98,7 @@ def _get_equipment_names(file_path: str) -> dict[str, tuple[str]]:
     return equipment_names
 
 
-def get_weapon_name(owner_index: int, abilities: list[int], slots: int) -> str:
+def get_weapon_name(owner_index: int, abilities: List[int], slots: int) -> str:
     """Returns a weapon's name given the owner,
     the abilities and the number of slots.
     """
@@ -260,7 +261,7 @@ def get_weapon_name(owner_index: int, abilities: list[int], slots: int) -> str:
     return EQUIPMENT_NAMES['weapon'][index][owner_index]
 
 
-def get_armor_name(owner_index: int, abilities: list[int], slots: int) -> str:
+def get_armor_name(owner_index: int, abilities: List[int], slots: int) -> str:
     """Returns an armor's name given the owner,
     the abilities and the number of slots.
     """
