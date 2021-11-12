@@ -7,7 +7,7 @@ Kilika Woods (Way In),0,3,6
 Lord Ochu (Way Out),0,0,1
 Kilika Woods (Way Out),0,3,6
 Miihen Screen 1,0,3,6
-Miihen Screen 2/3,0,7,10
+Miihen Screen 2-3,0,7,10
 Simulation (Miihen),0,0,1
 Old Road,0,4,8
 Simulation (Old Road),0,0,1
@@ -33,13 +33,23 @@ Sandragora 1 refight,0,0,1
 Bikanel (Post Sandragora),0,0,2
 Home,0,0,2
 Airship,0,0,1
-Via Purifico,0,2,4
-Via Purifico Underwater,0,1,3
+Via Purifico (Corridor),0,2,4
+Via Purifico (Underwater),0,1,3
 Highbridge,0,3,5
 Calm Lands (Slope),0,2,10
 Calm Lands (South),0,4,10
 Simulation (Calm Lands),0,0,1
-Calm Lands (Central/North-East),0,4,10
+Calm Lands (Central-North-East),0,4,10
 Biran & Yenke,0,0,1
 Calm Lands (Gorge),0,0,10
 Cave (White Zone)/Cave (Green Zone),0,20,50
+Gagazet (Mountain),0,0,10
+Gagazet (Cave),0,0,10
+Gagazet (Underwater),0,0,10
+Gagazet (Cave),0,0,10
+Gagazet (Underwater),0,0,10
+Gagazet (Cave),0,0,10
+Zanarkand (Overpass),0,0,10
+Zanarkand (Dome),0,0,10
+Inside Sin (Front),0,0,10
+Inside Sin (Back),0,0,10

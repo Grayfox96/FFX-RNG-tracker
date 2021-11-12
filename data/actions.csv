@@ -56,9 +56,7 @@ Blessed Gem,true,false,true,false,-,Item,160
 Supreme Gem,true,false,true,false,-,Item,200
 Poison Fang,true,false,true,false,-,Item,40
 Silver Hourglass,true,false,true,false,-,Fixed,0
-#,,,,,,,
 #Gold Hourglass,true,false,true,false,-,Fixed+Item,0+20
-#,,,,,,,
 Candle of Life,true,false,false,-,-,-,-
 Petrify Grenade,true,false,false,-,-,-,-
 Farplane Shadow,true,false,false,-,-,-,-
@@ -95,14 +93,10 @@ Threaten,true,false,false,-,-,-,-
 Provoke,true,false,false,-,-,-,-
 Entrust,true,false,false,-,-,-,-
 #Copycat,-,-,-,-,-,-,-
-#,,,,,,,
 #Pilfer Gil,,,,,,,
-#,,,,,,,
 #Quick Pockets,-,-,-,-,-,-,-
 #Doublecast,-,-,-,-,-,-,-
-#,,,,,,,
 #Bribe,,,,,,,
-#,,,,,,,
 #Blk Magic,-,-,-,-,-,-,-
 Fire,true,false,true,false,-,Magic,12
 Thunder,true,false,true,false,-,Magic,12
@@ -167,19 +161,19 @@ Power Distiller,true,false,false,-,-,-,-
 Mana Distiller,true,false,false,-,-,-,-
 Speed Distiller,true,false,false,-,-,-,-
 Ability Distiller,true,false,false,-,-,-,-
-Sonic Wings,true,false,true,true,false,Strength,8
-Meteor Strike,true,false,true,true,false,Strength,17
-Aerospark,true,false,true,true,false,Strength,16
-Heavenly Strike,true,false,true,true,false,Strength,17
-Impulse,true,false,true,true,false,Strength,16
-Pain,true,false,true,true,false,Special Magic,20
-Daigoro,true,false,true,true,false,Strength,10
-Kozuka,true,false,true,true,false,Strength,13
-Wakizashi,true,false,true,true,false,Strength,18
+Sonic Wings,true,false,true,true,true,Strength,8
+Meteor Strike,true,false,true,true,true,Strength,17
+Aerospark,true,false,true,true,true,Strength,16
+Heavenly Strike,true,false,true,true,true,Strength,17
+Impulse,true,false,true,true,true,Strength,16
+Pain,true,false,true,false,-,Special Magic,20
+Daigoro,true,false,true,true,true,Strength,10
+Kozuka,true,false,true,true,true,Strength,13
+Wakizashi,true,false,true,true,true,Strength,18
 Zanmato,true,false,false,-,-,-,-
-Camisade,true,false,true,true,false,Strength,21
-Razzia,true,false,true,true,false,Strength,21
-Passado,true,false,true,true,false,Strength,2
+Camisade,true,false,true,true,true,Strength,21
+Razzia,true,false,true,true,true,Strength,21
+Passado,true,false,true,true,true,Strength,2
 Spiral Cut,true,false,true,true,false,Strength,32
 #Slice & Dice,true,false,true,true,false,Strength,6
 #Energy Rain,true,false,true,true,false,Strength,26
@@ -249,45 +243,45 @@ Super Mighty G,true,false,true,false,false,Fixed,0
 Hyper Mighty G,true,false,true,false,false,Fixed,0
 #Freedom,,,,,,,
 #Freedom X,,,,,,,
-#Hero Drink,,,,,,,
-#Miracle Drink,,,,,,,
-#Quartet of 9,,,,,,,
-#Trio of 9999,,,,,,,
-#Hot Spurs,,,,,,,
-#Eccentrick,,,,,,,
+Hero Drink,true,false,false,-,-,-,-
+Miracle Drink,true,false,false,-,-,-,-
+Quartet of 9,true,false,false,-,-,-,-
+Trio of 9999,true,false,false,-,-,-,-
+Hot Spurs,true,false,false,-,-,-,-
+Eccentrick,true,false,false,-,-,-,-
 #Grenade,true,false,true,true,false,Item,7
 #Frag Grenade,true,false,true,true,false,Item,16
-#Blaster Mine,,,,,,Item,22
-#Hazardous Shell,,,,,,Item,45
+Blaster Mine,true,false,true,true,false,Item,22
+Hazardous Shell,true,false,true,true,false,Item,45
 #Pineapple,,,,,,Item,27
 #Calamity Bomb,,,,,,Item,72
 #Cluster Bomb,,,,,,Item,100
 #Potato Masher,,,,,,Item,54
 #Tallboy,,,,,,Item,180
-#Chaos Grenade,,,,,,Item,146
+Chaos Grenade,true,false,true,true,false,Item,146
 #Nega Burst,true,false,true,false,-,Percentage,75
 #Black Hole,true,false,true,false,-,Percentage,94
 #Sunburst,true,false,true,false,-,Fixed,19998
-#Heat Blaster,,,,,,Item,8
-#Firestorm,,,,,,Item,14
-#Burning Soul,,,,,,Item,18
-#Brimstone,,,,,,Item,8
-#Abaddon Flame,,,,,,Item,18
-#Thunderbolt,,,,,,Item,8
-#Rolling Thunder,,,,,,Item,14
-#Lightning Bolt,,,,,,Item,18
-#Electroshock,,,,,,Item,8
-#Thunderblast,,,,,,Item,18
-#Waterfall,,,,,,Item,8
-#Flash Flood,,,,,,Item,14
-#Tidal Wave,,,,,,Item,18
-#Aqua Toxin,,,,,,Item,8
-#Dark Rain,,,,,,Item,18
-#Snow Flurry,,,,,,Item,8
-#Icefall,,,,,,Item,14
-#Winter Storm,,,,,,Item,18
-#Black Ice,,,,,,Item,8
-#Krysta,,,,,,Item,18
+Heat Blaster,true,false,true,false,-,Item,8
+Firestorm,true,false,true,false,-,Item,14
+Burning Soul,true,false,true,false,-,Item,18
+Brimstone,true,false,true,false,-,Item,8
+Abaddon Flame,true,false,true,false,-,Item,18
+Thunderbolt,true,false,true,false,-,Item,8
+Rolling Thunder,true,false,true,false,-,Item,14
+Lightning Bolt,true,false,true,false,-,Item,18
+Electroshock,true,false,true,false,-,Item,8
+Thunderblast,true,false,true,false,-,Item,18
+Waterfall,true,false,true,false,-,Item,8
+Flash Flood,true,false,true,false,-,Item,14
+Tidal Wave,true,false,true,false,-,Item,18
+Aqua Toxin,true,false,true,false,-,Item,8
+Dark Rain,true,false,true,false,-,Item,18
+Snow Flurry,true,false,true,false,-,Item,8
+Icefall,true,false,true,false,-,Item,14
+Winter Storm,true,false,true,false,-,Item,18
+Black Ice,true,false,true,false,-,Item,8
+Krysta,true,false,true,false,-,Item,18
 #Requiem,true,false,true,,,Magic,40
 Energy Ray,true,false,true,false,false,Special Magic,55
 Energy Blast,true,false,true,false,false,Special Magic,75

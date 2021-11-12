@@ -131,10 +131,10 @@ def parse_action(
 
     if target_name:
         try:
-            target = CHARACTERS[target_name]
+            target = MONSTERS[target_name]
         except KeyError:
             try:
-                target = MONSTERS[target_name]
+                target = CHARACTERS[target_name]
             except KeyError as error:
                 return Comment(f'No target named {error}')
     else:

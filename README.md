@@ -21,3 +21,5 @@ Credits to [Rossy__](https://twitter.com/Rossy__TTV) for the disassembly for mos
 Credits to [CrimsonInferno](https://www.twitch.tv/crimsoninferno9) for the initial idea and for providing the encounter formations and a lot of other useful information.
 
 Credits to [OddMog](https://www.twitch.tv/oddmog), [ChrisTenarium](https://www.twitch.tv/christenarium) and [Loftus](https://www.twitch.tv/loftus) for initial testing and feedback.
+
+Credits to [Madhyama](https://www.twitch.tv/madhyama) for testing the actions tracker and compiling the default actions notes.

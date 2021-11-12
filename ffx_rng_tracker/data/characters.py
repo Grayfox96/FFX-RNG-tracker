@@ -10,8 +10,8 @@ from .file_functions import get_resource_path
 class Character:
     name: str
     index: int
-    _default_stats: Dict[str, int] = field(default_factory=dict)
-    stats: Dict[str, int] = field(default_factory=dict, init=False)
+    _default_stats: Dict[Stat, int] = field(default_factory=dict)
+    stats: Dict[Stat, int] = field(default_factory=dict, init=False)
 
     def __post_init__(self):
         self.reset_stats()
@@ -20,13 +20,21 @@ class Character:
         return self.name
 
     def set_stat(self, stat: Stat, value: int):
-        value = min(max(value, 0), 255)
+        if stat is Stat.HP:
+            max_value = 99999
+        elif stat is Stat.MP:
+            max_value = 9999
+        elif stat in (Stat.CHEER, Stat.FOCUS):
+            max_value = 5
+        elif stat is Stat.PIERCING:
+            max_value = 1
+        else:
+            max_value = 255
+        value = min(max(value, 0), max_value)
         self.stats[stat] = value
 
     def reset_stats(self):
-        self.stats.clear()
-        for stat, value in self._default_stats.items():
-            self.set_stat(stat, value)
+        self.stats = self._default_stats.copy()
 
 
 def _get_characters(file_path: str) -> Dict[str, Character]:
@@ -55,7 +63,9 @@ def _get_characters(file_path: str) -> Dict[str, Character]:
                 Stat.BONUS_CRIT: int(line[13]),
                 Stat.BONUS_STRENGTH: int(line[14]),
                 Stat.BONUS_MAGIC: int(line[15]),
-                Stat.PIERCING: int(line[16])
+                Stat.PIERCING: int(line[16]),
+                Stat.CHEER: 0,
+                Stat.FOCUS: 0,
             }
             characters[name.lower()] = Character(name, index, stats)
     return characters

@@ -41,6 +41,7 @@ class MonsterDataViewer(BaseWidget):
     def make_output_widget(self) -> BetterText:
         widget = super().make_output_widget()
         widget.configure(wrap='none')
+        widget._add_h_scrollbar()
         return widget
 
     def get_input(self) -> Tuple[int]:

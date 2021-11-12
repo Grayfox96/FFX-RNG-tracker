@@ -34,11 +34,11 @@ set,Vouivre,0,Normal
 set,Garuda,0,Normal
 set,Pierce tutorial,0,Normal
 random,Miihen Screen 1,0,
-random,Miihen Screen 2/3,0,
-simulated,Simulation (Miihen),,Normal
+random,Miihen Screen 2-3,0,
+simulated,Simulation (Miihen),0,Normal
 set,Chocobo Eater,0,Normal
 random,Old Road,0,
-simulated,Simulation (Old Road),,Normal
+simulated,Simulation (Old Road),0,Normal
 random,Clasko Skip Screen,0,
 random,MRR - Valley,0,
 random,MRR - Precipice,0,
@@ -82,19 +82,38 @@ set,Bevelle Guards 2,0,Normal
 set,Bevelle Guards 3,0,Normal
 set,Bevelle Guards 4,0,Normal
 set,Bevelle Guards 5,0,Normal
-random,Via Purifico,1,
+random,Via Purifico (Corridor),1,
 set,Isaaru Grothia,0,Normal
 set,Isaaru Pterya,0,Normal
 set,Isaaru Spathi,0,Normal
-random,Via Purifico Underwater,0,
+random,Via Purifico (Underwater),0,
 set,Evrae Altana,0,Normal
 random,Highbridge,1,
 set,Seymour Natus,0,Normal
 random,Calm Lands (Slope),1,
 random,Calm Lands (South),1,
-simulated,Simulation (Calm Lands),,
-random,Calm Lands (Central/North-East),1,
+simulated,Simulation (Calm Lands),1,
+random,Calm Lands (Central-North-East),1,
 set,Defender X,1,Normal
 set_optional,Biran & Yenke,0,Normal
 random,Calm Lands (Gorge),1,
 multizone,Cave (White Zone)/Cave (Green Zone),1,
+random,Gagazet (Mountain),0,
+set,Seymour Flux,1,Normal
+random,Gagazet (Cave),0,
+random,Gagazet (Underwater),0,
+random,Gagazet (Cave),0,
+random,Gagazet (Underwater),0,
+random,Gagazet (Cave),0,
+set,Sanctuary Keeper,1,Normal
+random,Zanarkand (Overpass),0,
+random,Zanarkand (Dome),0,
+set,Spectral Keeper,1,Normal
+set,Yunalesca,1,Normal
+set,Left Fin,1,Normal
+set,Right Fin,1,Normal
+set,Sin Core,1,Normal
+set,Overdrive Sin,1,Normal
+random,Inside Sin (Front),0,
+random,Inside Sin (Back),0,
+set,Seymour Omnis,1,Normal

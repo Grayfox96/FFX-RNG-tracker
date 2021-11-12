@@ -1,18 +1,53 @@
 import sys
 import tkinter as tk
 from abc import ABC, abstractmethod
-from tkinter import font, simpledialog
-from tkinter.scrolledtext import ScrolledText
+from tkinter import font, simpledialog, ttk
 from typing import Union
 
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..tracker import get_tracker
 
 
-class BetterText(ScrolledText):
-    """Upgraded ScrolledText widget with an highlight_pattern
-    method and a set method.
+class BetterText(tk.Text):
+    """Upgraded Text widget with an highlight_pattern
+    method, a set method and with a vertical scrollbar
+    and an optional horizontal scrollbar.
     """
+
+    def __init__(self, parent, *args,  **kwargs) -> None:
+        self.frame = tk.Frame(parent)
+        self.v_scrollbar = tk.Scrollbar(self.frame)
+        self.v_scrollbar.grid(row=0, column=1, sticky='ns')
+        kwargs['yscrollcommand'] = self.v_scrollbar.set
+        super().__init__(self.frame, *args, **kwargs)
+        self.grid(row=0, column=0, sticky='nsew')
+        self.v_scrollbar.configure(command=self.yview)
+        if kwargs.get('wrap') == 'none':
+            self._add_h_scrollbar()
+
+        self.frame.rowconfigure(0, weight=1)
+        self.frame.columnconfigure(0, weight=1)
+
+        self._override_geometry_managers()
+
+    def _override_geometry_managers(self) -> None:
+        """Override the geometry managers methods with the ones
+        from the frame."""
+        text_meths = vars(tk.Text).keys()
+        methods = (vars(tk.Pack).keys()
+                   | vars(tk.Grid).keys()
+                   | vars(tk.Place).keys())
+        methods = methods.difference(text_meths)
+
+        for m in methods:
+            if m[0] != '_' and m != 'config' and m != 'configure':
+                setattr(self, m, getattr(self.frame, m))
+
+    def _add_h_scrollbar(self):
+        self.h_scrollbar = tk.Scrollbar(self.frame, orient='horizontal')
+        self.h_scrollbar.grid(row=1, column=0, sticky='ew')
+        self.configure(xscrollcommand=self.h_scrollbar.set)
+        self.h_scrollbar.configure(command=self.xview)
 
     def highlight_pattern(
             self, pattern: str, tag: str, start: str = '1.0',
@@ -64,14 +99,14 @@ class BetterText(ScrolledText):
         self.see(middle_line)
 
 
-class BetterSpinbox(tk.Spinbox):
+class BetterSpinbox(ttk.Spinbox):
     """Upgraded Spinbox widget with a set method
     and readonly by default.
     """
 
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-        self.config(state='readonly')
+        self.set(0)
 
     def set(self, text: Union[str, int]) -> None:
         """Set the spinbox content."""
@@ -79,6 +114,41 @@ class BetterSpinbox(tk.Spinbox):
         self.delete(0, 'end')
         self.insert(0, text)
         self.config(state='readonly')
+
+
+class ScrollableFrame(tk.Frame):
+    """"""
+
+    def __init__(self, parent, *args, **kwargs):
+        self.parent = parent
+        self.outer_frame = tk.Frame(parent)
+        canvas = tk.Canvas(self.outer_frame, width=280)
+        canvas.pack(side='left', fill='both', expand=True)
+        scrollbar = tk.Scrollbar(
+            self.outer_frame, orient='vertical', command=canvas.yview)
+        scrollbar.pack(side='right', fill='y')
+        canvas.config(yscrollcommand=scrollbar.set)
+        super().__init__(canvas, *args, **kwargs)
+        super().pack(fill='both', expand=True)
+        self.bind(
+            '<Configure>',
+            lambda _: canvas.config(scrollregion=canvas.bbox('all')))
+        canvas.create_window((0, 0), window=self, anchor='nw')
+        # when the mouse enters the canvas it binds the mousewheel to scroll
+        canvas.bind(
+            '<Enter>',
+            lambda _: canvas.bind_all(
+                '<MouseWheel>',
+                lambda e: canvas.yview_scroll(
+                    int(-1 * (e.delta / 120)), 'units')))
+        # when the mouse leaves the canvas it unbinds the mousewheel
+        canvas.bind('<Leave>', lambda _: canvas.unbind_all('<MouseWheel>'))
+
+    def pack(self, *args, **kwargs):
+        self.outer_frame.pack(*args, **kwargs)
+
+    def grid(self, *args, **kwargs):
+        self.outer_frame.grid(*args, **kwargs)
 
 
 class BaseWidget(tk.Frame, ABC):
