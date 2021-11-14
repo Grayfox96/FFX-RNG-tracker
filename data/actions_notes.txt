@@ -226,6 +226,9 @@ kimahri lancet Ragora_2
 tidus attack Ragora_2
 lulu fire Ragora_2
 
+# kilika grid
+stat tidus agility +1
+
 # kilika in encounters
 # if wakka equips an armguard
 # stat wakka bonus_crit +3
@@ -343,6 +346,14 @@ wakka attack sahagin_chief
 wakka attack sahagin_chief
 wakka attack sahagin_chief
 wakka attack sahagin_chief
+wakka attack sahagin_chief
+wakka attack sahagin_chief
+wakka attack sahagin_chief
+wakka attack sahagin_chief
+wakka attack sahagin_chief
+
+stat tidus cheer 0
+stat wakka cheer 0
 
 stat tidus cheer 0
 stat wakka cheer 0
@@ -392,7 +403,7 @@ valefor energy_ray red_element
 # first grid
 stat wakka strength +2
 stat kimahri hp +600
-# stat valefor magic ???
+stat valefor magic 28
 
 # recharge encounter
 encounter
@@ -410,7 +421,7 @@ wakka attack gandarewa
 # second grid
 stat yuna magic +3
 stat yuna agility +3
-# stat valefor magic ???
+stat valefor magic 31
 
 encounter
 auron power_break sinspawn_gui
@@ -899,3 +910,18 @@ bahamut attack  Braska's_final_aeon
 
 bahamut attack  Braska's_final_aeon
 bahamut attack  Braska's_final_aeon
+
+encounter
+yuna attack valefor_c
+
+encounter
+yuna attack ifrit_c
+
+encounter
+yuna attack ixion_c
+
+encounter
+yuna attack shiva_c
+
+encounter
+yuna attack bahamut_c

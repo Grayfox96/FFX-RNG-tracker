@@ -129,7 +129,12 @@ def parse_action(
     if not character_name or not action_name:
         return Comment(usage)
 
-    if target_name:
+    if target_name.endswith('_c'):
+        try:
+            target = CHARACTERS[target_name[:-2]]
+        except KeyError as error:
+            return Comment(f'No character named {error}')
+    elif target_name:
         try:
             target = MONSTERS[target_name]
         except KeyError:
