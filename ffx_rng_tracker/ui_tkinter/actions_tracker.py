@@ -74,6 +74,8 @@ class ActionsTracker(BaseWidget):
         self.output_widget.config(state='normal')
         self.output_widget.set(data)
         self.output_widget.highlight_pattern('Encounter', 'blue')
+        self.output_widget.highlight_pattern('Preemptive', 'green')
+        self.output_widget.highlight_pattern('Ambush', 'red')
         self.output_widget.highlight_pattern('Crit', 'green')
         self.output_widget.highlight_pattern(
             '^.*changed to.+$', 'yellow', regexp=True)
