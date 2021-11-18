@@ -444,7 +444,6 @@ seymour thundara head
 seymour thundara head
 seymour thundara head
 seymour thundara head
-seymour thundara head
 
 # djose grid
 stat tidus strength +1
@@ -538,15 +537,15 @@ kimahri lightning_marble crawler
 lulu phoenix_down rikku
 rikku lightning_marble crawler
 lulu phoenix_down rikku
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
+rikku lightning_bolt crawler
+rikku lightning_bolt crawler
+rikku lightning_bolt crawler
+rikku lightning_bolt crawler
+rikku lightning_bolt crawler
+rikku lightning_bolt crawler
+rikku lightning_bolt crawler
+rikku lightning_bolt crawler
+rikku lightning_bolt crawler
 
 # post crawler grid
 stat tidus strength +20
@@ -911,17 +910,34 @@ bahamut attack  Braska's_final_aeon
 bahamut attack  Braska's_final_aeon
 bahamut attack  Braska's_final_aeon
 
+# possessed aeons' luck is 1
+stat valefor luck 1
+stat ifrit luck 1
+stat ixion luck 1
+stat shiva luck 1
+stat bahamut luck 1
+
 encounter
 yuna attack valefor_c
+# yuna quick_hit valefor_c
+# yuna spare_change valefor_c
 
 encounter
 yuna attack ifrit_c
+# yuna quick_hit ifrit_c
+# yuna spare_change ifrit_c
 
 encounter
 yuna attack ixion_c
+# yuna quick_hit ixion_c
+# yuna spare_change ixion_c
 
 encounter
 yuna attack shiva_c
+# yuna quick_hit shiva_c
+# yuna spare_change shiva_c
 
 encounter
 yuna attack bahamut_c
+# yuna quick_hit bahamut_c
+# yuna spare_change bahamut_c

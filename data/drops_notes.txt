@@ -294,12 +294,12 @@ kill Bomb_2 tidus
 kill Bomb_2 tidus
 kill Bomb_2 tidus
 
-# in the next 2 fights the guados
-# can die first or last
+# in the next 2 fights the kill order
+# is random (w/ Stone Breath)
 # fight 2
-kill Dual_Horn_2 kimahri
-kill Dual_Horn_2 kimahri
 kill Guado_Guardian_3 kimahri
+kill Dual_Horn_2 kimahri
+kill Dual_Horn_2 kimahri
 
 # fight 3
 kill Guado_Guardian_3 kimahri

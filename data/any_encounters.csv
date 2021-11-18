@@ -108,12 +108,12 @@ random,Gagazet (Cave),0,
 set,Sanctuary Keeper,1,Normal
 random,Zanarkand (Overpass),0,
 random,Zanarkand (Dome),0,
-set,Spectral Keeper,1,Normal
-set,Yunalesca,1,Normal
-set,Left Fin,1,Normal
-set,Right Fin,1,Normal
-set,Sin Core,1,Normal
-set,Overdrive Sin,1,Normal
+set,Spectral Keeper,0,Normal
+set,Yunalesca,0,Normal
+set,Left Fin,0,Normal
+set,Right Fin,0,Normal
+set,Sin Core,0,Normal
+set,Overdrive Sin,0,Normal
 random,Inside Sin (Front),0,
+set,Seymour Omnis,0,Normal
 random,Inside Sin (Back),0,
-set,Seymour Omnis,1,Normal
