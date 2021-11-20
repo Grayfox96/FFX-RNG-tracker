@@ -13,7 +13,7 @@ class SeedInfo(BaseWidget):
 
     def get_input(self):
         data = [
-            f'Seed number: {self.rng_tracker.seed_number}',
+            f'Seed number: {self.rng_tracker.seed}',
             get_equipment_types(50, 2),
         ]
         return '\n\n'.join(data)
