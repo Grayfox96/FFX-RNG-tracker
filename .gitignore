@@ -6,3 +6,5 @@ ffx_rng_tracker_ui_autopytoexe.json
 ffx_rng_tracker_errors.log
 *.spec
 *.lnk
+data/ps2_seeds.csv
+data/seeds.csv

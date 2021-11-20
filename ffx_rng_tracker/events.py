@@ -11,7 +11,8 @@ from .data.encounter_formations import FORMATIONS, Formation
 from .data.equipment import Equipment, EquipmentDrop
 from .data.items import ItemDrop
 from .data.monsters import Monster
-from .tracker import FFXRNGTracker, get_tracker
+from .main import get_tracker
+from .tracker import FFXRNGTracker
 
 Spoils = Tuple[Optional[ItemDrop], Optional[ItemDrop], Optional[EquipmentDrop]]
 

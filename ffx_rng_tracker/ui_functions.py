@@ -7,7 +7,7 @@ from .data.monsters import MONSTERS, Monster
 from .events import (AdvanceRNG, ChangeParty, ChangeStat, CharacterAction,
                      Comment, Death, Encounter, EquipmentType, Escape, Event,
                      Kill, SimulatedEncounter, Steal, YojimboTurn)
-from .tracker import get_tracker
+from .main import get_tracker
 
 
 def get_equipment_types(amount: int, columns: int = 2) -> str:

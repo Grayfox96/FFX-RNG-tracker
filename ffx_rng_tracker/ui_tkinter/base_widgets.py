@@ -5,7 +5,7 @@ from tkinter import font, simpledialog, ttk
 from typing import Union
 
 from ..errors import InvalidDamageValueError, SeedNotFoundError
-from ..tracker import get_tracker
+from ..main import get_tracker
 
 
 class BetterText(tk.Text):
@@ -209,10 +209,9 @@ class DamageValuesDialogue(simpledialog.Dialog):
 
     def body(self, parent: tk.Tk):
         self.parent = parent
+        text = 'Damage values (Auron1 Tidus1 A2 T2 A3 T3)'
         if '-ps2' in sys.argv:
-            text = 'Seed number'
-        else:
-            text = 'Damage values (Auron1 Tidus1 A2 T2 A3 T3)'
+            text = text[:-1] + ' A4 A5)'
         tk.Label(parent, text=text).pack()
         self.entry = tk.Entry(parent, width=25)
         self.entry.pack(fill='x')
@@ -237,16 +236,15 @@ class DamageValuesDialogue(simpledialog.Dialog):
             return
         if len(seed_info) == 1:
             seed_info = seed_info[0]
-            if seed_info > 0xffffffff:
+            if not (0 <= seed_info <= 0xffffffff):
                 self.show_warning(
                     'Seed must be an integer between 0 and 4294967295')
                 return
+        elif len(seed_info) < 8 and '-ps2' in sys.argv:
+            self.show_warning('Need at least 8 damage values.')
+            return
         elif len(seed_info) < 6:
             self.show_warning('Need at least 6 damage values.')
-            return
-        elif len(seed_info) > 6:
-            self.show_warning(
-                f'Submitted too many values: {len(seed_info)}')
             return
         try:
             self.rng_tracker = get_tracker(seed_info)
