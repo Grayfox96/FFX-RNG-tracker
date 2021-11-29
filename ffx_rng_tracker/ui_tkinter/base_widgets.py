@@ -72,8 +72,7 @@ class BetterText(tk.Text):
         # if the current text is the same as the new text do nothing
         # a newline character gets automatically added
         # so it needs to be removed to compare
-        current_text = self.get('1.0', 'end')[:-1]
-        if text == current_text:
+        if text == self.get('1.0', 'end')[:-1]:
             return
         # get the index of the middle and last visible lines
         height = self.winfo_height()
@@ -225,7 +224,7 @@ class DamageValuesDialogue(simpledialog.Dialog):
     def validate_input(self) -> None:
         input_string = self.entry.get()
         # replace different symbols with spaces
-        for symbol in (',', '-', '/', '\\'):
+        for symbol in (',', '-', '/', '\\', '.'):
             input_string = input_string.replace(symbol, ' ')
         seed_info = input_string.split()
         try:

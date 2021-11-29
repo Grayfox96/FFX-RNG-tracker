@@ -10,14 +10,10 @@ from .file_functions import get_resource_path
 
 
 def get_seed(damage_values: Iterable[int]) -> int:
-    if '-ps2' in sys.argv:
-        damage_values_needed = 8
-    else:
-        damage_values_needed = 6
-    if len(damage_values) < damage_values_needed:
+    if len(damage_values) < DAMAGE_VALUES_NEEDED:
         raise SeedNotFoundError(
-            f'Need at least {damage_values_needed} damage values')
-    damage_values = damage_values[:damage_values_needed]
+            f'Need at least {DAMAGE_VALUES_NEEDED} damage values')
+    damage_values = damage_values[:DAMAGE_VALUES_NEEDED]
 
     damage_values_indexes = []
     for i, damage_value in enumerate(damage_values):
@@ -117,11 +113,19 @@ _DAMAGE_VALUES = {
     ),
 }
 
+PS2_FROM_BOOT_FRAMES = 60 * 60 * 3
+HD_FROM_BOOT_FRAMES = 1
+
+if '-ps2' in sys.argv:
+    DAMAGE_VALUES_NEEDED = 8
+else:
+    DAMAGE_VALUES_NEEDED = 6
+
 if not os.path.exists(get_resource_path(_SEEDS_FILE_PATH)):
     print('Seeds file not found.')
-    make_seeds_file(_SEEDS_FILE_PATH, 1)
+    make_seeds_file(_SEEDS_FILE_PATH, HD_FROM_BOOT_FRAMES)
 
 if '-ps2' in sys.argv:
     if not os.path.exists(get_resource_path(_PS2_SEEDS_FILE_PATH)):
         print('Seeds file for ps2 not found.')
-        make_seeds_file(_PS2_SEEDS_FILE_PATH, 60 * 60 * 3)
+        make_seeds_file(_PS2_SEEDS_FILE_PATH, PS2_FROM_BOOT_FRAMES)

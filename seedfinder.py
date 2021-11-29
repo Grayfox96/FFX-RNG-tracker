@@ -4,18 +4,21 @@ import tkinter as tk
 from ffx_rng_tracker.data.file_functions import get_resource_path
 from ffx_rng_tracker.logger import (log_exceptions, log_tkinter_error,
                                     setup_logger)
-from ffx_rng_tracker.ui_tkinter.monster_data_viewer import MonsterDataViewer
+from ffx_rng_tracker.main import get_tracker
+from ffx_rng_tracker.ui_tkinter.seedfinder import SeedFinder
 
 
 @log_exceptions()
 def main():
     setup_logger()
     root = tk.Tk()
-    # redirects errors to another function
     root.report_callback_exception = log_tkinter_error
     root.protocol('WM_DELETE_WINDOW', root.quit)
-    root.title('ffx_monster_data_viewer')
-    root.geometry('1280x800')
+    title = 'ffx_rng_tracker'
+    if '-ps2' in sys.argv:
+        title += ' (ps2 mode)'
+    root.title(title)
+    root.geometry('800x600')
 
     if '-notheme' not in sys.argv:
         theme_path = get_resource_path(
@@ -26,7 +29,8 @@ def main():
         else:
             root.tk.call('set_theme', 'light')
 
-    ui = MonsterDataViewer(root)
+    get_tracker(0)
+    ui = SeedFinder(root)
     ui.pack(expand=True, fill='both')
     root.mainloop()
 

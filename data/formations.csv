@@ -47,6 +47,7 @@ MRR - Valley,red_element+raptor+lamashtu,lamashtu+gandarewa+red_element,raptor+r
 MRR - Precipice,raptor+funguar+funguar,raptor+funguar+funguar,raptor+funguar+red_element,raptor+funguar+red_element,funguar+red_element+gandarewa,funguar+red_element+gandarewa,garuda,garuda,garuda+funguar+funguar
 Sinspawn Gui 1,sinspawn_gui+arm+arm+head
 Sinspawn Gui 2,sinspawn_gui+arm+arm+head
+MRR - Aftermath,lamashtu+raptor+red_element,lamashtu+raptor+red_element,lamashtu+raptor+red_element,lamashtu+gandarewa+red_element,lamashtu+gandarewa+red_element,lamashtu+gandarewa+red_element,raptor+red_element+gandarewa,raptor+red_element+gandarewa,raptor+red_element+gandarewa,raptor+funguar+funguar,raptor+funguar+funguar,raptor+funguar+funguar,raptor+funguar+red_element,raptor+funguar+red_element,funguar+red_element+gandarewa,funguar+red_element+gandarewa
 Djose Highroad (Front Half),bite_bug+bite_bug+funguar,bite_bug+basilisk+bite_bug,basilisk+basilisk,lamashtu+raptor+funguar,lamashtu+raptor+funguar
 Djose Highroad (Back Half),garm+bunyip_2+snow_flan,garm+bunyip_2+snow_flan,garm+bunyip_2+snow_flan,garm+bunyip_2+snow_flan,garm+bunyip_2+simurgh,garm+bunyip_2+simurgh,gandarewa+funguar+gandarewa,gandarewa+gandarewa+snow_flan,basilisk+funguar+funguar,basilisk+funguar+funguar,basilisk+funguar+funguar,simurgh+bite_bug+bite_bug,basilisk+basilisk,basilisk+basilisk,basilisk+basilisk
 Moonflow (South),bunyip_2+garm+bite_bug,ochu+bite_bug+bite_bug,ochu+bite_bug+bite_bug,ochu+garm,ochu+garm,ochu,ochu,garm+bunyip_2+snow_flan,garm+bunyip_2+snow_flan,garm+bunyip_2+snow_flan,garm+bunyip_2+snow_flan,gandarewa+funguar+gandarewa
@@ -55,12 +56,12 @@ Rikku tutorial,???_3+bunyip
 Moonflow (North),???_2+garm+bunyip_2,???_2+bite_bug+bite_bug,???_2+bunyip_2+bite_bug+bite_bug,ochu+garm,garm+bunyip_2+snow_flan
 Thunder Plains (South),larva+gold_element,melusine+kusariqqu+aerouge,gold_element+buer+melusine,larva+aerouge+aerouge,gold_element+buer+aerouge
 Thunder Plains (South) (1 stone),larva+gold_element,melusine+kusariqqu+aerouge,gold_element+buer+melusine,larva+aerouge+aerouge,gold_element+buer+aerouge,qactuar
-Thunder Plains (South) (2 stones),larva+gold_element,melusine+kusariqqu+aerouge,gold_element+buer+melusine,larva+aerouge+aerouge,gold_element+buer+aerouge,qactuar,qactuar+qactuar
-Thunder Plains (South) (3 stones),larva+gold_element,melusine+kusariqqu+aerouge,gold_element+buer+melusine,larva+aerouge+aerouge,gold_element+buer+aerouge,qactuar+qactuar+qactuar
+Thunder Plains (South) (2 stones),larva+gold_element,melusine+kusariqqu+aerouge,gold_element+buer+melusine,larva+aerouge+aerouge,gold_element+buer+aerouge,qactuar+qactuar
+Thunder Plains (South) (3 stones),larva+gold_element,melusine+kusariqqu+aerouge,gold_element+buer+melusine,larva+aerouge+aerouge,gold_element+buer+aerouge,qactuar+qactuar,qactuar+qactuar+qactuar
 Thunder Plains (North),iron_giant,iron_giant+buer+buer,larva+larva,melusine+kusariqqu+aerouge,gold_element+buer+kusariqqu
 Thunder Plains (North) (1 stone),iron_giant,iron_giant+buer+buer,larva+larva,melusine+kusariqqu+aerouge,gold_element+buer+kusariqqu,qactuar
-Thunder Plains (North) (2 stones),iron_giant,iron_giant+buer+buer,larva+larva,melusine+kusariqqu+aerouge,gold_element+buer+kusariqqu,qactuar+qactuar
-Thunder Plains (North) (3 stones),iron_giant,iron_giant+buer+buer,larva+larva,melusine+kusariqqu+aerouge,gold_element+buer+kusariqqu,qactuar+qactuar,qactuar+qactuar+qactuar
+Thunder Plains (North) (2 stones),iron_giant,iron_giant+buer+buer,larva+larva,melusine+kusariqqu+aerouge,gold_element+buer+kusariqqu,qactuar,qactuar+qactuar
+Thunder Plains (North) (3 stones),iron_giant,iron_giant+buer+buer,larva+larva,melusine+kusariqqu+aerouge,gold_element+buer+kusariqqu,qactuar+qactuar+qactuar
 Macalania Woods,iguion+murussu+wasp,iguion+murussu+blue_element,wasp+blue_element+blue_element,xiphos,wasp+wasp+xiphos,chimera,chimera
 Spherimorph,spherimorph
 Lake Macalania,evil_eye+ice_flan+snow_wolf,snow_wolf+ice_flan+mafdet,snow_wolf+ice_flan+snow_wolf
