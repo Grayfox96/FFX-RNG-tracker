@@ -275,7 +275,7 @@ def treeview(item, padding: int = 0) -> str:
 def format_monster_data(monster: Monster) -> str:
     data = treeview(vars(monster))
     data = data.split('\n')
-    wrap = 53
+    wrap = 54
     string = ''
     for one, two in zip_longest(data[:wrap], data[wrap:], fillvalue=' '):
         string += f'{one:40}|{two}\n'

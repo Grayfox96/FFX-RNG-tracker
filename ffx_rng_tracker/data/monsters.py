@@ -18,6 +18,7 @@ class Monster:
     stats: dict[Stat, int]
     elemental_affinities: dict[Element, ElementalAffinity]
     status_resistances: dict[Status, int]
+    poison_tick_damage: int
     zanmato_level: int
     armored: bool
     undead: bool
@@ -231,9 +232,8 @@ def _get_monster_data(
     """Get a Monster from his prize struct."""
     def add_bytes(address: int, length: int) -> int:
         """Adds the value of adjacent bytes in a prize struct."""
-        value = 0
-        for i in range(length):
-            value += prize_struct[address + i] * (256 ** i)
+        value = sum([prize_struct[address + i] * (256 ** i)
+                     for i in range(length)])
         return value
 
     def get_elements() -> dict[str, str]:
@@ -385,6 +385,7 @@ def _get_monster_data(
         Status.HASTE: prize_struct[70],
         Status.SLOW: prize_struct[71],
     }
+    poison_tick_damage = stats[Stat.HP] * prize_struct[42] // 100
     undead = prize_struct[72] == 2
     auto_statuses = []
     if prize_struct[74] & 0b00100000:
@@ -429,6 +430,7 @@ def _get_monster_data(
         stats=stats,
         elemental_affinities=elemental_affinities,
         status_resistances=status_resistances,
+        poison_tick_damage=poison_tick_damage,
         zanmato_level=zanmato_level,
         armored=armored,
         undead=undead,
