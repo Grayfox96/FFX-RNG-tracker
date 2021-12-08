@@ -4,9 +4,10 @@ from .data.actions import ACTIONS, YOJIMBO_ACTIONS
 from .data.characters import CHARACTERS, Character
 from .data.constants import EncounterCondition, Stat
 from .data.monsters import MONSTERS, Monster
-from .events import (AdvanceRNG, ChangeParty, ChangeStat, CharacterAction,
-                     Comment, Death, Encounter, EquipmentType, Escape, Event,
-                     Kill, SimulatedEncounter, Steal, YojimboTurn)
+from .events import (AdvanceRNG, Bribe, ChangeParty, ChangeStat,
+                     CharacterAction, Comment, Death, Encounter, EquipmentType,
+                     Escape, Event, Kill, SimulatedEncounter, Steal,
+                     YojimboTurn)
 from .main import get_tracker
 
 
@@ -82,6 +83,18 @@ def parse_kill(
     overkill = overkill in ('overkill', 'ok')
     killer = CHARACTERS.get(killer_name, Character('Other', 18))
     return Kill(monster, killer, overkill)
+
+
+def parse_bribe(monster_name: str = '', user_name: str = '', *_) -> Event:
+    usage = 'Usage: bribe [monster_name] [user]'
+    if not monster_name or not user_name:
+        return Comment(usage)
+    try:
+        monster = MONSTERS[monster_name]
+    except KeyError as error:
+        return Comment(f'No monster named {error}')
+    killer = CHARACTERS.get(user_name, Character('Other', 18))
+    return Bribe(monster, killer)
 
 
 def parse_death(character: str = '???', *_) -> Death:

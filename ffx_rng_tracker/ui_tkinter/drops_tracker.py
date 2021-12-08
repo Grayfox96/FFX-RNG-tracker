@@ -1,7 +1,7 @@
 from ..data.file_functions import get_notes
 from ..events import Comment
-from ..ui_functions import (parse_death, parse_kill, parse_party_change,
-                            parse_roll, parse_steal)
+from ..ui_functions import (parse_bribe, parse_death, parse_kill,
+                            parse_party_change, parse_roll, parse_steal)
 from .base_widgets import BaseWidget, BetterText
 
 
@@ -38,6 +38,8 @@ class DropsTracker(BaseWidget):
                     event = parse_roll(*params)
                 elif event_name == 'party':
                     event = parse_party_change(*params)
+                elif event_name == 'bribe':
+                    event = parse_bribe(*params)
                 else:
                     event = Comment(f'No event called {event_name!r}')
             self.rng_tracker.events_sequence.append(event)
