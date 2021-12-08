@@ -14,8 +14,6 @@ from .data.monsters import Monster
 from .main import get_tracker
 from .tracker import FFXRNGTracker
 
-Spoils = Tuple[Optional[ItemDrop], Optional[ItemDrop], Optional[EquipmentDrop]]
-
 
 @dataclass
 class Event(ABC):
@@ -73,22 +71,24 @@ class Kill(Event):
     monster: Monster
     killer: Character
     overkill: bool = False
-    item1: Optional[ItemDrop] = field(init=False, repr=False)
-    item2: Optional[ItemDrop] = field(init=False, repr=False)
+    item_1: Optional[ItemDrop] = field(init=False, repr=False)
+    item_2: Optional[ItemDrop] = field(init=False, repr=False)
     equipment: Optional[EquipmentDrop] = field(init=False, repr=False)
     equipment_index: Optional[int] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.item1, self.item2, self.equipment = self._get_spoils()
+        self.item_1 = self._get_item_1()
+        self.item_2 = self._get_item_2()
+        self.equipment = self._get_equipment()
         self.equipment_index = self._get_equipment_index()
 
     def __str__(self) -> str:
         string = f'{self.monster.name} drops: '
         drops = []
-        if self.item1:
-            drops.append(str(self.item1))
-        if self.item2:
-            drops.append(str(self.item2))
+        if self.item_1:
+            drops.append(str(self.item_1))
+        if self.item_2:
+            drops.append(str(self.item_2))
         if self.equipment:
             drops.append(f'Equipment #{self.equipment_index} '
                          f'{str(self.equipment)}')
@@ -98,40 +98,40 @@ class Kill(Event):
             string += 'No drops'
         return string
 
-    def _get_spoils(self) -> Spoils:
-        rng_item_1_drop = self._rng_tracker.advance_rng(10) % 255
+    def _get_item_1(self) -> Optional[ItemDrop]:
+        rng_drop = self._rng_tracker.advance_rng(10) % 255
         if self.overkill:
             drop_type = 'overkill'
         else:
             drop_type = 'normal'
-        if self.monster.item_1['drop_chance'] > rng_item_1_drop:
-            rng_item_1_rarity = self._rng_tracker.advance_rng(11) & 255
-            if rng_item_1_rarity < 32:
-                item_1 = self.monster.item_1[drop_type][Rarity.RARE]
+        if self.monster.item_1['drop_chance'] > rng_drop:
+            rng_rarity = self._rng_tracker.advance_rng(11) & 255
+            if rng_rarity < 32:
+                return self.monster.item_1[drop_type][Rarity.RARE]
             else:
-                item_1 = self.monster.item_1[drop_type][Rarity.COMMON]
-        else:
-            item_1 = None
-        rng_item_2_drop = self._rng_tracker.advance_rng(10) % 255
-        if self.monster.item_2['drop_chance'] > rng_item_2_drop:
-            rng_item_2_rarity = self._rng_tracker.advance_rng(11) & 255
-            if rng_item_2_rarity < 32:
-                item_2 = self.monster.item_2[drop_type][Rarity.RARE]
-            else:
-                item_2 = self.monster.item_2[drop_type][Rarity.COMMON]
-        else:
-            item_2 = None
-        rng_equipment_drop = self._rng_tracker.advance_rng(10) % 255
-        if self.monster.equipment['drop_chance'] > rng_equipment_drop:
-            equipment = self._get_dropped_equipment()
-        else:
-            equipment = None
-        return item_1, item_2, equipment
+                return self.monster.item_1[drop_type][Rarity.COMMON]
 
-    def _get_dropped_equipment(self) -> EquipmentDrop:
+    def _get_item_2(self) -> Optional[ItemDrop]:
+        rng_drop = self._rng_tracker.advance_rng(10) % 255
+        if self.overkill:
+            drop_type = 'overkill'
+        else:
+            drop_type = 'normal'
+        if self.monster.item_2['drop_chance'] > rng_drop:
+            rng_rarity = self._rng_tracker.advance_rng(11) & 255
+            if rng_rarity < 32:
+                return self.monster.item_2[drop_type][Rarity.RARE]
+            else:
+                return self.monster.item_2[drop_type][Rarity.COMMON]
+
+    def _get_equipment(self) -> Optional[EquipmentDrop]:
         """Returns equipment obtained from killing an enemy
         at the current rng position and advances rng accordingly.
         """
+        rng_equipment_drop = self._rng_tracker.advance_rng(10) % 255
+        if self.monster.equipment['drop_chance'] <= rng_equipment_drop:
+            return
+
         characters_enabled = [CHARACTERS['tidus'], CHARACTERS['auron']]
         for event in reversed(self._rng_tracker.events_sequence):
             if isinstance(event, ChangeParty):
@@ -244,6 +244,16 @@ class Kill(Event):
                 if event.equipment:
                     return event.equipment_index + 1
         return 1
+
+
+@dataclass
+class Bribe(Kill):
+
+    def _get_item_1(self) -> Optional[ItemDrop]:
+        return self.monster.bribe['item']
+
+    def _get_item_2(self) -> None:
+        return
 
 
 @dataclass

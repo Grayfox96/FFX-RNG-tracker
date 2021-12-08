@@ -28,7 +28,7 @@ class Monster:
     item_1: Dict[str, Union[int, Dict[Rarity, Optional[ItemDrop]]]]
     item_2: Dict[str, Union[int, Dict[Rarity, Optional[ItemDrop]]]]
     steal: Dict[Union[str, Rarity], Union[int, Optional[ItemDrop]]]
-    bribe: Dict[Union[str, Rarity], Union[int, Optional[ItemDrop]]]
+    bribe: Dict[str, Union[int, Optional[ItemDrop]]]
     equipment: Dict[str, Union[int, List, Dict[Character, List[int]]]]
 
     def __str__(self):

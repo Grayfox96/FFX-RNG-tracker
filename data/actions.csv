@@ -96,7 +96,7 @@ Entrust,true,false,false,-,-,-,-
 #Pilfer Gil,,,,,,,
 #Quick Pockets,-,-,-,-,-,-,-
 #Doublecast,-,-,-,-,-,-,-
-#Bribe,,,,,,,
+Bribe,true,false,true,true,false,Fixed,0
 #Blk Magic,-,-,-,-,-,-,-
 Fire,true,false,true,false,-,Magic,12
 Thunder,true,false,true,false,-,Magic,12
