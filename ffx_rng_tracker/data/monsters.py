@@ -49,10 +49,10 @@ def _get_prize_structs(file_path: str) -> Dict[str, List[int]]:
             # gets the name of the monster from the prize struct itself
             # name is null (0x00) terminated
             monster_name = ''
-            for i in range(408, 430):
-                if prize_struct[i] == 0:
+            for character_id in prize_struct[408:430]:
+                if character_id == 0:
                     break
-                monster_name += TEXT_CHARACTERS[prize_struct[i]]
+                monster_name += TEXT_CHARACTERS[character_id]
             monster_name = monster_name.lower().replace(' ', '_')
             # if the name is already in the dictionary
             # appends it with an underscore and a number

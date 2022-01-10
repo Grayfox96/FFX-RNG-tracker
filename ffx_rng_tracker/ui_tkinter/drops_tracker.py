@@ -1,3 +1,5 @@
+from ffx_rng_tracker.data.monsters import MONSTERS
+
 from ..data.file_functions import get_notes
 from ..events import Comment
 from ..ui_functions import (parse_bribe, parse_death, parse_kill,
@@ -40,6 +42,9 @@ class DropsTracker(BaseWidget):
                     event = parse_party_change(*params)
                 elif event_name == 'bribe':
                     event = parse_bribe(*params)
+                # in this case its parsed as a kill
+                elif event_name in MONSTERS:
+                    event = parse_kill(*words)
                 else:
                     event = Comment(f'No event called {event_name!r}')
             self.rng_tracker.events_sequence.append(event)

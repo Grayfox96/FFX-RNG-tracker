@@ -1,10 +1,13 @@
+import math
+import sys
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Union
 
 from .data.actions import YOJIMBO_ACTIONS, Action, YojimboAction
 from .data.characters import CHARACTERS, Character
-from .data.constants import (HIT_CHANCE_TABLE, ICV_BASE, ICV_VARIANCE,
+from .data.constants import (COMPATIBILITY_MODIFIER, HIT_CHANCE_TABLE,
+                             ICV_BASE, ICV_VARIANCE, OVERDRIVE_MOTIVATION,
                              ZANMATO_LEVELS, DamageType, EncounterCondition,
                              EquipmentSlots, EquipmentType, Rarity, Stat)
 from .data.encounter_formations import FORMATIONS, Formation
@@ -725,7 +728,8 @@ class YojimboTurn(Event):
 
     def _get_gil(self) -> Tuple[int, int]:
         """"""
-        base_motivation = self._rng_tracker.compatibility // 10
+        base_motivation = (self._rng_tracker.compatibility
+                           // COMPATIBILITY_MODIFIER)
         zanmato_resistance = ZANMATO_LEVELS[self.monster.zanmato_level]
         rng_motivation = self._rng_tracker.advance_rng(17) & 0x3f
         # the zanmato level of the enemy is only used to check for zanmato
@@ -738,7 +742,7 @@ class YojimboTurn(Event):
         fixed_motivation = int(base_motivation * zanmato_resistance)
         fixed_motivation += rng_motivation
         if self.overdrive:
-            fixed_motivation += 20
+            fixed_motivation += OVERDRIVE_MOTIVATION
 
         motivation = fixed_motivation
         gil = 1
@@ -756,8 +760,9 @@ class YojimboTurn(Event):
 
     @staticmethod
     def gil_to_motivation(gil: int) -> int:
-        motivation = 0
-        while gil >= 8:
-            motivation += 4
-            gil = gil // 2
-        return motivation
+        motivation = int(math.log(gil, 2))
+        if '-ps2' in sys.argv:
+            motivation = (motivation - 1) * 2
+        else:
+            motivation = (motivation - 2) * 4
+        return max(motivation, 0)
