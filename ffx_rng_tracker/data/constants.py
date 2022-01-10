@@ -1,3 +1,4 @@
+import sys
 from enum import Enum, IntEnum
 
 
@@ -164,3 +165,13 @@ ICV_VARIANCE = (
     4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
     6, 6, 6, 6, 6, 6,
 )
+
+# Yojimbo-related constants
+if '-ps2' in sys.argv:
+    BASE_COMPATIBILITY = 50
+    COMPATIBILITY_MODIFIER = 30
+    OVERDRIVE_MOTIVATION = 2
+else:
+    BASE_COMPATIBILITY = 128
+    COMPATIBILITY_MODIFIER = 10
+    OVERDRIVE_MOTIVATION = 20

@@ -44,9 +44,8 @@ class FFXRNGTrackerUI(ttk.Notebook):
         self.status_tracker = StatusTracker(self)
         self.add(self.status_tracker, text='Status')
 
-        if '-ps2' not in sys.argv:
-            self.yojimbo_tracker = YojimboTracker(self)
-            self.add(self.yojimbo_tracker, text='Yojimbo')
+        self.yojimbo_tracker = YojimboTracker(self)
+        self.add(self.yojimbo_tracker, text='Yojimbo')
 
         self.monster_data_viewer = MonsterDataViewer(self)
         self.add(self.monster_data_viewer, text='Monster Data')

@@ -4,10 +4,9 @@ from typing import Union
 
 from ..data.encounters import ANY_ENCOUNTERS
 from ..data.file_functions import get_sliders_settings
-from ..events import (Comment, Encounter, MultizoneRandomEncounter,
-                      RandomEncounter, SimulatedEncounter)
-from .base_widgets import (BaseWidget, BetterSpinbox, BetterText,
-                           ScrollableFrame)
+from ..events import (Encounter, MultizoneRandomEncounter, RandomEncounter,
+                      SimulatedEncounter)
+from .base_widgets import BaseWidget, ScrollableFrame
 
 
 class EncountersTracker(BaseWidget):
@@ -22,17 +21,18 @@ class EncountersTracker(BaseWidget):
             self) -> dict[str, Union[ttk.Checkbutton, tk.StringVar, dict[str, tk.Scale]]]:
         outer_frame = tk.Frame(self)
         outer_frame.pack(fill='y', side='left')
-        frame = ScrollableFrame(outer_frame)
-        frame.pack(expand=True, fill='both')
+        outer_frame.rowconfigure(index=1, weight=1)
         sentry = ttk.Checkbutton(
-            frame, text='Sentry', command=self.print_output)
-        sentry.grid(row=0, column=0, sticky='nsew')
+            outer_frame, text='Sentry', command=self.print_output)
+        sentry.grid(row=0, column=0, sticky='w')
         sentry.state(['selected'])
         current_zone = tk.StringVar(value='Start')
+        frame = ScrollableFrame(outer_frame)
+        frame.grid(row=1, column=0, columnspan=2, sticky='nsew')
         start = tk.Radiobutton(
             frame, text='Start', variable=current_zone,
             value='Start', command=self.print_output)
-        start.grid(row=0, column=1, sticky='sw')
+        start.grid(row=0, column=1, sticky='w')
         widget = {
             'sentry': sentry,
             'current_zone': current_zone,

@@ -1,6 +1,7 @@
 from typing import Iterator
 
-from .data.constants import RNG_CONSTANTS_1, RNG_CONSTANTS_2
+from .data.constants import (BASE_COMPATIBILITY, RNG_CONSTANTS_1,
+                             RNG_CONSTANTS_2)
 from .utils import s32
 
 
@@ -29,7 +30,7 @@ class FFXRNGTracker:
         # create a list used to store Events
         self.events_sequence = []
         # yojimbo compatibility
-        self.compatibility = 128
+        self.compatibility = BASE_COMPATIBILITY
 
     def __repr__(self) -> str:
         return f'{type(self).__name__}(seed=({self.seed}))'
@@ -75,4 +76,4 @@ class FFXRNGTracker:
         """Sets the state of some variables to their starting position."""
         self._rng_current_positions = [0 for _ in range(68)]
         self.events_sequence.clear()
-        self.compatibility = 128
+        self.compatibility = BASE_COMPATIBILITY

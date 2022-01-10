@@ -73,7 +73,7 @@ def parse_steal(
 def parse_kill(
         monster_name: str = '', killer_name: str = '',
         overkill: str = '', *_) -> Event:
-    usage = 'Usage: kill [monster_name] [killer] (overkill/ok)'
+    usage = 'Usage: (kill) [monster_name] [killer] (overkill/ok)'
     if not monster_name or not killer_name:
         return Comment(usage)
     try:
