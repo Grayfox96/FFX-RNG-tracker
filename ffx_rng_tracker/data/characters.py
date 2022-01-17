@@ -2,7 +2,7 @@ import csv
 from dataclasses import dataclass, field
 from typing import Dict
 
-from .constants import Stat
+from .constants import Element, ElementalAffinity, Stat
 from .file_functions import get_resource_path
 
 
@@ -11,6 +11,7 @@ class Character:
     name: str
     index: int
     _default_stats: Dict[Stat, int] = field(default_factory=dict)
+    elemental_affinities: Dict[Element, ElementalAffinity] = field(default_factory=dict)
     stats: Dict[Stat, int] = field(default_factory=dict, init=False)
 
     def __post_init__(self):
@@ -67,7 +68,19 @@ def _get_characters(file_path: str) -> Dict[str, Character]:
                 Stat.CHEER: 0,
                 Stat.FOCUS: 0,
             }
-            characters[name.lower()] = Character(name, index, stats)
+            elemental_affinities = {
+                Element.FIRE: ElementalAffinity(line[17]),
+                Element.ICE: ElementalAffinity(line[18]),
+                Element.THUNDER: ElementalAffinity(line[19]),
+                Element.WATER: ElementalAffinity(line[20]),
+                Element.HOLY: ElementalAffinity(line[21]),
+            }
+            characters[name.lower()] = Character(
+                name=name,
+                index=index,
+                _default_stats=stats,
+                elemental_affinities=elemental_affinities,
+                )
     return characters
 
 

@@ -33,7 +33,7 @@ class Element(StringEnum):
 class ElementalAffinity(StringEnum):
     ABSORBS = 'Absorbs'
     IMMUNE = 'Immune'
-    HALVES = 'Halves'
+    RESISTS = 'Resists'
     WEAK = 'Weak'
     NEUTRAL = 'Neutral'
 

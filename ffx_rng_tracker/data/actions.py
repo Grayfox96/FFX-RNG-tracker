@@ -2,7 +2,7 @@ import csv
 from dataclasses import dataclass
 from typing import Dict, Optional
 
-from .constants import DamageType
+from .constants import DamageType, Element
 from .file_functions import get_resource_path
 
 
@@ -16,6 +16,7 @@ class Action:
     uses_bonus_crit: bool
     damage_type: DamageType
     base_damage: int
+    element: Element
 
     def __str__(self) -> str:
         return self.name
@@ -51,6 +52,10 @@ def _get_actions(file_path: str) -> Dict[str, Action]:
                 damage_type = DamageType(line[6])
             except ValueError:
                 damage_type = None
+            try:
+                element = Element(line[8])
+            except ValueError:
+                element = None
             actions[name] = Action(
                 name=line[0],
                 has_target=line[1] == 'true',
@@ -60,6 +65,7 @@ def _get_actions(file_path: str) -> Dict[str, Action]:
                 uses_bonus_crit=line[5] == 'true',
                 damage_type=damage_type,
                 base_damage=base_damage,
+                element=element,
             )
     return actions
 

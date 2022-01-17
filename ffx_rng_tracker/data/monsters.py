@@ -1,6 +1,7 @@
 import csv
 import sys
 from dataclasses import dataclass
+from itertools import count
 from typing import Dict, List, Optional, Tuple, Union
 
 from .autoabilities import AUTOABILITIES
@@ -58,7 +59,7 @@ def _get_prize_structs(file_path: str) -> Dict[str, List[int]]:
             # appends it with an underscore and a number
             # from 2 to 8
             if monster_name in monsters_data:
-                for i in range(2, 9):
+                for i in count(2):
                     new_name = f'{monster_name}_{i}'
                     if new_name not in monsters_data:
                         monsters_data[new_name] = prize_struct
@@ -251,7 +252,7 @@ def _get_monster_data(
             elif prize_struct[44] & value:
                 affinities[element] = ElementalAffinity.IMMUNE
             elif prize_struct[45] & value:
-                affinities[element] = ElementalAffinity.HALVES
+                affinities[element] = ElementalAffinity.RESISTS
             elif prize_struct[46] & value:
                 affinities[element] = ElementalAffinity.WEAK
             else:
@@ -272,11 +273,11 @@ def _get_monster_data(
         return abilities
 
     monster_name = ''
-    for i in range(408, 430):
-        if prize_struct[i] == 0:
+    for character_id in prize_struct[408:430]:
+        if character_id == 0:
             break
-        monster_name += TEXT_CHARACTERS[prize_struct[i]]
-    for i in range(8):
+        monster_name += TEXT_CHARACTERS[character_id]
+    for i in range(16):
         if internal_monster_name.endswith(f'_{i}'):
             if '-nounicode' in sys.argv:
                 monster_name += f'#{i}'

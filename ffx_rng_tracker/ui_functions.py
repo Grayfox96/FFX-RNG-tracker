@@ -43,15 +43,15 @@ def get_equipment_types(amount: int, columns: int = 2) -> str:
 
 
 def parse_encounter(condition: str = '', *_) -> Encounter:
-    if condition == 'simulation':
-        return SimulatedEncounter('Klikk 1', False, EncounterCondition.NORMAL)
-    if condition == 'ambush':
-        condition = EncounterCondition.AMBUSH
-    elif condition == 'preemptive':
-        condition = EncounterCondition.PREEMPTIVE
-    else:
-        condition = EncounterCondition.NORMAL
-    return Encounter('Klikk 1', False, condition)
+    encounter_condition = EncounterCondition.NORMAL
+    if condition:
+        if 'simulation'.startswith(condition):
+            return SimulatedEncounter('Klikk 1', False, encounter_condition)
+        elif EncounterCondition.AMBUSH.lower().startswith(condition):
+            encounter_condition = EncounterCondition.AMBUSH
+        elif EncounterCondition.PREEMPTIVE.lower().startswith(condition):
+            encounter_condition = EncounterCondition.PREEMPTIVE
+    return Encounter('Klikk 1', False, encounter_condition)
 
 
 def parse_steal(

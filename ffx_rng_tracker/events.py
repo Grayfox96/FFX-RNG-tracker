@@ -8,8 +8,9 @@ from .data.actions import YOJIMBO_ACTIONS, Action, YojimboAction
 from .data.characters import CHARACTERS, Character
 from .data.constants import (COMPATIBILITY_MODIFIER, HIT_CHANCE_TABLE,
                              ICV_BASE, ICV_VARIANCE, OVERDRIVE_MOTIVATION,
-                             ZANMATO_LEVELS, DamageType, EncounterCondition,
-                             EquipmentSlots, EquipmentType, Rarity, Stat)
+                             ZANMATO_LEVELS, DamageType, ElementalAffinity,
+                             EncounterCondition, EquipmentSlots, EquipmentType,
+                             Rarity, Stat)
 from .data.encounter_formations import FORMATIONS, Formation
 from .data.equipment import Equipment, EquipmentDrop
 from .data.items import ItemDrop
@@ -521,6 +522,18 @@ class CharacterAction(Event):
         variance = damage_rng + 0xf0
         crit = self._get_crit()
         damage_type = self.action.damage_type
+        if self.action.element:
+            affinity = self.target.elemental_affinities[self.action.element]
+            if affinity == ElementalAffinity.WEAK:
+                element_mod = 1.5
+            elif affinity == ElementalAffinity.RESISTS:
+                element_mod = 0.5
+            elif affinity == ElementalAffinity.IMMUNE:
+                element_mod = 0
+            else:
+                element_mod = 1
+        else:
+            element_mod = 1
 
         # special cases where the damage formula
         # is a lot less complicated
@@ -529,6 +542,7 @@ class CharacterAction(Event):
             damage = damage * variance // 256
             if crit:
                 damage = damage * 2
+            damage = int(damage * element_mod)
             return damage, damage_rng, crit
         elif damage_type == DamageType.FIXED:
             damage = self.action.base_damage
@@ -609,14 +623,16 @@ class CharacterAction(Event):
             damage = damage * base_damage // 0x10
         damage = damage * variance // 0x100
 
+        if crit:
+            damage = damage * 2
+
+        damage = damage * element_mod
+
         if (damage_type == DamageType.STRENGTH
                 and isinstance(self.target, Monster)
                 and self.target.armored
                 and not self.character.stats[Stat.PIERCING]):
             damage = damage // 3
-
-        if crit:
-            damage = damage * 2
 
         damage = damage + (damage * bonus // 100)
 
