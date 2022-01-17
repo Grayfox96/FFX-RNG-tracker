@@ -196,7 +196,7 @@ def get_weapon_name(owner_index: int, abilities: list[int], slots: int) -> str:
         index = 36
     elif elemental_strikes == 2:  # Any two elemental -strike
         index = 37
-    elif status_touches == 2:  # Any two status -touch
+    elif status_touches >= 2:  # Any two status -touch
         index = 38
     elif 47 in abilities:  # Deathtouch
         index = 39
