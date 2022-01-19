@@ -1,13 +1,10 @@
 import csv
-from typing import Dict, Tuple, Union
+from typing import Dict, Tuple
 
-from ..data.constants import EncounterCondition
 from .file_functions import get_resource_path
 
-Enc = Dict[str, Union[str, bool, EncounterCondition, None]]
 
-
-def _get_encounters(file_path: str) -> Tuple[Enc]:
+def _get_encounters(file_path: str) -> Tuple[Dict[str, str]]:
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
         file_reader = csv.reader(file_object, delimiter=',')
@@ -15,14 +12,16 @@ def _get_encounters(file_path: str) -> Tuple[Enc]:
         next(file_reader)
         encounters = []
         for line in file_reader:
-            encounter = {}
-            encounter['enc_type'] = line[0]
-            encounter['name'] = line[1]
-            encounter['initiative'] = line[2] == '1'
-            try:
-                encounter['forced_condition'] = EncounterCondition(line[3])
-            except ValueError:
-                encounter['forced_condition'] = None
+            encounter = {
+                'name': line[0],
+                'type': line[1],
+                'initiative': line[2],
+                'forced_condition': line[3],
+                'label': line[4],
+                'min': line[5],
+                'default': line[6],
+                'max': line[7],
+            }
             encounters.append(encounter)
     return tuple(encounters)
 

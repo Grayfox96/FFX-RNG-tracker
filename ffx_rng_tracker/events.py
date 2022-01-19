@@ -301,7 +301,7 @@ class AdvanceRNG(Event):
 class Encounter(Event):
     name: str
     initiative: bool
-    forced_condition: Optional[EncounterCondition]
+    forced_condition: Optional[EncounterCondition] = None
     formation: Formation = field(init=False, repr=False)
     condition: EncounterCondition = field(init=False, repr=False)
     index: int = field(init=False, repr=False)
@@ -331,11 +331,11 @@ class Encounter(Event):
         return 1
 
     def _get_formation(self) -> Formation:
-        return FORMATIONS[self.name][0]
+        return FORMATIONS.set_formation[self.name]
 
     def _get_condition(self) -> EncounterCondition:
         condition_rng = self._rng_tracker.advance_rng(1) & 255
-        if self.forced_condition is not None:
+        if self.forced_condition:
             return self.forced_condition
         if self.initiative:
             condition_rng -= 33
@@ -366,6 +366,18 @@ class Encounter(Event):
 
 
 @dataclass
+class SimulatedEncounter(Encounter):
+
+    def _get_index(self) -> int:
+        # simulated encounter don't increment the game's
+        # encounter count used to calculate aeons' stats
+        return super()._get_index() - 1
+
+    def _get_formation(self) -> Formation:
+        return FORMATIONS.simulated[self.name]
+
+
+@dataclass
 class RandomEncounter(Encounter):
     zone: str = field(init=False, repr=False)
     random_index: int = field(init=False, repr=False)
@@ -376,21 +388,20 @@ class RandomEncounter(Encounter):
         super().__post_init__()
         self.random_index = self._get_random_index()
         self.zone_index = self._get_zone_index()
-        self.name = self._get_name()
 
     def __str__(self) -> str:
         if self.condition == EncounterCondition.NORMAL:
             condition = ''
         else:
             condition = f' {self.condition}'
-        formation = '+'.join([str(m) for m in self.formation])
-        string = (f'Encounter {self.index:3}: {self.name}{condition}\n'
-                  f'   `-{self.random_index:3}: {formation}')
+        formation = ', '.join([str(m) for m in self.formation])
+        string = (f'Encounter {self.index:3}|{self.random_index:3}|'
+                  f'{self.zone_index:3}| {self.zone}: {formation}{condition}')
         return string
 
     def _get_formation(self) -> Formation:
         rng_value = self._rng_tracker.advance_rng(1)
-        zone_formations = FORMATIONS[self.zone]
+        zone_formations = FORMATIONS.random[self.zone]
         formation_index = rng_value % len(zone_formations)
         return zone_formations[formation_index]
 
@@ -419,33 +430,22 @@ class MultizoneRandomEncounter(RandomEncounter):
             condition = ''
         else:
             condition = f' {self.condition}'
-        formations = ['+'.join([str(m) for m in f]) for f in self.formation]
+        formations = []
+        for f in self.formation:
+            formations.append(f'[{", ".join([str(m) for m in f])}]')
         formations = '/'.join(formations)
-        string = (f'Encounter {self.index:3}: {self.name}{condition}'
-                  f'\n   `-{self.random_index:3}: {formations}')
+        string = (f'Encounter {self.index:3}|{self.random_index:3}|'
+                  f'{self.zone_index:3}| {self.zone}: {formations}{condition}')
         return string
 
     def _get_formation(self) -> List[Formation]:
         rng_value = self._rng_tracker.advance_rng(1)
         formations = []
-        for zone in self.zone:
-            zone_formations = FORMATIONS[zone]
+        for zone in self.zone.split('/'):
+            zone_formations = FORMATIONS.random[zone]
             formation_index = rng_value % len(zone_formations)
             formations.append(zone_formations[formation_index])
         return formations
-
-    def _get_name(self) -> str:
-        zones = '/'.join(self.zone)
-        return f'{zones} [{self.zone_index}]'
-
-
-@dataclass
-class SimulatedEncounter(Encounter):
-
-    def _get_index(self) -> int:
-        # simulated encounter don't increment the game's
-        # encounter count used to calculate aeons' stats
-        return super()._get_index() - 1
 
 
 @dataclass

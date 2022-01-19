@@ -1,119 +1,115 @@
-type,name,initiative,forced condition
-set,Sinscales,0,Normal
-set,Ammes,0,Normal
-set,Tanker,0,Normal
-set,Sahagins,0,
-set,Geosgaeno,0,
-set,Klikk 1,0,Normal
-set,Klikk 2,0,Normal
-random,Underwater Ruins,0,
-set,Piranhas,0,
-set,Tros,0,
-random,Besaid Lagoon,0,
-set,Wakka tutorial,0,Normal
-set,Elements tutorial,0,Normal
-set,Kimahri,0,Normal
-set,Garuda 1,0,Normal
-set,Garuda 2,0,Normal
-set,Besaid forced encounter,0,Normal
-random,Besaid Road,0,
-set,Sin Fin,0,Normal
-set,Echuilles,0,Normal
-set,Lancet tutorial,0,Normal
-set_optional,Lord Ochu (Way In),0,Normal
-random,Kilika Woods (Way In),0,
-set,Geneaux,0,Normal
-set_optional,Lord Ochu (Way Out),0,Normal
-random,Kilika Woods (Way Out),0,
-set,Machina 1,0,Normal
-set,Machina 2,0,Normal
-set,Machina 3,0,Normal
-set,Oblitzerator,0,Normal
-set,Sahagin Chiefs,0,Normal
-set,Vouivre,0,Normal
-set,Garuda,0,Normal
-set,Pierce tutorial,0,Normal
-random,Miihen Screen 1,0,
-random,Miihen Screen 2-3,0,
-simulated,Simulation (Miihen),0,Normal
-set,Chocobo Eater,0,Normal
-random,Old Road,0,
-simulated,Simulation (Old Road),0,Normal
-random,Clasko Skip Screen,0,
-random,MRR - Valley,0,
-random,MRR - Precipice,0,
-set,Sinspawn Gui 1,0,Normal
-set,Sinspawn Gui 2,0,Normal
-random,Djose Highroad (Front Half),1,
-random,Djose Highroad (Back Half),1,
-random,Moonflow (South),1,
-set,Extractor,0,Normal
-set,Rikku tutorial,0,Normal
-random,Moonflow (North),1,
-random,Thunder Plains (South),1,
-random,Thunder Plains (North),1,
-random,Macalania Woods,0,Normal
-set,Spherimorph,0,Normal
-random,Lake Macalania,0,
-set,Crawler,0,Normal
-set,Seymour,0,Normal
-set_optional,Guado Encounter,0,Normal
-random,Crevasse,0,
-set,Wendigo,0,Normal
-set,Zu,0,Normal
-random,Bikanel (Pre Machina),1,
-set,Machina Steal tutorial,0,
-random,Bikanel (Post Machina),1,
-random,Bikanel (Central),1,
-random,Bikanel (Ruins),1,
-random,Bikanel (Pre Sandragora),1,
-set,Sandragora 1,1,
-set_optional,Sandragora 1 refight,1,
-random,Bikanel (Post Sandragora),1,
-set,Sandragora 2,1,
-set,Guado + 3 Bomb,1,
-set,Guado + 2 Dual Horn,1,
-random,Home,1,
-set,Guado + 2 Chimera,1,
-random,Airship,0,
-set,Evrae,0,Normal
-set,Bevelle Guards 1,0,Normal
-set,Bevelle Guards 2,0,Normal
-set,Bevelle Guards 3,0,Normal
-set,Bevelle Guards 4,0,Normal
-set,Bevelle Guards 5,0,Normal
-random,Via Purifico (Corridor),1,
-set,Isaaru Grothia,0,Normal
-set,Isaaru Pterya,0,Normal
-set,Isaaru Spathi,0,Normal
-random,Via Purifico (Underwater),0,
-set,Evrae Altana,0,Normal
-random,Highbridge,1,
-set,Seymour Natus,0,Normal
-random,Calm Lands (Slope),1,
-random,Calm Lands (South),1,
-simulated,Simulation (Calm Lands),1,
-random,Calm Lands (Central-North-East),1,
-set,Defender X,1,Normal
-set_optional,Biran & Yenke,0,Normal
-random,Calm Lands (Gorge),1,
-multizone,Cave (White Zone)/Cave (Green Zone),1,
-random,Gagazet (Mountain),0,
-set,Seymour Flux,1,Normal
-random,Gagazet (Cave),0,
-random,Gagazet (Underwater),0,
-random,Gagazet (Cave),0,
-random,Gagazet (Underwater),0,
-random,Gagazet (Cave),0,
-set,Sanctuary Keeper,1,Normal
-random,Zanarkand (Overpass),0,
-random,Zanarkand (Dome),0,
-set,Spectral Keeper,0,Normal
-set,Yunalesca,0,Normal
-set,Left Fin,0,Normal
-set,Right Fin,0,Normal
-set,Sin Core,0,Normal
-set,Overdrive Sin,0,Normal
-random,Inside Sin (Front),0,
-set,Seymour Omnis,0,Normal
-random,Inside Sin (Back),0,
+name,type,initiative,forced condition,label,min,default,max
+Sinscales,set,,normal,,,,
+Ammes,set,,normal,,,,
+Tanker,set,,normal,,,,
+Sahagins,set,,,,,,
+Geosgaeno,set,,,,,,
+Klikk 1,set,,normal,,,,
+Klikk 2,set,,normal,,,,
+Underwater Ruins,random,,,Underwater Ruins,0,1,1
+Piranhas,set,,,,,,
+Tros,set,,,,,,
+Besaid Lagoon,random,,,Besaid Lagoon,0,2,4
+Wakka tutorial,set,,normal,,,,
+Elements tutorial,set,,normal,,,,
+Kimahri,set,,normal,,,,
+Garuda 1,set,,normal,,,,
+Garuda 2,set,,normal,,,,
+Besaid forced encounter,set,,normal,,,,
+Besaid Road,random,,,Besaid Road,0,0,1
+Sin Fin,set,,normal,,,,
+Echuilles,set,,normal,,,,
+Lancet tutorial,set,,normal,,,,
+Lord Ochu,set_optional,,normal,Lord Ochu (Way In),0,0,1
+Kilika Woods,random,,,Kilika Woods (Way In),0,3,6
+Geneaux,set,,normal,,,,
+Lord Ochu,set_optional,,normal,Lord Ochu (Way Out),0,0,1
+Kilika Woods,random,,,Kilika Woods (Way Out),0,3,6
+Machina 1,set,,normal,,,,
+Machina 2,set,,normal,,,,
+Machina 3,set,,normal,,,,
+Oblitzerator,set,,normal,,,,
+Sahagin Chiefs,set,,normal,,,,
+Vouivre,set,,normal,,,,
+Garuda,set,,normal,,,,
+Pierce tutorial,set,,normal,,,,
+Miihen Screen 1,random,,,Miihen Screen 1,0,3,6
+Miihen Screen 2-3,random,,,Miihen Screen 2-3,0,7,10
+Simulation (Miihen),simulated,,normal,Simulation (Miihen),0,0,1
+Chocobo Eater,set,,normal,,,,
+Old Road,random,,,Old Road,0,4,8
+Simulation (Old Road),simulated,,normal,Simulation (Old Road),0,0,1
+Clasko Skip Screen,random,,,Clasko Skip Screen,0,2,3
+MRR - Valley,random,,,MRR - Valley,0,5,10
+MRR - Precipice,random,,,MRR - Precipice,0,1,3
+Sinspawn Gui 1,set,,normal,,,,
+Sinspawn Gui 2,set,,normal,,,,
+Djose Highroad (Front Half),random,true,,Djose Highroad (Front Half),0,2,4
+Djose Highroad (Back Half),random,true,,Djose Highroad (Back Half),0,3,5
+Moonflow (South),random,true,,Moonflow (South),0,8,10
+Extractor,set,,normal,,,,
+Rikku tutorial,set,,normal,,,,
+Moonflow (North),random,true,,Moonflow (North),0,2,10
+Thunder Plains (South),random,true,,Thunder Plains (South),0,7,10
+Thunder Plains (North),random,true,,Thunder Plains (North),0,7,10
+Macalania Woods,random,,normal,Macalania Woods,0,7,10
+Spherimorph,set,,normal,,,,
+Lake Macalania,random,,,Lake Macalania,0,1,1
+Crawler,set,,normal,,,,
+Seymour,set,,normal,,,,
+Guado Encounter,set_optional,,normal,Guado Encounter,0,0,2
+Crevasse,random,,,Crevasse,0,2,5
+Wendigo,set,,normal,,,,
+Zu,set,,normal,,,,
+Sanubia Desert (East),random,true,,Bikanel (Pre Machina),0,3,5
+Machina Steal tutorial,set,,,,,,
+Sanubia Desert (East),random,true,,Bikanel (Post Machina),0,1,5
+Sanubia Desert (Central),random,true,,Bikanel (Central),0,3,5
+Sanubia Desert (Ruins),random,true,,Bikanel (Ruins),0,0,5
+Sanubia Desert (West),random,true,,Bikanel (Pre Sandragora),0,1,2
+Sandragora,set_optional,true,,Sandragora (TP Spheres),1,1,2
+Sanubia Desert (West),random,true,,Bikanel (Post Sandragora),0,0,2
+Sandragora,set,true,,,,,
+Guado + 3 Bomb,set,true,,,,,
+Guado + 2 Dual Horn,set,true,,,,,
+Home,random,true,,Home,0,0,2
+Guado + 2 Chimera,set,true,,,,,
+Airship,random,,,Airship,0,0,1
+Evrae,set,,normal,,,,
+Bevelle Guards 1,set,,normal,,,,
+Bevelle Guards 2,set,,normal,,,,
+Bevelle Guards 3,set,,normal,,,,
+Bevelle Guards 4,set,,normal,,,,
+Bevelle Guards 5,set,,normal,,,,
+Via Purifico (Maze),random,true,,Via Purifico (Maze),0,0,2
+Via Purifico (Corridor),random,true,,Via Purifico (Corridor),0,2,4
+Isaaru Grothia,set,,normal,,,,
+Isaaru Pterya,set,,normal,,,,
+Isaaru Spathi,set,,normal,,,,
+Via Purifico (Underwater),random,,,Via Purifico (Underwater),0,1,3
+Evrae Altana,set,,normal,,,,
+Highbridge,random,true,,Highbridge,0,3,5
+Seymour Natus,set,,normal,,,,
+Calm Lands (South) (before Defender X),random,true,,Calm Lands (South),0,6,10
+Simulation (Calm Lands),simulated,true,,Simulation (Calm Lands),0,0,1
+Calm Lands (Central-North-East),random,true,,Calm Lands (Central-North-East),0,4,10
+Defender X,set,true,normal,,,,
+Biran & Yenke,set_optional,,normal,Biran & Yenke (pre Cave),0,0,1
+Calm Lands (Gorge),random,true,,Calm Lands (Gorge),0,0,10
+Cave (White Zone)/Cave (Green Zone),multizone,true,,Cave,0,20,50
+Biran & Yenke,set_optional,,normal,Biran & Yenke,0,1,1
+Gagazet (Mountain),random,,,Gagazet (Outside),0,0,10
+Seymour Flux,set,true,normal,,,,
+Gagazet (Cave)/Gagazet (Underwater),multizone,,,Gagazet (Inside),0,0,20
+Sanctuary Keeper,set,true,normal,,,,
+Zanarkand (Overpass),random,,,Zanarkand (Overpass),0,0,10
+Zanarkand (Dome),random,,,Zanarkand (Dome),0,0,10
+Spectral Keeper,set,,normal,,,,
+Yunalesca,set,,normal,,,,
+Left Fin,set,,normal,,,,
+Right Fin,set,,normal,,,,
+Sin Core,set,,normal,,,,
+Overdrive Sin,set,,normal,,,,
+Inside Sin (Front),random,,,Inside Sin (Front),0,0,10
+Seymour Omnis,set,,normal,,,,
+Inside Sin (Back),random,,,Inside Sin (Back),0,0,10

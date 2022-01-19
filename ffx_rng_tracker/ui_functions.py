@@ -6,8 +6,8 @@ from .data.constants import EncounterCondition, Stat
 from .data.monsters import MONSTERS, Monster
 from .events import (AdvanceRNG, Bribe, ChangeParty, ChangeStat,
                      CharacterAction, Comment, Death, Encounter, EquipmentType,
-                     Escape, Event, Kill, SimulatedEncounter, Steal,
-                     YojimboTurn)
+                     Escape, Event, Kill, MultizoneRandomEncounter,
+                     RandomEncounter, SimulatedEncounter, Steal, YojimboTurn)
 from .main import get_tracker
 
 
@@ -42,16 +42,24 @@ def get_equipment_types(amount: int, columns: int = 2) -> str:
     return data
 
 
-def parse_encounter(condition: str = '', *_) -> Encounter:
-    encounter_condition = EncounterCondition.NORMAL
-    if condition:
-        if 'simulation'.startswith(condition):
-            return SimulatedEncounter('Klikk 1', False, encounter_condition)
-        elif EncounterCondition.AMBUSH.lower().startswith(condition):
-            encounter_condition = EncounterCondition.AMBUSH
-        elif EncounterCondition.PREEMPTIVE.lower().startswith(condition):
-            encounter_condition = EncounterCondition.PREEMPTIVE
-    return Encounter('Klikk 1', False, encounter_condition)
+def parse_encounter(
+        encounter_type: str = '', name: str = '', initiative: str = '',
+        forced_condition: str = '', *_) -> Encounter:
+    if encounter_type in ('set', 'set_optional'):
+        encounter_type = Encounter
+    elif encounter_type == 'random':
+        encounter_type = RandomEncounter
+    elif encounter_type == 'simulated':
+        encounter_type = SimulatedEncounter
+    elif encounter_type == 'multizone':
+        encounter_type = MultizoneRandomEncounter
+    initiative = initiative == 'true'
+    condition = None
+    if forced_condition:
+        for ec in EncounterCondition:
+            if ec.lower().startswith(forced_condition):
+                condition = ec
+    return encounter_type(name, initiative, condition)
 
 
 def parse_steal(

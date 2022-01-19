@@ -40,7 +40,16 @@ class ActionsTracker(BaseWidget):
                 if event_name in ('roll', 'waste', 'advance'):
                     event = parse_roll(*params)
                 elif event_name == 'encounter':
-                    event = parse_encounter(*params)
+                    if params and 'simulated'.startswith(params[0]):
+                        enc_type = 'simulated'
+                        name = 'Simulation (Miihen)'
+                        forced_condition = 'normal'
+                    else:
+                        enc_type = 'set'
+                        name = 'Klikk 1'
+                        forced_condition = params[0] if params else 'normal'
+                    event = parse_encounter(
+                        enc_type, name, 'initiative', forced_condition)
                 elif event_name == 'stat':
                     event = parse_stat_update(*params)
                 # in this case its parsed as a character action
@@ -58,13 +67,16 @@ class ActionsTracker(BaseWidget):
             # if the text contains /// it hides the lines before it
             if '///' in line:
                 data.clear()
-            elif 'Encounter' in line:
+            elif line.startswith('Encounter'):
                 icvs = ''
                 for index, (c, icv) in enumerate(event.icvs.items()):
                     if index >= 7:
                         break
                     icvs += f'{c[:2]}[{icv}] '
-                data.append(f'{line[:14]} {line[31:]} {icvs}')
+                condition = str(event.condition)
+                if condition == 'Normal':
+                    condition = ''
+                data.append(f'Encounter {event.index:3} {condition:10} {icvs}')
             else:
                 data.append(line)
 
