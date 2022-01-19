@@ -3,19 +3,12 @@ from tkinter import ttk
 from typing import Union
 
 from ..data.encounters import ANY_ENCOUNTERS
-from ..data.file_functions import get_sliders_settings
-from ..events import (Encounter, MultizoneRandomEncounter, RandomEncounter,
-                      SimulatedEncounter)
+from ..ui_functions import parse_encounter
 from .base_widgets import BaseWidget, ScrollableFrame
 
 
 class EncountersTracker(BaseWidget):
     """Widget used to track encounters RNG."""
-
-    def __init__(self, parent, *args, **kwargs) -> None:
-        self.sliders_settings = get_sliders_settings(
-            'data/encounters_settings.csv')
-        super().__init__(parent, *args, **kwargs)
 
     def make_input_widget(
             self) -> dict[str, Union[ttk.Checkbutton, tk.StringVar, dict[str, tk.Scale]]]:
@@ -36,21 +29,23 @@ class EncountersTracker(BaseWidget):
         widget = {
             'sentry': sentry,
             'current_zone': current_zone,
-            'zones': {},
+            'scales': {},
         }
-        for row, (zone, settings) in enumerate(self.sliders_settings.items()):
+        for row, encounter in enumerate(ANY_ENCOUNTERS):
+            if not encounter['label']:
+                continue
             row += 1
             scale = tk.Scale(
                 frame, orient='horizontal', label=None,
-                from_=settings['min'], to=settings['max'],
+                from_=encounter['min'], to=encounter['max'],
                 command=lambda _: self.print_output())
-            scale.set(settings['default'])
+            scale.set(encounter['default'])
             scale.grid(row=row, column=0)
             label = tk.Radiobutton(
-                frame, text=zone, variable=current_zone,
-                value=zone, command=self.print_output)
+                frame, text=encounter['label'], variable=current_zone,
+                value=encounter['label'], command=self.print_output)
             label.grid(row=row, column=1, sticky='sw')
-            widget['zones'][zone] = scale
+            widget['scales'][encounter['label']] = scale
         return widget
 
     def get_input(self) -> None:
@@ -61,46 +56,47 @@ class EncountersTracker(BaseWidget):
         sentry = 'selected' in sentry or 'alternate' in sentry
 
         for encounter in ANY_ENCOUNTERS:
-            encounter_type = encounter['enc_type']
-            name = encounter['name']
             if sentry:
                 initiative = encounter['initiative']
             else:
-                initiative = False
-            forced_condition = encounter['forced_condition']
-            if encounter_type == 'random':
-                for _ in range(self.input_widget['zones'][name].get()):
-                    self.rng_tracker.events_sequence.append(
-                        RandomEncounter(name, initiative, forced_condition))
-            elif encounter_type == 'set':
-                self.rng_tracker.events_sequence.append(
-                    Encounter(name, initiative, forced_condition))
-            elif encounter_type == 'set_optional':
-                for _ in range(self.input_widget['zones'][name].get()):
-                    self.rng_tracker.events_sequence.append(
-                        Encounter(name, initiative, forced_condition))
-            elif encounter_type == 'simulated':
-                for _ in range(self.input_widget['zones'][name].get()):
-                    self.rng_tracker.events_sequence.append(
-                        SimulatedEncounter(name, initiative, forced_condition))
-            elif encounter_type == 'multizone':
-                zones = name.split('/')
-                for _ in range(self.input_widget['zones'][name].get()):
-                    self.rng_tracker.events_sequence.append(
-                        MultizoneRandomEncounter(
-                            zones, initiative, forced_condition))
+                initiative = ''
+            if encounter['type'] == 'set':
+                encs = 1
+            else:
+                encs = self.input_widget['scales'][encounter['label']].get()
+            for _ in range(encs):
+                event = parse_encounter(
+                    encounter['type'],
+                    encounter['name'],
+                    initiative,
+                    encounter['forced_condition'],
+                    )
+                self.rng_tracker.events_sequence.append(event)
 
     def print_output(self) -> None:
         self.get_input()
         data = []
+        spacer = '=' * 60
+        last_zone = ''
         for event in self.rng_tracker.events_sequence:
-            line = str(event)[10:]
-            # add a separator between zones
-            if '[1]' in line:
-                data.append('=' * 50)
-            data.append(line)
+            line = str(event)
+            if '|' in line:
+                if last_zone != event.zone:
+                    data.append(spacer)
+                    last_zone = event.zone
+                    data.append(f'     {event.name}:')
+                data.append(line[10:21] + line[23 + len(event.zone):])
+            else:
+                last_zone = ''
+                data.append(line[10:])
         data = '\n'.join(data)
-        index = data.find(self.input_widget['current_zone'].get())
+        for encounter in ANY_ENCOUNTERS:
+            if encounter['label'] == self.input_widget['current_zone'].get():
+                current_zone = encounter['name']
+                break
+        else:
+            current_zone = ''
+        index = data.find(current_zone)
         if index > 0:
             data = data[index - 5:]
 
