@@ -2,6 +2,7 @@
 * ffx_rng_tracker_ui: main program.
 * monster_data_viewer: shows information about monsters retrieved from the game directly.
 * encounters_tracker: tracks rng related to encounter formations and preemptives/ambushes.
+* seedfinder: used to find a seed given a series of action and the corresponding damage rolls.
 
 To track a PS2 run, open with the *-ps2* command line option.
 
@@ -10,8 +11,11 @@ Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo
 Contact [Grayfox#4644](https://discordapp.com/users/195955977223143426/) on Discord for help.
 
 # Theme
-Using the [Azure](https://github.com/rdbende/Azure-ttk-theme) theme for ttk. Use the *-darkmode* command line option to use dark mode.
-Use the *-notheme* command line option to use the default ttk theme.
+Using the [Azure](https://github.com/rdbende/Azure-ttk-theme) theme for ttk.
+* Use the *-darkmode* command line option to use dark mode.
+* Use the *-notheme* command line option to use the default ttk theme.
+* Use the *-fontsize* command line option followed by an integer to change the font size.
+* Use the *-nounicode* command line option to disable unicode characters.
 
 # Credits
 Credits to the #big-nerds channel in the FFX/X-2 Speedruns discord for ideas and useful discussions.

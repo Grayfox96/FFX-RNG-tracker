@@ -155,7 +155,13 @@ class BaseWidget(tk.Frame, ABC):
 
     def __init__(self, parent, *args, **kwargs):
         self.parent = parent
-        self.font = font.Font(family='Courier New', size=9)
+        font_size = 9
+        if '-fontsize' in sys.argv:
+            try:
+                font_size = int(sys.argv[sys.argv.index('-fontsize') + 1])
+            except (IndexError, ValueError):
+                pass
+        self.font = font.Font(family='Courier New', size=font_size)
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.rng_tracker = get_tracker()
         self.input_widget = self.make_input_widget()
