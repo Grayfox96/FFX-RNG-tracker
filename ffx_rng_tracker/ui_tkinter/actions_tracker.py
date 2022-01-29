@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 from ..data.characters import CHARACTERS
 from ..data.file_functions import get_notes
 from ..data.monsters import MONSTERS
@@ -59,6 +61,18 @@ class ActionsTracker(BaseWidget):
                     event = Comment(f'No event called {event_name!r}')
             self.rng_tracker.events_sequence.append(event)
 
+    def set_tags(self) -> List[Tuple[str, str, bool]]:
+        tags = [
+            ('Encounter', 'encounter', False),
+            ('Preemptive', 'preemptive', False),
+            ('Ambush', 'ambush', False),
+            ('Crit', 'crit', False),
+            ('^.*changed to.+$', 'stat update', True),
+            ('^#(.+?)?$', 'comment', True),
+        ]
+        tags.extend(super().set_tags())
+        return tags
+
     def print_output(self) -> None:
         self.get_input()
         data = []
@@ -85,23 +99,5 @@ class ActionsTracker(BaseWidget):
         # update the text widget
         self.output_widget.config(state='normal')
         self.output_widget.set(data)
-        self.output_widget.highlight_pattern('Encounter', 'blue')
-        self.output_widget.highlight_pattern('Preemptive', 'green')
-        self.output_widget.highlight_pattern('Ambush', 'red')
-        self.output_widget.highlight_pattern('Crit', 'green')
-        self.output_widget.highlight_pattern(
-            '^.*changed to.+$', 'yellow', regexp=True)
-        self.output_widget.highlight_pattern('^#(.+?)?$', 'gray', regexp=True)
-        self.output_widget.highlight_pattern(
-            '^Advanced rng.+$', 'red', regexp=True)
-        # highlight error messages
-        error_messages = (
-            'Invalid', 'No event called', 'Usage:', ' named ',
-            'requires a target', ' advance rng ', 'Can\'t advance',
-        )
-        for error_message in error_messages:
-            self.output_widget.highlight_pattern(
-                f'^.*{error_message}.+$', 'red_background', regexp=True)
-        self.output_widget.highlight_pattern(
-            '^.+$', 'wrap_margin', regexp=True)
+        self.highlight_patterns()
         self.output_widget.config(state='disabled')

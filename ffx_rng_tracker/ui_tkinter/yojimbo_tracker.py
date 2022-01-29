@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 from ..data.file_functions import get_notes
 from ..events import Comment
 from ..ui_functions import (parse_compatibility_update, parse_death,
@@ -16,6 +18,15 @@ class YojimboTracker(BaseWidget):
         widget = super().make_input_widget()
         widget.insert('end', self.default_notes)
         return widget
+
+    def set_tags(self) -> List[Tuple[str, str, bool]]:
+        tags = [
+            (' [0-9]{1,7}(?= gil) ', 'yojimbo low gil', True),
+            (' [0-9]{10,}(?= gil) ', 'yojimbo high gil', True),
+            ('^.*changed to.+$', 'stat update', True),
+        ]
+        tags.extend(super().set_tags())
+        return tags
 
     def get_input(self):
         # reset variables to the initial state
@@ -54,19 +65,5 @@ class YojimboTracker(BaseWidget):
         data = '\n'.join(data)
         self.output_widget.config(state='normal')
         self.output_widget.set(data)
-        self.output_widget.highlight_pattern(
-            '^Advanced rng.+$', 'red', regexp=True)
-        self.output_widget.highlight_pattern(
-            ' [0-9]{1,7}(?= gil) ', 'green', regexp=True)
-        self.output_widget.highlight_pattern(
-            ' [0-9]{10,}(?= gil) ', 'red', regexp=True)
-        self.output_widget.highlight_pattern(
-            '^.+$', 'wrap_margin', regexp=True)
-        error_messages = (
-            'Invalid', 'Usage:', 'No monster named', 'Can\'t advance',
-            'No action named',
-        )
-        for error_message in error_messages:
-            self.output_widget.highlight_pattern(
-                f'^.*{error_message}.+$', 'red_background', regexp=True)
+        self.highlight_patterns()
         self.output_widget.config(state='disabled')

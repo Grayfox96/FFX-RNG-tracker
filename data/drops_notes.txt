@@ -280,7 +280,7 @@ party takwlr
 # alcyone rikku
 # mushussu rikku
 
-# if you kill a chest enemy
+# if you kill a chest monster
 # ???_2 rikku
 
 sandragora kimahri

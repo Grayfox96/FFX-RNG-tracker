@@ -1,9 +1,9 @@
 import math
-import sys
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Union
 
+from .configs import Configs
 from .data.actions import YOJIMBO_ACTIONS, Action, YojimboAction
 from .data.characters import CHARACTERS, Character
 from .data.constants import (COMPATIBILITY_MODIFIER, HIT_CHANCE_TABLE,
@@ -129,7 +129,7 @@ class Kill(Event):
                 return self.monster.item_2[drop_type][Rarity.COMMON]
 
     def _get_equipment(self) -> Optional[EquipmentDrop]:
-        """Returns equipment obtained from killing an enemy
+        """Returns equipment obtained from killing a monster
         at the current rng position and advances rng accordingly.
         """
         rng_equipment_drop = self._rng_tracker.advance_rng(10) % 255
@@ -748,7 +748,7 @@ class YojimboTurn(Event):
                            // COMPATIBILITY_MODIFIER)
         zanmato_resistance = ZANMATO_LEVELS[self.monster.zanmato_level]
         rng_motivation = self._rng_tracker.advance_rng(17) & 0x3f
-        # the zanmato level of the enemy is only used to check for zanmato
+        # the zanmato level of the monster is only used to check for zanmato
         # if the desired attack is not zanmato then a second calculation is
         # made using the lowest zanmato level
         if (self.action != YOJIMBO_ACTIONS['zanmato']
@@ -777,7 +777,7 @@ class YojimboTurn(Event):
     @staticmethod
     def gil_to_motivation(gil: int) -> int:
         motivation = int(math.log(gil, 2))
-        if '-ps2' in sys.argv:
+        if Configs.ps2:
             motivation = (motivation - 1) * 2
         else:
             motivation = (motivation - 2) * 4

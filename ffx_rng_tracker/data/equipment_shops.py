@@ -12,8 +12,6 @@ def _get_shops_equipment(file_path: str) -> tuple[Equipment]:
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
         equipments_file_reader = csv.reader(file_object, delimiter=',')
-        # skips first line
-        # next(equipments_file_reader)
         equipments = []
         for line in equipments_file_reader:
             if int(line[5], 16) == 0:

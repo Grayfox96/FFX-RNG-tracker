@@ -1,5 +1,6 @@
-import sys
 from enum import Enum, IntEnum
+
+from ..configs import Configs
 
 
 class StringEnum(str, Enum):
@@ -167,7 +168,7 @@ ICV_VARIANCE = (
 )
 
 # Yojimbo-related constants
-if '-ps2' in sys.argv:
+if Configs.ps2:
     BASE_COMPATIBILITY = 50
     COMPATIBILITY_MODIFIER = 30
     OVERDRIVE_MOTIVATION = 2

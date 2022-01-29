@@ -1,8 +1,8 @@
 import csv
 import os
-import sys
 from typing import Iterable
 
+from ..configs import Configs
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..tracker import FFXRNGTracker
 from ..utils import s32
@@ -37,7 +37,7 @@ def get_seed(damage_values: Iterable[int]) -> int:
 
     damage_indexes_as_string = ''.join(damage_values_indexes)
 
-    if '-ps2' in sys.argv:
+    if Configs.ps2:
         absolute_file_path = get_resource_path(_PS2_SEEDS_FILE_PATH)
     else:
         absolute_file_path = get_resource_path(_SEEDS_FILE_PATH)
@@ -113,10 +113,10 @@ _DAMAGE_VALUES = {
     ),
 }
 
-PS2_FROM_BOOT_FRAMES = 60 * 60 * 3
+PS2_FROM_BOOT_FRAMES = 60 * 60 * Configs.ps2_seeds_minutes
 HD_FROM_BOOT_FRAMES = 1
 
-if '-ps2' in sys.argv:
+if Configs.ps2:
     DAMAGE_VALUES_NEEDED = 8
 else:
     DAMAGE_VALUES_NEEDED = 6
@@ -125,7 +125,7 @@ if not os.path.exists(get_resource_path(_SEEDS_FILE_PATH)):
     print('Seeds file not found.')
     make_seeds_file(_SEEDS_FILE_PATH, HD_FROM_BOOT_FRAMES)
 
-if '-ps2' in sys.argv:
+if Configs.ps2:
     if not os.path.exists(get_resource_path(_PS2_SEEDS_FILE_PATH)):
         print('Seeds file for ps2 not found.')
         make_seeds_file(_PS2_SEEDS_FILE_PATH, PS2_FROM_BOOT_FRAMES)

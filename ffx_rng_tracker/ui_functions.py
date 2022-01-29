@@ -9,6 +9,7 @@ from .events import (AdvanceRNG, Bribe, ChangeParty, ChangeStat,
                      Escape, Event, Kill, MultizoneRandomEncounter,
                      RandomEncounter, SimulatedEncounter, Steal, YojimboTurn)
 from .main import get_tracker
+from .utils import treeview
 
 
 def get_equipment_types(amount: int, columns: int = 2) -> str:
@@ -64,7 +65,7 @@ def parse_encounter(
 
 def parse_steal(
         monster_name: str = '', successful_steals: str = '0', *_) -> Event:
-    usage = 'Usage: steal [enemy_name] (successful steals)'
+    usage = 'Usage: steal [monster_name] (successful steals)'
     if not monster_name:
         return Comment(usage)
     try:
@@ -122,7 +123,7 @@ def parse_roll(rng_index: str = '', times: str = '1', *_) -> Event:
         return Comment(usage)
     if times > 100000:
         return Comment('Can\'t advance rng more than 100000 times.')
-    if not (0 < rng_index < 68):
+    if not (0 <= rng_index < 68):
         return Comment(f'Can\'t advance rng index {rng_index}')
     return AdvanceRNG(rng_index, times)
 
@@ -250,7 +251,7 @@ def parse_compatibility_update(new_compatibility: str = '', *_):
         return Comment(usage)
 
     rng_tracker.compatibility = max(min(compatibility, 255), 0)
-    return Comment(f'Compatibilty changed to {rng_tracker.compatibility}')
+    return Comment(f'Compatibility changed to {rng_tracker.compatibility}')
 
 
 def get_status_chance_string(amount: int = 50) -> str:
@@ -275,22 +276,6 @@ def get_status_chance_string(amount: int = 50) -> str:
     data += spacer
     rng_tracker.reset()
     return data
-
-
-def treeview(item, padding: int = 0) -> str:
-    string = ''
-    if isinstance(item, dict):
-        for key, value in item.items():
-            string += f'{"    " * padding}'
-            string += f'{key}: '
-            if isinstance(value, dict):
-                string += '\n'
-            string += treeview(value, padding + 1)
-    elif isinstance(item, list):
-        string += f'{", ".join([str(a) for a in item])}\n'
-    else:
-        string += f'{item}\n'
-    return string
 
 
 def format_monster_data(monster: Monster) -> str:

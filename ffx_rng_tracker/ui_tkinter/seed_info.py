@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 from ..data.constants import EquipmentType
 from ..ui_functions import get_equipment_types
 from .base_widgets import BaseWidget
@@ -18,9 +20,12 @@ class SeedInfo(BaseWidget):
         ]
         return '\n\n'.join(data)
 
+    def set_tags(self) -> List[Tuple[str, str, bool]]:
+        return [(EquipmentType.ARMOR, 'equipment', False)]
+
     def print_output(self):
         input = self.get_input()
         self.output_widget.config(state='normal')
         self.output_widget.insert('end', input)
-        self.output_widget.highlight_pattern(EquipmentType.ARMOR, 'blue')
+        self.highlight_patterns()
         self.output_widget.config(state='disabled')

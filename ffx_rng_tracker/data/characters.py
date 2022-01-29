@@ -11,7 +11,8 @@ class Character:
     name: str
     index: int
     _default_stats: Dict[Stat, int] = field(default_factory=dict)
-    elemental_affinities: Dict[Element, ElementalAffinity] = field(default_factory=dict)
+    elemental_affinities: Dict[Element, ElementalAffinity] = field(
+        default_factory=dict)
     stats: Dict[Stat, int] = field(default_factory=dict, init=False)
 
     def __post_init__(self):

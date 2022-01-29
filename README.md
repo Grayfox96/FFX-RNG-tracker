@@ -4,7 +4,7 @@
 * encounters_tracker: tracks rng related to encounter formations and preemptives/ambushes.
 * seedfinder: used to find a seed given a series of action and the corresponding damage rolls.
 
-To track a PS2 run, open with the *-ps2* command line option.
+To track a PS2 run, change the ps2 setting.
 
 Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*) in the main directory to override default ones.
 
@@ -12,15 +12,12 @@ Contact [Grayfox#4644](https://discordapp.com/users/195955977223143426/) on Disc
 
 # Theme
 Using the [Azure](https://github.com/rdbende/Azure-ttk-theme) theme for ttk.
-* Use the *-darkmode* command line option to use dark mode.
-* Use the *-notheme* command line option to use the default ttk theme.
-* Use the *-fontsize* command line option followed by an integer to change the font size.
-* Use the *-nounicode* command line option to disable unicode characters.
+It's possible to use dark theme, use the default ttk theme, change the font size and disable unicode characters from the settings.
 
 # Credits
 Credits to the #big-nerds channel in the FFX/X-2 Speedruns discord for ideas and useful discussions.
 
-Credits to [Rossy__](https://twitter.com/Rossy__TTV) for the disassembly for most of the in-game functions used, for testing a lot of random stuff and for providing the mon-data and ffxhd-raw-rng-arrays files.
+Credits to [Rossy__](https://twitter.com/Rossy__TTV) for the disassembly for most of the in-game functions used, for testing a lot of random stuff and for providing the mon-data and shop-arms files.
 
 Credits to [CrimsonInferno](https://www.twitch.tv/crimsoninferno9) for the initial idea and for providing the encounter formations and a lot of other useful information.
 

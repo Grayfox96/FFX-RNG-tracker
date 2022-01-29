@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 from ..ui_functions import get_status_chance_string
 from .base_widgets import BaseWidget, BetterText
 
@@ -17,9 +19,12 @@ class StatusTracker(BaseWidget):
     def get_input(self):
         self.text = get_status_chance_string()
 
+    def set_tags(self) -> List[Tuple[str, str, bool]]:
+        return [('100', 'status miss', False)]
+
     def print_output(self):
         self.get_input()
         self.output_widget.config(state='normal')
         self.output_widget.set(self.text)
         self.output_widget.config(state='disabled')
-        self.output_widget.highlight_pattern('100', 'red_background')
+        self.highlight_patterns()

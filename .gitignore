@@ -8,3 +8,4 @@ ffx_rng_tracker_errors.log
 *.lnk
 data/ps2_seeds.csv
 data/seeds.csv
+ffx_rng_tracker_configs.ini

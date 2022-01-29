@@ -1,9 +1,9 @@
 import csv
-import sys
 from dataclasses import dataclass
 from itertools import count
 from typing import Dict, List, Optional, Tuple, Union
 
+from ..configs import Configs
 from .autoabilities import AUTOABILITIES
 from .characters import CHARACTERS, Character
 from .constants import (Element, ElementalAffinity, EquipmentSlots,
@@ -41,10 +41,7 @@ def _get_prize_structs(file_path: str) -> Dict[str, List[int]]:
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
         file_reader = csv.reader(file_object, delimiter=',')
-        # skips first line
-        next(file_reader)
         monsters_data = {}
-
         for line in file_reader:
             prize_struct = [int(value, 16) for value in line]
             # gets the name of the monster from the prize struct itself
@@ -279,11 +276,11 @@ def _get_monster_data(
         monster_name += TEXT_CHARACTERS[character_id]
     for i in range(16):
         if internal_monster_name.endswith(f'_{i}'):
-            if '-nounicode' in sys.argv:
-                monster_name += f'#{i}'
-            else:
+            if Configs.use_unicode:
                 # ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯
                 monster_name += chr(9311 + i)
+            else:
+                monster_name += f'#{i}'
             break
 
     stats = {
@@ -449,8 +446,7 @@ def _get_monster_data(
 
 PRIZE_STRUCTS = _get_prize_structs('data/ffx_mon_data.csv')
 
-if '-ps2' not in sys.argv:
+if not Configs.ps2:
     PRIZE_STRUCTS = _patch_prize_structs_for_hd(PRIZE_STRUCTS)
-else:
-    print('Tracker opened in ps2 mode.')
+
 MONSTERS = {k: _get_monster_data(k, v) for k, v in PRIZE_STRUCTS.items()}
