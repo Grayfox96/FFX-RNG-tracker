@@ -1,9 +1,9 @@
-import sys
 import tkinter as tk
 from abc import ABC, abstractmethod
 from tkinter import font, simpledialog, ttk
 from typing import Union
 
+from ..configs import Configs
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..main import get_tracker
 
@@ -72,30 +72,32 @@ class BetterText(tk.Text):
         # if the current text is the same as the new text do nothing
         # a newline character gets automatically added
         # so it needs to be removed to compare
-        if text == self.get('1.0', 'end')[:-1]:
+        current_text = self.get('1.0', 'end')[:-1]
+        if text == current_text:
             return
-        # get the index of the middle and last visible lines
-        height = self.winfo_height()
-        middle_line = self.index(f'@0,{height // 2}')
-        last_line = self.index(f'@0,{height}')
-        middle_line_index = int(middle_line.split('.')[0])
+        # get the index of the first and last visible lines
+        first_line = self.index('@0,0')
+        last_line = self.index(f'@0,{self.winfo_height()}')
+        first_line_index = int(first_line.split('.')[0])
         last_line_index = int(last_line.split('.')[0])
-        # calculate the number of visible lines
-        visible_lines = (last_line_index - middle_line_index) * 2
+        current_number_of_lines = len(current_text.split('\n'))
+        new_number_of_lines = len(text)
+        if (last_line_index == current_number_of_lines
+                or first_line_index > new_number_of_lines):
+            scroll_to_end = True
+        else:
+            scroll_to_end = False
 
         # overwrite the content
         self.delete(1.0, 'end')
         self.insert(1.0, text)
 
-        number_of_lines = int(self.index('end').split('.')[0]) - 1
-        # if the saved position is too close to the top
-        # and there are enough lines in the text
-        # scroll to the bottom first
-        if (middle_line_index < visible_lines * 2
-                and number_of_lines > visible_lines * 2):
-            self.see('end')
-        # scroll back to the position before the text was overwritten
-        self.see(middle_line)
+        if scroll_to_end and last_line_index > 1:
+            self.see(last_line)
+        else:
+            self.see(first_line)
+            _, first_line_y, *_ = self.dlineinfo(first_line)
+            self.yview_scroll(first_line_y, 'pixels')
 
 
 class BetterSpinbox(ttk.Spinbox):
@@ -155,17 +157,12 @@ class BaseWidget(tk.Frame, ABC):
 
     def __init__(self, parent, *args, **kwargs):
         self.parent = parent
-        font_size = 9
-        if '-fontsize' in sys.argv:
-            try:
-                font_size = int(sys.argv[sys.argv.index('-fontsize') + 1])
-            except (IndexError, ValueError):
-                pass
-        self.font = font.Font(family='Courier New', size=font_size)
+        self.font = font.Font(family='Courier New', size=Configs.font_size)
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.rng_tracker = get_tracker()
         self.input_widget = self.make_input_widget()
         self.output_widget = self.make_output_widget()
+        self.tags = self.set_tags()
         self.print_output()
 
     def make_input_widget(self) -> BetterText:
@@ -182,25 +179,40 @@ class BaseWidget(tk.Frame, ABC):
         text = BetterText(self, font=self.font, state='disabled', wrap='word')
         text.pack(expand=True, fill='both', side='right')
 
-        text.tag_configure('red', foreground='#ff0000')
-        text.tag_configure('green', foreground='#00ff00')
-        text.tag_configure('blue', foreground='#0000ff')
-        text.tag_configure('yellow', foreground='#beb144')
-        text.tag_configure('gray', foreground='#888888')
-        text.tag_configure('red_background', background='#ff0000')
+        for tag_name, (foreground, background) in Configs.colors.items():
+            if background in ('#ffffff', '#333333'):
+                selectbackground = '#007fff'
+            else:
+                selectbackground = background
+            text.tag_configure(
+                tag_name, foreground=foreground, background=background,
+                selectforeground=foreground, selectbackground=selectbackground)
         text.tag_configure('wrap_margin', lmargin2='1c')
-        text.tag_configure(
-            'highlight', background='#ffff00', foreground='#000000',
-            selectforeground='#000000')
-
         return text
 
+    def highlight_patterns(self) -> None:
+        for text, tag, regexp in self.tags:
+            self.output_widget.highlight_pattern(text, tag, regexp=regexp)
+
+    def set_tags(self) -> list[tuple[str, str, bool]]:
+        """Setup tags to be used by highlight_patterns."""
+        error_messages = (
+            'Invalid', 'No event called', 'Usage:', ' named ',
+            'requires a target', ' advance rng ',
+        )
+        tags = [
+            ('^Advanced rng.+$', 'advance rng', True),
+            (f'^.*({"|".join(error_messages)}).+$', 'error', True),
+            ('^.+$', 'wrap_margin', True),
+        ]
+        return tags
+
     @abstractmethod
-    def get_input(self):
+    def get_input(self) -> None:
         """Parse the input widget text and add events to the tracker."""
 
     @abstractmethod
-    def print_output(self):
+    def print_output(self) -> None:
         """Get information from the events sequence, highlight keywords."""
 
 
@@ -215,7 +227,7 @@ class DamageValuesDialogue(simpledialog.Dialog):
     def body(self, parent: tk.Tk):
         self.parent = parent
         text = 'Damage values (Auron1 Tidus1 A2 T2 A3 T3)'
-        if '-ps2' in sys.argv:
+        if Configs.ps2:
             text = text[:-1] + ' A4 A5)'
         tk.Label(parent, text=text).pack()
         self.entry = tk.Entry(parent, width=25)
@@ -245,7 +257,7 @@ class DamageValuesDialogue(simpledialog.Dialog):
                 self.show_warning(
                     'Seed must be an integer between 0 and 4294967295')
                 return
-        elif len(seed_info) < 8 and '-ps2' in sys.argv:
+        elif len(seed_info) < 8 and Configs.ps2:
             self.show_warning('Need at least 8 damage values.')
             return
         elif len(seed_info) < 6:

@@ -10,7 +10,8 @@ class Character:
     name: str
     index: int
     _default_stats: dict[Stat, int] = field(default_factory=dict)
-    elemental_affinities: dict[Element, ElementalAffinity] = field(default_factory=dict)
+    elemental_affinities: dict[Element, ElementalAffinity] = field(
+        default_factory=dict)
     stats: dict[Stat, int] = field(default_factory=dict, init=False)
 
     def __post_init__(self):

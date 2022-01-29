@@ -18,9 +18,12 @@ class SeedInfo(BaseWidget):
         ]
         return '\n\n'.join(data)
 
+    def set_tags(self) -> list[tuple[str, str, bool]]:
+        return [(EquipmentType.ARMOR, 'equipment', False)]
+
     def print_output(self):
         input = self.get_input()
         self.output_widget.config(state='normal')
         self.output_widget.insert('end', input)
-        self.output_widget.highlight_pattern(EquipmentType.ARMOR, 'blue')
+        self.highlight_patterns()
         self.output_widget.config(state='disabled')

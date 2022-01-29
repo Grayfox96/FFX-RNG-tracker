@@ -1,7 +1,7 @@
-import sys
 import tkinter as tk
 from tkinter import messagebox
 
+from ..configs import Configs
 from ..data.seeds import (DAMAGE_VALUES_NEEDED, HD_FROM_BOOT_FRAMES,
                           PS2_FROM_BOOT_FRAMES, datetime_to_seed)
 from ..events import CharacterAction
@@ -33,7 +33,7 @@ class SeedFinder(ActionsTracker):
         return text
 
     def find_seed(self) -> None:
-        if '-ps2' in sys.argv:
+        if Configs.ps2:
             frames = PS2_FROM_BOOT_FRAMES
         else:
             frames = HD_FROM_BOOT_FRAMES

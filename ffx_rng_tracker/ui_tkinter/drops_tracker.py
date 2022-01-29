@@ -8,7 +8,7 @@ from .base_widgets import BaseWidget, BetterText
 
 
 class DropsTracker(BaseWidget):
-    """Widget used to track enemy drops RNG."""
+    """Widget used to track monster drops RNG."""
 
     def __init__(self, parent, *args, **kwargs):
         self.default_notes = get_notes('drops_notes.txt')
@@ -49,6 +49,16 @@ class DropsTracker(BaseWidget):
                     event = Comment(f'No event called {event_name!r}')
             self.rng_tracker.events_sequence.append(event)
 
+    def set_tags(self) -> list[tuple[str, str, bool]]:
+        tags = [
+            ('Equipment', 'equipment', False),
+            ('No Encounters', 'no encounters', False),
+            ('^#(.+?)?$', 'comment', True),
+            ('^.*changed to.+$', 'stat update', True),
+        ]
+        tags.extend(super().set_tags())
+        return tags
+
     def print_output(self):
         self.get_input()
         data = []
@@ -64,20 +74,5 @@ class DropsTracker(BaseWidget):
 
         self.output_widget.config(state='normal')
         self.output_widget.set(data)
+        self.highlight_patterns()
         self.output_widget.config(state='disabled')
-
-        self.output_widget.highlight_pattern('Equipment', 'blue')
-        self.output_widget.highlight_pattern('No Encounters', 'green')
-        self.output_widget.highlight_pattern('^#(.+?)?$', 'gray', regexp=True)
-        self.output_widget.highlight_pattern(
-            '^Advanced rng.+$', 'red', regexp=True)
-        # highlight error messages
-        error_messages = (
-            'Invalid', 'No event called', 'Usage:', 'No monster named',
-            'Can\'t advance', 'No character named',
-        )
-        for error_message in error_messages:
-            self.output_widget.highlight_pattern(
-                f'^{error_message}.+$', 'red_background', regexp=True)
-        self.output_widget.highlight_pattern(
-            '^.+$', 'wrap_margin', regexp=True)

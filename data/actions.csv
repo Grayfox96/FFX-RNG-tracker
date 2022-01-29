@@ -1,6 +1,7 @@
 name,has target,can miss,does damage,can crit,uses bonus crit,damage type,base damage,element
 Attack,true,true,true,true,true,Strength,0,none
 Stand By,true,false,true,false,-,Fixed,50,none
+Defend,true,false,false,-,-,-,-,-
 #Summon,-,-,-,-,-,-,-,-
 #Skill,-,-,-,-,-,-,-,-
 Sleep Attack,true,true,true,true,true,Strength,0,none
