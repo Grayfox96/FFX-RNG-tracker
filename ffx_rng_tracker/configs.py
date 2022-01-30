@@ -41,7 +41,7 @@ class Configs:
 
     @classmethod
     def read(cls, file_path: str) -> None:
-        cls._parser.read(get_resource_path(file_path))
+        cls._parser.read(file_path)
 
     @classmethod
     def load_configs(cls) -> None:

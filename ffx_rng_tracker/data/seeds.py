@@ -66,6 +66,9 @@ def datetime_to_seed(datetime: int, frames: int) -> int:
 def make_seeds_file(file_path: str, frames: int) -> None:
     print('Calculating damage rolls for every possible seed'
           f' up to frame {frames}.')
+    if os.path.exists(file_path):
+        print(f'File {file_path} already exists!')
+        return
     damage_rolls = []
     seeds = []
     rng_tracker = FFXRNGTracker(0)
@@ -92,13 +95,10 @@ def make_seeds_file(file_path: str, frames: int) -> None:
             seeds.append(str(seed))
     print(f'\r{frames}/{frames}')
     data = '\n'.join([f'{d},{s}' for d, s in zip(damage_rolls, seeds)])
-    with open(get_resource_path(file_path), 'w') as file:
+    with open(file_path, 'w') as file:
         file.write(data)
     print('Done!')
 
-
-_SEEDS_FILE_PATH = 'data/seeds.csv'
-_PS2_SEEDS_FILE_PATH = 'data/ps2_seeds.csv'
 
 _DAMAGE_VALUES = {
     'auron': (
@@ -121,11 +121,20 @@ if Configs.ps2:
 else:
     DAMAGE_VALUES_NEEDED = 6
 
-if not os.path.exists(get_resource_path(_SEEDS_FILE_PATH)):
+_SEEDS_DIRECTORY_PATH = 'ffx_rng_tracker_seeds'
+try:
+    os.mkdir(_SEEDS_DIRECTORY_PATH)
+except FileExistsError:
+    pass
+
+_SEEDS_FILE_PATH = _SEEDS_DIRECTORY_PATH + '/seeds.csv'
+_PS2_SEEDS_FILE_PATH = _SEEDS_DIRECTORY_PATH + '/ps2_seeds.csv'
+
+if not os.path.exists(_SEEDS_FILE_PATH):
     print('Seeds file not found.')
     make_seeds_file(_SEEDS_FILE_PATH, HD_FROM_BOOT_FRAMES)
 
 if Configs.ps2:
-    if not os.path.exists(get_resource_path(_PS2_SEEDS_FILE_PATH)):
+    if not os.path.exists(_PS2_SEEDS_FILE_PATH):
         print('Seeds file for ps2 not found.')
         make_seeds_file(_PS2_SEEDS_FILE_PATH, PS2_FROM_BOOT_FRAMES)

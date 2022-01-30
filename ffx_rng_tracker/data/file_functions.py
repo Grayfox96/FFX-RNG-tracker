@@ -24,3 +24,11 @@ def get_notes(file_path: str):
     notes = notes_file.read()
     notes_file.close()
     return notes
+
+
+def get_version() -> tuple[int, int, int]:
+    """Used to retrieve the version number from the version file."""
+    absolute_file_path = get_resource_path('data/VERSION')
+    with open(absolute_file_path) as file_object:
+        version = file_object.read()
+    return version.split('.')

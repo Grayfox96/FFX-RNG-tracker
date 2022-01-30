@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from ..configs import Configs
-from ..data.file_functions import get_resource_path
+from ..data.file_functions import get_resource_path, get_version
 from ..logger import log_exceptions, log_tkinter_error, setup_logger
 from ..main import get_tracker
 from .actions_tracker import ActionsTracker
@@ -67,14 +67,14 @@ def main(widget: type[tk.Widget], title='ffx_rng_tracker', size='1280x830'):
     root.report_callback_exception = log_tkinter_error
     root.withdraw()
     root.protocol('WM_DELETE_WINDOW', root.quit)
+    title += ' v' + '.'.join(get_version())
     if Configs.ps2:
         title += ' (ps2 mode)'
     root.title(title)
     root.geometry(size)
 
     if Configs.use_theme:
-        theme_path = get_resource_path(
-            'ffx_rng_tracker/ui_tkinter/azure_theme/azure.tcl')
+        theme_path = get_resource_path(AZURE_THEME_PATH)
         root.tk.call('source', theme_path)
         if Configs.use_dark_mode:
             root.tk.call('set_theme', 'dark')
@@ -97,3 +97,6 @@ def main(widget: type[tk.Widget], title='ffx_rng_tracker', size='1280x830'):
 
     root.deiconify()
     root.mainloop()
+
+
+AZURE_THEME_PATH = 'ui_tkinter/azure_theme/azure.tcl'

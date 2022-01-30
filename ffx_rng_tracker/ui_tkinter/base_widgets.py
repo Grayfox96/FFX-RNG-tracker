@@ -180,13 +180,18 @@ class BaseWidget(tk.Frame, ABC):
         text.pack(expand=True, fill='both', side='right')
 
         for tag_name, (foreground, background) in Configs.colors.items():
+            if foreground == '#000000':
+                selectforeground = '#ffffff'
+            else:
+                selectforeground = foreground
             if background in ('#ffffff', '#333333'):
                 selectbackground = '#007fff'
             else:
                 selectbackground = background
             text.tag_configure(
                 tag_name, foreground=foreground, background=background,
-                selectforeground=foreground, selectbackground=selectbackground)
+                selectforeground=selectforeground,
+                selectbackground=selectbackground)
         text.tag_configure('wrap_margin', lmargin2='1c')
         return text
 

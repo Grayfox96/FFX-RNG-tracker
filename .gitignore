@@ -1,11 +1,9 @@
 *.pyc
+*.spec
+*.lnk
 dist/*
 build/*
 .vscode/*
-ffx_rng_tracker_ui_autopytoexe.json
+ffx_rng_tracker_seeds/*
 ffx_rng_tracker_errors.log
-*.spec
-*.lnk
-data/ps2_seeds.csv
-data/seeds.csv
 ffx_rng_tracker_configs.ini
