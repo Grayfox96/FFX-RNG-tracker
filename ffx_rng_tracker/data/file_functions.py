@@ -18,7 +18,7 @@ def get_resource_path(relative_path: str) -> str:
 def get_notes(file_path: str):
     """Get notes from a file, either custom or default."""
     try:
-        notes_file = open(get_resource_path(file_path))
+        notes_file = open(file_path)
     except FileNotFoundError:
         notes_file = open(get_resource_path(f'data/{file_path}'))
     notes = notes_file.read()

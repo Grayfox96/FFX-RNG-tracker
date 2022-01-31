@@ -11,7 +11,7 @@ from .base_widgets import BetterText
 
 
 class SeedFinder(ActionsTracker):
-    '''Widget used to find the starting seed.'''
+    """Widget used to find the starting seed."""
 
     def make_input_widget(self) -> BetterText:
         frame = tk.Frame(self)

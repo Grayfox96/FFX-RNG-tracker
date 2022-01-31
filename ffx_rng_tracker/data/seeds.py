@@ -6,7 +6,6 @@ from ..configs import Configs
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..tracker import FFXRNGTracker
 from ..utils import s32
-from .file_functions import get_resource_path
 
 
 def get_seed(damage_values: Iterable[int]) -> int:
@@ -38,9 +37,9 @@ def get_seed(damage_values: Iterable[int]) -> int:
     damage_indexes_as_string = ''.join(damage_values_indexes)
 
     if Configs.ps2:
-        absolute_file_path = get_resource_path(_PS2_SEEDS_FILE_PATH)
+        absolute_file_path = _PS2_SEEDS_FILE_PATH
     else:
-        absolute_file_path = get_resource_path(_SEEDS_FILE_PATH)
+        absolute_file_path = _SEEDS_FILE_PATH
     with open(absolute_file_path) as file_object:
         seeds = csv.reader(file_object, delimiter=',')
         for line in seeds:
