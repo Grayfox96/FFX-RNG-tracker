@@ -1,7 +1,6 @@
 import tkinter as tk
 from abc import ABC, abstractmethod
 from tkinter import font, simpledialog, ttk
-from typing import Union
 
 from ..configs import Configs
 from ..errors import InvalidDamageValueError, SeedNotFoundError
@@ -109,7 +108,7 @@ class BetterSpinbox(ttk.Spinbox):
         super().__init__(parent, *args, **kwargs)
         self.set(0)
 
-    def set(self, text: Union[str, int]) -> None:
+    def set(self, text: str | int) -> None:
         """Set the spinbox content."""
         self.config(state='normal')
         self.delete(0, 'end')

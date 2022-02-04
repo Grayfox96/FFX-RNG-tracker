@@ -13,6 +13,7 @@ class FFXRNGTracker:
         self.rng_initial_values = self.get_rng_array()
 
         # get rng generators
+        # 0: encounter chance
         # 1: encouter formations and preempt/ambush
         # 10: drop/steal chance
         # 11: rare item chance

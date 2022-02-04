@@ -1,13 +1,12 @@
 import configparser
 import os
 import shutil
-from typing import Optional, Union
 
 from .data.file_functions import get_resource_path
 
 
 class Configs:
-    seed: Optional[int]
+    seed: int | None
     ps2: bool
     ps2_seeds_minutes: int
     use_dark_mode: bool
@@ -96,7 +95,7 @@ class Configs:
         cls.important_monsters = [m.strip() for m in monsters.split(',')]
 
     @classmethod
-    def get_configs(cls) -> dict[str, Union[str, int, bool]]:
+    def get_configs(cls) -> dict[str, str | int | bool]:
         configs = {}
         for attr in dir(cls):
             if not callable(getattr(cls, attr)) and not attr.startswith('_'):

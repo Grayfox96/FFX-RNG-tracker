@@ -4,7 +4,7 @@ from tkinter import messagebox
 from ..configs import Configs
 from ..data.seeds import (DAMAGE_VALUES_NEEDED, HD_FROM_BOOT_FRAMES,
                           PS2_FROM_BOOT_FRAMES, datetime_to_seed)
-from ..events import CharacterAction
+from ..events.character_action import CharacterAction
 from ..main import get_tracker
 from .actions_tracker import ActionsTracker
 from .base_widgets import BetterText

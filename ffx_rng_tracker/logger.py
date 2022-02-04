@@ -2,10 +2,9 @@ import logging
 from functools import wraps
 from traceback import format_tb
 from types import TracebackType
-from typing import Optional
 
 
-def log_exceptions(logger: Optional[logging.Logger] = None):
+def log_exceptions(logger: logging.Logger | None = None):
     """Decorator used to log unhandled exceptions."""
     if logger is None:
         logger = logging.getLogger(__name__)
@@ -23,7 +22,7 @@ def log_exceptions(logger: Optional[logging.Logger] = None):
     return decorator
 
 
-def setup_logger(logger: Optional[logging.Logger] = None) -> None:
+def setup_logger(logger: logging.Logger | None = None) -> None:
     """Setup for a logger, defaults to the root logger."""
     if logger is None:
         logger = logging.getLogger(__name__)

@@ -1,7 +1,7 @@
 from ..data.characters import CHARACTERS
 from ..data.file_functions import get_notes
 from ..data.monsters import MONSTERS
-from ..events import Comment
+from ..events.comment import Comment
 from ..ui_functions import (parse_action, parse_encounter, parse_roll,
                             parse_stat_update)
 from .base_widgets import BaseWidget, BetterText

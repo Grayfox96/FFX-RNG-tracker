@@ -1,5 +1,5 @@
 from ..data.file_functions import get_notes
-from ..events import Comment
+from ..events.comment import Comment
 from ..ui_functions import (parse_compatibility_update, parse_death,
                             parse_roll, parse_yojimbo_action)
 from .base_widgets import BaseWidget, BetterText

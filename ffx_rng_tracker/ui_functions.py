@@ -2,12 +2,21 @@ from itertools import zip_longest
 
 from .data.actions import ACTIONS, YOJIMBO_ACTIONS
 from .data.characters import CHARACTERS, Character
-from .data.constants import EncounterCondition, Stat
+from .data.constants import EncounterCondition, EquipmentType, Stat
 from .data.monsters import MONSTERS, Monster
-from .events import (AdvanceRNG, Bribe, ChangeParty, ChangeStat,
-                     CharacterAction, Comment, Death, Encounter, EquipmentType,
-                     Escape, Event, Kill, MultizoneRandomEncounter,
-                     RandomEncounter, SimulatedEncounter, Steal, YojimboTurn)
+from .events.advance_rng import AdvanceRNG
+from .events.change_party import ChangeParty
+from .events.change_stat import ChangeStat
+from .events.character_action import CharacterAction
+from .events.comment import Comment
+from .events.death import Death
+from .events.encounter import (Encounter, MultizoneRandomEncounter,
+                               RandomEncounter, SimulatedEncounter)
+from .events.escape import Escape
+from .events.kill import Bribe, Kill
+from .events.main import Event
+from .events.steal import Steal
+from .events.yojimbo_turn import YojimboTurn
 from .main import get_tracker
 from .utils import treeview
 

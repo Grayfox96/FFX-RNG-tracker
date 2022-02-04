@@ -1,7 +1,7 @@
 from ffx_rng_tracker.data.monsters import MONSTERS
 
 from ..data.file_functions import get_notes
-from ..events import Comment
+from ..events.comment import Comment
 from ..ui_functions import (parse_bribe, parse_death, parse_kill,
                             parse_party_change, parse_roll, parse_steal)
 from .base_widgets import BaseWidget, BetterText

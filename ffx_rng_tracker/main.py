@@ -1,12 +1,12 @@
-from typing import Iterable, Optional, Union
+from typing import Iterable
 
 from .data.seeds import get_seed
 from .tracker import FFXRNGTracker
 
-SeedInfo = Union[Iterable[int], int]
+SeedInfo = Iterable[int] | int
 
 
-def get_tracker(seed_info: Optional[SeedInfo] = None) -> FFXRNGTracker:
+def get_tracker(seed_info: SeedInfo | None = None) -> FFXRNGTracker:
     if seed_info is not None:
         if isinstance(seed_info, (tuple, list)):
             seed = get_seed(seed_info)

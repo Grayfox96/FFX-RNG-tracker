@@ -1,7 +1,6 @@
 import csv
 from dataclasses import dataclass
 from itertools import count
-from typing import Optional, Union
 
 from ..configs import Configs
 from .autoabilities import AUTOABILITIES
@@ -26,11 +25,11 @@ class Monster:
     auto_statuses: list[Status]
     gil: int
     ap: dict[str, int]
-    item_1: dict[str, Union[int, dict[Rarity, Optional[ItemDrop]]]]
-    item_2: dict[str, Union[int, dict[Rarity, Optional[ItemDrop]]]]
-    steal: dict[Union[str, Rarity], Union[int, Optional[ItemDrop]]]
-    bribe: dict[str, Union[int, Optional[ItemDrop]]]
-    equipment: dict[str, Union[int, list, dict[Character, list[int]]]]
+    item_1: dict[str, int | dict[Rarity, ItemDrop | None]]
+    item_2: dict[str, int | dict[Rarity, ItemDrop | None]]
+    steal: dict[str | Rarity, int | ItemDrop | None]
+    bribe: dict[str, int | ItemDrop | None]
+    equipment: dict[str, int | list | dict[Character, list[int]]]
 
     def __str__(self):
         return self.name
@@ -256,7 +255,7 @@ def _get_monster_data(
                 affinities[element] = ElementalAffinity.NEUTRAL
         return affinities
 
-    def get_abilities(address: int) -> dict[str, list[Optional[str]]]:
+    def get_abilities(address: int) -> dict[str, list[str | None]]:
         abilities = {}
         equipment_types = (EquipmentType.WEAPON, 0), (EquipmentType.ARMOR, 16)
         for equipment_type, offset in equipment_types:

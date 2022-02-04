@@ -1,6 +1,5 @@
 import csv
 from dataclasses import dataclass
-from typing import Optional
 
 from .constants import DamageType, Element
 from .file_functions import get_resource_path
@@ -26,7 +25,7 @@ class Action:
 class YojimboAction:
     name: str
     compatibility_modifier: int
-    needed_motivation: Optional[int] = None
+    needed_motivation: int | None = None
 
     def __str__(self) -> str:
         return self.name
