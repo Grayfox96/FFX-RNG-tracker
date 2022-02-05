@@ -1,9 +1,10 @@
-from itertools import zip_longest
+from itertools import product, zip_longest
 
 from .data.actions import ACTIONS, YOJIMBO_ACTIONS
 from .data.characters import CHARACTERS, Character
 from .data.constants import EncounterCondition, EquipmentType, Stat
 from .data.monsters import MONSTERS, Monster
+from .data.zones import Zone
 from .events.advance_rng import AdvanceRNG
 from .events.change_party import ChangeParty
 from .events.change_stat import ChangeStat
@@ -12,6 +13,7 @@ from .events.comment import Comment
 from .events.death import Death
 from .events.encounter import (Encounter, MultizoneRandomEncounter,
                                RandomEncounter, SimulatedEncounter)
+from .events.encounter_check import walk
 from .events.escape import Escape
 from .events.kill import Bribe, Kill
 from .events.main import Event
@@ -50,6 +52,33 @@ def get_equipment_types(amount: int, columns: int = 2) -> str:
         data += '|\n'
     data += spacer
     return data
+
+
+def get_encounter_predictions(delta: int = 6) -> str:
+    min_steps = (
+        64,
+        142,
+        39,
+    )
+    zones = (
+        Zone('Underwater Ruins', 30, 240),
+        Zone('Besaid Lagoon', 30, 240),
+        Zone('Besaid Road', 35, 280),
+    )
+    tracker = get_tracker()
+    predictions = {z.name: {} for z in zones}
+    for steps_list in product(*[range(s, s + delta) for s in min_steps]):
+        tracker.reset()
+        for steps, zone in zip(steps_list, zones):
+            n = sum([1 for e in walk(steps, zone) if e.encounter])
+            predictions[zone.name][n] = predictions[zone.name].get(n, 0) + 1
+    tracker.reset()
+    for (zone, prediction), steps in zip(predictions.items(), min_steps):
+        for encounters, occurrences in prediction.items():
+            prediction[encounters] = f'{occurrences * 100 / (delta ** 3)}%'
+        new_key = f'{zone}, {steps}-{steps + delta} steps'
+        predictions[new_key] = predictions.pop(zone)
+    return predictions
 
 
 def parse_encounter(

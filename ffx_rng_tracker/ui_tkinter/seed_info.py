@@ -1,5 +1,6 @@
 from ..data.constants import EquipmentType
-from ..ui_functions import get_equipment_types
+from ..ui_functions import get_encounter_predictions, get_equipment_types
+from ..utils import treeview
 from .base_widgets import BaseWidget
 
 
@@ -12,10 +13,11 @@ class SeedInfo(BaseWidget):
         return
 
     def get_input(self):
-        data = [
-            f'Seed number: {self.rng_tracker.seed}',
-            get_equipment_types(50, 2),
-        ]
+        data = []
+        data.append(f'Seed number: {self.rng_tracker.seed}')
+        encounter_predictions = treeview(get_encounter_predictions(), 1)
+        data.append('Encounters predictions:\n' + encounter_predictions)
+        data.append(get_equipment_types(50, 2))
         return '\n\n'.join(data)
 
     def set_tags(self) -> list[tuple[str, str, bool]]:
