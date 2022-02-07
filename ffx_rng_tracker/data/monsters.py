@@ -127,84 +127,85 @@ def _patch_prize_structs_for_hd(
 
     # mi'ihen
     patch_abilities('raldo_2', (38, 42, 34, 30, 124, 124, 124))
-    # bomb
-    # dual_horn
-    # floating_eye
-    # ipiria
-    # mi'ihen_fang
+    patch_abilities('bomb', (30, 30, 30, 30, 30, 30, 125))
+    patch_abilities('dual_horn', (67, 30, 30, 30, 30, 127, 127))
+    patch_abilities('floating_eye', (38, 42, 34, 30, 99, 126, 126))
+    patch_abilities('ipiria', (38, 42, 38, 30, 126, 126, 126))
+    patch_abilities('mi\'ihen_fang', (38, 42, 34, 30, 124, 124, 124))
     patch_abilities('raldo', (38, 42, 34, 30, 124, 124, 124))
     patch_abilities('vouivre', (38, 42, 34, 30, 124, 124, 124))
-    # white_element
+    patch_abilities('white_element', (34, 34, 34, 34, 125, 125, 125))
 
     # mushroom rock road
-    # patch_abilities('gandarewa', (38, 38, 38, 38, 125, 125, 125))
-    # patch_abilities('lamashtu', (124, 124, 124, 30, 34, 38, 42))
-    # patch_abilities('raptor', (126, 126, 126, 38, 38, 30, 42))
-    # patch_abilities('red_element', (30, 30, 30, 30, 125, 125, 125))
-    # patch_abilities('thunder_flan', (38, 38, 38, 38, 125, 125, 125))
+    patch_abilities('gandarewa', (38, 38, 38, 38, 125, 125, 125))
+    patch_abilities('lamashtu', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('raptor', (38, 42, 38, 30, 126, 126, 126))
+    patch_abilities('red_element', (30, 30, 30, 30, 125, 125, 125))
+    patch_abilities('thunder_flan', (38, 38, 38, 38, 125, 125, 125))
 
     # djose highroad
-    # bite_bug
-    # patch_abilities('bunyip', (124, 124, 124, 30, 34, 38, 42))
-    # garm
-    # simurgh
-    # snow_flan
+    patch_abilities('bite_bug', (38, 42, 34, 30, 126, 126, 126))
+    patch_abilities('bunyip', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('garm', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('simurgh', (0, 0, 0, 0, 126, 126, 126))
+    patch_abilities('snow_flan', (34, 34, 34, 34, 125, 125, 125))
 
     # moonflow
-    # patch_abilities('bunyip_2', (124, 124, 124, 30, 34, 38, 42))
+    patch_abilities('bunyip_2', (38, 42, 34, 30, 124, 124, 124))
 
     # thunder plains
-    # aerouge
-    # patch_abilities('buer', (126, 126, 30, 34, 38, 42, 99))
-    # gold_element
-    # kusariqqu
-    # melusine
+    patch_abilities('aerouge', (38, 38, 38, 38, 125, 125, 125))
+    patch_abilities('buer', (38, 42, 34, 30, 99, 126, 126))
+    patch_abilities('gold_element', (38, 38, 38, 38, 125, 125, 125))
+    patch_abilities('kusariqqu', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('melusine', (38, 42, 38, 30, 126, 126, 126))
 
     # macalania woods
-    # blue_element
-    # chimera
-    # iguion
-    # murussu
-    # wasp
+    patch_abilities('blue_element', (42, 42, 42, 42, 125, 125, 125))
+    patch_abilities('chimera', (104, 104, 103, 103, 103, 103, 125))
+    patch_abilities('iguion', (38, 42, 38, 30, 126, 126, 126))
+    patch_abilities('murussu', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('wasp', (38, 42, 34, 30, 126, 126, 126))
 
     # lake macalania
-    # patch_abilities('evil_eye', (126, 126, 30, 34, 38, 42, 99))
-    # patch_abilities('ice_flan', (34, 34, 34, 34, 125, 125, 125))
-    # patch_abilities('mafdet', (124, 124, 124, 30, 34, 38, 42))
-    # patch_abilities('snow_wolf', (124, 124, 124, 30, 34, 38, 42))
+    patch_abilities('evil_eye', (38, 42, 34, 30, 99, 126, 126))
+    patch_abilities('ice_flan', (34, 34, 34, 34, 125, 125, 125))
+    patch_abilities('mafdet', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('snow_wolf', (38, 42, 34, 30, 124, 124, 124))
 
     # bikanel
-    # patch_abilities('alcyone', (0, 0, 0, 0, 126, 126, 126))
-    # patch_abilities('mushussu', (124, 124, 124, 30, 34, 38, 42))
-    # patch_abilities('sand_wolf', (124, 124, 124, 30, 34, 38, 42))
+    patch_abilities('alcyone', (0, 0, 0, 0, 126, 126, 126))
+    patch_abilities('mushussu', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('sand_wolf', (38, 42, 34, 30, 124, 124, 124))
 
-    # patch_abilities('bomb_2', (30, 30, 30, 30, 30, 30, 124))
-    # patch_abilities('chimera_2', (103, 103, 103, 103, 104, 104, 125))
-    # patch_abilities('dual_horn_2', (67, 67, 67, 30, 30, 127, 127))
-    # patch_abilities('evil_eye_2', (126, 126, 30, 34, 38, 42, 99))
+    # home
+    patch_abilities('bomb_2', (30, 30, 30, 30, 30, 30, 125))
+    patch_abilities('chimera_2', (104, 104, 103, 103, 103, 103, 125))
+    patch_abilities('dual_horn_2', (67, 67, 67, 30, 30, 127, 127))
+    patch_abilities('evil_eye_2', (38, 42, 34, 30, 99, 126, 126))
 
     # via purifico
-    # aqua_flan
-    # bat_eye
-    # cave_iguion
-    # swamp_mafdet
+    patch_abilities('aqua_flan', (42, 42, 42, 42, 125, 125, 125))
+    patch_abilities('bat_eye', (38, 42, 34, 30, 99, 126, 126))
+    patch_abilities('cave_iguion', (38, 42, 38, 30, 126, 126, 126))
+    patch_abilities('swamp_mafdet', (38, 42, 34, 30, 124, 124, 124))
 
     # calm lands
-    # chimera_brain
-    # flame_flan
-    # nebiros
-    # shred
-    # skoll
-    # patch_abilities('defender_x', (99, 99, 99, 99, 99, 100, 124))
+    patch_abilities('chimera_brain', (104, 104, 104, 104, 103, 103, 125))
+    patch_abilities('flame_flan', (30, 30, 30, 30, 125, 125, 125))
+    patch_abilities('nebiros', (38, 42, 34, 30, 126, 126, 126))
+    patch_abilities('shred', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('skoll', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('defender_x', (100, 99, 99, 99, 99, 99, 124))
 
     # cavern of the stolen fayth
-    # patch_abilities('dark_element', (125, 125, 125, 30, 30, 34, 42))
-    # patch_abilities('defender', (99, 99, 99, 99, 98, 98, 124))
-    # patch_abilities('ghost', (103, 103, 103, 104, 104, 104, 125))
-    # patch_abilities('imp', (38, 38, 38, 38, 125, 125, 125))
-    # patch_abilities('nidhogg', (124, 124, 124, 30, 34, 38, 42))
-    # patch_abilities('valaha', (67, 67, 67, 30, 30, 127, 127))
-    # patch_abilities('yowie', (126, 126, 126, 38, 38, 30, 42))
+    patch_abilities('dark_element', (42, 30, 30, 34, 125, 125, 125))
+    patch_abilities('defender', (99, 99, 99, 99, 98, 98, 124))
+    patch_abilities('ghost', (104, 104, 104, 103, 103, 103, 125))
+    patch_abilities('imp', (38, 38, 38, 38, 125, 125, 125))
+    patch_abilities('nidhogg', (38, 42, 34, 30, 124, 124, 124))
+    patch_abilities('valaha', (67, 67, 67, 30, 30, 127, 127))
+    patch_abilities('yowie', (38, 42, 38, 30, 126, 126, 126))
     return prize_structs
 
 
