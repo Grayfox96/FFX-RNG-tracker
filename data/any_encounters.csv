@@ -40,7 +40,7 @@ Chocobo Eater,set,,normal,,,,
 Old Road,random,,,Old Road,0,4,8
 Simulation (Old Road),simulated,,normal,Simulation (Old Road),0,0,1
 Clasko Skip Screen,random,,,Clasko Skip Screen,0,2,3
-MRR - Valley,random,,,MRR - Valley,0,5,10
+MRR - Valley,random,,,MRR - Valley,0,6,10
 MRR - Precipice,random,,,MRR - Precipice,0,1,3
 Sinspawn Gui 1,set,,normal,,,,
 Sinspawn Gui 2,set,,normal,,,,
@@ -52,7 +52,7 @@ Rikku tutorial,set,,normal,,,,
 Moonflow (North),random,true,,Moonflow (North),0,2,10
 Thunder Plains (South),random,true,,Thunder Plains (South),0,7,10
 Thunder Plains (North),random,true,,Thunder Plains (North),0,7,10
-Macalania Woods,random,,normal,Macalania Woods,0,7,10
+Macalania Woods,random,,normal,Macalania Woods,0,8,12
 Spherimorph,set,,normal,,,,
 Lake Macalania,random,,,Lake Macalania,0,1,1
 Crawler,set,,normal,,,,

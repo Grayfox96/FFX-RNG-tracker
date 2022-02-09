@@ -1,3 +1,4 @@
+from ffx_rng_tracker.data.actions import YOJIMBO_ACTIONS
 from ..data.file_functions import get_notes
 from ..events.comment import Comment
 from ..ui_functions import (parse_compatibility_update, parse_death,
@@ -33,21 +34,22 @@ class YojimboTracker(BaseWidget):
         notes_lines = self.input_widget.get('1.0', 'end').split('\n')
         # parse notes
         for line in notes_lines:
-            words = line.lower().split()
-            # if the line is empty or starts with # add it as a comment
-            if words == [] or words[0][0] == '#' or words[0][:3] == '///':
-                event = Comment(line)
-            else:
-                # if the line is not a comment use it to call a function
-                event_name, *params = words
-                if event_name in ('advance', 'roll', 'waste'):
+            match line.lower().split():
+                case []:
+                    event = Comment(line)
+                case [*words] if words[0].startswith(('#', '///')):
+                    event = Comment(line)
+                case [('roll' | 'waste' | 'advance'), *params]:
                     event = parse_roll(*params)
-                elif event_name == 'compatibility':
+                case ['compatibility', *params]:
                     event = parse_compatibility_update(*params)
-                elif event_name == 'death':
+                case ['death', *_]:
                     event = parse_death('yojimbo')
-                else:
-                    event = parse_yojimbo_action(*words)
+                case [action_name, *params] if action_name in YOJIMBO_ACTIONS:
+                    event = parse_yojimbo_action(action_name, *params)
+                case [event_name, *_]:
+                    event = Comment(f'No event called {event_name!r}')
+
             self.rng_tracker.events_sequence.append(event)
 
     def print_output(self):

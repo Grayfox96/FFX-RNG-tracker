@@ -1,9 +1,17 @@
+from dataclasses import dataclass
 import tkinter as tk
 from tkinter import font
 
 from ..data.monsters import MONSTERS
 from ..ui_functions import format_monster_data
 from .base_widgets import BaseWidget, BetterText
+
+
+@dataclass
+class MonsterDataViewerInputWidget:
+    listbox: tk.Listbox
+    listvar: tk.StringVar
+    entry: tk.Entry
 
 
 class MonsterDataViewer(BaseWidget):
@@ -20,7 +28,7 @@ class MonsterDataViewer(BaseWidget):
         self.output_widget = self.make_output_widget()
         self.print_output()
 
-    def make_input_widget(self) -> tk.Listbox:
+    def make_input_widget(self) -> MonsterDataViewerInputWidget:
         frame = tk.Frame(self)
         frame.pack(fill='y', side='left')
         inner_frame = tk.Frame(frame)
@@ -33,9 +41,12 @@ class MonsterDataViewer(BaseWidget):
         listbox = tk.Listbox(frame, width=30, listvariable=listvar)
         listbox.bind('<<ListboxSelect>>', lambda _: self.print_output())
         listbox.pack(expand=True, fill='y')
-        listbox.listvar = listvar
-        listbox.entry = entry
-        return listbox
+        widget = MonsterDataViewerInputWidget(
+            listbox=listbox,
+            listvar=listvar,
+            entry=entry,
+        )
+        return widget
 
     def make_output_widget(self) -> BetterText:
         widget = super().make_output_widget()
@@ -44,7 +55,7 @@ class MonsterDataViewer(BaseWidget):
         return widget
 
     def get_input(self) -> tuple[int]:
-        return self.input_widget.curselection()
+        return self.input_widget.listbox.curselection()
 
     def print_output(self) -> None:
         input = self.get_input()

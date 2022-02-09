@@ -30,16 +30,14 @@ class ActionsTracker(BaseWidget):
         input_lines = self.input_widget.get('1.0', 'end').split('\n')
         # parse through the input text
         for line in input_lines:
-            words = line.lower().split()
-            # if the line is empty or starts with # add it as a comment
-            if words == [] or words[0][0] == '#' or words[0][:3] == '///':
-                event = Comment(line)
-            # if the line is not a comment use it to call a function
-            else:
-                event_name, *params = words
-                if event_name in ('roll', 'waste', 'advance'):
+            match line.lower().split():
+                case []:
+                    event = Comment(line)
+                case [*words] if words[0].startswith(('#', '///')):
+                    event = Comment(line)
+                case [('roll' | 'waste' | 'advance'), *params]:
                     event = parse_roll(*params)
-                elif event_name == 'encounter':
+                case ['encounter', *params]:
                     if params and 'simulated'.startswith(params[0]):
                         enc_type = 'simulated'
                         name = 'Simulation (Miihen)'
@@ -49,14 +47,14 @@ class ActionsTracker(BaseWidget):
                         name = 'Klikk 1'
                         forced_condition = params[0] if params else 'normal'
                     event = parse_encounter(
-                        enc_type, name, 'initiative', forced_condition)
-                elif event_name == 'stat':
+                        enc_type, name, '', forced_condition)
+                case ['stat', *params]:
                     event = parse_stat_update(*params)
-                # in this case its parsed as a character action
-                elif event_name in CHARACTERS:
-                    event = parse_action(*words)
-                else:
+                case [character, *params] if character in CHARACTERS:
+                    event = parse_action(character, *params)
+                case [event_name, *_]:
                     event = Comment(f'No event called {event_name!r}')
+
             self.rng_tracker.events_sequence.append(event)
 
     def set_tags(self) -> list[tuple[str, str, bool]]:

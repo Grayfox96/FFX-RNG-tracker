@@ -164,6 +164,9 @@ tidus attack ???
 tidus attack ???
 tidus attack ???
 
+# Besaid grid
+stat tidus strength +1
+
 encounter
 valefor thunder garuda_3
 valefor thunder garuda_3

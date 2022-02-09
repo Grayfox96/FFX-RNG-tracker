@@ -24,29 +24,28 @@ class DropsTracker(BaseWidget):
         self.rng_tracker.reset()
         # parse through the input text
         for line in input_lines:
-            words = line.lower().split()
-            # if the line is empty or starts with # add it as a comment
-            if words == [] or words[0][0] == '#' or words[0][:3] == '///':
-                event = Comment(line)
-            else:
-                event_name, *params = words
-                if event_name == 'steal':
-                    event = parse_steal(*params)
-                elif event_name == 'kill':
-                    event = parse_kill(*params)
-                elif event_name == 'death':
-                    event = parse_death(*params)
-                elif event_name in ('roll', 'waste', 'advance'):
+            match line.lower().split():
+                case []:
+                    event = Comment(line)
+                case [*words] if words[0].startswith(('#', '///')):
+                    event = Comment(line)
+                case [('roll' | 'waste' | 'advance'), *params]:
                     event = parse_roll(*params)
-                elif event_name == 'party':
+                case ['steal', *params]:
+                    event = parse_steal(*params)
+                case ['kill', *params]:
+                    event = parse_kill(*params)
+                case ['death', *params]:
+                    event = parse_death(*params)
+                case ['party', *params]:
                     event = parse_party_change(*params)
-                elif event_name == 'bribe':
+                case ['bribe', *params]:
                     event = parse_bribe(*params)
-                # in this case its parsed as a kill
-                elif event_name in MONSTERS:
-                    event = parse_kill(*words)
-                else:
+                case [monster_name, *params] if monster_name in MONSTERS:
+                    event = parse_kill(monster_name, *params)
+                case [event_name, *_]:
                     event = Comment(f'No event called {event_name!r}')
+
             self.rng_tracker.events_sequence.append(event)
 
     def set_tags(self) -> list[tuple[str, str, bool]]:

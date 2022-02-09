@@ -16,7 +16,6 @@ from .events.encounter import (Encounter, MultizoneRandomEncounter,
 from .events.encounter_check import walk
 from .events.escape import Escape
 from .events.kill import Bribe, Kill
-from .events.main import Event
 from .events.steal import Steal
 from .events.yojimbo_turn import YojimboTurn
 from .main import get_tracker
@@ -55,10 +54,10 @@ def get_equipment_types(amount: int, columns: int = 2) -> str:
 
 
 def get_encounter_predictions(delta: int = 6) -> str:
-    min_steps = (
-        64,
-        142,
-        39,
+    step_ranges = (
+        (64, 64 + delta),
+        (142, 142 + delta),
+        (39, 39 + (delta // 2)),
     )
     zones = (
         Zone('Underwater Ruins', 30, 240),
@@ -67,16 +66,18 @@ def get_encounter_predictions(delta: int = 6) -> str:
     )
     tracker = get_tracker()
     predictions = {z.name: {} for z in zones}
-    for steps_list in product(*[range(s, s + delta) for s in min_steps]):
+    total_occurrences = 0
+    for steps_list in product(*[range(*s) for s in step_ranges]):
+        total_occurrences += 1
         tracker.reset()
         for steps, zone in zip(steps_list, zones):
             n = sum([1 for e in walk(steps, zone) if e.encounter])
             predictions[zone.name][n] = predictions[zone.name].get(n, 0) + 1
     tracker.reset()
-    for (zone, prediction), steps in zip(predictions.items(), min_steps):
-        for encounters, occurrences in prediction.items():
-            prediction[encounters] = f'{occurrences * 100 / (delta ** 3)}%'
-        new_key = f'{zone}, {steps}-{steps + delta} steps'
+    for (zone, prediction), steps in zip(predictions.items(), step_ranges):
+        for n_encs, occurrences in prediction.items():
+            prediction[n_encs] = f'{occurrences * 100 / total_occurrences}%'
+        new_key = f'{zone}, {steps[0]}-{steps[1]} steps'
         predictions[new_key] = predictions.pop(zone)
     return predictions
 
@@ -102,7 +103,8 @@ def parse_encounter(
 
 
 def parse_steal(
-        monster_name: str = '', successful_steals: str = '0', *_) -> Event:
+        monster_name: str = '', successful_steals: str = '0',
+        *_) -> Steal | Comment:
     usage = 'Usage: steal [monster_name] (successful steals)'
     if not monster_name:
         return Comment(usage)
@@ -119,7 +121,7 @@ def parse_steal(
 
 def parse_kill(
         monster_name: str = '', killer_name: str = '',
-        overkill: str = '', *_) -> Event:
+        overkill: str = '', *_) -> Kill | Comment:
     usage = 'Usage: (kill) [monster_name] [killer] (overkill/ok)'
     if not monster_name or not killer_name:
         return Comment(usage)
@@ -132,7 +134,8 @@ def parse_kill(
     return Kill(monster, killer, overkill)
 
 
-def parse_bribe(monster_name: str = '', user_name: str = '', *_) -> Event:
+def parse_bribe(
+        monster_name: str = '', user_name: str = '', *_) -> Bribe | Comment:
     usage = 'Usage: bribe [monster_name] [user]'
     if not monster_name or not user_name:
         return Comment(usage)
@@ -149,7 +152,8 @@ def parse_death(character: str = '???', *_) -> Death:
     return Death(character)
 
 
-def parse_roll(rng_index: str = '', times: str = '1', *_) -> Event:
+def parse_roll(
+        rng_index: str = '', times: str = '1', *_) -> AdvanceRNG | Comment:
     usage = 'Usage: waste/advance/roll [rng#] [amount]'
     try:
         if rng_index.startswith('rng'):
@@ -166,7 +170,8 @@ def parse_roll(rng_index: str = '', times: str = '1', *_) -> Event:
     return AdvanceRNG(rng_index, times)
 
 
-def parse_party_change(party_formation_string: str = '', *_) -> Event:
+def parse_party_change(
+        party_formation_string: str = '', *_) -> ChangeParty | Comment:
     usage = 'Usage: party [party members initials]'
     if not party_formation_string:
         return Comment(usage)
@@ -184,7 +189,7 @@ def parse_party_change(party_formation_string: str = '', *_) -> Event:
 
 def parse_action(
         character_name: str = '', action_name: str = '',
-        target_name: str = '', *_) -> Event:
+        target_name: str = '', *_) -> CharacterAction | Escape | Comment:
     usage = 'Usage: [character] [action name] (target)'
     if not character_name or not action_name:
         return Comment(usage)
@@ -227,7 +232,7 @@ def parse_action(
 
 def parse_stat_update(
         character_name: str = '', stat_name: str = '',
-        amount: str = '', *_) -> Event:
+        amount: str = '', *_) -> ChangeStat | Comment:
     usage = 'Usage: stat [character] [stat] [(+/-) amount]'
     if not character_name or not stat_name or not amount:
         return Comment(usage)
@@ -255,7 +260,7 @@ def parse_stat_update(
 
 def parse_yojimbo_action(
         action_name: str = '', monster_name: str = '',
-        overdrive: str = '', *_) -> Event:
+        overdrive: str = '', *_) -> YojimboTurn | Comment:
     usage = 'Usage: [action] [monster] (overdrive)'
     if not action_name or not monster_name:
         return Comment(usage)
@@ -274,7 +279,7 @@ def parse_yojimbo_action(
     return YojimboTurn(attack, monster, overdrive)
 
 
-def parse_compatibility_update(new_compatibility: str = '', *_):
+def parse_compatibility_update(new_compatibility: str = '', *_) -> Comment:
     usage = 'Usage: compatibility [(+/-)amount]'
     rng_tracker = get_tracker()
     compatibility = rng_tracker.compatibility
