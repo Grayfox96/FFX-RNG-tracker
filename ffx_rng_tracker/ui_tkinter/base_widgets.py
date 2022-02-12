@@ -161,7 +161,7 @@ class BaseWidget(tk.Frame, ABC):
         self.rng_tracker = get_tracker()
         self.input_widget = self.make_input_widget()
         self.output_widget = self.make_output_widget()
-        self.tags = self.set_tags()
+        self.tags = self.get_tags()
         self.print_output()
 
     def make_input_widget(self) -> BetterText:
@@ -198,7 +198,7 @@ class BaseWidget(tk.Frame, ABC):
         for text, tag, regexp in self.tags:
             self.output_widget.highlight_pattern(text, tag, regexp=regexp)
 
-    def set_tags(self) -> list[tuple[str, str, bool]]:
+    def get_tags(self) -> list[tuple[str, str, bool]]:
         """Setup tags to be used by highlight_patterns."""
         error_messages = (
             'Invalid', 'No event called', 'Usage:', ' named ',

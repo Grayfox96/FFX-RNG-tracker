@@ -18,13 +18,13 @@ class YojimboTracker(BaseWidget):
         widget.insert('end', self.default_notes)
         return widget
 
-    def set_tags(self) -> list[tuple[str, str, bool]]:
+    def get_tags(self) -> list[tuple[str, str, bool]]:
         tags = [
             (' [0-9]{1,7}(?= gil) ', 'yojimbo low gil', True),
             (' [0-9]{10,}(?= gil) ', 'yojimbo high gil', True),
             ('^.*changed to.+$', 'stat update', True),
         ]
-        tags.extend(super().set_tags())
+        tags.extend(super().get_tags())
         return tags
 
     def get_input(self):

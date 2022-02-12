@@ -1,6 +1,5 @@
 from ..data.characters import CHARACTERS
 from ..data.file_functions import get_notes
-from ..data.monsters import MONSTERS
 from ..events.comment import Comment
 from ..ui_functions import (parse_action, parse_encounter, parse_roll,
                             parse_stat_update)
@@ -13,7 +12,6 @@ class ActionsTracker(BaseWidget):
     """
 
     def __init__(self, parent, *args, **kwargs):
-        self.monster_names = sorted(list(MONSTERS.keys()))
         self.default_notes = get_notes('actions_notes.txt')
         super().__init__(parent, *args, **kwargs)
 
@@ -57,7 +55,7 @@ class ActionsTracker(BaseWidget):
 
             self.rng_tracker.events_sequence.append(event)
 
-    def set_tags(self) -> list[tuple[str, str, bool]]:
+    def get_tags(self) -> list[tuple[str, str, bool]]:
         tags = [
             ('Encounter', 'encounter', False),
             ('Preemptive', 'preemptive', False),
@@ -66,7 +64,7 @@ class ActionsTracker(BaseWidget):
             ('^.*changed to.+$', 'stat update', True),
             ('^#(.+?)?$', 'comment', True),
         ]
-        tags.extend(super().set_tags())
+        tags.extend(super().get_tags())
         return tags
 
     def print_output(self) -> None:

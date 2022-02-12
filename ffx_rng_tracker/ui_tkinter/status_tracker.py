@@ -17,7 +17,7 @@ class StatusTracker(BaseWidget):
     def get_input(self):
         self.text = get_status_chance_string()
 
-    def set_tags(self) -> list[tuple[str, str, bool]]:
+    def get_tags(self) -> list[tuple[str, str, bool]]:
         return [('100', 'status miss', False)]
 
     def print_output(self):

@@ -20,7 +20,7 @@ class SeedInfo(BaseWidget):
         data.append(get_equipment_types(50, 2))
         return '\n\n'.join(data)
 
-    def set_tags(self) -> list[tuple[str, str, bool]]:
+    def get_tags(self) -> list[tuple[str, str, bool]]:
         return [(EquipmentType.ARMOR, 'equipment', False)]
 
     def print_output(self):

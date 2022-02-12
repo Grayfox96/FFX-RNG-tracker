@@ -16,6 +16,7 @@ from .events.encounter import (Encounter, MultizoneRandomEncounter,
 from .events.encounter_check import walk
 from .events.escape import Escape
 from .events.kill import Bribe, Kill
+from .events.monster_action import MonsterAction
 from .events.steal import Steal
 from .events.yojimbo_turn import YojimboTurn
 from .main import get_tracker
@@ -295,6 +296,15 @@ def parse_compatibility_update(new_compatibility: str = '', *_) -> Comment:
 
     rng_tracker.compatibility = max(min(compatibility, 255), 0)
     return Comment(f'Compatibility changed to {rng_tracker.compatibility}')
+
+
+def parse_monster_action(
+        monster_name: str = '', *_) -> MonsterAction | Comment:
+    usage = 'Usage: [monster_name]'
+
+    if monster_name not in MONSTERS:
+        return Comment(usage)
+    return MonsterAction(MONSTERS[monster_name], ACTIONS['attack'], 0)
 
 
 def get_status_chance_string(amount: int = 50) -> str:

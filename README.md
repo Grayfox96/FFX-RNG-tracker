@@ -6,7 +6,7 @@
 
 To track a PS2 run, change the ps2 setting.
 
-Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*) in the main directory to override default ones.
+Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*, *monster_actions_notes.txt*) in the .exe or main .py file directory to override default ones.
 
 Contact [Grayfox#4644](https://discordapp.com/users/195955977223143426/) on Discord for help.
 

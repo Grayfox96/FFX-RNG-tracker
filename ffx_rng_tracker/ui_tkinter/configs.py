@@ -12,7 +12,7 @@ class ConfigsPage(BaseWidget):
     def get_input(self):
         return treeview(Configs.get_configs())
 
-    def set_tags(self) -> list[tuple[str, str, bool]]:
+    def get_tags(self) -> list[tuple[str, str, bool]]:
         return []
 
     def print_output(self):

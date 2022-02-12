@@ -15,10 +15,14 @@ class FFXRNGTracker:
         # get rng generators
         # 0: encounter chance
         # 1: encouter formations and preempt/ambush
+        # 4: monster targeting
+        # 5: multihit actions targeting
+        # 9: screenshake
         # 10: drop/steal chance
         # 11: rare item chance
         # 12: equipment owner, type, number of slots and abilities
         # 13: abilities
+        # 14: camera
         # 17: yojimbo motivation
         # 20-35: damage/crit/escape chance
         # 36-51: hit chance

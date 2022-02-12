@@ -11,6 +11,7 @@ from .base_widgets import DamageValuesDialogue
 from .configs import ConfigsPage
 from .drops_tracker import DropsTracker
 from .encounters_tracker import EncountersTracker
+from .monster_actions_tracker import MonsterActionsTracker
 from .monster_data_viewer import MonsterDataViewer
 from .seed_info import SeedInfo
 from .status_tracker import StatusTracker
@@ -41,6 +42,9 @@ class FFXRNGTrackerUI(ttk.Notebook):
 
         self.damage_tracker = ActionsTracker(self)
         self.add(self.damage_tracker, text='Damage/crits/escapes/misses')
+
+        self.monster_actions = MonsterActionsTracker(self)
+        self.add(self.monster_actions, text='Monster Targeting')
 
         self.status_tracker = StatusTracker(self)
         self.add(self.status_tracker, text='Status')
