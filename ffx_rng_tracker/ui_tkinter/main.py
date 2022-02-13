@@ -7,7 +7,7 @@ from ..data.file_functions import get_resource_path, get_version
 from ..logger import log_exceptions, log_tkinter_error, setup_logger
 from ..main import get_tracker
 from .actions_tracker import ActionsTracker
-from .base_widgets import DamageValuesDialogue
+from .base_widgets import BaseWidget, DamageValuesDialogue
 from .configs import ConfigsPage
 from .drops_tracker import DropsTracker
 from .encounters_tracker import EncountersTracker
@@ -24,39 +24,33 @@ class FFXRNGTrackerUI(ttk.Notebook):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
-        self.seed_info = SeedInfo(self)
-        self.add(self.seed_info, text='Seed info')
+        widgets = self.get_widgets()
+        for name, widget in widgets.items():
+            configs = Configs.ui_widgets.get(name, None)
+            if configs is None or not configs.shown:
+                continue
+            if configs.windowed:
+                window = tk.Toplevel()
+                window.title(name)
+                window.geometry('1280x830')
+                window.protocol("WM_DELETE_WINDOW", lambda: None)
+                widget(window).pack(expand=True, fill='both')
+            else:
+                self.add(widget(self), text=name)
 
-        self.drops_tracker = DropsTracker(self)
-        self.add(self.drops_tracker, text='Drops')
-
-        if Configs.windowed_enc_tracker:
-            window = tk.Toplevel()
-            window.title('Encounters')
-            window.protocol("WM_DELETE_WINDOW", lambda: None)
-            self.encounters_tracker = EncountersTracker(window)
-            self.encounters_tracker.pack(expand=True, fill='both')
-        else:
-            self.encounters_tracker = EncountersTracker(self)
-            self.add(self.encounters_tracker, text='Encounters')
-
-        self.damage_tracker = ActionsTracker(self)
-        self.add(self.damage_tracker, text='Damage/crits/escapes/misses')
-
-        self.monster_actions = MonsterActionsTracker(self)
-        self.add(self.monster_actions, text='Monster Targeting')
-
-        self.status_tracker = StatusTracker(self)
-        self.add(self.status_tracker, text='Status')
-
-        self.yojimbo_tracker = YojimboTracker(self)
-        self.add(self.yojimbo_tracker, text='Yojimbo')
-
-        self.monster_data_viewer = MonsterDataViewer(self)
-        self.add(self.monster_data_viewer, text='Monster Data')
-
-        self.configs_page = ConfigsPage(self)
-        self.add(self.configs_page, text='Configs')
+    def get_widgets(self) -> dict[str, BaseWidget]:
+        widgets = {
+            'Seed info': SeedInfo,
+            'Drops': DropsTracker,
+            'Encounters': EncountersTracker,
+            'Damage/crits/escapes/misses': ActionsTracker,
+            'Monster Targeting': MonsterActionsTracker,
+            'Status': StatusTracker,
+            'Yojimbo': YojimboTracker,
+            'Monster Data': MonsterDataViewer,
+            'Configs': ConfigsPage,
+        }
+        return widgets
 
 
 @log_exceptions()

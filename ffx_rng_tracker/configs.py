@@ -1,8 +1,15 @@
 import configparser
 import os
 import shutil
+from dataclasses import dataclass
 
 from .data.file_functions import get_resource_path
+
+
+@dataclass
+class UIWidgetConfigs:
+    shown: bool
+    windowed: bool
 
 
 class Configs:
@@ -15,7 +22,7 @@ class Configs:
     use_theme: bool
     colors: dict[str, tuple[str, str]] = {}
     important_monsters: list[str]
-    windowed_enc_tracker: bool
+    ui_widgets: dict[str, UIWidgetConfigs] = {}
     _parser = configparser.ConfigParser()
     _configs_file = 'ffx_rng_tracker_configs.ini'
     _default_configs_file = 'data/default_configs.ini'
@@ -89,8 +96,17 @@ class Configs:
                 background = bg_fallback
             cls.colors[option] = (foreground, background)
 
-        section = 'Encounters tracker'
-        cls.windowed_enc_tracker = cls.getboolean(section, 'windowed', True)
+        ui_widgets = (
+            'Seed info', 'Drops', 'Encounters', 'Damage/crits/escapes/misses',
+            'Monster Targeting', 'Status', 'Yojimbo', 'Monster Data',
+            'Configs',
+        )
+        for section in ui_widgets:
+            shown = cls.getboolean(section, 'shown', True)
+            windowed = cls.getboolean(section, 'windowed', False)
+            cls.ui_widgets[section] = UIWidgetConfigs(shown, windowed)
+
+        section = 'Encounters'
         monsters = cls.get(section, 'monsters to highlight', 'ghost')
         cls.important_monsters = [m.strip() for m in monsters.split(',')]
 

@@ -63,9 +63,11 @@ sinspawn_echuilles
 sinspawn_echuilles
 
 # -- Kilika --
+party tyl
 ragora
 
 # Kilika In encounters
+party tyw
 dinonix
 killer_bee
 yellow_element
@@ -78,6 +80,7 @@ killer_bee
 yellow_element
 
 # -- Luca --
+party tkl
 worker
 worker
 worker
@@ -105,5 +108,8 @@ sahagin_chief
 sahagin_chief
 
 # -- Mi'ihen --
+party taw
+raldo
+
 mi'ihen_fang
 dual_horn
