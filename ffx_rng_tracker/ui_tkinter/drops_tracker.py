@@ -1,6 +1,5 @@
-from ffx_rng_tracker.data.monsters import MONSTERS
-
-from ..data.file_functions import get_notes
+from ..data.notes import get_notes
+from ..data.monsters import MONSTERS
 from ..events.comment import Comment
 from ..ui_functions import (parse_bribe, parse_death, parse_kill,
                             parse_party_change, parse_roll, parse_steal)
@@ -10,13 +9,10 @@ from .base_widgets import BaseWidget, BetterText
 class DropsTracker(BaseWidget):
     """Widget used to track monster drops RNG."""
 
-    def __init__(self, parent, *args, **kwargs):
-        self.default_notes = get_notes('drops_notes.txt')
-        super().__init__(parent, *args, **kwargs)
-
     def make_input_widget(self) -> BetterText:
         widget = super().make_input_widget()
-        widget.insert('end', self.default_notes)
+        notes = get_notes('drops_notes.txt', self.rng_tracker.seed)
+        widget.set(notes)
         return widget
 
     def get_input(self) -> None:

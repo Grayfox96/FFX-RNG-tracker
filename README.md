@@ -6,7 +6,7 @@
 
 To track a PS2 run, change the ps2 setting.
 
-Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*, *monster_actions_notes.txt*) in the .exe or main .py file directory to override default ones.
+Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*, *monster_actions_notes.txt*) in the *ffx_rng_tracker_notes/* directory to override default ones. Prepend the notes filename with a seed number (e.g. *3556394350_actions_notes.txt*) to open them when the tracker is open with that specific seed.
 
 Contact [Grayfox#4644](https://discordapp.com/users/195955977223143426/) on Discord for help.
 

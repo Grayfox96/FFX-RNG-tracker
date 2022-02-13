@@ -1,5 +1,5 @@
 from ..data.characters import CHARACTERS
-from ..data.file_functions import get_notes
+from ..data.notes import get_notes
 from ..events.comment import Comment
 from ..ui_functions import (parse_action, parse_encounter, parse_roll,
                             parse_stat_update)
@@ -11,13 +11,10 @@ class ActionsTracker(BaseWidget):
     escape chance and miss chance rng.
     """
 
-    def __init__(self, parent, *args, **kwargs):
-        self.default_notes = get_notes('actions_notes.txt')
-        super().__init__(parent, *args, **kwargs)
-
     def make_input_widget(self) -> BetterText:
         widget = super().make_input_widget()
-        widget.set(self.default_notes)
+        notes = get_notes('actions_notes.txt', self.rng_tracker.seed)
+        widget.set(notes)
         return widget
 
     def get_input(self):

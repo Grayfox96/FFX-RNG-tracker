@@ -15,17 +15,6 @@ def get_resource_path(relative_path: str) -> str:
     return os.path.join(base_path, relative_path)
 
 
-def get_notes(file_path: str):
-    """Get notes from a file, either custom or default."""
-    try:
-        notes_file = open(file_path)
-    except FileNotFoundError:
-        notes_file = open(get_resource_path(f'data/{file_path}'))
-    notes = notes_file.read()
-    notes_file.close()
-    return notes
-
-
 def get_version() -> tuple[int, int, int]:
     """Used to retrieve the version number from the version file."""
     absolute_file_path = get_resource_path('data/VERSION')

@@ -1,5 +1,5 @@
-from ffx_rng_tracker.data.actions import YOJIMBO_ACTIONS
-from ..data.file_functions import get_notes
+from ..data.actions import YOJIMBO_ACTIONS
+from ..data.notes import get_notes
 from ..events.comment import Comment
 from ..ui_functions import (parse_compatibility_update, parse_death,
                             parse_roll, parse_yojimbo_action)
@@ -9,13 +9,10 @@ from .base_widgets import BaseWidget, BetterText
 class YojimboTracker(BaseWidget):
     """Widget used to track Yojimbo rng."""
 
-    def __init__(self, parent, *args, **kwargs):
-        self.default_notes = get_notes('yojimbo_notes.txt')
-        super().__init__(parent, *args, **kwargs)
-
     def make_input_widget(self) -> BetterText:
         widget = super().make_input_widget()
-        widget.insert('end', self.default_notes)
+        notes = get_notes('yojimbo_notes.txt', self.rng_tracker.seed)
+        widget.set(notes)
         return widget
 
     def get_tags(self) -> list[tuple[str, str, bool]]:

@@ -1,4 +1,4 @@
-from ..data.file_functions import get_notes
+from ..data.notes import get_notes
 from ..events.comment import Comment
 from ..ui_functions import parse_monster_action, parse_party_change, parse_roll
 from ..ui_tkinter.base_widgets import BaseWidget, BetterText
@@ -6,13 +6,10 @@ from ..ui_tkinter.base_widgets import BaseWidget, BetterText
 
 class MonsterActionsTracker(BaseWidget):
 
-    def __init__(self, parent, *args, **kwargs) -> None:
-        self.default_notes = get_notes('monster_actions_notes.txt')
-        super().__init__(parent, *args, **kwargs)
-
     def make_input_widget(self) -> BetterText:
         widget = super().make_input_widget()
-        widget.set(self.default_notes)
+        notes = get_notes('monster_actions_notes.txt', self.rng_tracker.seed)
+        widget.set(notes)
         return widget
 
     def get_input(self) -> None:
