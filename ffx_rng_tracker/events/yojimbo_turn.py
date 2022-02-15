@@ -42,13 +42,13 @@ class YojimboTurn(Event):
         return string
 
     def _free_attack_check(self) -> bool:
-        rng = self._rng_tracker.advance_rng(17) & 255
-        compatibility = self._rng_tracker.compatibility // 4
+        rng = self._advance_rng(17) & 255
+        compatibility = self.gamestate.compatibility // 4
         return compatibility > rng
 
     def _get_free_attack(self) -> tuple[YojimboAction, int]:
-        base_motivation = self._rng_tracker.compatibility // 4
-        rng = self._rng_tracker.advance_rng(17) & 0x3f
+        base_motivation = self.gamestate.compatibility // 4
+        rng = self._advance_rng(17) & 0x3f
         motivation = base_motivation + rng
         attacks = [a for a in YOJIMBO_ACTIONS.values()
                    if a.needed_motivation is not None]
@@ -64,17 +64,17 @@ class YojimboTurn(Event):
 
     def _get_gil(self) -> tuple[int, int]:
         """"""
-        base_motivation = (self._rng_tracker.compatibility
+        base_motivation = (self.gamestate.compatibility
                            // COMPATIBILITY_MODIFIER)
         zanmato_resistance = ZANMATO_LEVELS[self.monster.zanmato_level]
-        rng_motivation = self._rng_tracker.advance_rng(17) & 0x3f
+        rng_motivation = self._advance_rng(17) & 0x3f
         # the zanmato level of the monster is only used to check for zanmato
         # if the desired attack is not zanmato then a second calculation is
         # made using the lowest zanmato level
         if (self.action != YOJIMBO_ACTIONS['zanmato']
                 and self.monster.zanmato_level > 0):
             zanmato_resistance = ZANMATO_LEVELS[0]
-            rng_motivation = self._rng_tracker.advance_rng(17) & 0x3f
+            rng_motivation = self._advance_rng(17) & 0x3f
         fixed_motivation = int(base_motivation * zanmato_resistance)
         fixed_motivation += rng_motivation
         if self.overdrive:
@@ -91,8 +91,8 @@ class YojimboTurn(Event):
 
     def _update_compatibility(self) -> int:
         modifier = self.action.compatibility_modifier
-        self._rng_tracker.compatibility += modifier
-        return self._rng_tracker.compatibility
+        self.gamestate.compatibility += modifier
+        return self.gamestate.compatibility
 
     @staticmethod
     def gil_to_motivation(gil: int) -> int:

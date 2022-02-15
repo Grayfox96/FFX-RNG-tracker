@@ -39,6 +39,7 @@ sahagin_4 tidus
 
 # Geosgaeno doesn't roll RNG
 ///
+party tr
 steal klikk
 steal klikk 1
 # steal klikk 1

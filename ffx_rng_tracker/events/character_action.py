@@ -41,7 +41,7 @@ class CharacterAction(Event):
         if not self.action.can_miss:
             return True
         index = min(36 + self.character.index, 43)
-        hit_rng = self._rng_tracker.advance_rng(index) % 101
+        hit_rng = self._advance_rng(index) % 101
         luck = self.character.stats[Stat.LUCK]
         accuracy = self.character.stats[Stat.ACCURACY]
         target_evasion = self.target.stats[Stat.EVASION]
@@ -66,7 +66,7 @@ class CharacterAction(Event):
         if not self.action.can_crit:
             return False
         index = min(20 + self.character.index, 27)
-        crit_roll = self._rng_tracker.advance_rng(index) % 101
+        crit_roll = self._advance_rng(index) % 101
         luck = self.character.stats[Stat.LUCK]
         target_luck = max(self.target.stats[Stat.LUCK], 1)
         crit_chance = luck - target_luck
@@ -78,7 +78,7 @@ class CharacterAction(Event):
         if not self.hit or not self.action.does_damage:
             return 0, 0, False
         index = min(20 + self.character.index, 27)
-        damage_rng = self._rng_tracker.advance_rng(index) & 31
+        damage_rng = self._advance_rng(index) & 31
         variance = damage_rng + 0xf0
         crit = self._get_crit()
         damage_type = self.action.damage_type

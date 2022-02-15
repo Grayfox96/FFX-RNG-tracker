@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from ..data.characters import CHARACTERS, Character
+from ..data.characters import CHARACTERS
 from ..data.constants import ICV_BASE, ICV_VARIANCE, EncounterCondition, Stat
 from ..data.encounter_formations import FORMATIONS, Formation
 from .main import Event
@@ -14,8 +14,7 @@ class Encounter(Event):
     formation: Formation = field(init=False, repr=False)
     condition: EncounterCondition = field(init=False, repr=False)
     index: int = field(init=False, repr=False)
-    icvs: dict[Character, int] = field(
-        default_factory=dict, init=False, repr=False)
+    icvs: dict[str, int] = field(default_factory=dict, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.formation = self._get_formation()
@@ -34,16 +33,14 @@ class Encounter(Event):
         return string
 
     def _get_index(self) -> int:
-        for event in reversed(self._rng_tracker.events_sequence):
-            if isinstance(event, Encounter):
-                return event.index + 1
-        return 1
+        self.gamestate.encounters_count += 1
+        return self.gamestate.encounters_count
 
     def _get_formation(self) -> Formation:
         return FORMATIONS.set_formation[self.name]
 
     def _get_condition(self) -> EncounterCondition:
-        condition_rng = self._rng_tracker.advance_rng(1) & 255
+        condition_rng = self._advance_rng(1) & 255
         if self.forced_condition:
             return self.forced_condition
         if self.initiative:
@@ -55,7 +52,7 @@ class Encounter(Event):
         else:
             return EncounterCondition.AMBUSH
 
-    def _get_icvs(self) -> dict[Character, int]:
+    def _get_icvs(self) -> dict[str, int]:
         icvs = {}
         if self.condition is EncounterCondition.PREEMPTIVE:
             for c in CHARACTERS.values():
@@ -67,7 +64,7 @@ class Encounter(Event):
             for c in CHARACTERS.values():
                 base = ICV_BASE[c.stats[Stat.AGILITY]] * 3
                 index = c.index + 20 if c.index < 7 else 27
-                variance_rng = self._rng_tracker.advance_rng(index)
+                variance_rng = self._advance_rng(index)
                 variance = ICV_VARIANCE[c.stats[Stat.AGILITY]] + 1
                 variance = variance_rng % variance
                 icvs[c.name] = base - variance
@@ -80,7 +77,7 @@ class SimulatedEncounter(Encounter):
     def _get_index(self) -> int:
         # simulated encounter don't increment the game's
         # encounter count used to calculate aeons' stats
-        return super()._get_index() - 1
+        return self.gamestate.encounters_count
 
     def _get_formation(self) -> Formation:
         return FORMATIONS.simulated[self.name]
@@ -109,23 +106,19 @@ class RandomEncounter(Encounter):
         return string
 
     def _get_formation(self) -> Formation:
-        rng_value = self._rng_tracker.advance_rng(1)
+        rng_value = self._advance_rng(1)
         zone_formations = FORMATIONS.random[self.zone]
         formation_index = rng_value % len(zone_formations)
         return zone_formations[formation_index]
 
     def _get_random_index(self) -> int:
-        for event in reversed(self._rng_tracker.events_sequence):
-            if isinstance(event, RandomEncounter):
-                return event.random_index + 1
-        return 1
+        self.gamestate.random_encounters_count += 1
+        return self.gamestate.random_encounters_count
 
     def _get_zone_index(self) -> int:
-        for event in reversed(self._rng_tracker.events_sequence):
-            if isinstance(event, RandomEncounter):
-                if event.zone == self.zone:
-                    return event.zone_index + 1
-        return 1
+        index = self.gamestate.zone_encounters_counts.get(self.zone, 0) + 1
+        self.gamestate.zone_encounters_counts[self.zone] = index
+        return index
 
     def _get_name(self) -> str:
         return f'{self.zone} [{self.zone_index}]'
@@ -148,7 +141,7 @@ class MultizoneRandomEncounter(RandomEncounter):
         return string
 
     def _get_formation(self) -> list[Formation]:
-        rng_value = self._rng_tracker.advance_rng(1)
+        rng_value = self._advance_rng(1)
         formations = []
         for zone in self.zone.split('/'):
             zone_formations = FORMATIONS.random[zone]

@@ -3,8 +3,9 @@ from abc import ABC, abstractmethod
 from tkinter import font, simpledialog, ttk
 
 from ..configs import Configs
+from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
 from ..errors import InvalidDamageValueError, SeedNotFoundError
-from ..main import get_tracker
+from ..events.main import GameState
 
 
 class BetterText(tk.Text):
@@ -42,7 +43,7 @@ class BetterText(tk.Text):
             if m[0] != '_' and m != 'config' and m != 'configure':
                 setattr(self, m, getattr(self.frame, m))
 
-    def _add_h_scrollbar(self):
+    def _add_h_scrollbar(self) -> None:
         self.h_scrollbar = tk.Scrollbar(self.frame, orient='horizontal')
         self.h_scrollbar.grid(row=1, column=0, sticky='ew')
         self.configure(xscrollcommand=self.h_scrollbar.set)
@@ -104,7 +105,7 @@ class BetterSpinbox(ttk.Spinbox):
     and readonly by default.
     """
 
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
         self.set(0)
 
@@ -119,7 +120,7 @@ class BetterSpinbox(ttk.Spinbox):
 class ScrollableFrame(tk.Frame):
     """"""
 
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, *args, **kwargs) -> None:
         self.parent = parent
         self.outer_frame = tk.Frame(parent)
         canvas = tk.Canvas(self.outer_frame, width=280)
@@ -144,21 +145,21 @@ class ScrollableFrame(tk.Frame):
         # when the mouse leaves the canvas it unbinds the mousewheel
         canvas.bind('<Leave>', lambda _: canvas.unbind_all('<MouseWheel>'))
 
-    def pack(self, *args, **kwargs):
+    def pack(self, *args, **kwargs) -> None:
         self.outer_frame.pack(*args, **kwargs)
 
-    def grid(self, *args, **kwargs):
+    def grid(self, *args, **kwargs) -> None:
         self.outer_frame.grid(*args, **kwargs)
 
 
 class BaseWidget(tk.Frame, ABC):
     """Abstract base class for all tkinter widgets."""
 
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
         self.parent = parent
         self.font = font.Font(family='Courier New', size=Configs.font_size)
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.rng_tracker = get_tracker()
+        self.gamestate = GameState(seed)
         self.input_widget = self.make_input_widget()
         self.output_widget = self.make_output_widget()
         self.tags = self.get_tags()
@@ -225,7 +226,7 @@ class DamageValuesDialogue(simpledialog.Dialog):
 
     def __init__(self, *args, **kwargs):
         self.warning_label = False
-        self.rng_tracker = None
+        self.seed = None
         super().__init__(*args, **kwargs)
 
     def body(self, parent: tk.Tk):
@@ -255,27 +256,27 @@ class DamageValuesDialogue(simpledialog.Dialog):
             error = str(error).split(':', 1)[1]
             self.show_warning(f'{error} is not a valid damage value.')
             return
-        if len(seed_info) == 1:
-            seed_info = seed_info[0]
-            if not (0 <= seed_info <= 0xffffffff):
-                self.show_warning(
-                    'Seed must be an integer between 0 and 4294967295')
+        match seed_info:
+            case []:
                 return
-        elif len(seed_info) < 8 and Configs.ps2:
-            self.show_warning('Need at least 8 damage values.')
-            return
-        elif len(seed_info) < 6:
-            self.show_warning('Need at least 6 damage values.')
-            return
-        try:
-            self.rng_tracker = get_tracker(seed_info)
-        except (InvalidDamageValueError,
-                SeedNotFoundError) as error:
-            self.show_warning(error)
-            return
+            case [seed]:
+                if not (0 <= seed <= 0xffffffff):
+                    self.show_warning(
+                        'Seed must be an integer between 0 and 4294967295')
+                    return
+            case _ if len(seed_info) < DAMAGE_VALUES_NEEDED:
+                self.show_warning(
+                    f'Need at least {DAMAGE_VALUES_NEEDED} damage values.')
+                return
+            case _:
+                try:
+                    seed = get_seed(seed_info)
+                except (InvalidDamageValueError,
+                        SeedNotFoundError) as error:
+                    self.show_warning(error)
+                    return
 
-        print(f'Seed information: {seed_info}')
-
+        self.seed = seed
         self.destroy()
 
     def show_warning(self, text):

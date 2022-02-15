@@ -4,7 +4,6 @@ from ffx_rng_tracker.configs import Configs
 from ffx_rng_tracker.data.file_functions import get_resource_path, get_version
 from ffx_rng_tracker.logger import (log_exceptions, log_tkinter_error,
                                     setup_logger)
-from ffx_rng_tracker.main import get_tracker
 from ffx_rng_tracker.ui_tkinter.main import AZURE_THEME_PATH
 from ffx_rng_tracker.ui_tkinter.seedfinder import SeedFinder
 
@@ -29,7 +28,6 @@ def main():
         else:
             root.tk.call('set_theme', 'light')
 
-    get_tracker(0)
     ui = SeedFinder(root)
     ui.pack(expand=True, fill='both')
     root.mainloop()

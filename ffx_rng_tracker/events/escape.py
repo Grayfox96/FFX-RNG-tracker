@@ -22,5 +22,5 @@ class Escape(Event):
 
     def _get_escape(self) -> bool:
         index = 20 + self.character.index
-        escape_roll = self._rng_tracker.advance_rng(index) & 255
+        escape_roll = self._advance_rng(index) & 255
         return escape_roll < 191

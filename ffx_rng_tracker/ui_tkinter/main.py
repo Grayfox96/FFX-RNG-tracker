@@ -5,7 +5,6 @@ from tkinter import ttk
 from ..configs import Configs
 from ..data.file_functions import get_resource_path, get_version
 from ..logger import log_exceptions, log_tkinter_error, setup_logger
-from ..main import get_tracker
 from .actions_tracker import ActionsTracker
 from .base_widgets import BaseWidget, DamageValuesDialogue
 from .configs import ConfigsPage
@@ -21,7 +20,7 @@ from .yojimbo_tracker import YojimboTracker
 class FFXRNGTrackerUI(ttk.Notebook):
     """Widget that contains all the other tracking widgets."""
 
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, seed: int, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
         widgets = self.get_widgets()
@@ -34,11 +33,11 @@ class FFXRNGTrackerUI(ttk.Notebook):
                 window.title(name)
                 window.geometry('1280x830')
                 window.protocol("WM_DELETE_WINDOW", lambda: None)
-                widget(window).pack(expand=True, fill='both')
+                widget(window, seed).pack(expand=True, fill='both')
             else:
-                self.add(widget(self), text=name)
+                self.add(widget(self, seed), text=name)
 
-    def get_widgets(self) -> dict[str, BaseWidget]:
+    def get_widgets(self) -> dict[str, type[BaseWidget]]:
         widgets = {
             'Seed info': SeedInfo,
             'Drops': DropsTracker,
@@ -54,7 +53,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
 
 
 @log_exceptions()
-def main(widget: type[tk.Widget], title='ffx_rng_tracker', size='1280x830'):
+def main(widget: type[BaseWidget], title='ffx_rng_tracker', size='1280x830'):
     """Creates a Tkinter main window, initializes the rng tracker
     and the root logger.
     """
@@ -81,15 +80,16 @@ def main(widget: type[tk.Widget], title='ffx_rng_tracker', size='1280x830'):
 
     if Configs.seed is None:
         entry_widget = DamageValuesDialogue(root, title=title)
-        # if the entry widget was closed before initializing the tracker
+        # if the entry widget was closed before finding a seed
         # close the program
-        if entry_widget.rng_tracker is None:
+        if entry_widget.seed is None:
             root.quit()
             sys.exit()
+        seed = entry_widget.seed
     else:
-        get_tracker(Configs.seed)
+        seed = Configs.seed
 
-    ui = widget(root)
+    ui = widget(root, seed)
 
     ui.pack(expand=True, fill='both')
 

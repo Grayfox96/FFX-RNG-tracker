@@ -1,8 +1,8 @@
 from ..data.actions import YOJIMBO_ACTIONS
 from ..data.notes import get_notes
 from ..events.comment import Comment
-from ..ui_functions import (parse_compatibility_update, parse_death,
-                            parse_roll, parse_yojimbo_action)
+from ..events.parsing import (parse_compatibility_update, parse_death,
+                              parse_roll, parse_yojimbo_action)
 from .base_widgets import BaseWidget, BetterText
 
 
@@ -11,7 +11,7 @@ class YojimboTracker(BaseWidget):
 
     def make_input_widget(self) -> BetterText:
         widget = super().make_input_widget()
-        notes = get_notes('yojimbo_notes.txt', self.rng_tracker.seed)
+        notes = get_notes('yojimbo_notes.txt', self.gamestate.seed)
         widget.set(notes)
         return widget
 
@@ -25,42 +25,41 @@ class YojimboTracker(BaseWidget):
         return tags
 
     def get_input(self):
-        # reset variables to the initial state
-        self.rng_tracker.reset()
-        # get notes
-        notes_lines = self.input_widget.get('1.0', 'end').split('\n')
-        # parse notes
-        for line in notes_lines:
+        self.gamestate.reset()
+        input_lines = self.input_widget.get('1.0', 'end').split('\n')
+        gs = self.gamestate
+        # parse through the input text
+        for line in input_lines:
             match line.lower().split():
                 case []:
-                    event = Comment(line)
+                    event = Comment(gs, line)
                 case [*words] if words[0].startswith(('#', '///')):
-                    event = Comment(line)
+                    event = Comment(gs, line)
                 case [('roll' | 'waste' | 'advance'), *params]:
-                    event = parse_roll(*params)
+                    event = parse_roll(gs, *params)
                 case ['compatibility', *params]:
-                    event = parse_compatibility_update(*params)
+                    event = parse_compatibility_update(gs, *params)
                 case ['death', *_]:
-                    event = parse_death('yojimbo')
+                    event = parse_death(gs, 'yojimbo')
                 case [action_name, *params] if action_name in YOJIMBO_ACTIONS:
-                    event = parse_yojimbo_action(action_name, *params)
+                    event = parse_yojimbo_action(gs, action_name, *params)
                 case [event_name, *_]:
-                    event = Comment(f'No event called {event_name!r}')
+                    event = Comment(gs, f'No event called {event_name!r}')
 
-            self.rng_tracker.events_sequence.append(event)
+            self.gamestate.events_sequence.append(event)
 
     def print_output(self):
         self.get_input()
         data = []
-        for event in self.rng_tracker.events_sequence:
-            line = str(event)
-            # if the text contains /// it hides the lines before it
-            if '///' in line:
-                data.clear()
-            else:
-                data.append(line)
-        data = '\n'.join(data)
+        for event in self.gamestate.events_sequence:
+            match event:
+                # if the text contains /// it hides the lines before it
+                case Comment() if event.text.startswith('///'):
+                    data.clear()
+                case _:
+                    data.append(str(event))
+
         self.output_widget.config(state='normal')
-        self.output_widget.set(data)
+        self.output_widget.set('\n'.join(data))
         self.highlight_patterns()
         self.output_widget.config(state='disabled')

@@ -15,7 +15,7 @@ class StatusTracker(BaseWidget):
         return widget
 
     def get_input(self):
-        self.text = get_status_chance_string()
+        self.text = get_status_chance_string(self.gamestate.seed)
 
     def get_tags(self) -> list[tuple[str, str, bool]]:
         return [('100', 'status miss', False)]

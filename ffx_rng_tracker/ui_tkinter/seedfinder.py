@@ -1,23 +1,30 @@
 import tkinter as tk
+from itertools import product
 from tkinter import messagebox
 
 from ..configs import Configs
 from ..data.seeds import (DAMAGE_VALUES_NEEDED, HD_FROM_BOOT_FRAMES,
                           PS2_FROM_BOOT_FRAMES, datetime_to_seed)
 from ..events.character_action import CharacterAction
-from ..main import get_tracker
 from .actions_tracker import ActionsTracker
 from .base_widgets import BetterText
+
+
+class SeedFinderInputWidget(BetterText):
+    damage_input: tk.StringVar
 
 
 class SeedFinder(ActionsTracker):
     """Widget used to find the starting seed."""
 
+    def __init__(self, parent, seed: int = 0, *args, **kwargs) -> None:
+        super().__init__(parent, seed, *args, **kwargs)
+
     def make_input_widget(self) -> BetterText:
         frame = tk.Frame(self)
         frame.pack(fill='y', side='left')
         tk.Label(frame, text='Actions').pack()
-        text = BetterText(
+        text = SeedFinderInputWidget(
             frame, font=self.font, width=40, undo=True, autoseparators=True,
             maxundo=-1)
         text.set('encounter\n'
@@ -38,7 +45,7 @@ class SeedFinder(ActionsTracker):
         else:
             frames = HD_FROM_BOOT_FRAMES
         indexes = []
-        for index, event in enumerate(self.rng_tracker.events_sequence):
+        for index, event in enumerate(self.gamestate.events_sequence):
             if isinstance(event, CharacterAction):
                 if event.action.does_damage:
                     indexes.append(index)
@@ -63,21 +70,21 @@ class SeedFinder(ActionsTracker):
             return
         input_dvs = input_dvs[:len(indexes)]
 
-        rng_tracker = get_tracker()
+        rng_tracker = self.gamestate._rng_tracker
+
         damage_values = []
-        for frame in range(frames):
-            for dt in range(256):
-                seed = datetime_to_seed(dt, frame)
-                rng_tracker.__init__(seed)
-                self.get_input()
-                damage_values.clear()
-                for index in indexes:
-                    event = self.rng_tracker.events_sequence[index]
-                    damage_values.append(event.damage)
-                if damage_values == input_dvs:
-                    self.input_widget.insert('1.0', f'# Seed number: {seed}\n')
-                    self.print_output()
-                    messagebox.showinfo(message=f'Seed number: {seed}')
-                    return
+        for frame, dt in product(range(frames), range(256)):
+            seed = datetime_to_seed(dt, frame)
+            rng_tracker.__init__(seed)
+            self.get_input()
+            damage_values.clear()
+            for index in indexes:
+                event = self.gamestate.events_sequence[index]
+                damage_values.append(event.damage)
+            if damage_values == input_dvs:
+                self.input_widget.insert('1.0', f'# Seed number: {seed}\n')
+                self.print_output()
+                messagebox.showinfo(message=f'Seed number: {seed}')
+                return
         else:
             messagebox.showwarning(message='Seed not found!')

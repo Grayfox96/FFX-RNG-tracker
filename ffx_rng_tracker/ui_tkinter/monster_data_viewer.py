@@ -1,6 +1,5 @@
-from dataclasses import dataclass
 import tkinter as tk
-from tkinter import font
+from dataclasses import dataclass
 
 from ..data.monsters import MONSTERS
 from ..ui_functions import format_monster_data
@@ -17,16 +16,11 @@ class MonsterDataViewerInputWidget:
 class MonsterDataViewer(BaseWidget):
     """Widget used to display monster's data."""
 
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, seed: int = 0, *args, **kwargs):
         self.monsters_names = sorted(list(MONSTERS.keys()))
         self.monsters_data = {k: format_monster_data(v)
                               for k, v in MONSTERS.items()}
-        self.parent = parent
-        self.font = font.Font(family='Courier New', size=9)
-        tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.input_widget = self.make_input_widget()
-        self.output_widget = self.make_output_widget()
-        self.print_output()
+        super().__init__(parent, seed, *args, **kwargs)
 
     def make_input_widget(self) -> MonsterDataViewerInputWidget:
         frame = tk.Frame(self)
@@ -53,6 +47,9 @@ class MonsterDataViewer(BaseWidget):
         widget.configure(wrap='none')
         widget._add_h_scrollbar()
         return widget
+
+    def get_tags(self) -> list[tuple[str, str, bool]]:
+        return []
 
     def get_input(self) -> tuple[int]:
         return self.input_widget.listbox.curselection()

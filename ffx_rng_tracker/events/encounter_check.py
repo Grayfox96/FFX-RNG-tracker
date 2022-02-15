@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Iterator
 
 from ..data.zones import Zone
-from .main import Event
+from .main import Event, GameState
 
 
 @dataclass
@@ -28,7 +28,7 @@ class EncounterCheck(Event):
         if live_steps == 0:
             return False, self.max_steps
         for steps in range(1, live_steps + 1):
-            rng_roll = self._rng_tracker.advance_rng(0) & 255
+            rng_roll = self._advance_rng(0) & 255
             counter = steps * 256 // self.zone.threat_modifier
             if rng_roll < counter:
                 encounter = True
@@ -38,8 +38,10 @@ class EncounterCheck(Event):
         return encounter, self.zone.grace_period + steps
 
 
-def walk(steps: int, zone: Zone) -> Iterator[EncounterCheck]:
+def walk(
+        gamestate: GameState, steps: int,
+        zone: Zone) -> Iterator[EncounterCheck]:
     while steps > 0:
-        encounter_check = EncounterCheck(steps, zone)
+        encounter_check = EncounterCheck(gamestate, steps, zone)
         yield encounter_check
         steps -= encounter_check.steps

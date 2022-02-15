@@ -5,7 +5,6 @@ from ..data.constants import EquipmentSlots, EquipmentType, Rarity
 from ..data.equipment import Equipment, EquipmentDrop
 from ..data.items import ItemDrop
 from ..data.monsters import Monster
-from .change_party import ChangeParty
 from .main import Event
 
 
@@ -42,26 +41,26 @@ class Kill(Event):
         return string
 
     def _get_item_1(self) -> ItemDrop | None:
-        rng_drop = self._rng_tracker.advance_rng(10) % 255
+        rng_drop = self._advance_rng(10) % 255
         if self.overkill:
             drop_type = 'overkill'
         else:
             drop_type = 'normal'
         if self.monster.item_1['drop_chance'] > rng_drop:
-            rng_rarity = self._rng_tracker.advance_rng(11) & 255
+            rng_rarity = self._advance_rng(11) & 255
             if rng_rarity < 32:
                 return self.monster.item_1[drop_type][Rarity.RARE]
             else:
                 return self.monster.item_1[drop_type][Rarity.COMMON]
 
     def _get_item_2(self) -> ItemDrop | None:
-        rng_drop = self._rng_tracker.advance_rng(10) % 255
+        rng_drop = self._advance_rng(10) % 255
         if self.overkill:
             drop_type = 'overkill'
         else:
             drop_type = 'normal'
         if self.monster.item_2['drop_chance'] > rng_drop:
-            rng_rarity = self._rng_tracker.advance_rng(11) & 255
+            rng_rarity = self._advance_rng(11) & 255
             if rng_rarity < 32:
                 return self.monster.item_2[drop_type][Rarity.RARE]
             else:
@@ -71,19 +70,13 @@ class Kill(Event):
         """Returns equipment obtained from killing a monster
         at the current rng position and advances rng accordingly.
         """
-        rng_equipment_drop = self._rng_tracker.advance_rng(10) % 255
+        rng_equipment_drop = self._advance_rng(10) % 255
         if self.monster.equipment['drop_chance'] <= rng_equipment_drop:
             return
 
-        characters_enabled = [CHARACTERS['tidus'], CHARACTERS['auron']]
-        for event in reversed(self._rng_tracker.events_sequence):
-            if isinstance(event, ChangeParty):
-                characters_enabled = event.party_formation
-                break
-
+        characters_enabled = self.gamestate.party
         equipment_owner_base = len(characters_enabled)
-
-        rng_equipment_owner = self._rng_tracker.advance_rng(12)
+        rng_equipment_owner = self._advance_rng(12)
 
         # check if killing with a party member
         # always gives the equipment to that character
@@ -112,14 +105,14 @@ class Kill(Event):
                     break
 
         # get equipment type
-        rng_weapon_or_armor = self._rng_tracker.advance_rng(12) & 1
+        rng_weapon_or_armor = self._advance_rng(12) & 1
         if rng_weapon_or_armor == 0:
             type_ = EquipmentType.WEAPON
         else:
             type_ = EquipmentType.ARMOR
 
         # get number of slots
-        rng_number_of_slots = self._rng_tracker.advance_rng(12) & 7
+        rng_number_of_slots = self._advance_rng(12) & 7
         slots_mod = (self.monster.equipment['slots_modifier']
                      + rng_number_of_slots
                      - 4)
@@ -130,7 +123,7 @@ class Kill(Event):
             number_of_slots = EquipmentSlots.MIN.value
 
         # get number of abilities
-        rng_number_of_abilities = self._rng_tracker.advance_rng(12) & 7
+        rng_number_of_abilities = self._advance_rng(12) & 7
         abilities_mod = (self.monster.equipment['max_ability_rolls_modifier']
                          + rng_number_of_abilities
                          - 4)
@@ -152,7 +145,7 @@ class Kill(Event):
             # if all the slots are filled break
             if len(abilities) >= number_of_slots:
                 break
-            rng_ability_index = self._rng_tracker.advance_rng(13) % 7 + 1
+            rng_ability_index = self._advance_rng(13) % 7 + 1
             ability = ability_array[rng_ability_index]
             # if the ability is not null and not a duplicate add it
             if ability and ability not in abilities:
@@ -182,11 +175,8 @@ class Kill(Event):
     def _get_equipment_index(self) -> int | None:
         if not self.equipment:
             return None
-        for event in reversed(self._rng_tracker.events_sequence):
-            if isinstance(event, Kill):
-                if event.equipment:
-                    return event.equipment_index + 1
-        return 1
+        self.gamestate.equipment_drops += 1
+        return self.gamestate.equipment_drops
 
 
 @dataclass

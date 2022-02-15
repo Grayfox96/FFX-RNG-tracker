@@ -4,7 +4,8 @@ from tkinter import ttk
 
 from ..configs import Configs
 from ..data.encounters import ANY_ENCOUNTERS
-from ..ui_functions import parse_encounter
+from ..events.encounter import RandomEncounter
+from ..events.parsing import parse_encounter
 from .base_widgets import BaseWidget, ScrollableFrame
 
 
@@ -67,9 +68,7 @@ class EncountersTracker(BaseWidget):
         return tags
 
     def get_input(self) -> None:
-        self.rng_tracker.reset()
-        # if the initiative checkbutton is either selected or indeterminate
-        # set initiative to true
+        self.gamestate.reset()
         initiative_equip = self.input_widget.initiative_equip.state()
         initiative_equip = 'selected' in initiative_equip
 
@@ -84,29 +83,32 @@ class EncountersTracker(BaseWidget):
                 encs = self.input_widget.scales[encounter['label']].get()
             for _ in range(encs):
                 event = parse_encounter(
-                    encounter_type=encounter['type'],
+                    self.gamestate,
+                    type_=encounter['type'],
                     name=encounter['name'],
                     initiative=initiative,
                     forced_condition=encounter['forced_condition'],
                     )
-                self.rng_tracker.events_sequence.append(event)
+                self.gamestate.events_sequence.append(event)
 
     def print_output(self) -> None:
         self.get_input()
         data = []
-        spacer = '=' * 60
+        spacer = '=' * 50
         last_zone = ''
-        for event in self.rng_tracker.events_sequence:
-            line = str(event)
-            if '|' in line:
-                if last_zone != event.zone:
-                    data.append(spacer)
-                    last_zone = event.zone
-                    data.append(f'     {event.name}:')
-                data.append(line[10:21] + line[23 + len(event.zone):])
-            else:
-                last_zone = ''
-                data.append(line[10:])
+        for event in self.gamestate.events_sequence:
+            match event:
+                case RandomEncounter():
+                    if last_zone != event.zone:
+                        data.append(spacer)
+                        last_zone = event.zone
+                        data.append(f'     {event.name}:')
+                    data.append(
+                        str(event)[10:21] + str(event)[23 + len(event.zone):])
+                case _:
+                    last_zone = ''
+                    data.append(str(event)[10:])
+
         data = '\n'.join(data)
         current_zone = self.input_widget.current_zone.get()
         for encounter in ANY_ENCOUNTERS:
@@ -122,7 +124,4 @@ class EncountersTracker(BaseWidget):
         self.output_widget.config(state='normal')
         self.output_widget.set(data)
         self.highlight_patterns()
-        self.output_widget.config(state='disabled')
-        self.output_widget.highlight_pattern(
-            '^.+$', 'wrap_margin', regexp=True)
         self.output_widget.config(state='disabled')
