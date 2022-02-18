@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from ..data.actions import Action
-from ..data.characters import Character
+from ..data.characters import CharacterState
 from ..data.constants import (HIT_CHANCE_TABLE, DamageType, ElementalAffinity,
                               Stat)
 from ..data.monsters import Monster
@@ -10,9 +10,9 @@ from .main import Event
 
 @dataclass
 class CharacterAction(Event):
-    character: Character
+    character: CharacterState
     action: Action
-    target: Character | Monster
+    target: CharacterState | Monster
     hit: bool = field(init=False, repr=False)
     damage: int = field(init=False, repr=False)
     damage_rng: int = field(init=False, repr=False)

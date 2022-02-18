@@ -1,7 +1,7 @@
 from itertools import product
 
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
-from ..data.characters import CHARACTERS, Character
+from ..data.characters import Character
 from ..data.constants import EncounterCondition, Stat
 from ..data.monsters import MONSTERS
 from .advance_rng import AdvanceRNG
@@ -71,7 +71,7 @@ def parse_kill(
     except KeyError as error:
         return Comment(gs, f'No monster named {error}')
     overkill = overkill in ('overkill', 'ok')
-    killer = CHARACTERS.get(killer_name, Character('Other', 18))
+    killer = gs.characters.get(killer_name, Character('Other', 18))
     return Kill(gs, monster, killer, overkill)
 
 
@@ -85,12 +85,12 @@ def parse_bribe(
         monster = MONSTERS[monster_name]
     except KeyError as error:
         return Comment(gs, f'No monster named {error}')
-    killer = CHARACTERS.get(user_name, Character('Other', 18))
+    killer = gs.characters.get(user_name, Character('Other', 18))
     return Bribe(gs, monster, killer)
 
 
 def parse_death(gs: GameState, character: str = '???', *_) -> Death:
-    character = CHARACTERS.get(character, Character('Unknown', 18))
+    character = gs.characters.get(character, Character('Unknown', 18))
     return Death(gs, character)
 
 
@@ -120,13 +120,13 @@ def parse_party_change(
     if not party_formation_string:
         return Comment(gs, usage)
     party_formation = []
-    characters = tuple(CHARACTERS)[:7]
+    characters = tuple(gs.characters)[:7]
     for c, character in product(party_formation_string, characters):
-        if c == CHARACTERS[character].name[0].lower():
+        if c == gs.characters[character].name[0].lower():
             party_formation.append(character)
     # remove duplicates and keep order
     party_formation = list(dict.fromkeys(party_formation))
-    party_formation = [CHARACTERS[c] for c in party_formation]
+    party_formation = [gs.characters[c] for c in party_formation]
 
     if not party_formation:
         return Comment(gs, usage)
@@ -142,7 +142,7 @@ def parse_action(
 
     if target_name.endswith('_c'):
         try:
-            target = CHARACTERS[target_name[:-2]]
+            target = gs.characters[target_name[:-2]]
         except KeyError as error:
             return Comment(gs, f'No character named {error}')
     elif target_name:
@@ -150,14 +150,14 @@ def parse_action(
             target = MONSTERS[target_name]
         except KeyError:
             try:
-                target = CHARACTERS[target_name]
+                target = gs.characters[target_name]
             except KeyError as error:
                 return Comment(gs, f'No target named {error}')
     else:
         target = None
 
     try:
-        character = CHARACTERS[character_name]
+        character = gs.characters[character_name]
     except KeyError:
         return Comment(gs, f'No character named {character_name}')
 
@@ -185,7 +185,7 @@ def parse_stat_update(
     if not character_name or not stat_name or not amount:
         return Comment(gs, usage)
     try:
-        character = CHARACTERS[character_name]
+        character = gs.characters[character_name]
     except KeyError as error:
         return Comment(gs, f'No character named {error}')
     for stat in Stat:

@@ -12,29 +12,36 @@ class Character:
     _default_stats: dict[Stat, int] = field(default_factory=dict)
     elemental_affinities: dict[Element, ElementalAffinity] = field(
         default_factory=dict)
-    stats: dict[Stat, int] = field(default_factory=dict, init=False)
 
-    def __post_init__(self):
-        self.reset_stats()
-
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def set_stat(self, stat: Stat, value: int):
-        if stat is Stat.HP:
-            max_value = 99999
-        elif stat is Stat.MP:
-            max_value = 9999
-        elif stat in (Stat.CHEER, Stat.FOCUS):
-            max_value = 5
-        elif stat is Stat.PIERCING:
-            max_value = 1
-        else:
-            max_value = 255
+
+@dataclass
+class CharacterState(Character):
+    stats: dict[Stat, int] = field(default_factory=dict, init=False)
+
+    def __post_init__(self) -> None:
+        self.reset()
+
+    def set_stat(self, stat: Stat, value: int) -> None:
+        match stat:
+            case Stat.HP:
+                max_value = 99999
+            case Stat.MP:
+                max_value = 9999
+            case Stat.CHEER | Stat.FOCUS:
+                max_value = 5
+            case Stat.PIERCING:
+                max_value = 1
+            case Stat():
+                max_value = 255
+            case _:
+                raise ValueError(f'Invalid stat name: {stat}')
         value = min(max(value, 0), max_value)
         self.stats[stat] = value
 
-    def reset_stats(self):
+    def reset(self):
         self.stats = self._default_stats.copy()
 
 
@@ -49,7 +56,7 @@ def _get_characters(file_path: str) -> dict[str, Character]:
         for line in file_reader:
             name = line[0]
             index = int(line[1])
-            stats = {
+            default_stats = {
                 Stat.HP: int(line[2]),
                 Stat.MP: int(line[3]),
                 Stat.STRENGTH: int(line[4]),
@@ -78,7 +85,7 @@ def _get_characters(file_path: str) -> dict[str, Character]:
             characters[name.lower()] = Character(
                 name=name,
                 index=index,
-                _default_stats=stats,
+                _default_stats=default_stats,
                 elemental_affinities=elemental_affinities,
                 )
     return characters

@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 
-from ..data.characters import CHARACTERS
 from ..data.constants import ICV_BASE, ICV_VARIANCE, EncounterCondition, Stat
 from ..data.encounter_formations import FORMATIONS, Formation
 from .main import Event
@@ -55,13 +54,13 @@ class Encounter(Event):
     def _get_icvs(self) -> dict[str, int]:
         icvs = {}
         if self.condition is EncounterCondition.PREEMPTIVE:
-            for c in CHARACTERS.values():
+            for c in self.gamestate.characters.values():
                 icvs[c.name] = 0
         elif self.condition is EncounterCondition.AMBUSH:
-            for c in CHARACTERS.values():
+            for c in self.gamestate.characters.values():
                 icvs[c.name] = ICV_BASE[c.stats[Stat.AGILITY]] * 3
         else:
-            for c in CHARACTERS.values():
+            for c in self.gamestate.characters.values():
                 base = ICV_BASE[c.stats[Stat.AGILITY]] * 3
                 index = c.index + 20 if c.index < 7 else 27
                 variance_rng = self._advance_rng(index)

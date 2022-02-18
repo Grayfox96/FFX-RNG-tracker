@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 
-from ..data.characters import Character
+from ..data.characters import CharacterState
 from ..data.constants import Stat
 from .main import Event
 
 
 @dataclass
 class ChangeStat(Event):
-    character: Character
+    character: CharacterState
     stat: Stat
     stat_value: int
 
