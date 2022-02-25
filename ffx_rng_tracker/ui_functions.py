@@ -1,8 +1,8 @@
 from itertools import product, zip_longest
 
 from .data.constants import EquipmentType
+from .data.encounter_formations import Zone
 from .data.monsters import Monster
-from .data.zones import Zone
 from .events.encounter_check import walk
 from .events.main import GameState
 from .tracker import FFXRNGTracker
@@ -45,9 +45,9 @@ def get_encounter_predictions(seed: int, delta: int = 6) -> str:
         (39, 39 + (delta // 2)),
     )
     zones = (
-        Zone('Underwater Ruins', 30, 240),
-        Zone('Besaid Lagoon', 30, 240),
-        Zone('Besaid Road', 35, 280),
+        Zone('Underwater Ruins', [], 30, 240),
+        Zone('Besaid Lagoon', [], 30, 240),
+        Zone('Besaid Road', [], 35, 280),
     )
     gs = GameState(seed)
     predictions = {z.name: {} for z in zones}

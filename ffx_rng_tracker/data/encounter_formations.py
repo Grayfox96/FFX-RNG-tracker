@@ -1,5 +1,5 @@
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from .file_functions import get_resource_path
 from .monsters import MONSTERS, Monster
@@ -8,10 +8,27 @@ Formation = list[Monster]
 
 
 @dataclass
+class Zone:
+    name: str
+    formations: list[Formation]
+    grace_period: int = field(default=0)
+    threat_modifier: int = field(default=0)
+
+    def __str__(self) -> str:
+        return self.name
+
+
+@dataclass
+class Boss:
+    name: str
+    formation: Formation
+
+
+@dataclass
 class Formations:
-    set_formation: dict[str, Formation]
-    simulated: dict[str, list[Monster]]
-    random: dict[str, list[Formation]]
+    bosses: dict[str, Boss]
+    simulated: dict[str, tuple[str, list[Monster]]]
+    zones: dict[str, Zone]
 
 
 def _get_formations(file_path: str) -> Formations:
@@ -20,18 +37,27 @@ def _get_formations(file_path: str) -> Formations:
     with open(absolute_file_path) as file_object:
         formations: dict[str, dict] = json.loads(file_object.read())
     set_formation = {}
-    for encounter, formation in formations['set'].items():
-        set_formation[encounter] = [MONSTERS[m] for m in formation]
+    for encounter, data in formations['set'].items():
+        set_formation[encounter] = Boss(
+            data['name'],
+            [MONSTERS[m] for m in data['formation']]
+        )
 
     simulated = {}
-    for zone, monsters in formations['simulation'].items():
-        zone = f'Simulation ({zone})'
-        simulated[zone] = [MONSTERS[m] for m in monsters]
+    for encounter, data in formations['simulation'].items():
+        name = f'Simulation ({data["name"]})'
+        key = name.lower().replace(' ', '_')
+        simulated[key] = (
+            name,
+            [MONSTERS[m] for m in data['monsters']]
+        )
 
     random = {}
-    for zone, formations in formations['random'].items():
-        random[zone] = [[MONSTERS[m] for m in f]
-                        for f in formations]
+    for encounter, data in formations['random'].items():
+        random[encounter] = Zone(
+            name=data['name'],
+            formations=[[MONSTERS[m] for m in f] for f in data['formations']],
+        )
 
     return Formations(set_formation, simulated, random)
 

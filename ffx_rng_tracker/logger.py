@@ -3,11 +3,13 @@ from functools import wraps
 from traceback import format_tb
 from types import TracebackType
 
+from .data.file_functions import get_version
+
 
 def log_exceptions(logger: logging.Logger | None = None):
     """Decorator used to log unhandled exceptions."""
     if logger is None:
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger(LOGGER_NAME)
 
     def decorator(func):
         @wraps(func)
@@ -25,7 +27,7 @@ def log_exceptions(logger: logging.Logger | None = None):
 def setup_logger(logger: logging.Logger | None = None) -> None:
     """Setup for a logger, defaults to the root logger."""
     if logger is None:
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger(LOGGER_NAME)
     logger.setLevel(logging.INFO)
     logfile = logging.FileHandler('ffx_rng_tracker_errors.log')
     logger.addHandler(logfile)
@@ -42,6 +44,9 @@ def log_tkinter_error(
                      f'Traceback (most recent call last):\n'
                      f'{"".join(format_tb(tb))}'
                      f'{error.__name__}: {message}')
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger(LOGGER_NAME)
     logger.error(error_message)
     print(error_message)
+
+
+LOGGER_NAME = f'{__name__} v{".".join([str(i) for i in get_version()])}'

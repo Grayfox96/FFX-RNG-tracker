@@ -68,36 +68,26 @@ class BetterText(tk.Text):
             self.mark_set('matchEnd', f'{index}+{count.get()}c')
             self.tag_add(tag, 'matchStart', 'matchEnd')
 
-    def set(self, text: str) -> None:
-        # if the current text is the same as the new text do nothing
+    def set(self, text: str) -> bool:
+        """If the previous text and the new one are identical returns False,
+        otherwise it replaces the previous text, scrolls back to the
+        previous position and returns True.
+        """
         # a newline character gets automatically added
         # so it needs to be removed to compare
         current_text = self.get('1.0', 'end')[:-1]
         if text == current_text:
-            return
-        # get the index of the first and last visible lines
-        first_line = self.index('@0,0')
-        last_line = self.index(f'@0,{self.winfo_height()}')
-        first_line_index = int(first_line.split('.')[0])
-        last_line_index = int(last_line.split('.')[0])
+            return False
         current_number_of_lines = len(current_text.split('\n'))
-        new_number_of_lines = len(text)
-        if (last_line_index == current_number_of_lines
-                or first_line_index > new_number_of_lines):
-            scroll_to_end = True
-        else:
-            scroll_to_end = False
+        last_line = self.index(f'@0,{self.winfo_height()}')
+        line_index = int(last_line.split('.')[0])
 
-        # overwrite the content
-        self.delete(1.0, 'end')
-        self.insert(1.0, text)
+        self.replace(1.0, 'end', text)
 
-        if scroll_to_end and last_line_index > 1:
-            self.see(last_line)
-        else:
-            self.see(first_line)
-            _, first_line_y, *_ = self.dlineinfo(first_line)
-            self.yview_scroll(first_line_y, 'pixels')
+        # scroll vertically if the last line of the text was visible
+        if line_index == current_number_of_lines and line_index > 1:
+            self.yview_pickplace('end')
+        return True
 
 
 class BetterSpinbox(ttk.Spinbox):
@@ -163,15 +153,16 @@ class BaseWidget(tk.Frame, ABC):
         self.input_widget = self.make_input_widget()
         self.output_widget = self.make_output_widget()
         self.tags = self.get_tags()
-        self.print_output()
+        self.parse_input()
 
     def make_input_widget(self) -> BetterText:
         """Initializes input widget."""
         text = BetterText(
             self, font=self.font, width=40, undo=True, autoseparators=True,
             maxundo=-1)
+        text.set(self.get_default_input_text())
         text.pack(fill='y', side='left')
-        text.bind('<KeyRelease>', lambda _: self.print_output())
+        text.bind('<KeyRelease>', lambda _: self.parse_input())
         return text
 
     def make_output_widget(self) -> BetterText:
@@ -213,12 +204,24 @@ class BaseWidget(tk.Frame, ABC):
         return tags
 
     @abstractmethod
-    def get_input(self) -> None:
-        """Parse the input widget text and add events to the tracker."""
+    def get_default_input_text(self) -> str:
+        """Retrieve the default input text."""
+
+    def get_input(self) -> str:
+        """Get the input as a string."""
+        return self.input_widget.get('1.0', 'end')
 
     @abstractmethod
-    def print_output(self) -> None:
-        """Get information from the events sequence, highlight keywords."""
+    def parse_input(self) -> None:
+        """Parse the input widget text send output to the output widget."""
+
+    def print_output(self, text: str) -> None:
+        """Overwrites the output widget content with the text, if the text
+        is different than the current one it highlights keywords."""
+        self.output_widget.config(state='normal')
+        if self.output_widget.set(text):
+            self.highlight_patterns()
+        self.output_widget.config(state='disabled')
 
 
 class DamageValuesDialogue(simpledialog.Dialog):

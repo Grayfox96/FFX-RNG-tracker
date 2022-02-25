@@ -1,9 +1,8 @@
 from dataclasses import dataclass, field
 
-from ffx_rng_tracker.data.monsters import Monster
-
 from ..data.constants import Rarity
 from ..data.items import ItemDrop
+from ..data.monsters import Monster
 from .main import Event
 
 

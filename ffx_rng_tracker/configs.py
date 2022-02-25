@@ -11,6 +11,9 @@ class UIWidgetConfigs:
     shown: bool
     windowed: bool
 
+    def __str__(self) -> str:
+        return ' '.join([f'{v}: {k}' for v, k in vars(self).items()])
+
 
 class Configs:
     seed: int | None

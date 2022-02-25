@@ -1,7 +1,5 @@
-from itertools import product
-
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
-from ..data.characters import Character
+from ..data.characters import CHARACTERS, Character
 from ..data.constants import EncounterCondition, Stat
 from ..data.monsters import MONSTERS
 from .advance_rng import AdvanceRNG
@@ -32,6 +30,7 @@ def parse_encounter(
             encounter_type = SimulatedEncounter
         case 'multizone':
             encounter_type = MultizoneRandomEncounter
+            name = name.split('/')
         case _:
             return Comment(gs, f'Invalid encounter type: {type_}')
     initiative = initiative == 'true'
@@ -71,7 +70,7 @@ def parse_kill(
     except KeyError as error:
         return Comment(gs, f'No monster named {error}')
     overkill = overkill in ('overkill', 'ok')
-    killer = gs.characters.get(killer_name, Character('Other', 18))
+    killer = CHARACTERS.get(killer_name, Character('Unknown', 18))
     return Kill(gs, monster, killer, overkill)
 
 
@@ -85,12 +84,12 @@ def parse_bribe(
         monster = MONSTERS[monster_name]
     except KeyError as error:
         return Comment(gs, f'No monster named {error}')
-    killer = gs.characters.get(user_name, Character('Other', 18))
+    killer = CHARACTERS.get(user_name, Character('Unknown', 18))
     return Bribe(gs, monster, killer)
 
 
-def parse_death(gs: GameState, character: str = '???', *_) -> Death:
-    character = gs.characters.get(character, Character('Unknown', 18))
+def parse_death(gs: GameState, character_name: str = 'Unknown', *_) -> Death:
+    character = CHARACTERS.get(character_name, Character('Unknown', 18))
     return Death(gs, character)
 
 
@@ -120,13 +119,13 @@ def parse_party_change(
     if not party_formation_string:
         return Comment(gs, usage)
     party_formation = []
-    characters = tuple(gs.characters)[:7]
-    for c, character in product(party_formation_string, characters):
-        if c == gs.characters[character].name[0].lower():
-            party_formation.append(character)
-    # remove duplicates and keep order
-    party_formation = list(dict.fromkeys(party_formation))
-    party_formation = [gs.characters[c] for c in party_formation]
+    characters = tuple(CHARACTERS.values())[:7]
+    for character in characters:
+        initial = character.name[0].lower()
+        for letter in party_formation_string:
+            if initial == letter:
+                party_formation.append(character)
+                break
 
     if not party_formation:
         return Comment(gs, usage)

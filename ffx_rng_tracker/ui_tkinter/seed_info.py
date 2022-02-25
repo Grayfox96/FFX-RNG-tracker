@@ -12,6 +12,12 @@ class SeedInfo(BaseWidget):
     def make_input_widget(self) -> None:
         return
 
+    def get_tags(self) -> list[tuple[str, str, bool]]:
+        return [(EquipmentType.ARMOR, 'equipment', False)]
+
+    def get_default_input_text(self) -> str:
+        return self.get_input()
+
     def get_input(self) -> str:
         data = []
         seed = self.gamestate.seed
@@ -21,12 +27,5 @@ class SeedInfo(BaseWidget):
         data.append(get_equipment_types(seed, 50, 2))
         return '\n\n'.join(data)
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        return [(EquipmentType.ARMOR, 'equipment', False)]
-
-    def print_output(self):
-        input = self.get_input()
-        self.output_widget.config(state='normal')
-        self.output_widget.set(input)
-        self.highlight_patterns()
-        self.output_widget.config(state='disabled')
+    def parse_input(self) -> None:
+        self.print_output(self.get_input())

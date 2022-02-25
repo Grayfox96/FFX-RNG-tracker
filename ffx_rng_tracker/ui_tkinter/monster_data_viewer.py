@@ -33,7 +33,7 @@ class MonsterDataViewer(BaseWidget):
         entry.pack(fill='x', side='right')
         listvar = tk.StringVar(value=self.monsters_names)
         listbox = tk.Listbox(frame, width=30, listvariable=listvar)
-        listbox.bind('<<ListboxSelect>>', lambda _: self.print_output())
+        listbox.bind('<<ListboxSelect>>', lambda _: self.parse_input())
         listbox.pack(expand=True, fill='y')
         widget = MonsterDataViewerInputWidget(
             listbox=listbox,
@@ -51,30 +51,33 @@ class MonsterDataViewer(BaseWidget):
     def get_tags(self) -> list[tuple[str, str, bool]]:
         return []
 
-    def get_input(self) -> tuple[int]:
-        return self.input_widget.listbox.curselection()
+    def get_default_input_text(self) -> str:
+        return self.get_input()
 
-    def print_output(self) -> None:
-        input = self.get_input()
+    def get_input(self) -> str:
+        input_data = self.input_widget.listbox.curselection()
         try:
-            monster_index = input[0]
+            monster_index = input_data[0]
         # deselecting triggers the bind
         # giving an empty string as the index
         except IndexError:
-            return
-        monster_name = self.monsters_names[monster_index]
+            return ''
+        return self.monsters_names[monster_index]
+
+    def parse_input(self) -> None:
+        input_data = self.get_input()
         try:
-            monster_data = self.monsters_data[monster_name]
+            monster_data = self.monsters_data[input_data]
         except KeyError:
             return
-        self.output_widget.config(state='normal')
-        self.output_widget.set(monster_data)
-        self.output_widget.config(state='disabled')
+
+        self.print_output(monster_data)
 
     def filter_monsters(self) -> None:
-        input = self.input_widget.entry.get().lower()
+        input_data = self.input_widget.entry.get().lower()
         self.monsters_names = [name
                                for name, data in self.monsters_data.items()
-                               if input in name or input in data.lower()]
+                               if input_data in name
+                               or input_data in data.lower()]
         self.monsters_names.sort()
         self.input_widget.listvar.set(self.monsters_names)
