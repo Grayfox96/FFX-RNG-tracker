@@ -14,7 +14,7 @@ def main():
     root = tk.Tk()
     root.report_callback_exception = log_tkinter_error
     root.protocol('WM_DELETE_WINDOW', root.quit)
-    title = 'ffx_seedfinder v' + '.'.join(get_version())
+    title = 'ffx_seedfinder v' + '.'.join(map(str, get_version()))
     if Configs.ps2:
         title += ' (ps2 mode)'
     root.title(title)

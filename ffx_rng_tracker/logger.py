@@ -49,4 +49,4 @@ def log_tkinter_error(
     print(error_message)
 
 
-LOGGER_NAME = f'{__name__} v{".".join([str(i) for i in get_version()])}'
+LOGGER_NAME = f'{__name__} v{".".join(map(str, get_version()))}'

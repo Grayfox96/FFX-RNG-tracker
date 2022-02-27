@@ -15,7 +15,7 @@ def main():
     # redirects errors to another function
     root.report_callback_exception = log_tkinter_error
     root.protocol('WM_DELETE_WINDOW', root.quit)
-    root.title('ffx_monster_data_viewer v' + '.'.join(get_version()))
+    root.title('ffx_monster_data_viewer v' + '.'.join(map(str, get_version())))
     root.geometry('1280x800')
 
     if '-notheme' not in sys.argv:

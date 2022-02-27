@@ -67,7 +67,7 @@ def main(widget: type[BaseWidget], title='ffx_rng_tracker', size='1280x830'):
     root.report_callback_exception = log_tkinter_error
     root.withdraw()
     root.protocol('WM_DELETE_WINDOW', root.quit)
-    title += ' v' + '.'.join([str(i) for i in get_version()])
+    title += ' v' + '.'.join(map(str, get_version()))
     if Configs.ps2:
         title += ' (ps2 mode)'
     root.title(title)

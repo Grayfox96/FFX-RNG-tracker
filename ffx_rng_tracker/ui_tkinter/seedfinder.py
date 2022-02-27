@@ -81,7 +81,7 @@ class SeedFinder(ActionsTracker):
         for frame, dt in product(range(frames), range(256)):
             seed = datetime_to_seed(dt, frame)
             rng_tracker.__init__(seed)
-            self.get_input()
+            self.parse_input()
             damage_values.clear()
             for index in indexes:
                 event = self.gamestate.events_sequence[index]
