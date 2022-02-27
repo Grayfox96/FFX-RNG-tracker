@@ -276,11 +276,7 @@ def _get_monster_data(
         monster_name += TEXT_CHARACTERS[character_id]
     for i in range(16):
         if internal_monster_name.endswith(f'_{i}'):
-            if Configs.use_unicode:
-                # ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯
-                monster_name += chr(9311 + i)
-            else:
-                monster_name += f'#{i}'
+            monster_name += f'#{i}'
             break
 
     stats = {

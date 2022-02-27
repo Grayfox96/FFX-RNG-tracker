@@ -20,7 +20,6 @@ class Configs:
     ps2: bool
     ps2_seeds_minutes: int
     use_dark_mode: bool
-    use_unicode: bool
     font_size: int
     use_theme: bool
     colors: dict[str, tuple[str, str]] = {}
@@ -66,7 +65,6 @@ class Configs:
         section = 'UI'
         cls.use_dark_mode = cls.getboolean(section, 'use dark mode', False)
         cls.font_size = cls.getint(section, 'fontsize', 9)
-        cls.use_unicode = cls.getboolean(section, 'use unicode', True)
         cls.use_theme = cls.getboolean(section, 'use theme', True)
 
         section = 'Colors'
@@ -100,7 +98,8 @@ class Configs:
             cls.colors[option] = (foreground, background)
 
         ui_widgets = (
-            'Seed info', 'Drops', 'Encounters', 'Damage/crits/escapes/misses',
+            'Seed info', 'Drops', 'Encounters', 'Encounters Table',
+            'Encounters Planner', 'Damage/crits/escapes/misses',
             'Monster Targeting', 'Status', 'Yojimbo', 'Monster Data',
             'Configs',
         )

@@ -24,3 +24,5 @@ Credits to [CrimsonInferno](https://www.twitch.tv/crimsoninferno9) for the initi
 Credits to [OddMog](https://www.twitch.tv/oddmog), [ChrisTenarium](https://www.twitch.tv/christenarium) and [Loftus](https://www.twitch.tv/loftus) for initial testing and feedback.
 
 Credits to [Madhyama](https://www.twitch.tv/madhyama) for testing the actions tracker and compiling the default actions notes.
+
+Credits to [Camp4r](https://www.twitch.tv/camp4r) for the idea and design of the Encounters Table and Planner widgets.
