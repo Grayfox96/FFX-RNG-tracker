@@ -2,6 +2,7 @@ from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.characters import CHARACTERS, Character
 from ..data.constants import EncounterCondition, Stat
 from ..data.monsters import MONSTERS
+from ..gamestate import GameState
 from .advance_rng import AdvanceRNG
 from .change_party import ChangeParty
 from .change_stat import ChangeStat
@@ -12,7 +13,6 @@ from .encounter import (Encounter, MultizoneRandomEncounter, RandomEncounter,
                         SimulatedEncounter)
 from .escape import Escape
 from .kill import Bribe, Kill
-from .main import GameState
 from .monster_action import MonsterAction
 from .steal import Steal
 from .yojimbo_turn import YojimboTurn

@@ -1,8 +1,11 @@
+from typing import Callable
+
+from ..data.monsters import MONSTERS
 from ..data.notes import get_notes
 from ..events.comment import Comment
-from ..events.parsing import (parse_monster_action, parse_party_change,
-                              parse_roll)
-from ..ui_tkinter.base_widgets import BaseWidget
+from ..events.main import Event
+from ..events.parsing import parse_monster_action, parse_party_change
+from .base_widgets import BaseWidget
 
 
 class MonsterActionsTracker(BaseWidget):
@@ -15,32 +18,31 @@ class MonsterActionsTracker(BaseWidget):
         tags.extend(super().get_tags())
         return tags
 
+    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+        parsing_functions = super().get_parsing_functions()
+        parsing_functions['party'] = parse_party_change
+        parsing_functions['monsteraction'] = parse_monster_action
+        return parsing_functions
+
     def get_default_input_text(self) -> str:
         return get_notes('monster_actions_notes.txt', self.gamestate.seed)
 
-    def parse_input(self) -> None:
-        input_data = self.get_input()
+    def get_input(self) -> str:
+        input_data = super().get_input()
         input_lines = input_data.split('\n')
-
-        gs = self.gamestate
-        gs.reset()
-
-        # parse through the input text
-        for line in input_lines:
+        for index, line in enumerate(input_lines):
             match line.lower().split():
-                case words if not words or words[0].startswith(('#', '///')):
-                    event = Comment(gs, line)
-                case [('roll' | 'waste' | 'advance'), *params]:
-                    event = parse_roll(gs, *params)
-                case ['party', *params]:
-                    event = parse_party_change(gs, *params)
-                case [monster_name, *_]:
-                    event = parse_monster_action(gs, monster_name)
+                case [monster, *params] if monster in MONSTERS:
+                    line = ' '.join(['monsteraction', monster, *params])
+            input_lines[index] = line
+        return '\n'.join(input_lines)
 
-            self.gamestate.events_sequence.append(event)
+    def parse_input(self) -> None:
+        self.gamestate.reset()
+        events_sequence = self.parser.parse(self.get_input())
 
         output_data = []
-        for event in self.gamestate.events_sequence:
+        for event in events_sequence:
             match event:
                 # if the text contains /// it hides the lines before it
                 case Comment() if event.text == '///':

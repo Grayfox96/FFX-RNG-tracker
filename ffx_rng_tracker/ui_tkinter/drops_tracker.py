@@ -1,8 +1,10 @@
+from typing import Callable
+
 from ..data.monsters import MONSTERS
 from ..data.notes import get_notes
-from ..events.comment import Comment
+from ..events.main import Event
 from ..events.parsing import (parse_bribe, parse_death, parse_kill,
-                              parse_party_change, parse_roll, parse_steal)
+                              parse_party_change, parse_steal)
 from .base_widgets import BaseWidget
 
 
@@ -19,46 +21,39 @@ class DropsTracker(BaseWidget):
         tags.extend(super().get_tags())
         return tags
 
+    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+        parsing_functions = super().get_parsing_functions()
+        parsing_functions['steal'] = parse_steal
+        parsing_functions['kill'] = parse_kill
+        parsing_functions['death'] = parse_death
+        parsing_functions['party'] = parse_party_change
+        parsing_functions['bribe'] = parse_bribe
+        return parsing_functions
+
     def get_default_input_text(self) -> str:
         return get_notes('drops_notes.txt', self.gamestate.seed)
 
-    def parse_input(self) -> None:
-        input_data = self.get_input()
+    def get_input(self) -> str:
+        input_data = super().get_input()
         input_lines = input_data.split('\n')
-
-        gs = self.gamestate
-        gs.reset()
-
-        # parse through the input text
-        for line in input_lines:
+        for index, line in enumerate(input_lines):
             match line.lower().split():
-                case words if not words or words[0].startswith(('#', '///')):
-                    event = Comment(gs, line)
-                case [('roll' | 'waste' | 'advance'), *params]:
-                    event = parse_roll(gs, *params)
-                case ['steal', *params]:
-                    event = parse_steal(gs, *params)
-                case ['kill', *params]:
-                    event = parse_kill(gs, *params)
-                case ['death', *params]:
-                    event = parse_death(gs, *params)
-                case ['party', *params]:
-                    event = parse_party_change(gs, *params)
-                case ['bribe', *params]:
-                    event = parse_bribe(gs, *params)
-                case [monster_name, *params] if monster_name in MONSTERS:
-                    event = parse_kill(gs, monster_name, *params)
-                case [event_name, *_]:
-                    event = Comment(gs, f'No event called {event_name!r}')
-            self.gamestate.events_sequence.append(event)
+                case [monster, *params] if monster in MONSTERS:
+                    line = ' '.join(['kill', monster, *params])
+            input_lines[index] = line
+        return '\n'.join(input_lines)
+
+    def parse_input(self) -> None:
+        self.gamestate.reset()
+        events_sequence = self.parser.parse(self.get_input())
 
         output_data = []
-        for event in self.gamestate.events_sequence:
-            match event:
-                case Comment() if event.text == '///':
+        for event in events_sequence:
+            match str(event):
+                case line if line == '///':
                     output_data.clear()
-                case _:
-                    output_data.append(str(event))
+                case line:
+                    output_data.append(line)
 
         # update the text widget
         self.print_output('\n'.join(output_data))

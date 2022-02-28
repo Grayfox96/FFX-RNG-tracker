@@ -1,8 +1,11 @@
+from typing import Callable
+
 from ..data.actions import YOJIMBO_ACTIONS
 from ..data.notes import get_notes
 from ..events.comment import Comment
+from ..events.main import Event
 from ..events.parsing import (parse_compatibility_update, parse_death,
-                              parse_roll, parse_yojimbo_action)
+                              parse_yojimbo_action)
 from .base_widgets import BaseWidget
 
 
@@ -18,36 +21,34 @@ class YojimboTracker(BaseWidget):
         tags.extend(super().get_tags())
         return tags
 
+    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+        parsing_functions = super().get_parsing_functions()
+        parsing_functions['death'] = parse_death
+        parsing_functions['compatibility'] = parse_compatibility_update
+        parsing_functions['yojimboaction'] = parse_yojimbo_action
+        return parsing_functions
+
     def get_default_input_text(self) -> str:
         return get_notes('yojimbo_notes.txt', self.gamestate.seed)
 
-    def parse_input(self) -> None:
-        input_data = self.get_input()
+    def get_input(self) -> str:
+        input_data = super().get_input()
         input_lines = input_data.split('\n')
-
-        gs = self.gamestate
-        gs.reset()
-
-        # parse through the input text
-        for line in input_lines:
+        for index, line in enumerate(input_lines):
             match line.lower().split():
-                case words if not words or words[0].startswith(('#', '///')):
-                    event = Comment(gs, line)
-                case [('roll' | 'waste' | 'advance'), *params]:
-                    event = parse_roll(gs, *params)
-                case ['compatibility', *params]:
-                    event = parse_compatibility_update(gs, *params)
                 case ['death', *_]:
-                    event = parse_death(gs, 'yojimbo')
+                    line = 'death yojimbo'
                 case [action_name, *params] if action_name in YOJIMBO_ACTIONS:
-                    event = parse_yojimbo_action(gs, action_name, *params)
-                case [event_name, *_]:
-                    event = Comment(gs, f'No event called {event_name!r}')
+                    line = ' '.join(['yojimboaction', action_name, *params])
+            input_lines[index] = line
+        return '\n'.join(input_lines)
 
-            self.gamestate.events_sequence.append(event)
+    def parse_input(self) -> None:
+        self.gamestate.reset()
+        events_sequence = self.parser.parse(self.get_input())
 
         output_data = []
-        for event in self.gamestate.events_sequence:
+        for event in events_sequence:
             match event:
                 # if the text contains /// it hides the lines before it
                 case Comment() if event.text == '///':

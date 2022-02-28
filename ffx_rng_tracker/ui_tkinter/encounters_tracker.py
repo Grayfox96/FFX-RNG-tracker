@@ -1,6 +1,7 @@
 import tkinter as tk
 from dataclasses import dataclass
 from tkinter import ttk
+from typing import Callable
 
 from ..configs import Configs
 from ..data.constants import EncounterCondition
@@ -9,6 +10,7 @@ from ..data.encounters import ANY_ENCOUNTERS
 from ..events.comment import Comment
 from ..events.encounter import (Encounter, MultizoneRandomEncounter,
                                 RandomEncounter)
+from ..events.main import Event
 from ..events.parsing import parse_encounter
 from .base_widgets import (BaseWidget, BetterSpinbox, BetterText,
                            ScrollableFrame)
@@ -71,6 +73,12 @@ class EncountersTracker(BaseWidget):
         ]
         return tags
 
+    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+        parsing_functions = {
+            'encounter': parse_encounter,
+        }
+        return parsing_functions
+
     def get_default_input_text(self) -> str:
         return self.get_input()
 
@@ -78,7 +86,7 @@ class EncountersTracker(BaseWidget):
         initiative_equip = self.input_widget.initiative_equip.state()
         initiative_equip = 'selected' in initiative_equip
 
-        spacer = '=' * 60
+        spacer = '#' + ('=' * 60)
         input_data = []
         for encounter in ANY_ENCOUNTERS:
             if initiative_equip:
@@ -91,7 +99,7 @@ class EncountersTracker(BaseWidget):
                 encs = self.input_widget.scales[encounter['label']].get()
                 if encs > 0:
                     input_data.append(spacer)
-                    input_data.append(f'     {encounter["label"]}:')
+                    input_data.append(f'#     {encounter["label"]}:')
             for _ in range(encs):
                 line = ' '.join([
                     'encounter',
@@ -104,24 +112,11 @@ class EncountersTracker(BaseWidget):
         return '\n'.join(input_data)
 
     def parse_input(self) -> None:
-        input_data = self.get_input()
-        input_lines = input_data.split('\n')
-
-        gs = self.gamestate
-        gs.reset()
-
-        # parse through the input text
-        for line in input_lines:
-            match line.split():
-                case ['encounter', *params]:
-                    event = parse_encounter(gs, *params)
-                case _:
-                    event = Comment(gs, line)
-
-            self.gamestate.events_sequence.append(event)
+        self.gamestate.reset()
+        events_sequence = self.parser.parse(self.get_input())
 
         output_data = []
-        for event in self.gamestate.events_sequence:
+        for event in events_sequence:
             match event:
                 case RandomEncounter():
                     line = str(event)
@@ -135,7 +130,7 @@ class EncountersTracker(BaseWidget):
                 case Encounter():
                     output_data.append(str(event)[10:])
                 case _:
-                    output_data.append(str(event))
+                    output_data.append(str(event)[1:])
 
         data = '\n'.join(output_data)
         current_zone = self.input_widget.current_zone.get()
@@ -210,7 +205,7 @@ class EncountersPlanner(EncountersTracker):
 
         current_zone_index = self.input_widget.current_zone.get()
 
-        spacer = '=' * 60
+        spacer = '#' + ('=' * 60)
         input_data = []
         for index, (name, scale) in enumerate(self.input_widget.scales):
             name = name.lower().replace(' ', '_')
@@ -234,7 +229,7 @@ class EncountersPlanner(EncountersTracker):
                         input_data.append('///')
                     try:
                         input_data.append(
-                            f'     {FORMATIONS.zones[name].name}')
+                            f'#     {FORMATIONS.zones[name].name}')
                     except KeyError:
                         pass
                 line = (f'encounter {encounter_type} {name} {initiative} '
@@ -244,31 +239,18 @@ class EncountersPlanner(EncountersTracker):
         return '\n'.join(input_data)
 
     def parse_input(self):
-        input_data = self.get_input()
-        input_lines = input_data.split('\n')
-
-        gs = self.gamestate
-        gs.reset()
-
-        # parse through the input text
-        for line in input_lines:
-            match line.split():
-                case ['encounter', *params]:
-                    event = parse_encounter(gs, *params)
-                case _:
-                    event = Comment(gs, line)
-
-            self.gamestate.events_sequence.append(event)
+        self.gamestate.reset()
+        events_sequence = self.parser.parse(self.get_input())
 
         output_data = []
         monsters_tally = {}
-        for event in self.gamestate.events_sequence:
+        for event in events_sequence:
             match event:
                 # if the text contains /// it hides the lines before it
                 case Comment() if event.text == '///':
                     output_data.clear()
                 case Comment():
-                    output_data.append(str(event))
+                    output_data.append(str(event)[1:])
                 case RandomEncounter():
                     line = str(event)
                     line = line[10:21] + line[23 + len(event.zone):]
@@ -403,6 +385,12 @@ class EncountersTable(BaseWidget):
         ]
         return tags
 
+    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+        parsing_functions = {
+            'encounter': parse_encounter,
+        }
+        return parsing_functions
+
     def get_default_input_text(self) -> str:
         return self.get_input()
 
@@ -435,24 +423,11 @@ class EncountersTable(BaseWidget):
         return '\n'.join(input_data)
 
     def parse_input(self) -> None:
-        input_data = self.get_input()
-        input_lines = input_data.split('\n')
-
-        gs = self.gamestate
-        gs.reset()
-
-        # parse through the input text
-        for line in input_lines:
-            match line.split():
-                case ['encounter', *params]:
-                    event = parse_encounter(gs, *params)
-                case _:
-                    event = Comment(gs, line)
-
-            self.gamestate.events_sequence.append(event)
+        self.gamestate.reset()
+        events_sequence = self.parser.parse(self.get_input())
 
         output_data = []
-        for event in self.gamestate.events_sequence:
+        for event in events_sequence:
             match event:
                 case MultizoneRandomEncounter():
                     if not output_data:

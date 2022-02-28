@@ -1,12 +1,13 @@
 from itertools import islice
+from typing import Callable
 
 from ..data.characters import CHARACTERS
 from ..data.constants import EncounterCondition
 from ..data.notes import get_notes
 from ..events.comment import Comment
 from ..events.encounter import Encounter
-from ..events.parsing import (parse_action, parse_encounter, parse_roll,
-                              parse_stat_update)
+from ..events.main import Event
+from ..events.parsing import parse_action, parse_encounter, parse_stat_update
 from .base_widgets import BaseWidget
 
 
@@ -30,42 +31,39 @@ class ActionsTracker(BaseWidget):
     def get_default_input_text(self) -> str:
         return get_notes('actions_notes.txt', self.gamestate.seed)
 
-    def parse_input(self) -> None:
-        input_data = self.get_input()
+    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+        parsing_functions = super().get_parsing_functions()
+        parsing_functions['encounter'] = parse_encounter
+        parsing_functions['stat'] = parse_stat_update
+        parsing_functions['action'] = parse_action
+        return parsing_functions
+
+    def get_input(self) -> str:
+        input_data = super().get_input()
         input_lines = input_data.split('\n')
-
-        gs = self.gamestate
-        gs.reset()
-
-        # parse through the input text
-        for line in input_lines:
+        for index, line in enumerate(input_lines):
             match line.lower().split():
-                case words if not words or words[0].startswith(('#', '///')):
-                    event = Comment(gs, line)
-                case [('roll' | 'waste' | 'advance'), *params]:
-                    event = parse_roll(gs, *params)
                 case ['encounter', *params]:
                     if params and 'simulated'.startswith(params[0]):
-                        enc_type = 'simulated'
+                        type_ = 'simulated'
                         name = 'simulation_(mi\'ihen)'
                         forced_condition = 'normal'
                     else:
-                        enc_type = 'set'
+                        type_ = 'set'
                         name = 'klikk_1'
                         forced_condition = params[0] if params else 'normal'
-                    event = parse_encounter(
-                        gs, enc_type, name, '', forced_condition)
-                case ['stat', *params]:
-                    event = parse_stat_update(gs, *params)
+                    line = f'encounter {type_} {name} false {forced_condition}'
                 case [character, *params] if character in CHARACTERS:
-                    event = parse_action(gs, character, *params)
-                case [event_name, *_]:
-                    event = Comment(gs, f'No event called {event_name!r}')
+                    line = ' '.join(['action', character, *params])
+            input_lines[index] = line
+        return '\n'.join(input_lines)
 
-            self.gamestate.events_sequence.append(event)
+    def parse_input(self) -> None:
+        self.gamestate.reset()
+        events_sequence = self.parser.parse(self.get_input())
 
         output_data = []
-        for event in self.gamestate.events_sequence:
+        for event in events_sequence:
             match event:
                 case Encounter():
                     line = ''

@@ -4,7 +4,7 @@ from .data.constants import EquipmentType
 from .data.encounter_formations import Zone
 from .data.monsters import Monster
 from .events.encounter_check import walk
-from .events.main import GameState
+from .gamestate import GameState
 from .tracker import FFXRNGTracker
 from .utils import treeview
 

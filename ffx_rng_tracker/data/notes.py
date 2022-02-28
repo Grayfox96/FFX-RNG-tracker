@@ -4,7 +4,7 @@ import shutil
 from .file_functions import get_resource_path
 
 
-def get_notes(file_name: str, seed: int) -> str:
+def get_notes(file_name: str, seed: int | None = None) -> str:
     """Get notes from a file, either custom or default."""
     default_file_path = f'{_NOTES_DIRECTORY_PATH}/{file_name}'
     if not os.path.exists(default_file_path):

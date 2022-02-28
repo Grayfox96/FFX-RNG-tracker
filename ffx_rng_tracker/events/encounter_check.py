@@ -2,7 +2,8 @@ from dataclasses import dataclass, field
 from typing import Iterator
 
 from ..data.encounter_formations import Zone
-from .main import Event, GameState
+from ..gamestate import GameState
+from .main import Event
 
 
 @dataclass

@@ -1,11 +1,15 @@
 import tkinter as tk
 from abc import ABC, abstractmethod
 from tkinter import font, simpledialog, ttk
+from typing import Callable
 
 from ..configs import Configs
 from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
 from ..errors import InvalidDamageValueError, SeedNotFoundError
-from ..events.main import GameState
+from ..events.gamestate import GameState
+from ..events.main import Event
+from ..events.parser import EventParser
+from ..events.parsing import parse_roll
 
 
 class BetterText(tk.Text):
@@ -146,10 +150,12 @@ class BaseWidget(tk.Frame, ABC):
     """Abstract base class for all tkinter widgets."""
 
     def __init__(self, parent, seed: int, *args, **kwargs) -> None:
-        self.parent = parent
+        self.gamestate = GameState(seed)
+        self.parser = EventParser(self.gamestate)
+        for name, function in self.get_parsing_functions().items():
+            self.parser.register_parsing_function(name, function)
         self.font = font.Font(family='Courier New', size=Configs.font_size)
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.gamestate = GameState(seed)
         self.input_widget = self.make_input_widget()
         self.output_widget = self.make_output_widget()
         self.tags = self.get_tags()
@@ -202,6 +208,18 @@ class BaseWidget(tk.Frame, ABC):
             ('^.+$', 'wrap_margin', True),
         ]
         return tags
+
+    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+        """Returns a dictionary with strings as keys
+        and functions that accept any number of strings
+        as arguments and return events as values.
+        """
+        parsing_functions = {
+            'roll': parse_roll,
+            'waste': parse_roll,
+            'advance': parse_roll,
+        }
+        return parsing_functions
 
     @abstractmethod
     def get_default_input_text(self) -> str:
