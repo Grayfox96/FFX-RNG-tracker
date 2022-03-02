@@ -211,8 +211,8 @@ class BaseWidget(tk.Frame, ABC):
 
     def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
         """Returns a dictionary with strings as keys
-        and functions that accept any number of strings
-        as arguments and return events as values.
+        and functions that accept a GameState and any number
+        of strings as arguments and return events as values.
         """
         parsing_functions = {
             'roll': parse_roll,
