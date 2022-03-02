@@ -18,7 +18,7 @@ class BetterText(tk.Text):
     and an optional horizontal scrollbar.
     """
 
-    def __init__(self, parent, *args,  **kwargs) -> None:
+    def __init__(self, parent, *args, **kwargs) -> None:
         self.frame = tk.Frame(parent)
         self.v_scrollbar = tk.Scrollbar(self.frame)
         self.v_scrollbar.grid(row=0, column=1, sticky='ns')
@@ -53,24 +53,18 @@ class BetterText(tk.Text):
         self.configure(xscrollcommand=self.h_scrollbar.set)
         self.h_scrollbar.configure(command=self.xview)
 
-    def highlight_pattern(
-            self, pattern: str, tag: str, start: str = '1.0',
-            end: str = 'end', regexp: bool = False) -> None:
+    def highlight_pattern(self, pattern: str, tag: str) -> None:
         """Apply the given tag to all occurrences of the pattern."""
-        start = self.index(start)
-        end = self.index(end)
-        self.mark_set('matchStart', start)
-        self.mark_set('matchEnd', start)
-        self.mark_set('searchLimit', end)
+        start = '1.0'
+        end = '1.0'
         count = tk.IntVar()
         while True:
-            index = self.search(
-                pattern, 'matchEnd', 'searchLimit', count=count, regexp=regexp)
-            if index == '' or count.get() == 0:
+            start = self.search(pattern, end, 'end', count=count, regexp=True)
+            characters = count.get()
+            if start == '' or characters == 0:
                 break
-            self.mark_set('matchStart', index)
-            self.mark_set('matchEnd', f'{index}+{count.get()}c')
-            self.tag_add(tag, 'matchStart', 'matchEnd')
+            end = f'{start}+{characters}c'
+            self.tag_add(tag, start, end)
 
     def set(self, text: str) -> bool:
         """If the previous text and the new one are identical returns False,
@@ -88,7 +82,8 @@ class BetterText(tk.Text):
 
         self.replace(1.0, 'end', text)
 
-        # scroll vertically if the last line of the text was visible
+        # scroll down if the last line of the text was visible
+        # but only if there was at least 1 line
         if line_index == current_number_of_lines and line_index > 1:
             self.yview_pickplace('end')
         return True
@@ -155,10 +150,10 @@ class BaseWidget(tk.Frame, ABC):
         for name, function in self.get_parsing_functions().items():
             self.parser.register_parsing_function(name, function)
         self.font = font.Font(family='Courier New', size=Configs.font_size)
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+        super().__init__(parent, *args, **kwargs)
+        self.tags = self.get_tags()
         self.input_widget = self.make_input_widget()
         self.output_widget = self.make_output_widget()
-        self.tags = self.get_tags()
         self.parse_input()
 
     def make_input_widget(self) -> BetterText:
@@ -189,24 +184,25 @@ class BaseWidget(tk.Frame, ABC):
                 tag_name, foreground=foreground, background=background,
                 selectforeground=selectforeground,
                 selectbackground=selectbackground)
-        text.tag_configure('wrap_margin', lmargin2='1c')
+        text.tag_configure('wrap margin', lmargin2='1c')
         return text
 
     def highlight_patterns(self) -> None:
-        for text, tag, regexp in self.tags:
-            self.output_widget.highlight_pattern(text, tag, regexp=regexp)
+        for tag, pattern in self.tags.items():
+            self.output_widget.highlight_pattern(pattern, tag)
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
+    def get_tags(self) -> dict[str, str]:
         """Setup tags to be used by highlight_patterns."""
         error_messages = (
             'Invalid', 'No event called', 'Usage:', ' named ',
             'requires a target', ' advance rng ',
         )
-        tags = [
-            ('^Advanced rng.+$', 'advance rng', True),
-            (f'^.*({"|".join(error_messages)}).+$', 'error', True),
-            ('^.+$', 'wrap_margin', True),
-        ]
+        tags = {
+            'advance rng': '^Advanced rng.+$',
+            'error': f'^.*({"|".join(error_messages)}).+$',
+            'comment': '^#(.+?)?$',
+            'wrap margin': '^.+$',
+        }
         return tags
 
     def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:

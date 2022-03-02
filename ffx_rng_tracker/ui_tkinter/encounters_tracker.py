@@ -63,14 +63,14 @@ class EncountersTracker(BaseWidget):
             )
         return widget
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
+    def get_tags(self) -> dict[str, str]:
         important_monsters = '(?i)' + '|'.join(Configs.important_monsters)
-        tags = [
-            ('^.+$', 'wrap_margin', True),
-            ('Preemptive', 'preemptive', False),
-            ('Ambush', 'ambush', False),
-            (important_monsters, 'important monster', True),
-        ]
+        tags = {
+            'wrap margin': '^.+$',
+            'preemptive': 'Preemptive',
+            'ambush': 'Ambush',
+            'important monster': important_monsters,
+        }
         return tags
 
     def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
@@ -194,10 +194,6 @@ class EncountersPlanner(EncountersTracker):
         )
         return widget
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        tags = super().get_tags()[:-1]
-        return tags
-
     def get_input(self) -> str:
         initiative_equip = self.input_widget.initiative_equip.state()
         initiative_equip = 'selected' in initiative_equip
@@ -272,11 +268,10 @@ class EncountersPlanner(EncountersTracker):
         self.print_output(data)
         captured_monsters = [m for m, n in monsters_tally.items() if n >= 10]
         needle = '(?i)' + '|'.join(captured_monsters)
-        self.output_widget.highlight_pattern(needle, 'encounter', regexp=True)
+        self.output_widget.highlight_pattern(needle, 'encounter')
         important_monsters = self.input_widget.highlight.get().split(',')
         needle = '(?i)' + '|'.join([m.strip() for m in important_monsters])
-        self.output_widget.highlight_pattern(
-            needle, 'important monster', regexp=True)
+        self.output_widget.highlight_pattern(needle, 'important monster')
 
     def add_scale(
             self, text: str, parent: tk.Frame,
@@ -377,12 +372,12 @@ class EncountersTable(BaseWidget):
         widget._add_h_scrollbar()
         return widget
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        tags = [
-            ('^.+$', 'wrap_margin', True),
-            ('Preemptive', 'preemptive', False),
-            ('Ambush', 'ambush', False),
-        ]
+    def get_tags(self) -> dict[str, str]:
+        tags = {
+            'wrap margin': '^.+$',
+            'preemptive': 'Preemptive',
+            'ambush': 'Ambush',
+        }
         return tags
 
     def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
@@ -457,8 +452,7 @@ class EncountersTable(BaseWidget):
         self.print_output('\n'.join(output_data))
         important_monsters = self.input_widget.highlight.get().split(',')
         needle = '(?i)' + '|'.join([m.strip() for m in important_monsters])
-        self.output_widget.highlight_pattern(
-            needle, 'important monster', regexp=True)
+        self.output_widget.highlight_pattern(needle, 'important monster')
 
     def get_paddings(self) -> dict[str, int]:
         paddings = {}

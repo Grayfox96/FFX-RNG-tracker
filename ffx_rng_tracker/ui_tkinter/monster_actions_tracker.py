@@ -10,12 +10,11 @@ from .base_widgets import BaseWidget
 
 class MonsterActionsTracker(BaseWidget):
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        tags = [
-            ('^.*changed to.+$', 'stat update', True),
-            ('^#(.+?)?$', 'comment', True),
-        ]
-        tags.extend(super().get_tags())
+    def get_tags(self) -> dict[str, str]:
+        tags = {
+            'stat update': '^.*changed to.+$',
+        }
+        tags.update(super().get_tags())
         return tags
 
     def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:

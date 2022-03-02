@@ -9,8 +9,8 @@ class ConfigsPage(BaseWidget):
     def make_input_widget(self) -> None:
         return
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        return []
+    def get_tags(self) -> dict[str, str]:
+        return {}
 
     def get_default_input_text(self) -> str:
         return self.get_input()

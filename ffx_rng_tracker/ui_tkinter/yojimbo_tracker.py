@@ -12,13 +12,13 @@ from .base_widgets import BaseWidget
 class YojimboTracker(BaseWidget):
     """Widget used to track Yojimbo rng."""
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        tags = [
-            (' [0-9]{1,7}(?= gil) ', 'yojimbo low gil', True),
-            (' [0-9]{10,}(?= gil) ', 'yojimbo high gil', True),
-            ('^.*changed to.+$', 'stat update', True),
-        ]
-        tags.extend(super().get_tags())
+    def get_tags(self) -> dict[str, str]:
+        tags = {
+            'yojimbo low gil': ' [0-9]{1,7}(?= gil) ',
+            'yojimbo high gil': ' [0-9]{10,}(?= gil) ',
+            'stat update': '^.*changed to.+$',
+        }
+        tags.update(super().get_tags())
         return tags
 
     def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:

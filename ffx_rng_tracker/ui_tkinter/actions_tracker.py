@@ -16,16 +16,15 @@ class ActionsTracker(BaseWidget):
     escape chance and miss chance rng.
     """
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        tags = [
-            ('Encounter', 'encounter', False),
-            ('Preemptive', 'preemptive', False),
-            ('Ambush', 'ambush', False),
-            ('Crit', 'crit', False),
-            ('^.*changed to.+$', 'stat update', True),
-            ('^#(.+?)?$', 'comment', True),
-        ]
-        tags.extend(super().get_tags())
+    def get_tags(self) -> dict[str, str]:
+        tags = {
+            'encounter': 'Encounter',
+            'preemptive': 'Preemptive',
+            'ambush': 'Ambush',
+            'crit': 'Crit',
+            'stat update': '^.*changed to.+$',
+        }
+        tags.update(super().get_tags())
         return tags
 
     def get_default_input_text(self) -> str:

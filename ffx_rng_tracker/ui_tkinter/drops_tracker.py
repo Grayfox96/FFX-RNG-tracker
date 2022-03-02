@@ -11,14 +11,13 @@ from .base_widgets import BaseWidget
 class DropsTracker(BaseWidget):
     """Widget used to track monster drops RNG."""
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        tags = [
-            ('Equipment', 'equipment', False),
-            ('No Encounters', 'no encounters', False),
-            ('^#(.+?)?$', 'comment', True),
-            ('^.*changed to.+$', 'stat update', True),
-        ]
-        tags.extend(super().get_tags())
+    def get_tags(self) -> dict[str, str]:
+        tags = {
+            'equipment': 'Equipment',
+            'no encounters': 'No Encounters',
+            'stat update': '^.*changed to.+$',
+        }
+        tags.update(super().get_tags())
         return tags
 
     def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:

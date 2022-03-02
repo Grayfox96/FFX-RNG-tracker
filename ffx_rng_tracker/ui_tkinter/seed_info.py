@@ -12,8 +12,8 @@ class SeedInfo(BaseWidget):
     def make_input_widget(self) -> None:
         return
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        return [(EquipmentType.ARMOR, 'equipment', False)]
+    def get_tags(self) -> dict[str, str]:
+        return {'equipment': str(EquipmentType.ARMOR)}
 
     def get_default_input_text(self) -> str:
         return self.get_input()

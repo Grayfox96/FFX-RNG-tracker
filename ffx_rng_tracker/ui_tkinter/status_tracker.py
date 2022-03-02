@@ -14,8 +14,8 @@ class StatusTracker(BaseWidget):
         widget._add_h_scrollbar()
         return widget
 
-    def get_tags(self) -> list[tuple[str, str, bool]]:
-        return [('100', 'status miss', False)]
+    def get_tags(self) -> dict[str, str]:
+        return {'status miss': '100'}
 
     def get_default_input_text(self) -> str:
         return self.get_input()
