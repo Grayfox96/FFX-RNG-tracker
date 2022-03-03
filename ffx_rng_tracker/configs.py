@@ -4,6 +4,7 @@ import shutil
 from dataclasses import dataclass
 
 from .data.file_functions import get_resource_path
+from .utils import get_contrasting_color
 
 
 @dataclass
@@ -15,6 +16,14 @@ class UIWidgetConfigs:
         return ' '.join([f'{v}: {k}' for v, k in vars(self).items()])
 
 
+@dataclass
+class Color:
+    foreground: str
+    background: str
+    select_foreground: str
+    select_background: str
+
+
 class Configs:
     seed: int | None
     ps2: bool
@@ -22,7 +31,7 @@ class Configs:
     use_dark_mode: bool
     font_size: int
     use_theme: bool
-    colors: dict[str, tuple[str, str]] = {}
+    colors: dict[str, Color] = {}
     important_monsters: list[str]
     ui_widgets: dict[str, UIWidgetConfigs] = {}
     _parser = configparser.ConfigParser()
@@ -75,27 +84,38 @@ class Configs:
             'important monster',
         )
         if cls.use_dark_mode:
-            fg_fallback, bg_fallback = '#ffffff', '#333333'
+            default_fg = '#ffffff'
+            default_bg = '#333333'
         else:
-            fg_fallback, bg_fallback = '#000000', '#ffffff'
+            default_fg = '#000000'
+            default_bg = '#ffffff'
         for option in options:
-            foreground = cls.get(section, option, fg_fallback)
-            if len(foreground) == 7 and foreground[0] == '#':
+            fg = cls.get(section, option, default_fg)
+            if len(fg) == 7 and fg[0] == '#':
                 try:
-                    int(foreground[1:], 16)
+                    int(fg[1:], 16)
                 except ValueError:
-                    foreground = fg_fallback
+                    fg = default_fg
             else:
-                foreground = fg_fallback
-            background = cls.get(section, f'{option} background', bg_fallback)
-            if len(background) == 7 and background[0] == '#':
+                fg = default_fg
+            bg = cls.get(section, f'{option} background', default_bg)
+            if len(bg) == 7 and bg[0] == '#':
                 try:
-                    int(background[1:], 16)
+                    int(bg[1:], 16)
                 except ValueError:
-                    background = bg_fallback
+                    bg = default_bg
             else:
-                background = bg_fallback
-            cls.colors[option] = (foreground, background)
+                bg = default_bg
+
+            if (fg, bg) == (default_fg, default_bg):
+                select_fg, select_bg = fg, '#007fff'
+            elif bg == default_bg:
+                select_fg = fg
+                select_bg = get_contrasting_color(fg)
+            else:
+                select_fg = fg
+                select_bg = bg
+            cls.colors[option] = Color(fg, bg, select_fg, select_bg)
 
         ui_widgets = (
             'Seed info', 'Drops', 'Encounters', 'Encounters Table',

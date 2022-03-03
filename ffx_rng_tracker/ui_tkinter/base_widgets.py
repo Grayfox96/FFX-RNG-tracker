@@ -6,8 +6,7 @@ from typing import Callable
 from ..configs import Configs
 from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
 from ..errors import InvalidDamageValueError, SeedNotFoundError
-from ..events.gamestate import GameState
-from ..events.main import Event
+from ..events.main import Event, GameState
 from ..events.parser import EventParser
 from ..events.parsing import parse_roll
 
@@ -170,20 +169,12 @@ class BaseWidget(tk.Frame, ABC):
         """Initialize output widget."""
         text = BetterText(self, font=self.font, state='disabled', wrap='word')
         text.pack(expand=True, fill='both', side='right')
-
-        for tag_name, (foreground, background) in Configs.colors.items():
-            if foreground == '#000000':
-                selectforeground = '#ffffff'
-            else:
-                selectforeground = foreground
-            if background in ('#ffffff', '#333333'):
-                selectbackground = '#007fff'
-            else:
-                selectbackground = background
+        for tag_name, color in Configs.colors.items():
             text.tag_configure(
-                tag_name, foreground=foreground, background=background,
-                selectforeground=selectforeground,
-                selectbackground=selectbackground)
+                tag_name, foreground=color.foreground,
+                background=color.background,
+                selectforeground=color.select_foreground,
+                selectbackground=color.select_background)
         text.tag_configure('wrap margin', lmargin2='1c')
         return text
 
