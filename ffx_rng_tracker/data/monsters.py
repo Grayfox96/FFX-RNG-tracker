@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from itertools import count
 
 from ..configs import Configs
+from ..utils import add_bytes
 from .autoabilities import AUTOABILITIES
 from .characters import CHARACTERS, Character
 from .constants import (Element, ElementalAffinity, EquipmentSlots,
@@ -227,11 +228,6 @@ def get_raw_data_string(prize_struct: list[str]) -> str:
 
 def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     """Get a Monster from his prize struct."""
-    def add_bytes(address: int, length: int) -> int:
-        """Adds the value of adjacent bytes in a prize struct."""
-        value = sum([prize_struct[address + i] * (256 ** i)
-                     for i in range(length)])
-        return value
 
     def get_elements() -> dict[str, str]:
         elements = {
@@ -279,9 +275,9 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
             break
 
     stats = {
-        Stat.HP: add_bytes(20, 4),
-        Stat.MP: add_bytes(24, 4),
-        'overkill_threshold': add_bytes(28, 4),
+        Stat.HP: add_bytes(*prize_struct[20:24]),
+        Stat.MP: add_bytes(*prize_struct[24:28]),
+        'overkill_threshold': add_bytes(*prize_struct[28:32]),
         Stat.STRENGTH: prize_struct[32],
         Stat.DEFENSE: prize_struct[33],
         Stat.MAGIC: prize_struct[34],
@@ -292,8 +288,11 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         Stat.ACCURACY: prize_struct[39],
     }
 
-    gil = add_bytes(128, 2)
-    ap = {'normal': add_bytes(130, 2), 'overkill': add_bytes(132, 2)}
+    gil = add_bytes(*prize_struct[128:130])
+    ap = {
+        'normal': add_bytes(*prize_struct[130:132]),
+        'overkill': add_bytes(*prize_struct[132:134])
+    }
     item_1 = {
         'drop_chance': prize_struct[136],
         'normal': {Rarity.COMMON: None, Rarity.RARE: None},

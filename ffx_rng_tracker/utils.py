@@ -17,3 +17,10 @@ def treeview(obj, indentation: int = 0) -> str:
         case _:
             string += f'{obj}\n'
     return string
+
+
+def add_bytes(*values: int) -> int:
+    value = 0
+    for position, byte in enumerate(values):
+        value += byte * (256 ** position)
+    return value
