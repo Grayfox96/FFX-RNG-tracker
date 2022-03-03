@@ -39,9 +39,10 @@ class EncounterCheck(Event):
         return encounter, self.zone.grace_period + steps
 
 
-def walk(
-        gamestate: GameState, steps: int,
-        zone: Zone) -> Iterator[EncounterCheck]:
+def walk(gamestate: GameState,
+         steps: int,
+         zone: Zone,
+         ) -> Iterator[EncounterCheck]:
     while steps > 0:
         encounter_check = EncounterCheck(gamestate, steps, zone)
         yield encounter_check

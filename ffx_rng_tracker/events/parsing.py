@@ -18,9 +18,13 @@ from .steal import Steal
 from .yojimbo_turn import YojimboTurn
 
 
-def parse_encounter(
-        gs: GameState, type_: str = '', name: str = '', initiative: str = '',
-        forced_condition: str = '', *_,) -> Encounter | Comment:
+def parse_encounter(gs: GameState,
+                    type_: str = '',
+                    name: str = '',
+                    initiative: str = '',
+                    forced_condition: str = '',
+                    *_,
+                    ) -> Encounter | Comment:
     match type_:
         case 'set' | 'set_optional':
             encounter_type = Encounter
@@ -42,9 +46,11 @@ def parse_encounter(
     return encounter_type(gs, name, initiative, condition)
 
 
-def parse_steal(
-        gs: GameState, monster_name: str = '', successful_steals: str = '0',
-        *_) -> Steal | Comment:
+def parse_steal(gs: GameState,
+                monster_name: str = '',
+                successful_steals: str = '0',
+                *_,
+                ) -> Steal | Comment:
     usage = 'Usage: steal [monster_name] (successful steals)'
     if not monster_name:
         return Comment(gs, usage)
@@ -59,9 +65,12 @@ def parse_steal(
     return Steal(gs, monster, successful_steals)
 
 
-def parse_kill(
-        gs: GameState, monster_name: str = '', killer_name: str = '',
-        overkill: str = '', *_) -> Kill | Comment:
+def parse_kill(gs: GameState,
+               monster_name: str = '',
+               killer_name: str = '',
+               overkill: str = '',
+               *_,
+               ) -> Kill | Comment:
     usage = 'Usage: (kill) [monster_name] [killer] (overkill/ok)'
     if not monster_name or not killer_name:
         return Comment(gs, usage)
@@ -74,9 +83,11 @@ def parse_kill(
     return Kill(gs, monster, killer, overkill)
 
 
-def parse_bribe(
-        gs: GameState, monster_name: str = '', user_name: str = '',
-        *_) -> Bribe | Comment:
+def parse_bribe(gs: GameState,
+                monster_name: str = '',
+                user_name: str = '',
+                *_,
+                ) -> Bribe | Comment:
     usage = 'Usage: bribe [monster_name] [user]'
     if not monster_name or not user_name:
         return Comment(gs, usage)
@@ -93,9 +104,11 @@ def parse_death(gs: GameState, character_name: str = 'Unknown', *_) -> Death:
     return Death(gs, character)
 
 
-def parse_roll(
-        gs: GameState, rng_index: str = '', times: str = '1',
-        *_) -> AdvanceRNG | Comment:
+def parse_roll(gs: GameState,
+               rng_index: str = '',
+               times: str = '1',
+               *_,
+               ) -> AdvanceRNG | Comment:
     usage = 'Usage: waste/advance/roll [rng#] [amount]'
     try:
         if rng_index.startswith('rng'):
@@ -112,9 +125,10 @@ def parse_roll(
     return AdvanceRNG(gs, rng_index, times)
 
 
-def parse_party_change(
-        gs: GameState, party_formation_string: str = '',
-        *_) -> ChangeParty | Comment:
+def parse_party_change(gs: GameState,
+                       party_formation_string: str = '',
+                       *_,
+                       ) -> ChangeParty | Comment:
     usage = 'Usage: party [party members initials]'
     if not party_formation_string:
         return Comment(gs, usage)
@@ -132,9 +146,12 @@ def parse_party_change(
     return ChangeParty(gs, party_formation)
 
 
-def parse_action(
-        gs: GameState, character_name: str = '', action_name: str = '',
-        target_name: str = '', *_) -> CharacterAction | Escape | Comment:
+def parse_action(gs: GameState,
+                 character_name: str = '',
+                 action_name: str = '',
+                 target_name: str = '',
+                 *_,
+                 ) -> CharacterAction | Escape | Comment:
     usage = 'Usage: [character] [action name] (target)'
     if not character_name or not action_name:
         return Comment(gs, usage)
@@ -177,9 +194,12 @@ def parse_action(
         return CharacterAction(gs, character, action, target)
 
 
-def parse_stat_update(
-        gs: GameState, character_name: str = '', stat_name: str = '',
-        amount: str = '', *_) -> ChangeStat | Comment:
+def parse_stat_update(gs: GameState,
+                      character_name: str = '',
+                      stat_name: str = '',
+                      amount: str = '',
+                      *_,
+                      ) -> ChangeStat | Comment:
     usage = 'Usage: stat [character] [stat] [(+/-) amount]'
     if not character_name or not stat_name or not amount:
         return Comment(gs, usage)
@@ -205,9 +225,12 @@ def parse_stat_update(
     return ChangeStat(gs, character, stat, stat_value)
 
 
-def parse_yojimbo_action(
-        gs: GameState, action_name: str = '', monster_name: str = '',
-        overdrive: str = '', *_) -> YojimboTurn | Comment:
+def parse_yojimbo_action(gs: GameState,
+                         action_name: str = '',
+                         monster_name: str = '',
+                         overdrive: str = '',
+                         *_,
+                         ) -> YojimboTurn | Comment:
     usage = 'Usage: [action] [monster] (overdrive)'
     if not action_name or not monster_name:
         return Comment(gs, usage)
@@ -226,8 +249,10 @@ def parse_yojimbo_action(
     return YojimboTurn(gs, attack, monster, overdrive)
 
 
-def parse_compatibility_update(
-        gs: GameState, compatibility: str = '', *_) -> Comment:
+def parse_compatibility_update(gs: GameState,
+                               compatibility: str = '',
+                               *_,
+                               ) -> Comment:
     usage = 'Usage: compatibility [(+/-)amount]'
     try:
         if compatibility.startswith('+'):
@@ -242,8 +267,10 @@ def parse_compatibility_update(
     return Comment(gs, f'Compatibility changed to {gs.compatibility}')
 
 
-def parse_monster_action(
-        gs: GameState, monster_name: str = '', *_) -> MonsterAction | Comment:
+def parse_monster_action(gs: GameState,
+                         monster_name: str = '',
+                         *_,
+                         ) -> MonsterAction | Comment:
     usage = 'Usage: [monster_name]'
 
     if monster_name not in MONSTERS:

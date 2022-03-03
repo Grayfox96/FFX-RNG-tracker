@@ -35,8 +35,10 @@ def setup_logger(logger: logging.Logger | None = None) -> None:
     logfile.setFormatter(logging.Formatter(fmt))
 
 
-def log_tkinter_error(
-        error: Exception, message: tuple[str], tb: TracebackType) -> None:
+def log_tkinter_error(error: Exception,
+                      message: tuple[str],
+                      tb: TracebackType,
+                      ) -> None:
     """Receives an error from Tkinter, prints it
     and logs it to the root logger.
     """

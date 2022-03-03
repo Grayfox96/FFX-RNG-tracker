@@ -9,7 +9,7 @@ class Item:
     name: str
     index: int
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -19,7 +19,7 @@ class ItemDrop:
     quantity: int
     rare: bool
 
-    def __str__(self):
+    def __str__(self) -> str:
         string = f'{self.item} x{self.quantity}'
         if self.rare:
             string += ' (rare)'

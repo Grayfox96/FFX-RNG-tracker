@@ -16,7 +16,7 @@ class MonsterDataViewerInputWidget:
 class MonsterDataViewer(BaseWidget):
     """Widget used to display monster's data."""
 
-    def __init__(self, parent, seed: int = 0, *args, **kwargs):
+    def __init__(self, parent, seed: int = 0, *args, **kwargs) -> None:
         self.monsters_names = sorted(list(MONSTERS.keys()))
         self.monsters_data = {k: format_monster_data(v)
                               for k, v in MONSTERS.items()}

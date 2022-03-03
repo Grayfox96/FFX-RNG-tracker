@@ -9,7 +9,7 @@ from ffx_rng_tracker.ui_tkinter.seedfinder import SeedFinder
 
 
 @log_exceptions()
-def main():
+def main() -> None:
     setup_logger()
     root = tk.Tk()
     root.report_callback_exception = log_tkinter_error

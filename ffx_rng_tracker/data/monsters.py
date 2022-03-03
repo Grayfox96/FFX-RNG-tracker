@@ -31,7 +31,7 @@ class Monster:
     bribe: dict[str, int | ItemDrop | None]
     equipment: dict[str, int | list | dict[Character, list[int]]]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -65,13 +65,13 @@ def _get_prize_structs(file_path: str) -> dict[str, list[int]]:
     return monsters_data
 
 
-def _patch_prize_structs_for_hd(
-        prize_structs: dict[str, list[int]]) -> dict[str, list[int]]:
+def _patch_prize_structs_for_hd(prize_structs: dict[str, list[int]],
+                                ) -> dict[str, list[int]]:
     """Apply changes made in the HD version to the prize structs."""
-    def patch_abilities(
-            monster_name: str,
-            abilities: tuple[int, int, int, int, int, int, int],
-            equipment_type: EquipmentType = EquipmentType.WEAPON) -> None:
+    def patch_abilities(monster_name: str,
+                        abilities: tuple[int, int, int, int, int, int, int],
+                        equipment_type: EquipmentType = EquipmentType.WEAPON,
+                        ) -> None:
         """Modifies ability values 1-7 of every character's weapon
         or armor ability array.
         """
@@ -225,8 +225,7 @@ def get_raw_data_string(prize_struct: list[str]) -> str:
     return string
 
 
-def _get_monster_data(
-        internal_monster_name: str, prize_struct: list[int]) -> Monster:
+def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     """Get a Monster from his prize struct."""
     def add_bytes(address: int, length: int) -> int:
         """Adds the value of adjacent bytes in a prize struct."""
@@ -275,7 +274,7 @@ def _get_monster_data(
             break
         monster_name += TEXT_CHARACTERS[character_id]
     for i in range(16):
-        if internal_monster_name.endswith(f'_{i}'):
+        if monster_id.endswith(f'_{i}'):
             monster_name += f'#{i}'
             break
 

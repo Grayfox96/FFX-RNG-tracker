@@ -8,7 +8,7 @@ class StringEnum(str, Enum):
     that are also subclasses of str.
     """
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str.__str__(self)
 
 

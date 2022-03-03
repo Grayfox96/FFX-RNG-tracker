@@ -9,7 +9,7 @@ from ffx_rng_tracker.ui_tkinter.monster_data_viewer import MonsterDataViewer
 
 
 @log_exceptions()
-def main():
+def main() -> None:
     setup_logger()
     root = tk.Tk()
     # redirects errors to another function

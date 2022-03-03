@@ -19,7 +19,7 @@ class Equipment:
     name: str = field(init=False, repr=False)
     gil_value: int = field(init=False, repr=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.name = self.get_name()
         self.gil_value = self.get_gil_value()
 
@@ -44,7 +44,7 @@ class Equipment:
                         * empty_slots_factor[empty_slots])
         return gil_value
 
-    def get_name(self):
+    def get_name(self) -> str:
         ability_indexes = [AUTOABILITIES.index(a) for a in self.abilities]
         if self.type_ == EquipmentType.WEAPON:
             name = get_weapon_name(

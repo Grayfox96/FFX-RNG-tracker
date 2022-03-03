@@ -9,8 +9,8 @@ from .actions_tracker import ActionsTracker
 from .base_widgets import BaseWidget, DamageValuesDialogue
 from .configs import ConfigsPage
 from .drops_tracker import DropsTracker
-from .encounters_tracker import (EncountersTracker, EncountersPlanner,
-                                 EncountersTable)
+from .encounters_tracker import (EncountersPlanner, EncountersTable,
+                                 EncountersTracker)
 from .monster_actions_tracker import MonsterActionsTracker
 from .monster_data_viewer import MonsterDataViewer
 from .seed_info import SeedInfo
@@ -21,7 +21,7 @@ from .yojimbo_tracker import YojimboTracker
 class FFXRNGTrackerUI(ttk.Notebook):
     """Widget that contains all the other tracking widgets."""
 
-    def __init__(self, parent, seed: int, *args, **kwargs):
+    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         widgets = self.get_widgets()
@@ -56,7 +56,10 @@ class FFXRNGTrackerUI(ttk.Notebook):
 
 
 @log_exceptions()
-def main(widget: type[BaseWidget], title='ffx_rng_tracker', size='1280x830'):
+def main(widget: type[BaseWidget],
+         title='ffx_rng_tracker',
+         size='1280x830',
+         ) -> None:
     """Creates a Tkinter main window, initializes the rng tracker
     and the root logger.
     """

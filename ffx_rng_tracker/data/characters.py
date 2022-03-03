@@ -41,7 +41,7 @@ class CharacterState(Character):
         value = min(max(value, 0), max_value)
         self.stats[stat] = value
 
-    def reset(self):
+    def reset(self) -> None:
         self.stats = self._default_stats.copy()
 
 

@@ -234,7 +234,7 @@ class EncountersPlanner(EncountersTracker):
 
         return '\n'.join(input_data)
 
-    def parse_input(self):
+    def parse_input(self) -> None:
         self.gamestate.reset()
         events_sequence = self.parser.parse(self.get_input())
 
@@ -273,9 +273,11 @@ class EncountersPlanner(EncountersTracker):
         needle = '(?i)' + '|'.join([m.strip() for m in important_monsters])
         self.output_widget.highlight_pattern(needle, 'important monster')
 
-    def add_scale(
-            self, text: str, parent: tk.Frame,
-            variable=tk.IntVar) -> None:
+    def add_scale(self,
+                  text: str,
+                  parent: tk.Frame,
+                  variable=tk.IntVar,
+                  ) -> None:
         index = len(self.input_widget.scales)
         scale = tk.Scale(
             parent, orient='horizontal', label=None, from_=0, to=100,
@@ -302,7 +304,7 @@ class EncounterTableInputWidget:
 class EncountersTable(BaseWidget):
     """"""
 
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, *args, **kwargs) -> None:
         self.paddings = self.get_paddings()
         super().__init__(parent, *args, **kwargs)
 

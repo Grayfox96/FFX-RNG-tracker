@@ -241,12 +241,12 @@ class BaseWidget(tk.Frame, ABC):
 class DamageValuesDialogue(simpledialog.Dialog):
     """Input dialogue used to get damage values."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         self.warning_label = False
         self.seed = None
         super().__init__(*args, **kwargs)
 
-    def body(self, parent: tk.Tk):
+    def body(self, parent: tk.Tk) -> tk.Entry:
         self.parent = parent
         text = 'Damage values (Auron1 Tidus1 A2 T2 A3 T3)'
         if Configs.ps2:
@@ -296,7 +296,7 @@ class DamageValuesDialogue(simpledialog.Dialog):
         self.seed = seed
         self.destroy()
 
-    def show_warning(self, text):
+    def show_warning(self, text) -> None:
         if self.warning_label:
             self.warning_label.config(text=text)
         else:
