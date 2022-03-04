@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from ..data.monsters import MONSTERS
 from ..ui_functions import format_monster_data
-from .base_widgets import BaseWidget, BetterText
+from .base_widgets import BaseWidget, ScrollableText
 
 
 @dataclass
@@ -42,7 +42,7 @@ class MonsterDataViewer(BaseWidget):
         )
         return widget
 
-    def make_output_widget(self) -> BetterText:
+    def make_output_widget(self) -> ScrollableText:
         widget = super().make_output_widget()
         widget.configure(wrap='none')
         widget._add_h_scrollbar()

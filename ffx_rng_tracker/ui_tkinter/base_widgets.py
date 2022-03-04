@@ -11,7 +11,7 @@ from ..events.parser import EventParser
 from ..events.parsing import parse_roll
 
 
-class BetterText(tk.Text):
+class ScrollableText(tk.Text):
     """Upgraded Text widget with an highlight_pattern
     method, a set method and with a vertical scrollbar
     and an optional horizontal scrollbar.
@@ -155,9 +155,9 @@ class BaseWidget(tk.Frame, ABC):
         self.output_widget = self.make_output_widget()
         self.parse_input()
 
-    def make_input_widget(self) -> BetterText:
+    def make_input_widget(self) -> ScrollableText:
         """Initializes input widget."""
-        text = BetterText(
+        text = ScrollableText(
             self, font=self.font, width=40, undo=True, autoseparators=True,
             maxundo=-1)
         text.set(self.get_default_input_text())
@@ -165,9 +165,10 @@ class BaseWidget(tk.Frame, ABC):
         text.bind('<KeyRelease>', lambda _: self.parse_input())
         return text
 
-    def make_output_widget(self) -> BetterText:
+    def make_output_widget(self) -> ScrollableText:
         """Initialize output widget."""
-        text = BetterText(self, font=self.font, state='disabled', wrap='word')
+        text = ScrollableText(
+            self, font=self.font, state='disabled', wrap='word')
         text.pack(expand=True, fill='both', side='right')
         for tag_name, color in Configs.colors.items():
             text.tag_configure(

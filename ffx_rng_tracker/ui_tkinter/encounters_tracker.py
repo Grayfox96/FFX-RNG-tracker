@@ -12,8 +12,8 @@ from ..events.encounter import (Encounter, MultizoneRandomEncounter,
                                 RandomEncounter)
 from ..events.main import Event
 from ..events.parsing import parse_encounter
-from .base_widgets import (BaseWidget, BetterSpinbox, BetterText,
-                           ScrollableFrame)
+from .base_widgets import (BaseWidget, BetterSpinbox, ScrollableFrame,
+                           ScrollableText)
 
 
 @dataclass
@@ -368,7 +368,7 @@ class EncountersTable(BaseWidget):
         )
         return widget
 
-    def make_output_widget(self) -> BetterText:
+    def make_output_widget(self) -> ScrollableText:
         widget = super().make_output_widget()
         widget.configure(wrap='none')
         widget._add_h_scrollbar()

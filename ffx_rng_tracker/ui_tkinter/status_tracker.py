@@ -1,5 +1,5 @@
 from ..ui_functions import get_status_chance_string
-from .base_widgets import BaseWidget, BetterText
+from .base_widgets import BaseWidget, ScrollableText
 
 
 class StatusTracker(BaseWidget):
@@ -8,7 +8,7 @@ class StatusTracker(BaseWidget):
     def make_input_widget(self) -> None:
         return
 
-    def make_output_widget(self) -> BetterText:
+    def make_output_widget(self) -> ScrollableText:
         widget = super().make_output_widget()
         widget.configure(wrap='none')
         widget._add_h_scrollbar()

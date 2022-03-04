@@ -7,10 +7,10 @@ from ..data.seeds import (DAMAGE_VALUES_NEEDED, HD_FROM_BOOT_FRAMES,
                           PS2_FROM_BOOT_FRAMES, datetime_to_seed)
 from ..events.character_action import CharacterAction
 from .actions_tracker import ActionsTracker
-from .base_widgets import BetterText
+from .base_widgets import ScrollableText
 
 
-class SeedFinderInputWidget(BetterText):
+class SeedFinderInputWidget(ScrollableText):
     damage_input: tk.StringVar
 
 
@@ -20,7 +20,7 @@ class SeedFinder(ActionsTracker):
     def __init__(self, parent, seed: int = 0, *args, **kwargs) -> None:
         super().__init__(parent, seed, *args, **kwargs)
 
-    def make_input_widget(self) -> BetterText:
+    def make_input_widget(self) -> ScrollableText:
         frame = tk.Frame(self)
         frame.pack(fill='y', side='left')
         tk.Label(frame, text='Actions').pack()
