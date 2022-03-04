@@ -3,8 +3,8 @@ from typing import Callable
 from ..data.monsters import MONSTERS
 from ..data.notes import get_notes
 from ..events.main import Event
-from ..events.parsing import (parse_bribe, parse_death, parse_kill,
-                              parse_party_change, parse_steal)
+from ..events.parsing_functions import (parse_bribe, parse_death, parse_kill,
+                                        parse_party_change, parse_steal)
 from .base_widgets import BaseWidget
 
 

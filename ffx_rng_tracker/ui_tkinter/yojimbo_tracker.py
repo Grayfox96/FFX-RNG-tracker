@@ -4,8 +4,8 @@ from ..data.actions import YOJIMBO_ACTIONS
 from ..data.notes import get_notes
 from ..events.comment import Comment
 from ..events.main import Event
-from ..events.parsing import (parse_compatibility_update, parse_death,
-                              parse_yojimbo_action)
+from ..events.parsing_functions import (parse_compatibility_update,
+                                        parse_death, parse_yojimbo_action)
 from .base_widgets import BaseWidget
 
 

@@ -7,7 +7,8 @@ from ..data.notes import get_notes
 from ..events.comment import Comment
 from ..events.encounter import Encounter
 from ..events.main import Event
-from ..events.parsing import parse_action, parse_encounter, parse_stat_update
+from ..events.parsing_functions import (parse_action, parse_encounter,
+                                        parse_stat_update)
 from .base_widgets import BaseWidget
 
 

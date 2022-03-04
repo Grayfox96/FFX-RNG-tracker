@@ -11,7 +11,7 @@ from ..events.comment import Comment
 from ..events.encounter import (Encounter, MultizoneRandomEncounter,
                                 RandomEncounter)
 from ..events.main import Event
-from ..events.parsing import parse_encounter
+from ..events.parsing_functions import parse_encounter
 from .base_widgets import (BaseWidget, BetterSpinbox, ScrollableFrame,
                            ScrollableText)
 

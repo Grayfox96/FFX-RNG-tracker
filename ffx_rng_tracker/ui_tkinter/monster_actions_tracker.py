@@ -4,7 +4,7 @@ from ..data.monsters import MONSTERS
 from ..data.notes import get_notes
 from ..events.comment import Comment
 from ..events.main import Event
-from ..events.parsing import parse_monster_action, parse_party_change
+from ..events.parsing_functions import parse_monster_action, parse_party_change
 from .base_widgets import BaseWidget
 
 

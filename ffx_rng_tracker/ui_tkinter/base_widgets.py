@@ -8,7 +8,7 @@ from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..events.main import Event, GameState
 from ..events.parser import EventParser
-from ..events.parsing import parse_roll
+from ..events.parsing_functions import parse_roll
 
 
 class ScrollableText(tk.Text):
