@@ -5,9 +5,8 @@ from typing import Callable
 
 from ..configs import Configs
 from ..data.constants import EncounterCondition
-from ..data.encounter_formations import FORMATIONS
+from ..data.encounter_formations import ZONES
 from ..data.encounters import ANY_ENCOUNTERS
-from ..events.comment import Comment
 from ..events.encounter import (Encounter, MultizoneRandomEncounter,
                                 RandomEncounter)
 from ..events.main import Event
@@ -43,7 +42,7 @@ class EncountersTracker(BaseWidget):
         start.grid(row=0, column=1, sticky='w')
         scales = {}
         for row, encounter in enumerate(ANY_ENCOUNTERS, start=1):
-            if encounter['type'] == 'set':
+            if encounter['type'] == 'boss':
                 continue
             scale = tk.Scale(
                 frame, orient='horizontal', label=None,
@@ -85,20 +84,23 @@ class EncountersTracker(BaseWidget):
     def get_input(self) -> str:
         initiative_equip = self.input_widget.initiative_equip.state()
         initiative_equip = 'selected' in initiative_equip
+        current_zone = self.input_widget.current_zone.get()
 
-        spacer = '#' + ('=' * 60)
+        spacer = '# ' + ('=' * 60)
         input_data = []
         for encounter in ANY_ENCOUNTERS:
             if initiative_equip:
                 initiative = encounter['initiative']
             else:
                 initiative = 'false'
-            if encounter['type'] == 'set':
+            if encounter['type'] == 'boss':
                 encs = 1
             else:
                 encs = self.input_widget.scales[encounter['label']].get()
                 if encs > 0:
                     input_data.append(spacer)
+                    if current_zone == encounter['label']:
+                        input_data.append('///')
                     input_data.append(f'#     {encounter["label"]}:')
             for _ in range(encs):
                 line = ' '.join([
@@ -106,7 +108,6 @@ class EncountersTracker(BaseWidget):
                     encounter['type'],
                     encounter['name'],
                     initiative,
-                    encounter['forced_condition'],
                 ])
                 input_data.append(line)
         return '\n'.join(input_data)
@@ -119,24 +120,23 @@ class EncountersTracker(BaseWidget):
         for event in events_sequence:
             match event:
                 case RandomEncounter():
-                    line = str(event)
-                    output_data.append(
-                        line[10:21] + line[23 + len(event.zone):])
+                    line = str(event)[10:-49]
+                    line = line[:11] + line[14 + len(event.name):]
                 case MultizoneRandomEncounter():
                     zones = '/'.join(event.zones)
-                    line = str(event)
-                    output_data.append(
-                        line[10:21] + line[23 + len(zones):])
+                    line = str(event)[10:-49]
+                    line = line[:11] + line[14 + len(zones):]
                 case Encounter():
-                    output_data.append(str(event)[10:])
+                    line = str(event)[10:-49]
                 case _:
-                    output_data.append(str(event)[1:])
+                    line = str(event)
+            output_data.append(line)
+            if line == '///':
+                output_data.clear()
 
         data = '\n'.join(output_data)
-        current_zone = self.input_widget.current_zone.get()
-        index = data.find(current_zone)
-        if index > 0:
-            data = data[index - 5:]
+        data = data.replace(' Normal', '')
+        data = data.replace('# ', '')
 
         self.print_output(data)
 
@@ -162,7 +162,7 @@ class EncountersPlanner(EncountersTracker):
         entry.bind('<KeyRelease>', lambda _: self.parse_input())
 
         options = ['Boss', 'Simulation']
-        options.extend([z.name for z in FORMATIONS.zones.values()])
+        options.extend([z.name for z in ZONES.values()])
         textvariable = tk.StringVar(outer_frame)
         textvariable.set(options[0])
         combobox = ttk.Combobox(
@@ -201,35 +201,35 @@ class EncountersPlanner(EncountersTracker):
 
         current_zone_index = self.input_widget.current_zone.get()
 
-        spacer = '#' + ('=' * 60)
+        spacer = '# ' + ('=' * 60)
         input_data = []
         for index, (name, scale) in enumerate(self.input_widget.scales):
             name = name.lower().replace(' ', '_')
             match name:
                 case 'boss':
-                    name = 'lord_ochu'
-                    encounter_type = 'set_optional'
-                    forced_condition = ''
+                    name = 'dummy'
+                    encounter_type = 'optional_boss'
                 case 'simulation':
-                    name = 'simulation_(mi\'ihen)'
+                    name = 'simulation_(dummy)'
                     encounter_type = 'simulated'
-                    forced_condition = 'normal'
                 case _:
                     name = name
                     encounter_type = 'random'
-                    forced_condition = ''
             for count in range(scale.get()):
                 if count == 0:
-                    input_data.append(spacer)
+                    # if there is some data append a spacer
+                    if input_data:
+                        input_data.append(spacer)
                     if index == current_zone_index:
                         input_data.append('///')
+                    # if the encounter name is in zones
+                    # append a comment with the zone name
                     try:
                         input_data.append(
-                            f'#     {FORMATIONS.zones[name].name}')
+                            f'#     {ZONES[name].name}:')
                     except KeyError:
                         pass
-                line = (f'encounter {encounter_type} {name} {initiative} '
-                        f'{forced_condition}')
+                line = f'encounter {encounter_type} {name} {initiative}'
                 input_data.append(line)
 
         return '\n'.join(input_data)
@@ -242,14 +242,9 @@ class EncountersPlanner(EncountersTracker):
         monsters_tally = {}
         for event in events_sequence:
             match event:
-                # if the text contains /// it hides the lines before it
-                case Comment() if event.text == '///':
-                    output_data.clear()
-                case Comment():
-                    output_data.append(str(event)[1:])
                 case RandomEncounter():
-                    line = str(event)
-                    line = line[10:21] + line[23 + len(event.zone):]
+                    line = str(event)[10:-49]
+                    line = line[:11] + line[14 + len(event.name):]
                     index = 0
                     for monster in event.formation:
                         tally = monsters_tally.get(monster.name, 0) + 1
@@ -257,21 +252,27 @@ class EncountersPlanner(EncountersTracker):
                         index = (line.index(monster.name, index)
                                  + len(monster.name))
                         line = line[:index] + f'[{tally}]' + line[index:]
-                    output_data.append(line)
+                case Encounter():
+                    line = str(event)[10:-49]
                 case _:
-                    output_data.append(str(event)[10:])
+                    line = str(event)
+            output_data.append(line)
+            # if the text contains /// it hides the lines before it
+            if line == '///':
+                output_data.clear()
 
         data = '\n'.join(output_data)
-        data = data.replace('Lord Ochu [Lord Ochu]', 'Boss')
-        data = data.replace('(Mi\'ihen) (Bomb or Dual Horn)', '')
+        data = data.replace(': Dummy', '')
+        data = data.replace('Normal', '')
+        data = data.replace('# ', '')
 
-        self.print_output(data)
-        captured_monsters = [m for m, n in monsters_tally.items() if n >= 10]
-        needle = '(?i)' + '|'.join(captured_monsters)
-        self.output_widget.highlight_pattern(needle, 'encounter')
         important_monsters = self.input_widget.highlight.get().split(',')
-        needle = '(?i)' + '|'.join([m.strip() for m in important_monsters])
-        self.output_widget.highlight_pattern(needle, 'important monster')
+        pattern = '(?i)' + '|'.join([m.strip() for m in important_monsters])
+        self.tags['important monster'] = pattern
+        captured_monsters = [m for m, n in monsters_tally.items() if n >= 10]
+        pattern = '(?i)' + '|'.join(captured_monsters)
+        self.tags['encounter'] = pattern
+        self.print_output(data)
 
     def add_scale(self,
                   text: str,
@@ -328,7 +329,7 @@ class EncountersTable(BaseWidget):
             outer_frame, from_=0, to=2000, command=self.parse_input)
         random_encounters.grid(row=2, column=1)
 
-        tk.Label(outer_frame, text='Forced Encounters').grid(row=3, column=0)
+        tk.Label(outer_frame, text='Bosses').grid(row=3, column=0)
         forced_encounters = BetterSpinbox(
             outer_frame, from_=0, to=2000, command=self.parse_input)
         forced_encounters.grid(row=3, column=1)
@@ -349,7 +350,7 @@ class EncountersTable(BaseWidget):
         inner_frame.grid(row=10, column=0, columnspan=2, sticky='nsew')
 
         zones = {}
-        for zone, data in FORMATIONS.zones.items():
+        for zone, data in ZONES.items():
             zone_var = tk.BooleanVar(inner_frame, value=False)
             checkbutton = ttk.Checkbutton(
                 inner_frame, text=data.name, command=self.parse_input,
@@ -406,16 +407,16 @@ class EncountersTable(BaseWidget):
 
         input_data = []
         for _ in range(int(self.input_widget.forced_encounters.get())):
-            input_data.append(f'encounter set lord_ochu {initiative} normal')
+            input_data.append('encounter boss dummy')
         for _ in range(int(self.input_widget.random_encounters.get())):
             input_data.append(f'encounter random besaid_lagoon {initiative}')
         for _ in range(int(self.input_widget.simulated_encounters.get())):
-            input_data.append(f'encounter simulated simulation_(mi\'ihen) '
-                              f'{initiative} normal')
+            input_data.append('encounter simulated simulation_(dummy)')
         for _ in range(int(self.input_widget.encounters.get())):
-            if zones:
-                input_data.append(f'encounter multizone {"/".join(zones)} '
-                                  f'{initiative}')
+            if not zones:
+                break
+            input_data.append(f'encounter multizone {"/".join(zones)} '
+                              f'{initiative}')
 
         return '\n'.join(input_data)
 
@@ -430,7 +431,7 @@ class EncountersTable(BaseWidget):
                     if not output_data:
                         zones = []
                         for zone in event.zones:
-                            zone_name = FORMATIONS.zones[zone].name
+                            zone_name = ZONES[zone].name
                             padding = self.paddings[zone]
                             zones.append(f'{zone_name:{padding}}')
                         first_line = (' ' * 26) + ''.join(zones)
@@ -447,18 +448,18 @@ class EncountersTable(BaseWidget):
                                 condition = enc.condition
                             line = (f'{enc.index:4}|{enc.random_index:4}|'
                                     f'{enc.zone_index:3}: {condition:10} ')
-                        formation = ', '.join([str(m) for m in enc.formation])
-                        line += f'{formation:{self.paddings[enc.zone]}}'
+                        padding = self.paddings[enc.name]
+                        line += f'{enc.formation:{padding}}'
                     output_data.append(line)
 
-        self.print_output('\n'.join(output_data))
         important_monsters = self.input_widget.highlight.get().split(',')
-        needle = '(?i)' + '|'.join([m.strip() for m in important_monsters])
-        self.output_widget.highlight_pattern(needle, 'important monster')
+        pattern = '(?i)' + '|'.join([m.strip() for m in important_monsters])
+        self.tags['important monster'] = pattern
+        self.print_output('\n'.join(output_data))
 
     def get_paddings(self) -> dict[str, int]:
         paddings = {}
-        for zone, data in FORMATIONS.zones.items():
+        for zone, data in ZONES.items():
             padding = len(zone)
             for f in data.formations:
                 padding = max(padding, len(', '.join([str(m) for m in f])))

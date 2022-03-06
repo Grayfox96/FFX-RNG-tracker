@@ -48,11 +48,11 @@ class DropsTracker(BaseWidget):
 
         output_data = []
         for event in events_sequence:
-            match str(event):
-                case line if line == '///':
-                    output_data.clear()
-                case line:
-                    output_data.append(line)
+            line = str(event)
+            output_data.append(line)
+            # if the text contains /// it hides the lines before it
+            if line == '///':
+                output_data.clear()
 
         # update the text widget
         self.print_output('\n'.join(output_data))

@@ -15,11 +15,10 @@ def _get_encounters(file_path: str) -> tuple[dict[str, str]]:
                 'name': line[0],
                 'type': line[1],
                 'initiative': line[2],
-                'forced_condition': line[3],
-                'label': line[4],
-                'min': line[5],
-                'default': line[6],
-                'max': line[7],
+                'label': line[3],
+                'min': line[4],
+                'default': line[5],
+                'max': line[6],
             }
             encounters.append(encounter)
     return tuple(encounters)

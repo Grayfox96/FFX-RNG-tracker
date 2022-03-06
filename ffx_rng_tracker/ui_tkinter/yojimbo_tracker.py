@@ -2,7 +2,6 @@ from typing import Callable
 
 from ..data.actions import YOJIMBO_ACTIONS
 from ..data.notes import get_notes
-from ..events.comment import Comment
 from ..events.main import Event
 from ..events.parsing_functions import (parse_compatibility_update,
                                         parse_death, parse_yojimbo_action)
@@ -49,12 +48,11 @@ class YojimboTracker(BaseWidget):
 
         output_data = []
         for event in events_sequence:
-            match event:
-                # if the text contains /// it hides the lines before it
-                case Comment() if event.text == '///':
-                    output_data.clear()
-                case _:
-                    output_data.append(str(event))
+            line = str(event)
+            output_data.append(line)
+            # if the text contains /// it hides the lines before it
+            if line == '///':
+                output_data.clear()
 
         # update the text widget
         self.print_output('\n'.join(output_data))

@@ -1,11 +1,7 @@
-from itertools import islice
 from typing import Callable
 
 from ..data.characters import CHARACTERS
-from ..data.constants import EncounterCondition
 from ..data.notes import get_notes
-from ..events.comment import Comment
-from ..events.encounter import Encounter
 from ..events.main import Event
 from ..events.parsing_functions import (parse_action, parse_encounter,
                                         parse_stat_update)
@@ -43,16 +39,20 @@ class ActionsTracker(BaseWidget):
         input_lines = input_data.split('\n')
         for index, line in enumerate(input_lines):
             match line.lower().split():
-                case ['encounter', *params]:
-                    if params and 'simulated'.startswith(params[0]):
+                case ['encounter', condition, *_]:
+                    type_ = 'boss'
+                    if 'simulated'.startswith(condition):
                         type_ = 'simulated'
-                        name = 'simulation_(mi\'ihen)'
-                        forced_condition = 'normal'
+                        name = 'simulation_(dummy)'
+                    elif 'preemptive'.startswith(condition):
+                        name = 'dummy_preemptive'
+                    elif 'ambush'.startswith(condition):
+                        name = 'dummy_ambush'
                     else:
-                        type_ = 'set'
-                        name = 'klikk_1'
-                        forced_condition = params[0] if params else 'normal'
-                    line = f'encounter {type_} {name} false {forced_condition}'
+                        name = 'dummy'
+                    line = f'encounter {type_} {name} false'
+                case ['encounter']:
+                    line = 'encounter boss dummy false'
                 case [character, *params] if character in CHARACTERS:
                     line = ' '.join(['action', character, *params])
             input_lines[index] = line
@@ -64,25 +64,17 @@ class ActionsTracker(BaseWidget):
 
         output_data = []
         for event in events_sequence:
-            match event:
-                case Encounter():
-                    line = ''
-                    icvs = ' '.join([f'{c[:2]:2}[{icv:2}]'
-                                     for c, icv
-                                     in islice(event.icvs.items(), 7)])
-                    if event.condition != EncounterCondition.NORMAL:
-                        condition = f'{event.condition:10}'
-                    elif event.name.startswith('simulation'):
-                        condition = 'Simulation'
-                    else:
-                        condition = ' ' * 10
-                    line = (f'Encounter {event.index:3}: {condition} {icvs}')
-                    output_data.append(line)
-                # if the text contains /// it hides the lines before it
-                case Comment() if event.text == '///':
-                    output_data.clear()
-                case _:
-                    output_data.append(str(event))
+            line = str(event)
+            output_data.append(line)
+            # if the text contains /// it hides the lines before it
+            if line == '///':
+                output_data.clear()
+
+        data = '\n'.join(output_data)
+        data = data.replace(' - Simulation: Dummy Normal', ': Simulation')
+        data = data.replace(' - Boss: Dummy', ':')
+        data = data.replace('Normal', '          ')
+        data = data.replace('Ambush', 'Ambush    ')
 
         # update the text widget
-        self.print_output('\n'.join(output_data))
+        self.print_output(data)

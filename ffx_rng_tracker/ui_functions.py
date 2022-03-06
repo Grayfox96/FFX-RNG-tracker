@@ -45,9 +45,9 @@ def get_encounter_predictions(seed: int, delta: int = 6) -> str:
         (39, 39 + (delta // 2)),
     )
     zones = (
-        Zone('Underwater Ruins', [], 30, 240),
-        Zone('Besaid Lagoon', [], 30, 240),
-        Zone('Besaid Road', [], 35, 280),
+        Zone('Underwater Ruins', [], None, 30, 240),
+        Zone('Besaid Lagoon', [], None, 30, 240),
+        Zone('Besaid Road', [], None, 35, 280),
     )
     gs = GameState(seed)
     predictions = {z.name: {} for z in zones}

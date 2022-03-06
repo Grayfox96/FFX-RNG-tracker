@@ -1,282 +1,371 @@
 {   
-    "set": {
+    "bosses": {
+        "dummy": {
+            "name" : "Boss",
+            "formation": ["dummy"],
+            "forced_condition": "normal"
+        },
+        "dummy_preemptive": {
+            "name" : "Boss",
+            "formation": ["dummy"],
+            "forced_condition": "preemptive"
+        },
+        "dummy_ambush": {
+            "name" : "Boss",
+            "formation": ["dummy"],
+            "forced_condition": "ambush"
+        },
         "sinscales": {
             "name": "Sinscales",
-            "formation": ["sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"]
+            "formation": ["sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"],
+            "forced_condition": "normal"
         },
         "ammes": {
             "name": "Ammes",
-            "formation": ["sinspawn_ammes", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"]
+            "formation": ["sinspawn_ammes", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"],
+            "forced_condition": "normal"
         },
         "tanker": {
             "name": "Tanker",
-            "formation": ["tanker", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"]
+            "formation": ["tanker", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"],
+            "forced_condition": "normal"
         },
         "sahagins": {
             "name": "Sahagins",
-            "formation": ["sahagin_4", "sahagin_4", "sahagin_4"]
+            "formation": ["sahagin_4", "sahagin_4", "sahagin_4"],
+            "forced_condition": ""
         },
         "geosgaeno": {
             "name": "Geosgaeno",
-            "formation": ["geosgaeno"]
+            "formation": ["geosgaeno"],
+            "forced_condition": ""
         },
         "klikk_1": {
             "name": "Klikk 1",
-            "formation": ["klikk"]
+            "formation": ["klikk"],
+            "forced_condition": "normal"
         },
         "klikk_2": {
             "name": "Klikk 2",
-            "formation": ["klikk"]
+            "formation": ["klikk"],
+            "forced_condition": "normal"
         },
         "piranhas": {
             "name": "Piranhas",
-            "formation": ["piranha_3", "piranha_3"]
+            "formation": ["piranha_3", "piranha_3"],
+            "forced_condition": ""
         },
         "tros": {
             "name": "Tros",
-            "formation": ["tros"]
+            "formation": ["tros"],
+            "forced_condition": ""
         },
         "wakka_tutorial": {
             "name": "Wakka tutorial",
-            "formation": ["dingo", "condor"]
+            "formation": ["dingo", "condor"],
+            "forced_condition": "normal"
         },
         "elements_tutorial": {
             "name": "Elements tutorial",
-            "formation": ["water_flan"]
+            "formation": ["water_flan"],
+            "forced_condition": "normal"
         },
         "kimahri": {
             "name": "Kimahri",
-            "formation": ["???"]
+            "formation": ["???"],
+            "forced_condition": "normal"
         },
         "garuda_1": {
             "name": "Garuda 1",
-            "formation": ["garuda_3"]
+            "formation": ["garuda_3"],
+            "forced_condition": "normal"
         },
         "garuda_2": {
             "name": "Garuda 2",
-            "formation": ["garuda_3"]
+            "formation": ["garuda_3"],
+            "forced_condition": "normal"
         },
         "besaid_forced_encounter": {
             "name": "Besaid forced encounter",
-            "formation": ["condor_2", "dingo_2", "water_flan_2"]
+            "formation": ["condor_2", "dingo_2", "water_flan_2"],
+            "forced_condition": "normal"
         },
         "sin_fin": {
             "name": "Sin Fin",
-            "formation": ["sin", "sinscale", "sinscale", "sinscale"]
+            "formation": ["sin", "sinscale", "sinscale", "sinscale"],
+            "forced_condition": "normal"
         },
         "echuilles": {
             "name": "Echuilles",
-            "formation": ["sinspawn_echuilles", "sinscale_3", "sinscale_3", "sinscale_3", "sinscale_3"]
+            "formation": ["sinspawn_echuilles", "sinscale_3", "sinscale_3", "sinscale_3", "sinscale_3"],
+            "forced_condition": "normal"
         },
         "lancet_tutorial": {
             "name": "Lancet tutorial",
-            "formation": ["ragora"]
+            "formation": ["ragora"],
+            "forced_condition": "normal"
         },
         "lord_ochu": {
             "name": "Lord Ochu",
-            "formation": ["lord_ochu"]
+            "formation": ["lord_ochu"],
+            "forced_condition": "normal"
         },
         "geneaux": {
             "name": "Geneaux",
-            "formation": ["sinspawn_geneaux", "geneaux's_tentacle", "geneaux's_tentacle"]
+            "formation": ["sinspawn_geneaux", "geneaux's_tentacle", "geneaux's_tentacle"],
+            "forced_condition": "normal"
         },
         "machina_1": {
             "name": "Machina 1",
-            "formation": ["worker", "worker"]
+            "formation": ["worker", "worker"],
+            "forced_condition": "normal"
         },
         "machina_2": {
             "name": "Machina 2",
-            "formation": ["worker", "worker"]
+            "formation": ["worker", "worker"],
+            "forced_condition": "normal"
         },
         "machina_3": {
             "name": "Machina 3",
-            "formation": ["worker", "worker", "worker", "worker", "worker", "worker"]
+            "formation": ["worker", "worker", "worker", "worker", "worker", "worker"],
+            "forced_condition": "normal"
         },
         "oblitzerator": {
             "name": "Oblitzerator",
-            "formation": ["oblitzerator"]
+            "formation": ["oblitzerator"],
+            "forced_condition": "normal"
         },
         "sahagin_chiefs": {
             "name": "Sahagin Chiefs",
-            "formation": ["sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief"]
+            "formation": ["sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief"],
+            "forced_condition": "normal"
         },
         "vouivre": {
             "name": "Vouivre",
-            "formation": ["vouivre_2"]
+            "formation": ["vouivre_2"],
+            "forced_condition": "normal"
         },
         "garuda": {
             "name": "Garuda",
-            "formation": ["garuda_2"]
+            "formation": ["garuda_2"],
+            "forced_condition": "normal"
         },
         "pierce_tutorial": {
             "name": "Pierce tutorial",
-            "formation": ["raldo"]
+            "formation": ["raldo"],
+            "forced_condition": "normal"
         },
         "chocobo_eater": {
             "name": "Chocobo Eater",
-            "formation": ["chocobo_eater"]
+            "formation": ["chocobo_eater"],
+            "forced_condition": "normal"
         },
         "sinspawn_gui_1": {
             "name": "Sinspawn Gui 1",
-            "formation": ["sinspawn_gui", "arm", "arm", "head"]
+            "formation": ["sinspawn_gui", "arm", "arm", "head"],
+            "forced_condition": "normal"
         },
         "sinspawn_gui_2": {
             "name": "Sinspawn Gui 2",
-            "formation": ["sinspawn_gui", "arm", "arm", "head"]
+            "formation": ["sinspawn_gui", "arm", "arm", "head"],
+            "forced_condition": "normal"
         },
         "extractor": {
             "name": "Extractor",
-            "formation": ["extractor"]
+            "formation": ["extractor"],
+            "forced_condition": "normal"
         },
         "rikku_tutorial": {
             "name": "Rikku tutorial",
-            "formation": ["???_3", "bunyip"]
+            "formation": ["???_3", "bunyip"],
+            "forced_condition": "normal"
         },
         "spherimorph": {
             "name": "Spherimorph",
-            "formation": ["spherimorph"]
+            "formation": ["spherimorph"],
+            "forced_condition": "normal"
         },
         "crawler": {
             "name": "Crawler",
-            "formation": ["crawler", "negator"]
+            "formation": ["crawler", "negator"],
+            "forced_condition": "normal"
         },
         "seymour": {
             "name": "Seymour",
-            "formation": ["seymour", "guado_guardian", "guado_guardian", "anima"]
+            "formation": ["seymour", "guado_guardian", "guado_guardian", "anima"],
+            "forced_condition": "normal"
         },
         "guado_encounter": {
             "name": "Guado Encounter",
-            "formation": ["guado_guardian_2"]
+            "formation": ["guado_guardian_2"],
+            "forced_condition": "normal"
         },
         "wendigo": {
             "name": "Wendigo",
-            "formation": ["guado_guardian_2", "wendigo", "guado_guardian_2"]
+            "formation": ["guado_guardian_2", "wendigo", "guado_guardian_2"],
+            "forced_condition": "normal"
         },
         "zu": {
             "name": "Zu",
-            "formation": ["zu_2"]
+            "formation": ["zu_2"],
+            "forced_condition": "normal"
         },
         "machina_steal_tutorial": {
             "name": "Machina Steal tutorial",
-            "formation": ["mech_guard", "mech_guard"]
+            "formation": ["mech_guard", "mech_guard"],
+            "forced_condition": ""
         },
         "sandragora": {
             "name": "Sandragora",
-            "formation": ["sandragora"]
+            "formation": ["sandragora"],
+            "forced_condition": ""
         },
         "guado_+_3_bomb": {
             "name": "Guado + 3 Bomb",
-            "formation": ["guado_guardian_3", "bomb_2", "bomb_2", "bomb_2"]
+            "formation": ["guado_guardian_3", "bomb_2", "bomb_2", "bomb_2"],
+            "forced_condition": ""
         },
         "guado_+_2_dual_horn": {
             "name": "Guado + 2 Dual Horn",
-            "formation": ["dual_horn_2", "dual_horn_2", "guado_guardian_3"]
+            "formation": ["dual_horn_2", "dual_horn_2", "guado_guardian_3"],
+            "forced_condition": ""
         },
         "guado_+_2_chimera": {
             "name": "Guado + 2 Chimera",
-            "formation": ["chimera_2", "chimera_2", "guado_guardian_3"]
+            "formation": ["chimera_2", "chimera_2", "guado_guardian_3"],
+            "forced_condition": ""
         },
         "evrae": {
             "name": "Evrae",
-            "formation": ["evrae"]
+            "formation": ["evrae"],
+            "forced_condition": "normal"
         },
         "bevelle_guards_1": {
             "name": "Bevelle Guards 1",
-            "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk"]
+            "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk"],
+            "forced_condition": "normal"
         },
         "bevelle_guards_2": {
             "name": "Bevelle Guards 2",
-            "formation": ["ykt-63", "warrior_monk", "warrior_monk"]
+            "formation": ["ykt-63", "warrior_monk", "warrior_monk"],
+            "forced_condition": "normal"
         },
         "bevelle_guards_3": {
             "name": "Bevelle Guards 3",
-            "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk"]
+            "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk"],
+            "forced_condition": "normal"
         },
         "bevelle_guards_4": {
             "name": "Bevelle Guards 4",
-            "formation": ["ykt-63", "warrior_monk", "warrior_monk"]
+            "formation": ["ykt-63", "warrior_monk", "warrior_monk"],
+            "forced_condition": "normal"
         },
         "bevelle_guards_5": {
             "name": "Bevelle Guards 5",
-            "formation": ["warrior_monk", "yat-99", "warrior_monk"]
+            "formation": ["warrior_monk", "yat-99", "warrior_monk"],
+            "forced_condition": "normal"
         },
         "isaaru_grothia": {
             "name": "Isaaru Grothia",
-            "formation": ["ifrit_2"]
+            "formation": ["ifrit_2"],
+            "forced_condition": "normal"
         },
         "isaaru_pterya": {
             "name": "Isaaru Pterya",
-            "formation": ["valefor"]
+            "formation": ["valefor"],
+            "forced_condition": "normal"
         },
         "isaaru_spathi": {
             "name": "Isaaru Spathi",
-            "formation": ["bahamut"]
+            "formation": ["bahamut"],
+            "forced_condition": "normal"
         },
         "evrae_altana": {
             "name": "Evrae Altana",
-            "formation": ["evrae_altana"]
+            "formation": ["evrae_altana"],
+            "forced_condition": "normal"
         },
         "seymour_natus": {
             "name": "Seymour Natus",
-            "formation": ["seymour_natus", "mortibody"]
+            "formation": ["seymour_natus", "mortibody"],
+            "forced_condition": "normal"
         },
         "defender_x": {
             "name": "Defender X",
-            "formation": ["defender_x"]
+            "formation": ["defender_x"],
+            "forced_condition": "normal"
         },
         "biran_&_yenke": {
             "name": "Biran & Yenke",
-            "formation": ["biran_ronso", "yenke_ronso"]
+            "formation": ["biran_ronso", "yenke_ronso"],
+            "forced_condition": "normal"
         },
         "seymour_flux": {
             "name": "Seymour Flux",
-            "formation": ["seymour_flux", "mortiorchis"]
+            "formation": ["seymour_flux", "mortiorchis"],
+            "forced_condition": "normal"
         },
         "sanctuary_keeper": {
             "name": "Sanctuary Keeper",
-            "formation": ["sanctuary_keeper"]
+            "formation": ["sanctuary_keeper"],
+            "forced_condition": "normal"
         },
         "spectral_keeper": {
             "name": "Spectral Keeper",
-            "formation": ["spectral_keeper"]
+            "formation": ["spectral_keeper"],
+            "forced_condition": "normal"
         },
         "yunalesca": {
             "name": "Yunalesca",
-            "formation": ["yunalesca"]
+            "formation": ["yunalesca"],
+            "forced_condition": "normal"
         },
         "left_fin": {
             "name": "Left Fin",
-            "formation": ["left_fin"]
+            "formation": ["left_fin"],
+            "forced_condition": "normal"
         },
         "right_fin": {
             "name": "Right Fin",
-            "formation": ["right_fin"]
+            "formation": ["right_fin"],
+            "forced_condition": "normal"
         },
         "sin_core": {
             "name": "Sin Core",
-            "formation": ["sinspawn_genais", "sin_2"]
+            "formation": ["sinspawn_genais", "sin_2"],
+            "forced_condition": "normal"
         },
         "overdrive_sin": {
             "name": "Overdrive Sin",
-            "formation": ["sin_3"]
+            "formation": ["sin_3"],
+            "forced_condition": "normal"
         },
         "seymour_omnis": {
             "name": "Seymour Omnis",
-            "formation": ["seymour_omnis", "mortiphasm", "mortiphasm", "mortiphasm", "mortiphasm"]
+            "formation": ["seymour_omnis", "mortiphasm", "mortiphasm", "mortiphasm", "mortiphasm"],
+            "forced_condition": "normal"
         }
     },
     "simulation": {
-        "mi'ihen": {
-            "name": "Mi'ihen",
-            "monsters": ["bomb", "dual_horn"]
+        "simulation_(dummy)": {
+            "name": "Simulation",
+            "monsters": ["dummy"],
+            "forced_condition": "normal"
         },
-        "old_road": {
-            "name": "Old Road",
-            "monsters": ["funguar", "garuda", "basilisk"]
+        "simulation_(mi'ihen)": {
+            "name": "Simulation (Mi'ihen)",
+            "monsters": ["bomb", "dual_horn"],
+            "forced_condition": "normal"
         },
-        "calm_lands": {
-            "name": "Calm Lands",
-            "monsters": ["coeurl", "malboro", "bashura", "ghost"]
+        "simulation_(old_road)": {
+            "name": "Simulation (Old Road)",
+            "monsters": ["funguar", "garuda", "basilisk"],
+            "forced_condition": "normal"
+        },
+        "simulation_(calm_lands)": {
+            "name": "Simulation (Calm Lands)",
+            "monsters": ["coeurl", "malboro", "bashura", "ghost"],
+            "forced_condition": "normal"
         }
     },
     "random": {
@@ -285,7 +374,8 @@
             "formations": [
                 ["piranha", "piranha_2"],
                 ["piranha_3"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "besaid_lagoon": {
             "name": "Besaid Lagoon",
@@ -294,7 +384,8 @@
                 ["piranha", "piranha_2"],
                 ["piranha_2", "piranha", "piranha_3"],
                 ["piranha_2", "piranha", "piranha", "piranha"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "besaid_road": {
             "name": "Besaid Road",
@@ -303,7 +394,8 @@
                 ["dingo_2", "condor_2"],
                 ["condor_2", "water_flan_2"],
                 ["dingo_2", "water_flan_2", "condor_2"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "kilika_woods": {
             "name": "Kilika Woods",
@@ -321,7 +413,8 @@
                 ["ragora"],
                 ["ragora", "ragora"],
                 ["ragora", "killer_bee", "killer_bee"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "mi'ihen_screen_1": {
             "name": "Mi'ihen Screen 1",
@@ -332,7 +425,8 @@
                 ["raldo_2", "white_element", "floating_eye"],
                 ["bomb"],
                 ["dual_horn"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "mi'ihen_screen_1_(ledge)": {
             "name": "Mi'ihen Screen 1 (Ledge)",
@@ -340,7 +434,8 @@
                 ["mi'ihen_fang"],
                 ["mi'ihen_fang", "mi'ihen_fang"],
                 ["mi'ihen_fang", "dual_horn"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "mi'ihen_screen_2-3": {
             "name": "Mi'ihen Screen 2-3",
@@ -363,7 +458,8 @@
                 ["floating_eye", "bomb", "floating_eye"],
                 ["floating_eye", "bomb", "floating_eye"],
                 ["bomb", "bomb", "bomb"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "mi'ihen_screen_2-3_(ledge)": {
             "name": "Mi'ihen Screen 2-3 (Ledge)",
@@ -371,7 +467,8 @@
                 ["mi'ihen_fang", "mi'ihen_fang"],
                 ["mi'ihen_fang", "mi'ihen_fang", "mi'ihen_fang"],
                 ["mi'ihen_fang", "dual_horn"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "mi'ihen_(newroad)": {
             "name": "Mi'ihen (Newroad)",
@@ -388,7 +485,8 @@
                 ["bomb", "floating_eye", "floating_eye"],
                 ["bomb", "bomb", "bomb"],
                 ["bomb", "bomb", "bomb"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "old_road": {
             "name": "Old Road",
@@ -413,7 +511,8 @@
                 ["vouivre", "dual_horn", "dual_horn"],
                 ["bomb", "dual_horn", "bomb"],
                 ["bomb", "dual_horn", "bomb"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "clasko_skip_screen": {
             "name": "Clasko Skip Screen",
@@ -424,7 +523,8 @@
                 ["thunder_flan", "bomb", "bomb"],
                 ["bomb", "bomb", "dual_horn"],
                 ["dual_horn", "vouivre", "dual_horn"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "mrr_-_valley": {
             "name": "MRR - Valley",
@@ -435,7 +535,8 @@
                 ["raptor", "funguar", "red_element"],
                 ["funguar", "red_element", "gandarewa"],
                 ["garuda"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "mrr_-_precipice": {
             "name": "MRR - Precipice",
@@ -449,7 +550,8 @@
                 ["garuda"],
                 ["garuda"],
                 ["garuda", "funguar", "funguar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "mrr_-_aftermath": {
             "name": "MRR - Aftermath",
@@ -470,7 +572,8 @@
                 ["raptor", "funguar", "red_element"],
                 ["funguar", "red_element", "gandarewa"],
                 ["funguar", "red_element", "gandarewa"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "djose_highroad_(front_half)": {
             "name": "Djose Highroad (Front Half)",
@@ -480,7 +583,8 @@
                 ["basilisk", "basilisk"],
                 ["lamashtu", "raptor", "funguar"],
                 ["lamashtu", "raptor", "funguar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "djose_highroad_(back_half)": {
             "name": "Djose Highroad (Back Half)",
@@ -500,7 +604,8 @@
                 ["basilisk", "basilisk"],
                 ["basilisk", "basilisk"],
                 ["basilisk", "basilisk"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "moonflow_(south)": {
             "name": "Moonflow (South)",
@@ -517,7 +622,8 @@
                 ["garm", "bunyip_2", "snow_flan"],
                 ["garm", "bunyip_2", "snow_flan"],
                 ["gandarewa", "funguar", "gandarewa"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "moonflow_(north)": {
             "name": "Moonflow (North)",
@@ -527,7 +633,8 @@
                 ["???_2", "bunyip_2", "bite_bug", "bite_bug"],
                 ["ochu", "garm"],
                 ["garm", "bunyip_2", "snow_flan"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "thunder_plains_(south)": {
             "name": "Thunder Plains (South)",
@@ -537,7 +644,8 @@
                 ["gold_element", "buer", "melusine"],
                 ["larva", "aerouge", "aerouge"],
                 ["gold_element", "buer", "aerouge"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "thunder_plains_(south)_(1_stone)": {
             "name": "Thunder Plains (South) (1 stone)",
@@ -548,7 +656,8 @@
                 ["larva", "aerouge", "aerouge"],
                 ["gold_element", "buer", "aerouge"],
                 ["qactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "thunder_plains_(south)_(2_stones)": {
             "name": "Thunder Plains (South) (2 stones)",
@@ -559,7 +668,8 @@
                 ["larva", "aerouge", "aerouge"],
                 ["gold_element", "buer", "aerouge"],
                 ["qactuar", "qactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "thunder_plains_(south)_(3_stones)": {
             "name": "Thunder Plains (South) (3 stones)",
@@ -571,7 +681,8 @@
                 ["gold_element", "buer", "aerouge"],
                 ["qactuar", "qactuar"],
                 ["qactuar", "qactuar", "qactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "thunder_plains_(north)": {
             "name": "Thunder Plains (North)",
@@ -581,7 +692,8 @@
                 ["larva", "larva"],
                 ["melusine", "kusariqqu", "aerouge"],
                 ["gold_element", "buer", "kusariqqu"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "thunder_plains_(north)_(1_stone)": {
             "name": "Thunder Plains (North) (1 stone)",
@@ -592,7 +704,8 @@
                 ["melusine", "kusariqqu", "aerouge"],
                 ["gold_element", "buer", "kusariqqu"],
                 ["qactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "thunder_plains_(north)_(2_stones)": {
             "name": "Thunder Plains (North) (2 stones)",
@@ -604,7 +717,8 @@
                 ["gold_element", "buer", "kusariqqu"],
                 ["qactuar"],
                 ["qactuar", "qactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "thunder_plains_(north)_(3_stones)": {
             "name": "Thunder Plains (North) (3 stones)",
@@ -615,7 +729,8 @@
                 ["melusine", "kusariqqu", "aerouge"],
                 ["gold_element", "buer", "kusariqqu"],
                 ["qactuar", "qactuar", "qactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "macalania_woods": {
             "name": "Macalania Woods",
@@ -627,7 +742,8 @@
                 ["wasp", "wasp", "xiphos"],
                 ["chimera"],
                 ["chimera"]
-            ]
+            ],
+            "forced_condition": "normal"
         },
         "lake_macalania": {
             "name": "Lake Macalania",
@@ -635,7 +751,8 @@
                 ["evil_eye", "ice_flan", "snow_wolf"],
                 ["snow_wolf", "ice_flan", "mafdet"],
                 ["snow_wolf", "ice_flan", "snow_wolf"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "crevasse": {
             "name": "Crevasse",
@@ -643,7 +760,8 @@
                 ["evil_eye", "snow_wolf", "ice_flan"],
                 ["mafdet", "snow_wolf", "ice_flan"],
                 ["mafdet", "evil_eye", "evil_eye"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "sanubia_desert_(east)": {
             "name": "Sanubia Desert (East)",
@@ -661,7 +779,8 @@
                 ["zu"],
                 ["sand_worm"],
                 ["cactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "sanubia_desert_(central)": {
             "name": "Sanubia Desert (Central)",
@@ -679,7 +798,8 @@
                 ["zu"],
                 ["sand_worm"],
                 ["cactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "sanubia_desert_(ruins)": {
             "name": "Sanubia Desert (Ruins)",
@@ -694,7 +814,8 @@
                 ["sand_wolf", "sand_wolf", "sand_wolf", "???_2"],
                 ["sand_wolf", "sand_wolf", "sand_wolf", "???_2"],
                 ["cactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "sanubia_desert_(west)": {
             "name": "Sanubia Desert (West)",
@@ -710,7 +831,8 @@
                 ["zu"],
                 ["sand_worm"],
                 ["cactuar"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "home": {
             "name": "Home",
@@ -719,7 +841,8 @@
                 ["guado_guardian_3", "evil_eye_2", "evil_eye_2"],
                 ["dual_horn_2", "dual_horn_2", "guado_guardian_3"],
                 ["chimera_2", "chimera_2", "guado_guardian_3"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "airship": {
             "name": "Airship",
@@ -727,7 +850,8 @@
                 ["bomb_2", "bomb_2", "bomb_2"],
                 ["evil_eye_2", "evil_eye_2"],
                 ["dual_horn_2", "dual_horn_2"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "via_purifico_(maze)": {
             "name": "Via Purifico (Maze)",
@@ -738,13 +862,15 @@
                 ["aqua_flan", "sahagin", "sahagin"],
                 ["aqua_flan", "cave_iguion", "cave_iguion"],
                 ["swamp_mafdet", "bat_eye"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "via_purifico_(corridor)": {
             "name": "Via Purifico (Corridor)",
             "formations": [
                 ["maze_larva"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "via_purifico_(underwater)": {
             "name": "Via Purifico (Underwater)",
@@ -754,7 +880,8 @@
                 ["remora", "sahagin_3", "remora", "sahagin_3"],
                 ["sahagin_3", "octopus", "sahagin_3"],
                 ["octopus", "octopus"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "highbridge": {
             "name": "Highbridge",
@@ -764,7 +891,8 @@
                 ["ykt-63", "yat-99", "ykt-63"],
                 ["yat-99", "ykt-63", "yat-99"],
                 ["yat-99", "ykt-63", "yat-99"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "calm_lands_(south)_(before_defender_x)": {
             "name": "Calm Lands (South) (before Defender X)",
@@ -775,7 +903,8 @@
                 ["nebiros", "shred", "flame_flan"],
                 ["mech_scouter", "nebiros", "nebiros", "skoll"],
                 ["mech_scouter", "nebiros", "nebiros", "skoll"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "calm_lands_(south)": {
             "name": "Calm Lands (South)",
@@ -793,7 +922,8 @@
                 ["coeurl", "coeurl"],
                 ["coeurl", "coeurl"],
                 ["coeurl", "coeurl"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "calm_lands_(central-north-east)": {
             "name": "Calm Lands (Central-North-East)",
@@ -819,7 +949,8 @@
                 ["ogre", "skoll", "skoll"],
                 ["mech_scouter_2", "coeurl", "mech_scouter_2"],
                 ["coeurl", "coeurl"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "calm_lands_(north-west)": {
             "name": "Calm Lands (North-West)",
@@ -846,7 +977,8 @@
                 ["ogre", "skoll", "skoll"],
                 ["ogre", "skoll", "skoll"],
                 ["mech_scouter_2", "coeurl", "mech_scouter_2"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "calm_lands_(gorge)": {
             "name": "Calm Lands (Gorge)",
@@ -854,7 +986,8 @@
                 ["epaaj", "epaaj"],
                 ["mech_scouter_2", "epaaj", "mech_scouter_2"],
                 ["mech_scouter", "epaaj", "mech_scouter"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "cave_(white_zone)": {
             "name": "Cave (White Zone)",
@@ -872,7 +1005,8 @@
                 ["magic_urn"],
                 ["magic_urn"],
                 ["magic_urn"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "cave_(green_zone)": {
             "name": "Cave (Green Zone)",
@@ -887,7 +1021,8 @@
                 ["magic_urn"],
                 ["magic_urn"],
                 ["magic_urn"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "gagazet_(mountain)": {
             "name": "Gagazet (Mountain)",
@@ -897,7 +1032,8 @@
                 ["mech_defender", "mech_leader", "mech_defender"],
                 ["grat", "grat", "bashura"],
                 ["grat", "grat", "grenade"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "gagazet_(cave)": {
             "name": "Gagazet (Cave)",
@@ -914,7 +1050,8 @@
                 ["bashura", "bashura"],
                 ["behemoth"],
                 ["behemoth"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "gagazet_(underwater)": {
             "name": "Gagazet (Underwater)",
@@ -923,7 +1060,8 @@
                 ["maelspike", "achelous", "achelous"],
                 ["achelous", "achelous", "splasher_2", "splasher_3"],
                 ["splasher_2", "splasher_3", "splasher", "splasher_3"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "zanarkand_(overpass)": {
             "name": "Zanarkand (Overpass)",
@@ -933,7 +1071,8 @@
                 ["grendel", "ahriman"],
                 ["bashura", "ahriman"],
                 ["behemoth"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "zanarkand_(dome)": {
             "name": "Zanarkand (Dome)",
@@ -946,7 +1085,8 @@
                 ["ykt-11", "fallen_monk_2", "fallen_monk_2"],
                 ["ykt-11", "yat-97", "ykt-11"],
                 ["yat-97", "ykt-11", "yat-97"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "omega_ruins_(lower)": {
             "name": "Omega Ruins (Lower)",
@@ -971,7 +1111,8 @@
                 ["zaurus", "mimic_4"],
                 ["puroboros", "puroboros", "puroboros"],
                 ["wraith"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "omega_ruins_(upper)": {
             "name": "Omega Ruins (Upper)",
@@ -983,7 +1124,8 @@
                 ["gemini", "gemini_3"],
                 ["defender_z", "defender_z"],
                 ["puroboros", "puroboros", "puroboros"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "inside_sin_(front)": {
             "name": "Inside Sin (Front)",
@@ -998,7 +1140,8 @@
                 ["gemini", "gemini_3"],
                 ["gemini", "gemini_3"],
                 ["behemoth_king"]
-            ]
+            ],
+            "forced_condition": ""
         },
         "inside_sin_(back)": {
             "name": "Inside Sin (Back)",
@@ -1011,7 +1154,8 @@
                 ["great_malboro"],
                 ["barbatos"],
                 ["wraith"]
-            ]
+            ],
+            "forced_condition": ""
         }
     }
 }

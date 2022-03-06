@@ -1,6 +1,6 @@
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.characters import CHARACTERS, Character
-from ..data.constants import EncounterCondition, Stat
+from ..data.constants import Stat
 from ..data.monsters import MONSTERS
 from ..gamestate import GameState
 from .advance_rng import AdvanceRNG
@@ -22,11 +22,10 @@ def parse_encounter(gs: GameState,
                     type_: str = '',
                     name: str = '',
                     initiative: str = '',
-                    forced_condition: str = '',
                     *_,
                     ) -> Encounter | Comment:
     match type_:
-        case 'set' | 'set_optional':
+        case 'boss' | 'optional_boss':
             encounter_type = Encounter
         case 'random':
             encounter_type = RandomEncounter
@@ -38,12 +37,7 @@ def parse_encounter(gs: GameState,
         case _:
             return Comment(gs, f'Invalid encounter type: {type_}')
     initiative = initiative == 'true'
-    condition = None
-    if forced_condition:
-        for ec in EncounterCondition:
-            if ec.lower().startswith(forced_condition):
-                condition = ec
-    return encounter_type(gs, name, initiative, condition)
+    return encounter_type(gs, name, initiative)
 
 
 def parse_steal(gs: GameState,

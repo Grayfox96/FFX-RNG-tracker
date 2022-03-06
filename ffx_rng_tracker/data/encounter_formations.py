@@ -1,16 +1,25 @@
 import json
 from dataclasses import dataclass, field
 
+from .constants import EncounterCondition
 from .file_functions import get_resource_path
 from .monsters import MONSTERS, Monster
 
-Formation = list[Monster]
+
+class Formation(list[Monster]):
+
+    def __str__(self) -> str:
+        return ', '.join([str(m) for m in self])
+
+    def __format__(self, __format_spec: str) -> str:
+        return format(str(self), __format_spec)
 
 
 @dataclass
 class Zone:
     name: str
     formations: list[Formation]
+    forced_condition: EncounterCondition | None
     grace_period: int = field(default=0)
     threat_modifier: int = field(default=0)
 
@@ -22,13 +31,23 @@ class Zone:
 class Boss:
     name: str
     formation: Formation
+    forced_condition: EncounterCondition | None
+
+    def __str__(self) -> str:
+        return self.name
 
 
 @dataclass
-class Formations:
-    bosses: dict[str, Boss]
-    simulated: dict[str, tuple[str, list[Monster]]]
-    zones: dict[str, Zone]
+class Simulation:
+    name: str
+    monsters: Formation
+    forced_condition: EncounterCondition | None
+
+    def __str__(self) -> str:
+        return self.name
+
+
+Formations = tuple[dict[str, Boss], dict[str, Simulation], dict[str, Zone]]
 
 
 def _get_formations(file_path: str) -> Formations:
@@ -36,30 +55,47 @@ def _get_formations(file_path: str) -> Formations:
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
         formations: dict[str, dict] = json.loads(file_object.read())
-    set_formation = {}
-    for encounter, data in formations['set'].items():
-        set_formation[encounter] = Boss(
+    bosses = {}
+    for boss, data in formations['bosses'].items():
+        for condition in EncounterCondition:
+            if condition.lower() == data['forced_condition']:
+                break
+        else:
+            condition = None
+        bosses[boss] = Boss(
             data['name'],
-            [MONSTERS[m] for m in data['formation']]
+            Formation(MONSTERS[m] for m in data['formation']),
+            condition
         )
 
-    simulated = {}
+    simulations = {}
     for encounter, data in formations['simulation'].items():
-        name = f'Simulation ({data["name"]})'
-        key = name.lower().replace(' ', '_')
-        simulated[key] = (
-            name,
-            [MONSTERS[m] for m in data['monsters']]
+        for condition in EncounterCondition:
+            if condition.lower() == data['forced_condition']:
+                break
+        else:
+            condition = None
+        simulations[encounter] = Simulation(
+            data['name'],
+            Formation(MONSTERS[m] for m in data['monsters']),
+            condition
         )
 
-    random = {}
+    zones = {}
     for encounter, data in formations['random'].items():
-        random[encounter] = Zone(
-            name=data['name'],
-            formations=[[MONSTERS[m] for m in f] for f in data['formations']],
+        for condition in EncounterCondition:
+            if condition.lower() == data['forced_condition']:
+                break
+        else:
+            condition = None
+        zones[encounter] = Zone(
+            data['name'],
+            [Formation(MONSTERS[m] for m in f) for f in data['formations']],
+            condition
         )
 
-    return Formations(set_formation, simulated, random)
+    return bosses, simulations, zones
 
 
-FORMATIONS = _get_formations('data/formations.json')
+BOSSES, SIMULATIONS, ZONES = _get_formations('data/formations.json')
+FORMATIONS = BOSSES | SIMULATIONS | ZONES

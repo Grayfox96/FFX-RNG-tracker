@@ -2,7 +2,6 @@ from typing import Callable
 
 from ..data.monsters import MONSTERS
 from ..data.notes import get_notes
-from ..events.comment import Comment
 from ..events.main import Event
 from ..events.parsing_functions import parse_monster_action, parse_party_change
 from .base_widgets import BaseWidget
@@ -42,12 +41,11 @@ class MonsterActionsTracker(BaseWidget):
 
         output_data = []
         for event in events_sequence:
-            match event:
-                # if the text contains /// it hides the lines before it
-                case Comment() if event.text == '///':
-                    output_data.clear()
-                case _:
-                    output_data.append(str(event))
+            line = str(event)
+            output_data.append(line)
+            # if the text contains /// it hides the lines before it
+            if line == '///':
+                output_data.clear()
 
         # update the text widget
         self.print_output('\n'.join(output_data))
