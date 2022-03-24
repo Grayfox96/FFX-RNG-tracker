@@ -1,5 +1,6 @@
 from typing import Callable
 
+from ..errors import EventParsingError
 from ..gamestate import GameState
 from .comment import Comment
 from .main import Event
@@ -28,15 +29,16 @@ class EventParser:
 
     def parse_line(self, line: str) -> Event:
         """Parse the input line and returns an event."""
-        match line.lower().split():
-            case words if not words or words[0].startswith(('#', '///')):
-                event = Comment(self._gamestate, line)
-            case [event_name, *params]:
-                try:
-                    parsing_func = self._parsing_functions[event_name]
-                except KeyError:
-                    event = Comment(
-                        self._gamestate, f'No event called {event_name!r}')
-                else:
-                    event = parsing_func(self._gamestate, *params)
-        return event
+        words = line.lower().split()
+        if not words or words[0].startswith(('#', '///')):
+            return Comment(self._gamestate, line)
+        event_name, *params = words
+        try:
+            parsing_func = self._parsing_functions[event_name]
+        except KeyError:
+            return Comment(
+                self._gamestate, f'# Error: No event called {event_name!r}')
+        try:
+            return parsing_func(self._gamestate, *params)
+        except EventParsingError as error:
+            return Comment(self._gamestate, f'# Error: {error}')

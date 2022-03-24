@@ -185,13 +185,9 @@ class BaseWidget(tk.Frame, ABC):
 
     def get_tags(self) -> dict[str, str]:
         """Setup tags to be used by highlight_patterns."""
-        error_messages = (
-            'Invalid', 'No event called', 'Usage:', ' named ',
-            'requires a target', ' advance rng ',
-        )
         tags = {
             'advance rng': '^Advanced rng.+$',
-            'error': f'^.*({"|".join(error_messages)}).+$',
+            'error': '^.*# Error: .+$',
             'comment': '^#(.+?)?$',
             'wrap margin': '^.+$',
         }

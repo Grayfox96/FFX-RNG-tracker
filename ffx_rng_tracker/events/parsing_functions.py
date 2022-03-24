@@ -2,6 +2,7 @@ from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.characters import CHARACTERS, Character
 from ..data.constants import Stat
 from ..data.monsters import MONSTERS
+from ..errors import EventParsingError
 from ..gamestate import GameState
 from .advance_rng import AdvanceRNG
 from .change_party import ChangeParty
@@ -23,7 +24,7 @@ def parse_encounter(gs: GameState,
                     name: str = '',
                     initiative: str = '',
                     *_,
-                    ) -> Encounter | Comment:
+                    ) -> Encounter:
     match type_:
         case 'boss' | 'optional_boss':
             encounter_type = Encounter
@@ -35,7 +36,7 @@ def parse_encounter(gs: GameState,
             encounter_type = MultizoneRandomEncounter
             name = name.split('/')
         case _:
-            return Comment(gs, f'Invalid encounter type: {type_}')
+            raise EventParsingError(f'Invalid encounter type: {type_}')
     initiative = initiative == 'true'
     return encounter_type(gs, name, initiative)
 
@@ -44,18 +45,18 @@ def parse_steal(gs: GameState,
                 monster_name: str = '',
                 successful_steals: str = '0',
                 *_,
-                ) -> Steal | Comment:
+                ) -> Steal:
     usage = 'Usage: steal [monster_name] (successful steals)'
     if not monster_name:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     try:
         monster = MONSTERS[monster_name]
     except KeyError:
-        return Comment(gs, f'No monster named {monster_name!r}')
+        raise EventParsingError(f'No monster named {monster_name!r}')
     try:
         successful_steals = int(successful_steals)
     except ValueError:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     return Steal(gs, monster, successful_steals)
 
 
@@ -64,14 +65,14 @@ def parse_kill(gs: GameState,
                killer_name: str = '',
                overkill: str = '',
                *_,
-               ) -> Kill | Comment:
+               ) -> Kill:
     usage = 'Usage: (kill) [monster_name] [killer] (overkill/ok)'
     if not monster_name or not killer_name:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     try:
         monster = MONSTERS[monster_name]
     except KeyError as error:
-        return Comment(gs, f'No monster named {error}')
+        raise EventParsingError(f'No monster named {error}')
     overkill = overkill in ('overkill', 'ok')
     killer = CHARACTERS.get(killer_name, Character('Unknown', 18))
     return Kill(gs, monster, killer, overkill)
@@ -81,14 +82,14 @@ def parse_bribe(gs: GameState,
                 monster_name: str = '',
                 user_name: str = '',
                 *_,
-                ) -> Bribe | Comment:
+                ) -> Bribe:
     usage = 'Usage: bribe [monster_name] [user]'
     if not monster_name or not user_name:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     try:
         monster = MONSTERS[monster_name]
     except KeyError as error:
-        return Comment(gs, f'No monster named {error}')
+        raise EventParsingError(f'No monster named {error}')
     killer = CHARACTERS.get(user_name, Character('Unknown', 18))
     return Bribe(gs, monster, killer)
 
@@ -102,7 +103,7 @@ def parse_roll(gs: GameState,
                rng_index: str = '',
                times: str = '1',
                *_,
-               ) -> AdvanceRNG | Comment:
+               ) -> AdvanceRNG:
     usage = 'Usage: waste/advance/roll [rng#] [amount]'
     try:
         if rng_index.startswith('rng'):
@@ -111,21 +112,21 @@ def parse_roll(gs: GameState,
             rng_index = int(rng_index)
         times = int(times)
     except ValueError:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     if times > 100000:
-        return Comment(gs, 'Can\'t advance rng more than 100000 times.')
+        raise EventParsingError('Can\'t advance rng more than 100000 times.')
     if not (0 <= rng_index < 68):
-        return Comment(gs, f'Can\'t advance rng index {rng_index}')
+        raise EventParsingError(f'Can\'t advance rng index {rng_index}')
     return AdvanceRNG(gs, rng_index, times)
 
 
 def parse_party_change(gs: GameState,
                        party_formation_string: str = '',
                        *_,
-                       ) -> ChangeParty | Comment:
+                       ) -> ChangeParty:
     usage = 'Usage: party [party members initials]'
     if not party_formation_string:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     party_formation = []
     characters = tuple(CHARACTERS.values())[:7]
     for character in characters:
@@ -136,7 +137,7 @@ def parse_party_change(gs: GameState,
                 break
 
     if not party_formation:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     return ChangeParty(gs, party_formation)
 
 
@@ -145,16 +146,16 @@ def parse_action(gs: GameState,
                  action_name: str = '',
                  target_name: str = '',
                  *_,
-                 ) -> CharacterAction | Escape | Comment:
+                 ) -> CharacterAction | Escape:
     usage = 'Usage: [character] [action name] (target)'
     if not character_name or not action_name:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
 
     if target_name.endswith('_c'):
         try:
             target = gs.characters[target_name[:-2]]
         except KeyError as error:
-            return Comment(gs, f'No character named {error}')
+            raise EventParsingError(f'No character named {error}')
     elif target_name:
         try:
             target = MONSTERS[target_name]
@@ -162,19 +163,18 @@ def parse_action(gs: GameState,
             try:
                 target = gs.characters[target_name]
             except KeyError as error:
-                return Comment(gs, f'No target named {error}')
+                raise EventParsingError(f'No target named {error}')
     else:
         target = None
 
     try:
         character = gs.characters[character_name]
     except KeyError:
-        return Comment(gs, f'No character named {character_name}')
+        raise EventParsingError(f'No character named {character_name}')
 
     if action_name == 'escape':
         if character.index > 6:
-            return Comment(
-                gs,
+            raise EventParsingError(
                 f'Character {character.name!r} can\'t perform action "Escape"'
             )
         return Escape(gs, character)
@@ -182,9 +182,13 @@ def parse_action(gs: GameState,
         try:
             action = ACTIONS[action_name]
         except KeyError:
-            return Comment(gs, f'No action named {action_name!r}')
+            raise EventParsingError(
+                f'No action named {action_name!r}'
+            )
         if target is None and action.has_target:
-            return Comment(gs, f'Action {action.name!r} requires a target.')
+            raise EventParsingError(
+                f'Action {action.name!r} requires a target.'
+            )
         return CharacterAction(gs, character, action, target)
 
 
@@ -193,20 +197,20 @@ def parse_stat_update(gs: GameState,
                       stat_name: str = '',
                       amount: str = '',
                       *_,
-                      ) -> ChangeStat | Comment:
+                      ) -> ChangeStat:
     usage = 'Usage: stat [character] [stat] [(+/-) amount]'
     if not character_name or not stat_name or not amount:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     try:
         character = gs.characters[character_name]
     except KeyError as error:
-        return Comment(gs, f'No character named {error}')
+        raise EventParsingError(f'No character named {error}')
     for stat in Stat:
         if str(stat).lower().replace(' ', '_') == stat_name:
             stat_value = character.stats[stat]
             break
     else:
-        return Comment(gs, f'No stat named {stat_name}')
+        raise EventParsingError(f'No stat named {stat_name}')
     try:
         if amount.startswith('+'):
             stat_value += int(amount[1:])
@@ -215,7 +219,7 @@ def parse_stat_update(gs: GameState,
         else:
             stat_value = int(amount)
     except ValueError:
-        return Comment(gs, 'Stat value should be an integer.')
+        raise EventParsingError('Stat value should be an integer.')
     return ChangeStat(gs, character, stat, stat_value)
 
 
@@ -224,19 +228,19 @@ def parse_yojimbo_action(gs: GameState,
                          monster_name: str = '',
                          overdrive: str = '',
                          *_,
-                         ) -> YojimboTurn | Comment:
+                         ) -> YojimboTurn:
     usage = 'Usage: [action] [monster] (overdrive)'
     if not action_name or not monster_name:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
     try:
         attack = YOJIMBO_ACTIONS[action_name]
     except KeyError as error:
-        return Comment(gs, f'No action named {error}')
+        raise EventParsingError(f'No action named {error}')
 
     try:
         monster = MONSTERS[monster_name]
     except KeyError as error:
-        return Comment(gs, f'No monster named {error}')
+        raise EventParsingError(f'No monster named {error}')
 
     overdrive = overdrive == 'overdrive'
 
@@ -256,7 +260,7 @@ def parse_compatibility_update(gs: GameState,
         else:
             gs.compatibility = int(compatibility)
     except ValueError:
-        return Comment(gs, usage)
+        raise EventParsingError(usage)
 
     return Comment(gs, f'Compatibility changed to {gs.compatibility}')
 
@@ -264,9 +268,12 @@ def parse_compatibility_update(gs: GameState,
 def parse_monster_action(gs: GameState,
                          monster_name: str = '',
                          *_,
-                         ) -> MonsterAction | Comment:
+                         ) -> MonsterAction:
     usage = 'Usage: [monster_name]'
 
-    if monster_name not in MONSTERS:
-        return Comment(gs, usage)
-    return MonsterAction(gs, MONSTERS[monster_name], ACTIONS['attack'], 0)
+    try:
+        monster = MONSTERS[monster_name]
+    except KeyError:
+        raise EventParsingError(usage)
+    action = ACTIONS['attack']
+    return MonsterAction(gs, monster, action, 0)
