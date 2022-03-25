@@ -375,7 +375,8 @@
                 ["piranha", "piranha_2"],
                 ["piranha_3"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 60
         },
         "besaid_lagoon": {
             "name": "Besaid Lagoon",
@@ -385,7 +386,8 @@
                 ["piranha_2", "piranha", "piranha_3"],
                 ["piranha_2", "piranha", "piranha", "piranha"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 60
         },
         "besaid_road": {
             "name": "Besaid Road",
@@ -395,7 +397,8 @@
                 ["condor_2", "water_flan_2"],
                 ["dingo_2", "water_flan_2", "condor_2"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 70
         },
         "kilika_woods": {
             "name": "Kilika Woods",
@@ -414,7 +417,8 @@
                 ["ragora", "ragora"],
                 ["ragora", "killer_bee", "killer_bee"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 65
         },
         "mi'ihen_screen_1": {
             "name": "Mi'ihen Screen 1",
@@ -426,7 +430,8 @@
                 ["bomb"],
                 ["dual_horn"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 50
         },
         "mi'ihen_screen_1_(ledge)": {
             "name": "Mi'ihen Screen 1 (Ledge)",
@@ -435,7 +440,8 @@
                 ["mi'ihen_fang", "mi'ihen_fang"],
                 ["mi'ihen_fang", "dual_horn"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "mi'ihen_screen_2-3": {
             "name": "Mi'ihen Screen 2-3",
@@ -459,7 +465,8 @@
                 ["floating_eye", "bomb", "floating_eye"],
                 ["bomb", "bomb", "bomb"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 50
         },
         "mi'ihen_screen_2-3_(ledge)": {
             "name": "Mi'ihen Screen 2-3 (Ledge)",
@@ -468,7 +475,8 @@
                 ["mi'ihen_fang", "mi'ihen_fang", "mi'ihen_fang"],
                 ["mi'ihen_fang", "dual_horn"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "mi'ihen_(newroad)": {
             "name": "Mi'ihen (Newroad)",
@@ -486,7 +494,8 @@
                 ["bomb", "bomb", "bomb"],
                 ["bomb", "bomb", "bomb"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "old_road": {
             "name": "Old Road",
@@ -512,7 +521,8 @@
                 ["bomb", "dual_horn", "bomb"],
                 ["bomb", "dual_horn", "bomb"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 40
         },
         "clasko_skip_screen": {
             "name": "Clasko Skip Screen",
@@ -524,7 +534,8 @@
                 ["bomb", "bomb", "dual_horn"],
                 ["dual_horn", "vouivre", "dual_horn"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 35
         },
         "mrr_-_valley": {
             "name": "MRR - Valley",
@@ -536,7 +547,8 @@
                 ["funguar", "red_element", "gandarewa"],
                 ["garuda"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 50
         },
         "mrr_-_precipice": {
             "name": "MRR - Precipice",
@@ -551,7 +563,8 @@
                 ["garuda"],
                 ["garuda", "funguar", "funguar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 65
         },
         "mrr_-_aftermath": {
             "name": "MRR - Aftermath",
@@ -573,7 +586,8 @@
                 ["funguar", "red_element", "gandarewa"],
                 ["funguar", "red_element", "gandarewa"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "djose_highroad_(front_half)": {
             "name": "Djose Highroad (Front Half)",
@@ -584,7 +598,8 @@
                 ["lamashtu", "raptor", "funguar"],
                 ["lamashtu", "raptor", "funguar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 40
         },
         "djose_highroad_(back_half)": {
             "name": "Djose Highroad (Back Half)",
@@ -605,7 +620,8 @@
                 ["basilisk", "basilisk"],
                 ["basilisk", "basilisk"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 40
         },
         "moonflow_(south)": {
             "name": "Moonflow (South)",
@@ -623,7 +639,8 @@
                 ["garm", "bunyip_2", "snow_flan"],
                 ["gandarewa", "funguar", "gandarewa"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 40
         },
         "moonflow_(north)": {
             "name": "Moonflow (North)",
@@ -634,7 +651,8 @@
                 ["ochu", "garm"],
                 ["garm", "bunyip_2", "snow_flan"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 35
         },
         "thunder_plains_(south)": {
             "name": "Thunder Plains (South)",
@@ -645,7 +663,8 @@
                 ["larva", "aerouge", "aerouge"],
                 ["gold_element", "buer", "aerouge"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 35
         },
         "thunder_plains_(south)_(1_stone)": {
             "name": "Thunder Plains (South) (1 stone)",
@@ -657,7 +676,8 @@
                 ["gold_element", "buer", "aerouge"],
                 ["qactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "thunder_plains_(south)_(2_stones)": {
             "name": "Thunder Plains (South) (2 stones)",
@@ -669,7 +689,8 @@
                 ["gold_element", "buer", "aerouge"],
                 ["qactuar", "qactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "thunder_plains_(south)_(3_stones)": {
             "name": "Thunder Plains (South) (3 stones)",
@@ -682,7 +703,8 @@
                 ["qactuar", "qactuar"],
                 ["qactuar", "qactuar", "qactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "thunder_plains_(north)": {
             "name": "Thunder Plains (North)",
@@ -693,7 +715,8 @@
                 ["melusine", "kusariqqu", "aerouge"],
                 ["gold_element", "buer", "kusariqqu"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 30
         },
         "thunder_plains_(north)_(1_stone)": {
             "name": "Thunder Plains (North) (1 stone)",
@@ -705,7 +728,8 @@
                 ["gold_element", "buer", "kusariqqu"],
                 ["qactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "thunder_plains_(north)_(2_stones)": {
             "name": "Thunder Plains (North) (2 stones)",
@@ -718,7 +742,8 @@
                 ["qactuar"],
                 ["qactuar", "qactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "thunder_plains_(north)_(3_stones)": {
             "name": "Thunder Plains (North) (3 stones)",
@@ -730,7 +755,8 @@
                 ["gold_element", "buer", "kusariqqu"],
                 ["qactuar", "qactuar", "qactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "macalania_woods": {
             "name": "Macalania Woods",
@@ -743,7 +769,8 @@
                 ["chimera"],
                 ["chimera"]
             ],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "danger_value": 40
         },
         "lake_macalania": {
             "name": "Lake Macalania",
@@ -752,7 +779,8 @@
                 ["snow_wolf", "ice_flan", "mafdet"],
                 ["snow_wolf", "ice_flan", "snow_wolf"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 30
         },
         "crevasse": {
             "name": "Crevasse",
@@ -761,7 +789,8 @@
                 ["mafdet", "snow_wolf", "ice_flan"],
                 ["mafdet", "evil_eye", "evil_eye"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 50
         },
         "sanubia_desert_(east)": {
             "name": "Sanubia Desert (East)",
@@ -780,7 +809,8 @@
                 ["sand_worm"],
                 ["cactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 60
         },
         "sanubia_desert_(central)": {
             "name": "Sanubia Desert (Central)",
@@ -799,7 +829,8 @@
                 ["sand_worm"],
                 ["cactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 60
         },
         "sanubia_desert_(ruins)": {
             "name": "Sanubia Desert (Ruins)",
@@ -815,7 +846,8 @@
                 ["sand_wolf", "sand_wolf", "sand_wolf", "???_2"],
                 ["cactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 60
         },
         "sanubia_desert_(west)": {
             "name": "Sanubia Desert (West)",
@@ -832,7 +864,8 @@
                 ["sand_worm"],
                 ["cactuar"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 60
         },
         "home": {
             "name": "Home",
@@ -842,7 +875,8 @@
                 ["dual_horn_2", "dual_horn_2", "guado_guardian_3"],
                 ["chimera_2", "chimera_2", "guado_guardian_3"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "airship": {
             "name": "Airship",
@@ -851,7 +885,8 @@
                 ["evil_eye_2", "evil_eye_2"],
                 ["dual_horn_2", "dual_horn_2"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 30
         },
         "via_purifico_(maze)": {
             "name": "Via Purifico (Maze)",
@@ -863,14 +898,16 @@
                 ["aqua_flan", "cave_iguion", "cave_iguion"],
                 ["swamp_mafdet", "bat_eye"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "via_purifico_(corridor)": {
             "name": "Via Purifico (Corridor)",
             "formations": [
                 ["maze_larva"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 20
         },
         "via_purifico_(underwater)": {
             "name": "Via Purifico (Underwater)",
@@ -881,7 +918,8 @@
                 ["sahagin_3", "octopus", "sahagin_3"],
                 ["octopus", "octopus"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 40
         },
         "highbridge": {
             "name": "Highbridge",
@@ -892,7 +930,8 @@
                 ["yat-99", "ykt-63", "yat-99"],
                 ["yat-99", "ykt-63", "yat-99"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 35
         },
         "calm_lands_(south)_(before_defender_x)": {
             "name": "Calm Lands (South) (before Defender X)",
@@ -904,7 +943,8 @@
                 ["mech_scouter", "nebiros", "nebiros", "skoll"],
                 ["mech_scouter", "nebiros", "nebiros", "skoll"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 50
         },
         "calm_lands_(south)": {
             "name": "Calm Lands (South)",
@@ -923,7 +963,8 @@
                 ["coeurl", "coeurl"],
                 ["coeurl", "coeurl"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "calm_lands_(central-north-east)": {
             "name": "Calm Lands (Central-North-East)",
@@ -950,7 +991,8 @@
                 ["mech_scouter_2", "coeurl", "mech_scouter_2"],
                 ["coeurl", "coeurl"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 60
         },
         "calm_lands_(north-west)": {
             "name": "Calm Lands (North-West)",
@@ -978,7 +1020,8 @@
                 ["ogre", "skoll", "skoll"],
                 ["mech_scouter_2", "coeurl", "mech_scouter_2"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "calm_lands_(gorge)": {
             "name": "Calm Lands (Gorge)",
@@ -987,7 +1030,8 @@
                 ["mech_scouter_2", "epaaj", "mech_scouter_2"],
                 ["mech_scouter", "epaaj", "mech_scouter"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "cave_(white_zone)": {
             "name": "Cave (White Zone)",
@@ -1006,7 +1050,8 @@
                 ["magic_urn"],
                 ["magic_urn"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "cave_(green_zone)": {
             "name": "Cave (Green Zone)",
@@ -1022,7 +1067,8 @@
                 ["magic_urn"],
                 ["magic_urn"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "gagazet_(mountain)": {
             "name": "Gagazet (Mountain)",
@@ -1033,7 +1079,8 @@
                 ["grat", "grat", "bashura"],
                 ["grat", "grat", "grenade"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "gagazet_(cave)": {
             "name": "Gagazet (Cave)",
@@ -1051,7 +1098,8 @@
                 ["behemoth"],
                 ["behemoth"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "gagazet_(underwater)": {
             "name": "Gagazet (Underwater)",
@@ -1061,7 +1109,8 @@
                 ["achelous", "achelous", "splasher_2", "splasher_3"],
                 ["splasher_2", "splasher_3", "splasher", "splasher_3"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "zanarkand_(overpass)": {
             "name": "Zanarkand (Overpass)",
@@ -1072,7 +1121,8 @@
                 ["bashura", "ahriman"],
                 ["behemoth"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "zanarkand_(dome)": {
             "name": "Zanarkand (Dome)",
@@ -1086,7 +1136,8 @@
                 ["ykt-11", "yat-97", "ykt-11"],
                 ["yat-97", "ykt-11", "yat-97"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "omega_ruins_(lower)": {
             "name": "Omega Ruins (Lower)",
@@ -1112,7 +1163,8 @@
                 ["puroboros", "puroboros", "puroboros"],
                 ["wraith"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "omega_ruins_(upper)": {
             "name": "Omega Ruins (Upper)",
@@ -1125,7 +1177,8 @@
                 ["defender_z", "defender_z"],
                 ["puroboros", "puroboros", "puroboros"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "inside_sin_(front)": {
             "name": "Inside Sin (Front)",
@@ -1141,7 +1194,8 @@
                 ["gemini", "gemini_3"],
                 ["behemoth_king"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         },
         "inside_sin_(back)": {
             "name": "Inside Sin (Back)",
@@ -1155,7 +1209,8 @@
                 ["barbatos"],
                 ["wraith"]
             ],
-            "forced_condition": ""
+            "forced_condition": "",
+            "danger_value": 0
         }
     }
 }

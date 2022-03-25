@@ -8,42 +8,45 @@ from .main import Event
 
 @dataclass
 class EncounterCheck(Event):
-    max_steps: int
+    max_distance: int
     zone: Zone
     encounter: bool = field(init=False, repr=False)
-    steps: int = field(init=False, repr=False)
+    distance: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.encounter, self.steps = self.check_encounter()
+        self.encounter, self.distance = self.check_encounter()
 
     def __str__(self) -> str:
         string = f'{self.zone.name}'
         if self.encounter:
-            string += f'Encounter at step {self.steps}'
+            string += f'Encounter at {self.distance} units'
         else:
-            string += f'No encounters for {self.steps} steps'
+            string += f'No encounters for {self.distance} units'
         return string
 
     def check_encounter(self) -> tuple[bool, int]:
-        live_steps = max(self.max_steps - self.zone.grace_period, 0)
+        steps = self.max_distance // 10
+        live_steps = max(steps - self.zone.grace_period, 0)
         if live_steps == 0:
-            return False, self.max_steps
+            return False, self.max_distance
         for steps in range(1, live_steps + 1):
             rng_roll = self._advance_rng(0) & 255
             counter = steps * 256 // self.zone.threat_modifier
             if rng_roll < counter:
                 encounter = True
+                distance = self.zone.grace_period + (steps * 10)
                 break
         else:
             encounter = False
-        return encounter, self.zone.grace_period + steps
+            distance = self.max_distance
+        return encounter, distance
 
 
 def walk(gamestate: GameState,
-         steps: int,
+         distance: int,
          zone: Zone,
          ) -> Iterator[EncounterCheck]:
-    while steps > 0:
-        encounter_check = EncounterCheck(gamestate, steps, zone)
+    while distance > 0:
+        encounter_check = EncounterCheck(gamestate, distance, zone)
         yield encounter_check
-        steps -= encounter_check.steps
+        distance -= encounter_check.distance

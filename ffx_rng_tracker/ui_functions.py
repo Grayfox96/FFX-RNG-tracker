@@ -1,7 +1,7 @@
 from itertools import product, zip_longest
 
 from .data.constants import EquipmentType
-from .data.encounter_formations import Zone
+from .data.encounter_formations import ZONES
 from .data.monsters import Monster
 from .events.encounter_check import walk
 from .gamestate import GameState
@@ -38,30 +38,30 @@ def get_equipment_types(seed: int, amount: int, columns: int = 2) -> str:
     return data
 
 
-def get_encounter_predictions(seed: int, delta: int = 6) -> str:
-    step_ranges = (
-        (64, 64 + delta),
-        (142, 142 + delta),
-        (39, 39 + (delta // 2)),
+def get_encounter_predictions(seed: int, delta: int = 60) -> str:
+    distances = (
+        620,
+        1420,
+        390,
     )
     zones = (
-        Zone('Underwater Ruins', [], None, 30, 240),
-        Zone('Besaid Lagoon', [], None, 30, 240),
-        Zone('Besaid Road', [], None, 35, 280),
+        ZONES['underwater_ruins'],
+        ZONES['besaid_lagoon'],
+        ZONES['besaid_road'],
     )
     gs = GameState(seed)
     predictions = {z.name: {} for z in zones}
     total_occurrences = 0
-    for steps_list in product(*[range(*s) for s in step_ranges]):
+    for distances_list in product(*[range(d, d+delta, 10) for d in distances]):
         total_occurrences += 1
         gs.reset()
-        for steps, zone in zip(steps_list, zones):
-            n = sum([1 for e in walk(gs, steps, zone) if e.encounter])
+        for distance, zone in zip(distances_list, zones):
+            n = sum([1 for e in walk(gs, distance, zone) if e.encounter])
             predictions[zone.name][n] = predictions[zone.name].get(n, 0) + 1
-    for (zone, prediction), steps in zip(predictions.items(), step_ranges):
+    for (zone, prediction), distance in zip(predictions.items(), distances):
         for n_encs, occurrences in prediction.items():
-            prediction[n_encs] = f'{occurrences * 100 / total_occurrences}%'
-        new_key = f'{zone}, {steps[0]}-{steps[1]} steps'
+            prediction[n_encs] = f'{occurrences*100 / total_occurrences:.5}%'
+        new_key = f'{zone}, {distance // 10}-{(distance + delta) // 10} steps'
         predictions[new_key] = predictions.pop(zone)
     return predictions
 

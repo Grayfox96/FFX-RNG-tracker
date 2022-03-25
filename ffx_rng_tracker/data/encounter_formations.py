@@ -20,8 +20,13 @@ class Zone:
     name: str
     formations: list[Formation]
     forced_condition: EncounterCondition | None
-    grace_period: int = field(default=0)
-    threat_modifier: int = field(default=0)
+    danger_value: int
+    grace_period: int = field(init=False, repr=False)
+    threat_modifier: int = field(init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        self.grace_period = self.danger_value // 2
+        self.threat_modifier = self.danger_value * 4
 
     def __str__(self) -> str:
         return self.name
@@ -91,7 +96,8 @@ def _get_formations(file_path: str) -> Formations:
         zones[encounter] = Zone(
             data['name'],
             [Formation(MONSTERS[m] for m in f) for f in data['formations']],
-            condition
+            condition,
+            data['danger_value']
         )
 
     return bosses, simulations, zones
