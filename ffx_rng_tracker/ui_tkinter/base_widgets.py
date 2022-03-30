@@ -140,8 +140,8 @@ class ScrollableFrame(tk.Frame):
         self.outer_frame.grid(*args, **kwargs)
 
 
-class BaseWidget(tk.Frame, ABC):
-    """Abstract base class for all tkinter widgets."""
+class BaseTracker(tk.Frame, ABC):
+    """Abstract base class for all tkinter based trackers."""
 
     def __init__(self, parent, seed: int, *args, **kwargs) -> None:
         self.gamestate = GameState(seed)

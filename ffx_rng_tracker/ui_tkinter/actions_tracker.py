@@ -5,10 +5,10 @@ from ..data.notes import get_notes
 from ..events.main import Event
 from ..events.parsing_functions import (parse_action, parse_encounter,
                                         parse_stat_update)
-from .base_widgets import BaseWidget
+from .base_widgets import BaseTracker
 
 
-class ActionsTracker(BaseWidget):
+class ActionsTracker(BaseTracker):
     """Widget used to track damage, critical chance,
     escape chance and miss chance rng.
     """
@@ -61,16 +61,11 @@ class ActionsTracker(BaseWidget):
     def parse_input(self) -> None:
         self.gamestate.reset()
         events_sequence = self.parser.parse(self.get_input())
-
-        output_data = []
-        for event in events_sequence:
-            line = str(event)
-            output_data.append(line)
-            # if the text contains /// it hides the lines before it
-            if line == '///':
-                output_data.clear()
-
-        data = '\n'.join(output_data)
+        data = '\n'.join(str(e) for e in events_sequence)
+        # if the text contains /// it hides the lines before it
+        if data.find('///') >= 0:
+            data = data.split('///')[-1]
+            data = data[data.find('\n') + 1:]
         data = data.replace(' - Simulation: Dummy Normal', ': Simulation')
         data = data.replace(' - Boss: Dummy', ':')
         data = data.replace('Normal', '          ')

@@ -1,9 +1,9 @@
 from ..configs import Configs
 from ..utils import treeview
-from .base_widgets import BaseWidget
+from .base_widgets import BaseTracker
 
 
-class ConfigsPage(BaseWidget):
+class ConfigsPage(BaseTracker):
     """Widget that shows the loaded configuration."""
 
     def make_input_widget(self) -> None:

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from ..data.monsters import MONSTERS
 from ..ui_functions import format_monster_data
-from .base_widgets import BaseWidget, ScrollableText
+from .base_widgets import BaseTracker, ScrollableText
 
 
 @dataclass
@@ -13,7 +13,7 @@ class MonsterDataViewerInputWidget:
     entry: tk.Entry
 
 
-class MonsterDataViewer(BaseWidget):
+class MonsterDataViewer(BaseTracker):
     """Widget used to display monster's data."""
 
     def __init__(self, parent, seed: int = 0, *args, **kwargs) -> None:

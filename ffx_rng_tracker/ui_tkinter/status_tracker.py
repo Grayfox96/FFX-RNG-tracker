@@ -1,8 +1,8 @@
 from ..ui_functions import get_status_chance_string
-from .base_widgets import BaseWidget, ScrollableText
+from .base_widgets import BaseTracker, ScrollableText
 
 
-class StatusTracker(BaseWidget):
+class StatusTracker(BaseTracker):
     """Widget that shows status RNG rolls."""
 
     def make_input_widget(self) -> None:

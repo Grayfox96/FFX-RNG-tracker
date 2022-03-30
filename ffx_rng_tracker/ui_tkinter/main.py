@@ -6,7 +6,7 @@ from ..configs import Configs
 from ..data.file_functions import get_resource_path, get_version
 from ..logger import log_exceptions, log_tkinter_error, setup_logger
 from .actions_tracker import ActionsTracker
-from .base_widgets import BaseWidget, DamageValuesDialogue
+from .base_widgets import BaseTracker, DamageValuesDialogue
 from .configs import ConfigsPage
 from .drops_tracker import DropsTracker
 from .encounters_tracker import (EncountersPlanner, EncountersTable,
@@ -38,7 +38,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
             else:
                 self.add(widget(self, seed), text=name)
 
-    def get_widgets(self) -> dict[str, type[BaseWidget]]:
+    def get_widgets(self) -> dict[str, type[BaseTracker]]:
         widgets = {
             'Seed info': SeedInfo,
             'Drops': DropsTracker,
@@ -56,7 +56,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
 
 
 @log_exceptions()
-def main(widget: type[BaseWidget],
+def main(widget: type[BaseTracker],
          title='ffx_rng_tracker',
          size='1280x830',
          ) -> None:

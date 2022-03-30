@@ -11,7 +11,7 @@ from ..events.encounter import (Encounter, MultizoneRandomEncounter,
                                 RandomEncounter)
 from ..events.main import Event
 from ..events.parsing_functions import parse_encounter
-from .base_widgets import (BaseWidget, BetterSpinbox, ScrollableFrame,
+from .base_widgets import (BaseTracker, BetterSpinbox, ScrollableFrame,
                            ScrollableText)
 
 
@@ -22,7 +22,7 @@ class EncountersTrackerInputWidget:
     scales: dict[str, tk.Scale]
 
 
-class EncountersTracker(BaseWidget):
+class EncountersTracker(BaseTracker):
     """Widget used to track encounters RNG."""
 
     def make_input_widget(self) -> EncountersTrackerInputWidget:
@@ -131,10 +131,12 @@ class EncountersTracker(BaseWidget):
                 case _:
                     line = str(event)
             output_data.append(line)
-            if line == '///':
-                output_data.clear()
 
         data = '\n'.join(output_data)
+        # if the text contains /// it hides the lines before it
+        if data.find('///') >= 0:
+            data = data.split('///')[-1]
+            data = data[data.find('\n') + 1:]
         data = data.replace(' Normal', '')
         data = data.replace('# ', '')
 
@@ -257,11 +259,12 @@ class EncountersPlanner(EncountersTracker):
                 case _:
                     line = str(event)
             output_data.append(line)
-            # if the text contains /// it hides the lines before it
-            if line == '///':
-                output_data.clear()
 
         data = '\n'.join(output_data)
+        # if the text contains /// it hides the lines before it
+        if data.find('///') >= 0:
+            data = data.split('///')[-1]
+            data = data[data.find('\n') + 1:]
         data = data.replace(': Dummy', '')
         data = data.replace('Normal', '')
         data = data.replace('# ', '')
@@ -302,7 +305,7 @@ class EncounterTableInputWidget:
     zones: dict[str, tk.BooleanVar]
 
 
-class EncountersTable(BaseWidget):
+class EncountersTable(BaseTracker):
     """"""
 
     def __init__(self, parent, *args, **kwargs) -> None:

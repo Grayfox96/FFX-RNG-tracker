@@ -1,10 +1,10 @@
 from ..data.constants import EquipmentType
 from ..ui_functions import get_encounter_predictions, get_equipment_types
 from ..utils import treeview
-from .base_widgets import BaseWidget
+from .base_widgets import BaseTracker
 
 
-class SeedInfo(BaseWidget):
+class SeedInfo(BaseTracker):
     """Widget that shows general information
     about the seed.
     """

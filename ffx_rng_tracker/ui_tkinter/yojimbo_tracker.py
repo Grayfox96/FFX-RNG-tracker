@@ -5,10 +5,10 @@ from ..data.notes import get_notes
 from ..events.main import Event
 from ..events.parsing_functions import (parse_compatibility_update,
                                         parse_death, parse_yojimbo_action)
-from .base_widgets import BaseWidget
+from .base_widgets import BaseTracker
 
 
-class YojimboTracker(BaseWidget):
+class YojimboTracker(BaseTracker):
     """Widget used to track Yojimbo rng."""
 
     def get_tags(self) -> dict[str, str]:
@@ -45,14 +45,11 @@ class YojimboTracker(BaseWidget):
     def parse_input(self) -> None:
         self.gamestate.reset()
         events_sequence = self.parser.parse(self.get_input())
-
-        output_data = []
-        for event in events_sequence:
-            line = str(event)
-            output_data.append(line)
-            # if the text contains /// it hides the lines before it
-            if line == '///':
-                output_data.clear()
+        data = '\n'.join(str(e) for e in events_sequence)
+        # if the text contains /// it hides the lines before it
+        if data.find('///') >= 0:
+            data = data.split('///')[-1]
+            data = data[data.find('\n') + 1:]
 
         # update the text widget
-        self.print_output('\n'.join(output_data))
+        self.print_output(data)
