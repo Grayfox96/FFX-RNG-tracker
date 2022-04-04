@@ -54,7 +54,7 @@ thunder_plains_(south),random,true,Thunder Plains (South),0,7,10
 thunder_plains_(north),random,true,Thunder Plains (North),0,7,10
 macalania_woods,random,false,Macalania Woods,0,8,12
 spherimorph,boss,false,,,,
-lake_macalania,random,false,Lake Macalania,0,1,1
+lake_macalania,random,false,Lake Macalania,0,1,2
 crawler,boss,false,,,,
 seymour,boss,false,,,,
 guado_encounter,optional_boss,false,Guado Encounter,0,0,2

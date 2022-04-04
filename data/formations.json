@@ -1183,10 +1183,10 @@
         "inside_sin_(front)": {
             "name": "Inside Sin (Front)",
             "formations": [
-                ["floating_death", "floating_death", "floating_death"],
-                ["floating_death", "floating_death", "floating_death"],
-                ["exoray", "floating_death", "exoray"],
-                ["exoray", "floating_death", "exoray"],
+                ["ahriman", "ahriman", "ahriman"],
+                ["ahriman", "ahriman", "ahriman"],
+                ["exoray", "ahriman", "exoray"],
+                ["exoray", "ahriman", "exoray"],
                 ["adamantoise"],
                 ["adamantoise"],
                 ["adamantoise"],
@@ -1200,7 +1200,7 @@
         "inside_sin_(back)": {
             "name": "Inside Sin (Back)",
             "formations": [
-                ["exoray", "floating_death", "exoray"],
+                ["exoray", "ahriman", "exoray"],
                 ["adamantoise"],
                 ["gemini", "gemini_3"],
                 ["demonolith"],
