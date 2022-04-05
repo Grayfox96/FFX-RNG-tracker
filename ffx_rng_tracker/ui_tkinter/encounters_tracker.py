@@ -1,7 +1,6 @@
 import tkinter as tk
 from dataclasses import dataclass
 from tkinter import ttk
-from typing import Callable
 
 from ..configs import Configs
 from ..data.constants import EncounterCondition
@@ -9,8 +8,7 @@ from ..data.encounter_formations import ZONES
 from ..data.encounters import ANY_ENCOUNTERS
 from ..events.encounter import (Encounter, MultizoneRandomEncounter,
                                 RandomEncounter)
-from ..events.main import Event
-from ..events.parsing_functions import parse_encounter
+from ..events.parsing_functions import ParsingFunction, parse_encounter
 from .base_widgets import (BaseTracker, BetterSpinbox, ScrollableFrame,
                            ScrollableText)
 
@@ -72,7 +70,7 @@ class EncountersTracker(BaseTracker):
         }
         return tags
 
-    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         parsing_functions = {
             'encounter': parse_encounter,
         }
@@ -386,7 +384,7 @@ class EncountersTable(BaseTracker):
         }
         return tags
 
-    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         parsing_functions = {
             'encounter': parse_encounter,
         }

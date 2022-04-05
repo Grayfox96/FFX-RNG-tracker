@@ -1,14 +1,13 @@
 import tkinter as tk
 from abc import ABC, abstractmethod
 from tkinter import font, simpledialog, ttk
-from typing import Callable
 
 from ..configs import Configs
 from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
 from ..errors import InvalidDamageValueError, SeedNotFoundError
-from ..events.main import Event, GameState
 from ..events.parser import EventParser
-from ..events.parsing_functions import parse_roll
+from ..events.parsing_functions import ParsingFunction, parse_roll
+from ..gamestate import GameState
 
 
 class ScrollableText(tk.Text):
@@ -193,10 +192,9 @@ class BaseTracker(tk.Frame, ABC):
         }
         return tags
 
-    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         """Returns a dictionary with strings as keys
-        and functions that accept a GameState and any number
-        of strings as arguments and return events as values.
+        and parsing functions as values.
         """
         parsing_functions = {
             'roll': parse_roll,

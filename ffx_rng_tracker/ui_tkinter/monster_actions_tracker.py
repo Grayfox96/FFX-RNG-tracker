@@ -1,9 +1,7 @@
-from typing import Callable
-
 from ..data.monsters import MONSTERS
 from ..data.notes import get_notes
-from ..events.main import Event
-from ..events.parsing_functions import parse_monster_action, parse_party_change
+from ..events.parsing_functions import (ParsingFunction, parse_monster_action,
+                                        parse_party_change)
 from .base_widgets import BaseTracker
 
 
@@ -16,7 +14,7 @@ class MonsterActionsTracker(BaseTracker):
         tags.update(super().get_tags())
         return tags
 
-    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         parsing_functions = super().get_parsing_functions()
         parsing_functions['party'] = parse_party_change
         parsing_functions['monsteraction'] = parse_monster_action

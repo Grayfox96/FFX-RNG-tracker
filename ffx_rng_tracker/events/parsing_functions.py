@@ -1,3 +1,5 @@
+from typing import Callable
+
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.characters import CHARACTERS, Character
 from ..data.constants import Stat
@@ -14,9 +16,16 @@ from .encounter import (Encounter, MultizoneRandomEncounter, RandomEncounter,
                         SimulatedEncounter)
 from .escape import Escape
 from .kill import Bribe, Kill
+from .main import Event
 from .monster_action import MonsterAction
 from .steal import Steal
 from .yojimbo_turn import YojimboTurn
+
+ParsingFunction = (Callable[[GameState, str], Event]
+                   | Callable[[GameState, str, str], Event]
+                   | Callable[[GameState, str, str, str], Event]
+                   | Callable[..., Event]
+                   )
 
 
 def parse_encounter(gs: GameState,

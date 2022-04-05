@@ -1,10 +1,7 @@
-from typing import Callable
-
 from ..data.characters import CHARACTERS
 from ..data.notes import get_notes
-from ..events.main import Event
-from ..events.parsing_functions import (parse_action, parse_encounter,
-                                        parse_stat_update)
+from ..events.parsing_functions import (ParsingFunction, parse_action,
+                                        parse_encounter, parse_stat_update)
 from .base_widgets import BaseTracker
 
 
@@ -27,7 +24,7 @@ class ActionsTracker(BaseTracker):
     def get_default_input_text(self) -> str:
         return get_notes('actions_notes.txt', self.gamestate.seed)
 
-    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         parsing_functions = super().get_parsing_functions()
         parsing_functions['encounter'] = parse_encounter
         parsing_functions['stat'] = parse_stat_update

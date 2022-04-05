@@ -1,9 +1,7 @@
-from typing import Callable
-
 from ..data.monsters import MONSTERS
 from ..data.notes import get_notes
-from ..events.main import Event
-from ..events.parsing_functions import (parse_bribe, parse_death, parse_kill,
+from ..events.parsing_functions import (ParsingFunction, parse_bribe,
+                                        parse_death, parse_kill,
                                         parse_party_change, parse_steal)
 from .base_widgets import BaseTracker
 
@@ -20,7 +18,7 @@ class DropsTracker(BaseTracker):
         tags.update(super().get_tags())
         return tags
 
-    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         parsing_functions = super().get_parsing_functions()
         parsing_functions['steal'] = parse_steal
         parsing_functions['kill'] = parse_kill

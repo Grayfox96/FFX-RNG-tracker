@@ -1,9 +1,7 @@
-from typing import Callable
-
 from ..data.actions import YOJIMBO_ACTIONS
 from ..data.notes import get_notes
-from ..events.main import Event
-from ..events.parsing_functions import (parse_compatibility_update,
+from ..events.parsing_functions import (ParsingFunction,
+                                        parse_compatibility_update,
                                         parse_death, parse_yojimbo_action)
 from .base_widgets import BaseTracker
 
@@ -20,7 +18,7 @@ class YojimboTracker(BaseTracker):
         tags.update(super().get_tags())
         return tags
 
-    def get_parsing_functions(self) -> dict[str, Callable[..., Event]]:
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         parsing_functions = super().get_parsing_functions()
         parsing_functions['death'] = parse_death
         parsing_functions['compatibility'] = parse_compatibility_update
