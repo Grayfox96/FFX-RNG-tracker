@@ -20,7 +20,7 @@ besaid_road,random,false,Besaid Road,0,0,1
 sin_fin,boss,false,,,,
 echuilles,boss,false,,,,
 lancet_tutorial,boss,false,,,,
-lord_ochu,optional_boss,false,Lord Ochu (Way In),0,0,1
+lord_ochu,optional_boss,false,Lord Ochu (Way In),0,0,200
 kilika_woods,random,false,Kilika Woods (Way In),0,3,6
 geneaux,boss,false,,,,
 lord_ochu,optional_boss,false,Lord Ochu (Way Out),0,0,1
@@ -67,9 +67,9 @@ sanubia_desert_(east),random,true,Bikanel (Post Machina),0,1,5
 sanubia_desert_(central),random,true,Bikanel (Central),0,3,5
 sanubia_desert_(ruins),random,true,Bikanel (Ruins),0,0,5
 sanubia_desert_(west),random,true,Bikanel (Pre Sandragora),0,1,2
-sandragora,optional_boss,true,Sandragora (TP Spheres),1,1,2
+sandragora,optional_boss,true,Sandragora (TP Spheres),0,1,2
 sanubia_desert_(west),random,true,Bikanel (Post Sandragora),0,0,2
-sandragora,boss,true,,,,
+sandragora,optional_boss,true,Sandragora (Skippable),0,0,2
 guado_+_3_bomb,boss,true,,,,
 guado_+_2_dual_horn,boss,true,,,,
 home,random,true,Home,0,0,2
