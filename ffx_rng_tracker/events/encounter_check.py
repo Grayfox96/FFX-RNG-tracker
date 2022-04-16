@@ -34,7 +34,7 @@ class EncounterCheck(Event):
             counter = steps * 256 // self.zone.threat_modifier
             if rng_roll < counter:
                 encounter = True
-                distance = self.zone.grace_period + (steps * 10)
+                distance = (self.zone.grace_period + steps) * 10
                 break
         else:
             encounter = False
