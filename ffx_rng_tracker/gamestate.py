@@ -51,3 +51,7 @@ class GameState:
     @property
     def seed(self) -> int:
         return self._rng_tracker.seed
+
+    @seed.setter
+    def seed(self, seed: int) -> None:
+        self._rng_tracker.__init__(seed)

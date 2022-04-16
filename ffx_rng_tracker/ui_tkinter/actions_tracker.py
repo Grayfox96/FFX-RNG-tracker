@@ -1,14 +1,15 @@
-from ..data.characters import CHARACTERS
-from ..data.notes import get_notes
+import tkinter as tk
+
+from ..events.parser import EventParser
 from ..events.parsing_functions import (ParsingFunction, parse_action,
-                                        parse_encounter, parse_stat_update)
-from .base_widgets import BaseTracker
+                                        parse_encounter, parse_roll,
+                                        parse_stat_update)
+from ..gamestate import GameState
+from ..ui_abstract.actions_tracker import ActionsTracker
+from .base_widgets import TkInputWidget, TkOutputWidget
 
 
-class ActionsTracker(BaseTracker):
-    """Widget used to track damage, critical chance,
-    escape chance and miss chance rng.
-    """
+class TkActionsOutputWidget(TkOutputWidget):
 
     def get_tags(self) -> dict[str, str]:
         tags = {
@@ -21,52 +22,44 @@ class ActionsTracker(BaseTracker):
         tags.update(super().get_tags())
         return tags
 
-    def get_default_input_text(self) -> str:
-        return get_notes('actions_notes.txt', self.gamestate.seed)
+
+class TkActionsTracker(tk.Frame):
+    """Widget used to track damage, critical chance,
+    escape chance and miss chance rng.
+    """
+
+    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
+        super().__init__(parent, *args, **kwargs)
+        parser = EventParser(GameState(seed))
+        for name, function in self.get_parsing_functions().items():
+            parser.register_parsing_function(name, function)
+
+        input_widget = TkInputWidget(self)
+        input_widget.pack(fill='y', side='left')
+
+        output_widget = TkActionsOutputWidget(self)
+        output_widget.pack(expand=True, fill='both', side='right')
+
+        self.tracker = ActionsTracker(
+            parser=parser,
+            input_widget=input_widget,
+            output_widget=output_widget,
+            )
+
+        input_widget.register_callback(self.tracker.callback)
+
+        self.tracker.callback()
 
     def get_parsing_functions(self) -> dict[str, ParsingFunction]:
-        parsing_functions = super().get_parsing_functions()
-        parsing_functions['encounter'] = parse_encounter
-        parsing_functions['stat'] = parse_stat_update
-        parsing_functions['action'] = parse_action
+        """Returns a dictionary with strings as keys
+        and parsing functions as values.
+        """
+        parsing_functions = {
+            'roll': parse_roll,
+            'waste': parse_roll,
+            'advance': parse_roll,
+            'encounter': parse_encounter,
+            'stat': parse_stat_update,
+            'action': parse_action,
+        }
         return parsing_functions
-
-    def get_input(self) -> str:
-        input_data = super().get_input()
-        input_lines = input_data.split('\n')
-        for index, line in enumerate(input_lines):
-            match line.lower().split():
-                case ['encounter', condition, *_]:
-                    type_ = 'boss'
-                    if 'simulated'.startswith(condition):
-                        type_ = 'simulated'
-                        name = 'simulation_(dummy)'
-                    elif 'preemptive'.startswith(condition):
-                        name = 'dummy_preemptive'
-                    elif 'ambush'.startswith(condition):
-                        name = 'dummy_ambush'
-                    else:
-                        name = 'dummy'
-                    line = f'encounter {type_} {name} false'
-                case ['encounter']:
-                    line = 'encounter boss dummy false'
-                case [character, *params] if character in CHARACTERS:
-                    line = ' '.join(['action', character, *params])
-            input_lines[index] = line
-        return '\n'.join(input_lines)
-
-    def parse_input(self) -> None:
-        self.gamestate.reset()
-        events_sequence = self.parser.parse(self.get_input())
-        data = '\n'.join(str(e) for e in events_sequence)
-        # if the text contains /// it hides the lines before it
-        if data.find('///') >= 0:
-            data = data.split('///')[-1]
-            data = data[data.find('\n') + 1:]
-        data = data.replace(' - Simulation: Dummy Normal', ': Simulation')
-        data = data.replace(' - Boss: Dummy', ':')
-        data = data.replace('Normal', '          ')
-        data = data.replace('Ambush', 'Ambush    ')
-
-        # update the text widget
-        self.print_output(data)

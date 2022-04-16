@@ -1,13 +1,11 @@
 import tkinter as tk
-from abc import ABC, abstractmethod
-from tkinter import font, simpledialog, ttk
+from tkinter import simpledialog, ttk
+from tkinter import font
+from typing import Callable
 
 from ..configs import Configs
 from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
 from ..errors import InvalidDamageValueError, SeedNotFoundError
-from ..events.parser import EventParser
-from ..events.parsing_functions import ParsingFunction, parse_roll
-from ..gamestate import GameState
 
 
 class ScrollableText(tk.Text):
@@ -139,48 +137,51 @@ class ScrollableFrame(tk.Frame):
         self.outer_frame.grid(*args, **kwargs)
 
 
-class BaseTracker(tk.Frame, ABC):
-    """Abstract base class for all tkinter based trackers."""
+class TkInputWidget(ScrollableText):
 
-    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
-        self.gamestate = GameState(seed)
-        self.parser = EventParser(self.gamestate)
-        for name, function in self.get_parsing_functions().items():
-            self.parser.register_parsing_function(name, function)
-        self.font = font.Font(family='Courier New', size=Configs.font_size)
+    def __init__(self, parent, *args, **kwargs) -> None:
+        kwargs.setdefault('font', font.Font(**DEFAULT_FONT))
+        kwargs.setdefault('width', 40)
+        kwargs.setdefault('undo', True)
+        kwargs.setdefault('autoseparators', True)
+        kwargs.setdefault('maxundo', -1)
         super().__init__(parent, *args, **kwargs)
-        self.tags = self.get_tags()
-        self.input_widget = self.make_input_widget()
-        self.output_widget = self.make_output_widget()
-        self.parse_input()
 
-    def make_input_widget(self) -> ScrollableText:
-        """Initializes input widget."""
-        text = ScrollableText(
-            self, font=self.font, width=40, undo=True, autoseparators=True,
-            maxundo=-1)
-        text.set(self.get_default_input_text())
-        text.pack(fill='y', side='left')
-        text.bind('<KeyRelease>', lambda _: self.parse_input())
-        return text
+    def get_input(self) -> str:
+        return self.get('1.0', 'end')
 
-    def make_output_widget(self) -> ScrollableText:
-        """Initialize output widget."""
-        text = ScrollableText(
-            self, font=self.font, state='disabled', wrap='word')
-        text.pack(expand=True, fill='both', side='right')
+    def set_input(self, text: str) -> None:
+        self.set(text)
+
+    def register_callback(self, callback_func: Callable) -> None:
+        self.bind('<KeyRelease>', callback_func)
+
+
+class TkOutputWidget(ScrollableText):
+
+    def __init__(self, parent, *args, **kwargs) -> None:
+        kwargs.setdefault('font', font.Font(**DEFAULT_FONT))
+        kwargs.setdefault('state', 'disabled')
+        kwargs.setdefault('wrap', 'word')
+        super().__init__(parent, *args, **kwargs)
         for tag_name, color in Configs.colors.items():
-            text.tag_configure(
+            self.tag_configure(
                 tag_name, foreground=color.foreground,
                 background=color.background,
                 selectforeground=color.select_foreground,
                 selectbackground=color.select_background)
-        text.tag_configure('wrap margin', lmargin2='1c')
-        return text
+        self.tag_configure('wrap margin', lmargin2='1c')
+        self.tags = self.get_tags()
+
+    def print_output(self, output: str) -> None:
+        self.config(state='normal')
+        if self.set(output):
+            self.highlight_patterns()
+        self.config(state='disabled')
 
     def highlight_patterns(self) -> None:
         for tag, pattern in self.tags.items():
-            self.output_widget.highlight_pattern(pattern, tag)
+            self.highlight_pattern(pattern, tag)
 
     def get_tags(self) -> dict[str, str]:
         """Setup tags to be used by highlight_patterns."""
@@ -191,37 +192,6 @@ class BaseTracker(tk.Frame, ABC):
             'wrap margin': '^.+$',
         }
         return tags
-
-    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
-        """Returns a dictionary with strings as keys
-        and parsing functions as values.
-        """
-        parsing_functions = {
-            'roll': parse_roll,
-            'waste': parse_roll,
-            'advance': parse_roll,
-        }
-        return parsing_functions
-
-    @abstractmethod
-    def get_default_input_text(self) -> str:
-        """Retrieve the default input text."""
-
-    def get_input(self) -> str:
-        """Get the input as a string."""
-        return self.input_widget.get('1.0', 'end')
-
-    @abstractmethod
-    def parse_input(self) -> None:
-        """Parse the input widget text send output to the output widget."""
-
-    def print_output(self, text: str) -> None:
-        """Overwrites the output widget content with the text, if the text
-        is different than the current one it highlights keywords."""
-        self.output_widget.config(state='normal')
-        if self.output_widget.set(text):
-            self.highlight_patterns()
-        self.output_widget.config(state='disabled')
 
 
 class DamageValuesDialogue(simpledialog.Dialog):
@@ -288,3 +258,6 @@ class DamageValuesDialogue(simpledialog.Dialog):
         else:
             self.warning_label = tk.Label(self, text=text)
             self.warning_label.pack(fill='x')
+
+
+DEFAULT_FONT = dict(family='Courier New', size=Configs.font_size)
