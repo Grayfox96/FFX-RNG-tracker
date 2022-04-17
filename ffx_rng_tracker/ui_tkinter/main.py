@@ -5,10 +5,10 @@ from tkinter import ttk
 from ..configs import Configs
 from ..data.file_functions import get_resource_path, get_version
 from ..logger import log_exceptions, log_tkinter_error, setup_logger
-from .actions_tracker import ActionsTracker
-from .base_widgets import BaseTracker, DamageValuesDialogue
+from .actions_tracker import TkActionsTracker
+from .base_widgets import DamageValuesDialogue
 from .configs import ConfigsPage
-from .drops_tracker import DropsTracker
+from .drops_tracker import TkDropsTracker
 from .encounters_tracker import (EncountersPlanner, EncountersTable,
                                  EncountersTracker)
 from .monster_actions_tracker import MonsterActionsTracker
@@ -38,25 +38,25 @@ class FFXRNGTrackerUI(ttk.Notebook):
             else:
                 self.add(widget(self, seed), text=name)
 
-    def get_widgets(self) -> dict[str, type[BaseTracker]]:
+    def get_widgets(self) -> dict[str, type[tk.Widget]]:
         widgets = {
-            'Seed info': SeedInfo,
-            'Drops': DropsTracker,
-            'Encounters': EncountersTracker,
-            'Encounters Table': EncountersTable,
-            'Encounters Planner': EncountersPlanner,
-            'Damage/crits/escapes/misses': ActionsTracker,
-            'Monster Targeting': MonsterActionsTracker,
-            'Status': StatusTracker,
-            'Yojimbo': YojimboTracker,
-            'Monster Data': MonsterDataViewer,
-            'Configs': ConfigsPage,
+            # 'Seed info': SeedInfo,
+            'Drops': TkDropsTracker,
+            # 'Encounters': EncountersTracker,
+            # 'Encounters Table': EncountersTable,
+            # 'Encounters Planner': EncountersPlanner,
+            'Damage/crits/escapes/misses': TkActionsTracker,
+            # 'Monster Targeting': MonsterActionsTracker,
+            # 'Status': StatusTracker,
+            # 'Yojimbo': YojimboTracker,
+            # 'Monster Data': MonsterDataViewer,
+            # 'Configs': ConfigsPage,
         }
         return widgets
 
 
 @log_exceptions()
-def main(widget: type[BaseTracker],
+def main(widget: type[tk.Widget],
          title='ffx_rng_tracker',
          size='1280x830',
          ) -> None:

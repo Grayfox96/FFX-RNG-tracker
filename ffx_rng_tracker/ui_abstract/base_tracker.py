@@ -7,7 +7,7 @@ from .output_widget import OutputWidget
 
 
 @dataclass
-class BaseTracker(ABC):
+class TrackerUI(ABC):
     parser: EventParser
     input_widget: InputWidget
     output_widget: OutputWidget

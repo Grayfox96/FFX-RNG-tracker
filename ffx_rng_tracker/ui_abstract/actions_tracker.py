@@ -1,11 +1,12 @@
-from ffx_rng_tracker.data.notes import get_notes
-
 from ..data.characters import CHARACTERS
-from .base_tracker import BaseTracker
+from ..data.notes import get_notes
+from .base_tracker import TrackerUI
 
 
-class ActionsTracker(BaseTracker):
-
+class ActionsTracker(TrackerUI):
+    """Widget used to track damage, critical chance,
+    escape chance and miss chance rng.
+    """
     def get_default_input_data(self) -> str:
         return get_notes(ACTIONS_NOTES_FILE, self.parser.gamestate.seed)
 

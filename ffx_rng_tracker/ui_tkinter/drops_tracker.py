@@ -1,13 +1,17 @@
-from ..data.monsters import MONSTERS
-from ..data.notes import get_notes
+import tkinter as tk
+
+from ffx_rng_tracker.events.parser import EventParser
+from ffx_rng_tracker.gamestate import GameState
+from ffx_rng_tracker.ui_abstract.drops_tracker import DropsTracker
+
 from ..events.parsing_functions import (ParsingFunction, parse_bribe,
                                         parse_death, parse_kill,
-                                        parse_party_change, parse_steal)
-from .base_widgets import BaseTracker
+                                        parse_party_change, parse_roll,
+                                        parse_steal)
+from .base_widgets import TkInputWidget, TkOutputWidget
 
 
-class DropsTracker(BaseTracker):
-    """Widget used to track monster drops RNG."""
+class TkDropsOutputWidget(TkOutputWidget):
 
     def get_tags(self) -> dict[str, str]:
         tags = {
@@ -18,36 +22,41 @@ class DropsTracker(BaseTracker):
         tags.update(super().get_tags())
         return tags
 
+
+class TkDropsTracker(tk.Frame):
+    """Widget used to track monster drops RNG."""
+
+    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
+        super().__init__(parent, *args, **kwargs)
+        parser = EventParser(GameState(seed))
+        for name, function in self.get_parsing_functions().items():
+            parser.register_parsing_function(name, function)
+
+        input_widget = TkInputWidget(self)
+        input_widget.pack(fill='y', side='left')
+
+        output_widget = TkDropsOutputWidget(self)
+        output_widget.pack(expand=True, fill='both', side='right')
+
+        self.tracker = DropsTracker(
+            parser=parser,
+            input_widget=input_widget,
+            output_widget=output_widget,
+            )
+
+        input_widget.register_callback(self.tracker.callback)
+
+        self.tracker.callback()
+
     def get_parsing_functions(self) -> dict[str, ParsingFunction]:
-        parsing_functions = super().get_parsing_functions()
-        parsing_functions['steal'] = parse_steal
-        parsing_functions['kill'] = parse_kill
-        parsing_functions['death'] = parse_death
-        parsing_functions['party'] = parse_party_change
-        parsing_functions['bribe'] = parse_bribe
+        parsing_functions = {
+            'roll': parse_roll,
+            'waste': parse_roll,
+            'advance': parse_roll,
+            'steal': parse_steal,
+            'kill': parse_kill,
+            'death': parse_death,
+            'party': parse_party_change,
+            'bribe': parse_bribe,
+        }
         return parsing_functions
-
-    def get_default_input_text(self) -> str:
-        return get_notes('drops_notes.txt', self.gamestate.seed)
-
-    def get_input(self) -> str:
-        input_data = super().get_input()
-        input_lines = input_data.split('\n')
-        for index, line in enumerate(input_lines):
-            match line.lower().split():
-                case [monster, *params] if monster in MONSTERS:
-                    line = ' '.join(['kill', monster, *params])
-            input_lines[index] = line
-        return '\n'.join(input_lines)
-
-    def parse_input(self) -> None:
-        self.gamestate.reset()
-        events_sequence = self.parser.parse(self.get_input())
-        data = '\n'.join(str(e) for e in events_sequence)
-        # if the text contains /// it hides the lines before it
-        if data.find('///') >= 0:
-            data = data.split('///')[-1]
-            data = data[data.find('\n') + 1:]
-
-        # update the text widget
-        self.print_output(data)

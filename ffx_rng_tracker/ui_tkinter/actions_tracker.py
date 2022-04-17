@@ -24,9 +24,6 @@ class TkActionsOutputWidget(TkOutputWidget):
 
 
 class TkActionsTracker(tk.Frame):
-    """Widget used to track damage, critical chance,
-    escape chance and miss chance rng.
-    """
 
     def __init__(self, parent, seed: int, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
