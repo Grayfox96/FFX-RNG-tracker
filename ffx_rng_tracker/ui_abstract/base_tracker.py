@@ -2,24 +2,39 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
 from ..events.parser import EventParser
+from ..events.parsing_functions import ParsingFunction
+from ..gamestate import GameState
 from .input_widget import InputWidget
 from .output_widget import OutputWidget
 
 
 @dataclass
 class TrackerUI(ABC):
-    parser: EventParser
+    seed: int
     input_widget: InputWidget
     output_widget: OutputWidget
+    parser: EventParser = field(init=False, repr=False)
     previous_input_text: str = field(default='', init=False, repr=False)
     previous_output_text: str = field(default='', init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.parser = EventParser(GameState(self.seed))
+        for name, function in self.get_parsing_functions().items():
+            self.parser.register_parsing_function(name, function)
         self.input_widget.set_input(self.get_default_input_data())
+        self.input_widget.register_callback(self.callback)
+
+        self.callback()
 
     @abstractmethod
     def get_default_input_data(self) -> str:
         """Returns the default input data."""
+
+    @abstractmethod
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
+        """Returns a dictionary with strings as keys
+        and parsing functions as values.
+        """
 
     @abstractmethod
     def edit_input(self, input_text: str) -> str:

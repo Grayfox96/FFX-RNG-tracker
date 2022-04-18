@@ -1,5 +1,8 @@
 from ..data.characters import CHARACTERS
 from ..data.notes import get_notes
+from ..events.parsing_functions import (ParsingFunction, parse_action,
+                                        parse_encounter, parse_roll,
+                                        parse_stat_update)
 from .base_tracker import TrackerUI
 
 
@@ -9,6 +12,20 @@ class ActionsTracker(TrackerUI):
     """
     def get_default_input_data(self) -> str:
         return get_notes(ACTIONS_NOTES_FILE, self.parser.gamestate.seed)
+
+    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
+        """Returns a dictionary with strings as keys
+        and parsing functions as values.
+        """
+        parsing_functions = {
+            'roll': parse_roll,
+            'waste': parse_roll,
+            'advance': parse_roll,
+            'encounter': parse_encounter,
+            'stat': parse_stat_update,
+            'action': parse_action,
+        }
+        return parsing_functions
 
     def edit_input(self, input_text: str) -> str:
         input_lines = input_text.splitlines()

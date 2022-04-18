@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import simpledialog, ttk
-from tkinter import font
-from typing import Callable
 
 from ..configs import Configs
 from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
@@ -135,63 +133,6 @@ class ScrollableFrame(tk.Frame):
 
     def grid(self, *args, **kwargs) -> None:
         self.outer_frame.grid(*args, **kwargs)
-
-
-class TkInputWidget(ScrollableText):
-
-    def __init__(self, parent, *args, **kwargs) -> None:
-        kwargs.setdefault('font', font.Font(**DEFAULT_FONT))
-        kwargs.setdefault('width', 40)
-        kwargs.setdefault('undo', True)
-        kwargs.setdefault('autoseparators', True)
-        kwargs.setdefault('maxundo', -1)
-        super().__init__(parent, *args, **kwargs)
-
-    def get_input(self) -> str:
-        return self.get('1.0', 'end')
-
-    def set_input(self, text: str) -> None:
-        self.set(text)
-
-    def register_callback(self, callback_func: Callable) -> None:
-        self.bind('<KeyRelease>', callback_func)
-
-
-class TkOutputWidget(ScrollableText):
-
-    def __init__(self, parent, *args, **kwargs) -> None:
-        kwargs.setdefault('font', font.Font(**DEFAULT_FONT))
-        kwargs.setdefault('state', 'disabled')
-        kwargs.setdefault('wrap', 'word')
-        super().__init__(parent, *args, **kwargs)
-        for tag_name, color in Configs.colors.items():
-            self.tag_configure(
-                tag_name, foreground=color.foreground,
-                background=color.background,
-                selectforeground=color.select_foreground,
-                selectbackground=color.select_background)
-        self.tag_configure('wrap margin', lmargin2='1c')
-        self.tags = self.get_tags()
-
-    def print_output(self, output: str) -> None:
-        self.config(state='normal')
-        if self.set(output):
-            self.highlight_patterns()
-        self.config(state='disabled')
-
-    def highlight_patterns(self) -> None:
-        for tag, pattern in self.tags.items():
-            self.highlight_pattern(pattern, tag)
-
-    def get_tags(self) -> dict[str, str]:
-        """Setup tags to be used by highlight_patterns."""
-        tags = {
-            'advance rng': '^Advanced rng.+$',
-            'error': '^.*# Error: .+$',
-            'comment': '^#(.+?)?$',
-            'wrap margin': '^.+$',
-        }
-        return tags
 
 
 class DamageValuesDialogue(simpledialog.Dialog):
