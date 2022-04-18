@@ -22,8 +22,8 @@ class TkOutputWidget(ScrollableText):
 
     def print_output(self, output: str) -> None:
         self.config(state='normal')
-        if self.set(output):
-            self.highlight_patterns()
+        self.set(output)
+        self.highlight_patterns()
         self.config(state='disabled')
 
     def highlight_patterns(self) -> None:

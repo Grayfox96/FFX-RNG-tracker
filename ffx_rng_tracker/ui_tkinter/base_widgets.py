@@ -60,16 +60,11 @@ class ScrollableText(tk.Text):
             end = f'{start}+{characters}c'
             self.tag_add(tag, start, end)
 
-    def set(self, text: str) -> bool:
-        """If the previous text and the new one are identical returns False,
-        otherwise it replaces the previous text, scrolls back to the
-        previous position and returns True.
+    def set(self, text: str) -> None:
+        """Replaces the previous text and scrolls back to
+        the previous position.
         """
-        # a newline character gets automatically added
-        # so it needs to be removed to compare
         current_text = self.get('1.0', 'end')[:-1]
-        if text == current_text:
-            return False
         current_number_of_lines = len(current_text.split('\n'))
         last_line = self.index(f'@0,{self.winfo_height()}')
         line_index = int(last_line.split('.')[0])
@@ -80,7 +75,6 @@ class ScrollableText(tk.Text):
         # but only if there was at least 1 line
         if line_index == current_number_of_lines and line_index > 1:
             self.yview_pickplace('end')
-        return True
 
 
 class BetterSpinbox(ttk.Spinbox):

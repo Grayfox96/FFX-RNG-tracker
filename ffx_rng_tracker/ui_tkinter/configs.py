@@ -1,22 +1,16 @@
+import tkinter as tk
+
 from ..configs import Configs
 from ..utils import treeview
-from .base_widgets import BaseTracker
+from .output_widget import TkOutputWidget
 
 
-class ConfigsPage(BaseTracker):
+class ConfigsPage(tk.Frame):
     """Widget that shows the loaded configuration."""
 
-    def make_input_widget(self) -> None:
-        return
+    def __init__(self, parent, _, *args, **kwargs) -> None:
+        super().__init__(parent, *args, **kwargs)
 
-    def get_tags(self) -> dict[str, str]:
-        return {}
-
-    def get_default_input_text(self) -> str:
-        return self.get_input()
-
-    def get_input(self) -> str:
-        return treeview(Configs.get_configs())
-
-    def parse_input(self) -> None:
-        self.print_output(self.get_input())
+        self.output_widget = TkOutputWidget(self, wrap='none')
+        self.output_widget.pack(expand=True, fill='both')
+        self.output_widget.print_output(treeview(Configs.get_configs()))

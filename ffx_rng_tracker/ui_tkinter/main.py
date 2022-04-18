@@ -50,7 +50,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
             # 'Status': StatusTracker,
             # 'Yojimbo': YojimboTracker,
             # 'Monster Data': MonsterDataViewer,
-            # 'Configs': ConfigsPage,
+            'Configs': ConfigsPage,
         }
         return widgets
 
