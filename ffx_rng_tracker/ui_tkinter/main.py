@@ -13,7 +13,7 @@ from .encounters_tracker import (EncountersPlanner, EncountersTable,
                                  EncountersTracker)
 from .monster_actions_tracker import MonsterActionsTracker
 from .monster_data_viewer import MonsterDataViewer
-from .seed_info import SeedInfo
+from .seed_info import TkSeedInfo
 from .status_tracker import StatusTracker
 from .yojimbo_tracker import YojimboTracker
 
@@ -40,7 +40,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
 
     def get_widgets(self) -> dict[str, type[tk.Widget]]:
         widgets = {
-            # 'Seed info': SeedInfo,
+            'Seed info': TkSeedInfo,
             'Drops': TkDropsTracker,
             # 'Encounters': EncountersTracker,
             # 'Encounters Table': EncountersTable,
