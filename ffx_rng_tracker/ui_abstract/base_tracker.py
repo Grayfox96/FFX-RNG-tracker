@@ -3,7 +3,6 @@ from dataclasses import dataclass, field
 
 from ..events.parser import EventParser
 from ..events.parsing_functions import ParsingFunction
-from ..gamestate import GameState
 from .input_widget import InputWidget
 from .output_widget import OutputWidget
 
@@ -18,7 +17,7 @@ class TrackerUI(ABC):
     previous_output_text: str = field(default='', init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self.parser = EventParser(GameState(self.seed))
+        self.parser = EventParser(self.seed)
         for name, function in self.get_parsing_functions().items():
             self.parser.register_parsing_function(name, function)
         self.input_widget.set_input(self.get_default_input_data())
