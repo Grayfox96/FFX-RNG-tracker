@@ -1,83 +1,82 @@
 import tkinter as tk
-from dataclasses import dataclass
+from typing import Callable
 
-from ..data.monsters import MONSTERS
-from ..ui_functions import format_monster_data
-from .base_widgets import BaseTracker, ScrollableText
-
-
-@dataclass
-class MonsterDataViewerInputWidget:
-    listbox: tk.Listbox
-    listvar: tk.StringVar
-    entry: tk.Entry
+from ..ui_abstract.monster_data_viewer import MonsterDataViewer
+from .output_widget import TkOutputWidget
 
 
-class MonsterDataViewer(BaseTracker):
-    """Widget used to display monster's data."""
+class TkMonsterSelectionWidget(tk.Listbox):
 
-    def __init__(self, parent, seed: int = 0, *args, **kwargs) -> None:
-        self.monsters_names = sorted(list(MONSTERS.keys()))
-        self.monsters_data = {k: format_monster_data(v)
-                              for k, v in MONSTERS.items()}
-        super().__init__(parent, seed, *args, **kwargs)
-
-    def make_input_widget(self) -> MonsterDataViewerInputWidget:
-        frame = tk.Frame(self)
-        frame.pack(fill='y', side='left')
-        inner_frame = tk.Frame(frame)
-        inner_frame.pack(fill='x')
-        tk.Label(inner_frame, text='Search:').pack(side='left')
-        entry = tk.Entry(inner_frame)
-        entry.bind('<KeyRelease>', lambda _: self.filter_monsters())
-        entry.pack(fill='x', side='right')
-        listvar = tk.StringVar(value=self.monsters_names)
-        listbox = tk.Listbox(frame, width=30, listvariable=listvar)
-        listbox.bind('<<ListboxSelect>>', lambda _: self.parse_input())
-        listbox.pack(expand=True, fill='y')
-        widget = MonsterDataViewerInputWidget(
-            listbox=listbox,
-            listvar=listvar,
-            entry=entry,
-        )
-        return widget
-
-    def make_output_widget(self) -> ScrollableText:
-        widget = super().make_output_widget()
-        widget.configure(wrap='none')
-        widget._add_h_scrollbar()
-        return widget
-
-    def get_tags(self) -> dict[str, str]:
-        return {}
-
-    def get_default_input_text(self) -> str:
-        return self.get_input()
+    def __init__(self, parent, *args, **kwargs) -> None:
+        kwargs.setdefault('listvariable', tk.StringVar())
+        super().__init__(parent, *args, **kwargs)
+        self._listvar: tk.StringVar = kwargs['listvariable']
+        self._monster_names: list[str] = []
 
     def get_input(self) -> str:
-        input_data = self.input_widget.listbox.curselection()
+        input_data = self.curselection()
         try:
             monster_index = input_data[0]
-        # deselecting triggers the bind
-        # giving an empty string as the index
+        # if there is nothing selected
+        # curselection returns an empty tuple
         except IndexError:
             return ''
-        return self.monsters_names[monster_index]
+        return self._monster_names[monster_index]
 
-    def parse_input(self) -> None:
-        input_data = self.get_input()
-        try:
-            monster_data = self.monsters_data[input_data]
-        except KeyError:
-            return
+    def set_input(self, data: list[str]) -> None:
+        self._monster_names = data
+        self._listvar.set(data)
 
-        self.print_output(monster_data)
+    def register_callback(self, callback_func: Callable) -> None:
+        self.bind('<<ListboxSelect>>', callback_func)
 
-    def filter_monsters(self) -> None:
-        input_data = self.input_widget.entry.get().lower()
-        self.monsters_names = [name
-                               for name, data in self.monsters_data.items()
-                               if input_data in name
-                               or input_data in data.lower()]
-        self.monsters_names.sort()
-        self.input_widget.listvar.set(self.monsters_names)
+
+class TkSearchBarWidget(tk.Entry):
+
+    def get_input(self) -> str:
+        return self.get()
+
+    def set_input(self, text: str) -> None:
+        self.delete('1.0', 'end')
+        self.insert('1.0', text)
+
+    def register_callback(self, callback_func: Callable) -> None:
+        self.bind('<KeyRelease>', callback_func)
+
+
+class TkMonsterDataViewer(tk.Frame):
+    """Widget used to display monster's data."""
+
+    def __init__(self, parent, _=None, *args, **kwargs) -> None:
+        super().__init__(parent, *args, **kwargs)
+
+        outer_frame = tk.Frame(self)
+        outer_frame.pack(fill='y', side='left')
+
+        inner_frame = tk.Frame(outer_frame)
+        inner_frame.pack(fill='x')
+        tk.Label(inner_frame, text='Search:').pack(side='left')
+        search_bar_widget = TkSearchBarWidget(inner_frame)
+        search_bar_widget.pack(fill='x', side='right')
+
+        monster_selection_widget = TkMonsterSelectionWidget(
+            outer_frame, width=30)
+        monster_selection_widget.pack(expand=True, fill='y')
+
+        self.output_widget = TkOutputWidget(self, wrap='none')
+        self.output_widget.pack(expand=True, fill='both', side='right')
+
+        self.tracker = MonsterDataViewer(
+            monster_selection_widget=monster_selection_widget,
+            search_bar_widget=search_bar_widget,
+            output_widget=self.output_widget,
+        )
+
+        monster_selection_widget.set_input(sorted(self.tracker.monster_data))
+        search_bar_widget.register_callback(self.tracker.filter_monsters)
+        monster_selection_widget.register_callback(self.callback)
+
+    def callback(self, *_, **__) -> None:
+        filter = self.tracker.search_bar_widget.get_input()
+        self.output_widget.tags['important monster'] = '(?i)' + filter
+        self.tracker.callback()
