@@ -14,7 +14,7 @@ from .encounters_tracker import (EncountersPlanner, EncountersTable,
 from .monster_actions_tracker import MonsterActionsTracker
 from .monster_data_viewer import TkMonsterDataViewer
 from .seed_info import TkSeedInfo
-from .status_tracker import StatusTracker
+from .status_tracker import TkStatusTracker
 from .yojimbo_tracker import YojimboTracker
 
 
@@ -47,7 +47,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
             # 'Encounters Planner': EncountersPlanner,
             'Damage/crits/escapes/misses': TkActionsTracker,
             # 'Monster Targeting': MonsterActionsTracker,
-            # 'Status': StatusTracker,
+            'Status': TkStatusTracker,
             # 'Yojimbo': YojimboTracker,
             'Monster Data': TkMonsterDataViewer,
             'Configs': ConfigsPage,
