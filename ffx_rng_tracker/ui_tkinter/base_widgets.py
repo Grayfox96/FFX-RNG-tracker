@@ -121,12 +121,8 @@ class ScrollableFrame(tk.Frame):
                     int(-1 * (e.delta / 120)), 'units')))
         # when the mouse leaves the canvas it unbinds the mousewheel
         canvas.bind('<Leave>', lambda _: canvas.unbind_all('<MouseWheel>'))
-
-    def pack(self, *args, **kwargs) -> None:
-        self.outer_frame.pack(*args, **kwargs)
-
-    def grid(self, *args, **kwargs) -> None:
-        self.outer_frame.grid(*args, **kwargs)
+        self.pack = self.outer_frame.pack
+        self.grid = self.outer_frame.grid
 
 
 class DamageValuesDialogue(simpledialog.Dialog):

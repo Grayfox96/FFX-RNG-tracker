@@ -3,6 +3,7 @@ from typing import Callable
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.characters import CHARACTERS, Character
 from ..data.constants import Stat
+from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.monsters import MONSTERS
 from ..errors import EventParsingError
 from ..gamestate import GameState
@@ -37,16 +38,25 @@ def parse_encounter(gs: GameState,
     match type_:
         case 'boss' | 'optional_boss':
             encounter_type = Encounter
+            if name not in BOSSES:
+                raise EventParsingError(f'No boss named {name}')
         case 'random':
             encounter_type = RandomEncounter
+            if name not in ZONES:
+                raise EventParsingError(f'No zone named {name}')
         case 'simulated':
             encounter_type = SimulatedEncounter
+            if name not in SIMULATIONS:
+                raise EventParsingError(f'No simulation named {name}')
         case 'multizone':
             encounter_type = MultizoneRandomEncounter
             name = name.split('/')
+            for zone in name:
+                if zone not in ZONES:
+                    raise EventParsingError(f'No zone named {name}')
         case _:
             raise EventParsingError(f'Invalid encounter type: {type_}')
-    initiative = initiative == 'true'
+    initiative = initiative and 'initiative'.startswith(initiative)
     return encounter_type(gs, name, initiative)
 
 

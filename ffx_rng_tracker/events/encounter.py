@@ -151,7 +151,7 @@ class MultizoneRandomEncounter(Event):
             formations.append(formation)
             if count == len(self.encounters):
                 icvs = str(enc)[-48:]
-                string += (f'{"/".join(zones)} {"/".join(formations)} '
+                string += (f'{"/".join(zones)}: {"/".join(formations)} '
                            f'{enc.condition} {icvs}')
         return string
 
