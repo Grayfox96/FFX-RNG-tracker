@@ -81,7 +81,7 @@ class Configs:
             'preemptive', 'ambush', 'encounter', 'crit', 'stat update',
             'comment', 'advance rng', 'equipment', 'no encounters',
             'yojimbo low gil', 'yojimbo high gil', 'error', 'status miss',
-            'important monster',
+            'important monster', 'captured monster',
         )
         if cls.use_dark_mode:
             default_fg = '#ffffff'

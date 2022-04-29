@@ -9,9 +9,8 @@ from .actions_tracker import TkActionsTracker
 from .base_widgets import DamageValuesDialogue
 from .configs import ConfigsPage
 from .drops_tracker import TkDropsTracker
-from .encounters_tracker import (EncountersPlanner, EncountersTable,
-                                 EncountersTracker)
-from .monster_actions_tracker import MonsterActionsTracker
+from .encounters_tracker import (TkEncountersPlanner, TkEncountersTable,
+                                 TkEncountersTracker)
 from .monster_data_viewer import TkMonsterDataViewer
 from .seed_info import TkSeedInfo
 from .status_tracker import TkStatusTracker
@@ -42,11 +41,10 @@ class FFXRNGTrackerUI(ttk.Notebook):
         widgets = {
             'Seed info': TkSeedInfo,
             'Drops': TkDropsTracker,
-            # 'Encounters': EncountersTracker,
-            # 'Encounters Table': EncountersTable,
-            # 'Encounters Planner': EncountersPlanner,
+            'Encounters': TkEncountersTracker,
+            'Encounters Planner': TkEncountersPlanner,
+            'Encounters Table': TkEncountersTable,
             'Damage/crits/escapes/misses': TkActionsTracker,
-            # 'Monster Targeting': MonsterActionsTracker,
             'Status': TkStatusTracker,
             'Yojimbo': TkYojimboTracker,
             'Monster Data': TkMonsterDataViewer,

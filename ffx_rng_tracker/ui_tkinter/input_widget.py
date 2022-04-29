@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter import font
 from typing import Callable
 
@@ -19,6 +20,19 @@ class TkInputWidget(ScrollableText):
 
     def set_input(self, text: str) -> None:
         self.set(text)
+
+    def register_callback(self, callback_func: Callable) -> None:
+        self.bind('<KeyRelease>', callback_func)
+
+
+class TkSearchBarWidget(tk.Entry):
+
+    def get_input(self) -> str:
+        return self.get()
+
+    def set_input(self, text: str) -> None:
+        self.delete('1', 'end')
+        self.insert('1', text)
 
     def register_callback(self, callback_func: Callable) -> None:
         self.bind('<KeyRelease>', callback_func)

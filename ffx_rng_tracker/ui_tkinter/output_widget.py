@@ -11,14 +11,8 @@ class TkOutputWidget(ScrollableText):
         kwargs.setdefault('state', 'disabled')
         kwargs.setdefault('wrap', 'word')
         super().__init__(parent, *args, **kwargs)
-        for tag_name, color in Configs.colors.items():
-            self.tag_configure(
-                tag_name, foreground=color.foreground,
-                background=color.background,
-                selectforeground=color.select_foreground,
-                selectbackground=color.select_background)
-        self.tag_configure('wrap margin', lmargin2='1c')
-        self.tags = self.get_tags()
+        self.regex_patterns = self.get_regex_patterns()
+        self.setup_tags()
 
     def print_output(self, output: str) -> None:
         self.config(state='normal')
@@ -27,15 +21,24 @@ class TkOutputWidget(ScrollableText):
         self.config(state='disabled')
 
     def highlight_patterns(self) -> None:
-        for tag, pattern in self.tags.items():
-            self.highlight_pattern(pattern, tag)
+        for tag_name, pattern in self.regex_patterns.items():
+            self.highlight_pattern(pattern, tag_name)
 
-    def get_tags(self) -> dict[str, str]:
-        """Setup tags to be used by highlight_patterns."""
-        tags = {
+    def get_regex_patterns(self) -> dict[str, str]:
+        patterns = {
             'advance rng': '^Advanced rng.+$',
             'error': '^.*# Error: .+$',
             'comment': '^#(.+?)?$',
             'wrap margin': '^.+$',
         }
-        return tags
+        return patterns
+
+    def setup_tags(self) -> None:
+        """Setup tags to be used by highlight_patterns."""
+        self.tag_configure('wrap margin', lmargin2='1c')
+        for tag_name, color in Configs.colors.items():
+            self.tag_configure(
+                tag_name, foreground=color.foreground,
+                background=color.background,
+                selectforeground=color.select_foreground,
+                selectbackground=color.select_background)

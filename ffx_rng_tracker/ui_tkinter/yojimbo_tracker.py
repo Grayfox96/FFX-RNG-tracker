@@ -7,13 +7,13 @@ from .output_widget import TkOutputWidget
 
 class TkYojimboOutputWidget(TkOutputWidget):
 
-    def get_tags(self) -> dict[str, str]:
+    def get_regex_patterns(self) -> dict[str, str]:
         tags = {
             'yojimbo low gil': ' [0-9]{1,7}(?= gil) ',
             'yojimbo high gil': ' [0-9]{10,}(?= gil) ',
             'stat update': '^.*changed to.+$',
         }
-        tags.update(super().get_tags())
+        tags.update(super().get_regex_patterns())
         return tags
 
 

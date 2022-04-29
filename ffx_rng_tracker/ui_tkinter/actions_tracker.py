@@ -7,7 +7,7 @@ from .output_widget import TkOutputWidget
 
 class TkActionsOutputWidget(TkOutputWidget):
 
-    def get_tags(self) -> dict[str, str]:
+    def get_regex_patterns(self) -> dict[str, str]:
         tags = {
             'encounter': 'Encounter',
             'preemptive': 'Preemptive',
@@ -15,7 +15,7 @@ class TkActionsOutputWidget(TkOutputWidget):
             'crit': 'Crit',
             'stat update': '^.*changed to.+$',
         }
-        tags.update(super().get_tags())
+        tags.update(super().get_regex_patterns())
         return tags
 
 

@@ -8,7 +8,7 @@ from ..utils import treeview
 
 class TkSeedInfoOutputWidget(TkOutputWidget):
 
-    def get_tags(self) -> dict[str, str]:
+    def get_regex_patterns(self) -> dict[str, str]:
         return {'equipment': str(EquipmentType.ARMOR)}
 
 

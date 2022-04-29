@@ -1,6 +1,8 @@
+import re
 import tkinter as tk
 from typing import Callable
 
+from .input_widget import TkSearchBarWidget
 from ..ui_abstract.monster_data_viewer import MonsterDataViewer
 from .output_widget import TkOutputWidget
 
@@ -29,19 +31,6 @@ class TkMonsterSelectionWidget(tk.Listbox):
 
     def register_callback(self, callback_func: Callable) -> None:
         self.bind('<<ListboxSelect>>', callback_func)
-
-
-class TkSearchBarWidget(tk.Entry):
-
-    def get_input(self) -> str:
-        return self.get()
-
-    def set_input(self, text: str) -> None:
-        self.delete('1.0', 'end')
-        self.insert('1.0', text)
-
-    def register_callback(self, callback_func: Callable) -> None:
-        self.bind('<KeyRelease>', callback_func)
 
 
 class TkMonsterDataViewer(tk.Frame):
@@ -77,6 +66,6 @@ class TkMonsterDataViewer(tk.Frame):
         monster_selection_widget.register_callback(self.callback)
 
     def callback(self, *_, **__) -> None:
-        filter = self.tracker.search_bar_widget.get_input()
-        self.output_widget.tags['important monster'] = '(?i)' + filter
+        filter = '(?i)' + re.escape(self.tracker.search_bar_widget.get_input())
+        self.output_widget.regex_patterns['important monster'] = filter
         self.tracker.callback()
