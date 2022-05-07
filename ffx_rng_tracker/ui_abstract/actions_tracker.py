@@ -1,8 +1,10 @@
 from ..data.characters import CHARACTERS
+from ..data.monsters import MONSTERS
 from ..data.notes import get_notes
 from ..events.parsing_functions import (ParsingFunction, parse_action,
-                                        parse_encounter, parse_roll,
-                                        parse_stat_update)
+                                        parse_encounter, parse_monster_action,
+                                        parse_party_change, parse_roll,
+                                        parse_stat_update, parse_summon)
 from .base_tracker import TrackerUI
 
 
@@ -24,6 +26,9 @@ class ActionsTracker(TrackerUI):
             'encounter': parse_encounter,
             'stat': parse_stat_update,
             'action': parse_action,
+            'monsteraction': parse_monster_action,
+            'party': parse_party_change,
+            'summon': parse_summon,
         }
         return parsing_functions
 
@@ -31,7 +36,7 @@ class ActionsTracker(TrackerUI):
         input_lines = input_text.splitlines()
         for index, line in enumerate(input_lines):
             match line.lower().split():
-                case ['encounter', condition, *_]:
+                case ['encounter', condition]:
                     type_ = 'boss'
                     if 'simulated'.startswith(condition):
                         type_ = 'simulated'
@@ -41,12 +46,14 @@ class ActionsTracker(TrackerUI):
                     elif 'ambush'.startswith(condition):
                         name = 'dummy_ambush'
                     else:
-                        name = 'dummy'
+                        continue
                     line = f'encounter {type_} {name} false'
                 case ['encounter']:
                     line = 'encounter boss dummy false'
                 case [character, *params] if character in CHARACTERS:
                     line = ' '.join(['action', character, *params])
+                case [monster, *params] if monster in MONSTERS:
+                    line = ' '.join(['monsteraction', monster, *params])
             input_lines[index] = line
         return '\n'.join(input_lines)
 
@@ -57,8 +64,7 @@ class ActionsTracker(TrackerUI):
             output = output[output.find('\n') + 1:]
         output = output.replace(' - Simulation: Dummy Normal', ': Simulation')
         output = output.replace(' - Boss: Dummy', ':')
-        output = output.replace('Normal', '          ')
-        output = output.replace('Ambush', 'Ambush    ')
+        output = output.replace('Normal ', '')
         return output
 
 

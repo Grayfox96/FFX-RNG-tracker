@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 
 from ..data.actions import Action
 from ..data.characters import CharacterState
-from ..data.constants import (HIT_CHANCE_TABLE, DamageType, ElementalAffinity,
-                              Stat)
+from ..data.constants import (HIT_CHANCE_TABLE, ICV_BASE, DamageType,
+                              ElementalAffinity, Stat)
 from ..data.monsters import Monster
 from .main import Event
 
@@ -17,13 +17,16 @@ class CharacterAction(Event):
     damage: int = field(init=False, repr=False)
     damage_rng: int = field(init=False, repr=False)
     crit: bool = field(init=False, repr=False)
+    ctb: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.hit = self._get_hit()
         self.damage, self.damage_rng, self.crit = self._get_damage()
+        self.ctb = self._get_ctb()
 
     def __str__(self) -> str:
         string = (f'{self.character.name} -> {self.action.name}'
+                  f' [{self.ctb}]'
                   f' -> {self.target.name}:')
         if self.hit:
             if self.action.does_damage:
@@ -199,3 +202,8 @@ class CharacterAction(Event):
         damage = int(damage)
 
         return damage, damage_rng, crit
+
+    def _get_ctb(self) -> int:
+        rank = self.action.rank
+        ctb_base = ICV_BASE[self.character.stats[Stat.AGILITY]]
+        return ctb_base * rank

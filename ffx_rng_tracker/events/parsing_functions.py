@@ -147,8 +147,7 @@ def parse_party_change(gs: GameState,
     if not party_formation_string:
         raise EventParsingError(usage)
     party_formation = []
-    characters = tuple(CHARACTERS.values())[:7]
-    for character in characters:
+    for character in tuple(CHARACTERS.values())[:7]:
         initial = character.name[0].lower()
         for letter in party_formation_string:
             if initial == letter:
@@ -157,6 +156,27 @@ def parse_party_change(gs: GameState,
 
     if not party_formation:
         raise EventParsingError(usage)
+    return ChangeParty(gs, party_formation)
+
+
+def parse_summon(gs: GameState,
+                 aeon_name: str = '',
+                 *_,
+                 ) -> ChangeParty:
+    usage = 'Usage: summon [aeon name]'
+    if not aeon_name:
+        raise EventParsingError(usage)
+    if 'magus_sisters'.startswith(aeon_name):
+        party_formation = [
+            CHARACTERS['cindy'], CHARACTERS['sandy'], CHARACTERS['mindy']
+            ]
+    else:
+        for aeon in tuple(CHARACTERS.values())[7:]:
+            if aeon.name.lower().startswith(aeon_name):
+                party_formation = [aeon]
+                break
+        else:
+            raise EventParsingError(usage)
     return ChangeParty(gs, party_formation)
 
 
@@ -204,7 +224,7 @@ def parse_action(gs: GameState,
             raise EventParsingError(
                 f'No action named {action_name!r}'
             )
-        if target is None and action.has_target:
+        if target is None:
             raise EventParsingError(
                 f'Action {action.name!r} requires a target.'
             )
@@ -286,13 +306,24 @@ def parse_compatibility_update(gs: GameState,
 
 def parse_monster_action(gs: GameState,
                          monster_name: str = '',
+                         slot: str = '',
+                         action_name: str = '',
                          *_,
                          ) -> MonsterAction:
-    usage = 'Usage: [monster_name]'
-
+    usage = 'Usage: monsteraction [monster_name] [slot] [action_name]'
     try:
         monster = MONSTERS[monster_name]
     except KeyError:
         raise EventParsingError(usage)
-    action = ACTIONS['attack']
-    return MonsterAction(gs, monster, action, 0)
+    try:
+        slot = int(slot)
+    except ValueError:
+        raise EventParsingError('Slot must be an integer')
+    if not (1 <= slot <= 8):
+        raise EventParsingError('Slot must be between 1 and 8')
+    slot -= 1
+    try:
+        action = ACTIONS[action_name]
+    except KeyError as error:
+        raise EventParsingError(f'No action named {error}')
+    return MonsterAction(gs, monster, action, slot)

@@ -16,6 +16,10 @@ class Action:
     damage_type: DamageType
     base_damage: int
     element: Element
+    multitarget: bool
+    random_targeting: bool
+    hits: int
+    rank: int
 
     def __str__(self) -> str:
         return self.name
@@ -42,29 +46,33 @@ def _get_actions(file_path: str) -> dict[str, Action]:
             if line[0].startswith('#'):
                 continue
             name = line[0].lower().replace(' ', '_')
-            does_damage = line[3] == 'true'
+            does_damage = line[5] == 'true'
             if does_damage:
-                base_damage = int(line[7])
+                base_damage = int(line[10])
             else:
                 base_damage = None
             try:
-                damage_type = DamageType(line[6])
+                damage_type = DamageType(line[9])
             except ValueError:
                 damage_type = None
             try:
-                element = Element(line[8])
+                element = Element(line[11])
             except ValueError:
                 element = None
             actions[name] = Action(
                 name=line[0],
                 has_target=line[1] == 'true',
-                can_miss=line[2] == 'true',
+                can_miss=line[4] == 'true',
                 does_damage=does_damage,
-                can_crit=line[4] == 'true',
-                uses_bonus_crit=line[5] == 'true',
+                can_crit=line[7] == 'true',
+                uses_bonus_crit=line[8] == 'true',
                 damage_type=damage_type,
                 base_damage=base_damage,
                 element=element,
+                multitarget=line[2] == 'true',
+                random_targeting=line[3] == 'true',
+                hits=int(line[6]),
+                rank=int(line[14]),
             )
     return actions
 

@@ -119,9 +119,8 @@ class Configs:
 
         ui_widgets = (
             'Seed info', 'Drops', 'Encounters', 'Encounters Table',
-            'Encounters Planner', 'Damage/crits/escapes/misses',
-            'Monster Targeting', 'Status', 'Yojimbo', 'Monster Data',
-            'Configs',
+            'Encounters Planner', 'Actions', 'Monster Targeting', 'Status',
+            'Yojimbo', 'Monster Data', 'Configs',
         )
         for section in ui_widgets:
             shown = cls.getboolean(section, 'shown', True)

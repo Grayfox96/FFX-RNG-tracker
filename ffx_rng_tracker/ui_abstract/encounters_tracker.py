@@ -44,5 +44,4 @@ class EncountersTracker(TrackerUI):
         output = output.replace(' Normal', '')
         output = output.replace('Encounter ', '')
 
-        # output = output.replace('# ', '')
         return output

@@ -17,17 +17,17 @@
         },
         "sinscales": {
             "name": "Sinscales",
-            "formation": ["sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"],
+            "formation": ["sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6"],
             "forced_condition": "normal"
         },
         "ammes": {
             "name": "Ammes",
-            "formation": ["sinspawn_ammes", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"],
+            "formation": ["sinspawn_ammes", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6"],
             "forced_condition": "normal"
         },
         "tanker": {
             "name": "Tanker",
-            "formation": ["tanker", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4", "sinscale_4"],
+            "formation": ["tanker", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6"],
             "forced_condition": "normal"
         },
         "sahagins": {

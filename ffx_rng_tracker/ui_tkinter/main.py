@@ -44,7 +44,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
             'Encounters': TkEncountersTracker,
             'Encounters Planner': TkEncountersPlanner,
             'Encounters Table': TkEncountersTable,
-            'Damage/crits/escapes/misses': TkActionsTracker,
+            'Actions': TkActionsTracker,
             'Status': TkStatusTracker,
             'Yojimbo': TkYojimboTracker,
             'Monster Data': TkMonsterDataViewer,

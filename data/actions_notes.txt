@@ -1,6 +1,9 @@
 # Usage:
 # encounter (preemp/ambush/simulated)
+# encounter [enc type] [enc name] (initiative)
 # stat [character] [stat] [(+/-)amount]
+# party [party members initials]
+# summon [aeon name]
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
@@ -10,7 +13,9 @@
 #     focus
 #
 # [character name] [action] (target)
+# [monster name] [slot] [action]
 
+party tyakwlr
 # -- Zanarkand --
 encounter
 auron attack sinscale_2
