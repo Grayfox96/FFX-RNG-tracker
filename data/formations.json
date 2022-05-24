@@ -127,7 +127,7 @@
         },
         "machina_3": {
             "name": "Machina 3",
-            "formation": ["worker", "worker", "worker", "worker", "worker", "worker"],
+            "formation": ["worker", "worker"],
             "forced_condition": "normal"
         },
         "oblitzerator": {
@@ -137,7 +137,7 @@
         },
         "sahagin_chiefs": {
             "name": "Sahagin Chiefs",
-            "formation": ["sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief"],
+            "formation": ["sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief"],
             "forced_condition": "normal"
         },
         "vouivre": {

@@ -59,7 +59,7 @@ def _get_formations(file_path: str) -> Formations:
     """Retrieves the encounter formations."""
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
-        formations: dict[str, dict] = json.loads(file_object.read())
+        formations: dict[str, dict] = json.load(file_object)
     bosses = {}
     for boss, data in formations['bosses'].items():
         for condition in EncounterCondition:
