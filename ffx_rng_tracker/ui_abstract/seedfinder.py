@@ -65,6 +65,7 @@ class SeedFinder(ActionsTracker):
         for frame, dt in product(range(frames), range(256)):
             seed = datetime_to_seed(dt, frame)
             self.parser.gamestate.seed = seed
+            self.parser.gamestate.reset()
             events = self.parser.parse(input_text)
             damage_values.clear()
             for index in indexes:

@@ -3389,5 +3389,12 @@
         "uses bonus crit": false,
         "damage type": "Strength",
         "base damage": 12
+    },
+    "poison_dart": {
+        "name" : "Poison Dart",
+        "accuracy": 100,
+        "statuses": {
+            "Poison": 40
+        }
     }
 }

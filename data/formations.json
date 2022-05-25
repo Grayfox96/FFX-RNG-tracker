@@ -2,17 +2,17 @@
     "bosses": {
         "dummy": {
             "name" : "Boss",
-            "formation": ["dummy"],
+            "formation": [],
             "forced_condition": "normal"
         },
         "dummy_preemptive": {
             "name" : "Boss",
-            "formation": ["dummy"],
+            "formation": [],
             "forced_condition": "preemptive"
         },
         "dummy_ambush": {
             "name" : "Boss",
-            "formation": ["dummy"],
+            "formation": [],
             "forced_condition": "ambush"
         },
         "sinscales": {
@@ -162,12 +162,12 @@
         },
         "sinspawn_gui_1": {
             "name": "Sinspawn Gui 1",
-            "formation": ["sinspawn_gui", "arm", "arm", "head"],
+            "formation": ["sinspawn_gui", "head", "arm", "arm"],
             "forced_condition": "normal"
         },
         "sinspawn_gui_2": {
             "name": "Sinspawn Gui 2",
-            "formation": ["sinspawn_gui", "arm", "arm", "head"],
+            "formation": ["sinspawn_gui", "head", "arm", "arm"],
             "forced_condition": "normal"
         },
         "extractor": {
@@ -349,7 +349,7 @@
     "simulation": {
         "simulation_(dummy)": {
             "name": "Simulation",
-            "monsters": ["dummy"],
+            "monsters": [],
             "forced_condition": "normal"
         },
         "simulation_(mi'ihen)": {

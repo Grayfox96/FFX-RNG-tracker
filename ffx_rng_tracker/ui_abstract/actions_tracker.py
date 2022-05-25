@@ -62,8 +62,8 @@ class ActionsTracker(TrackerUI):
         if output.find('///') >= 0:
             output = output.split('///')[-1]
             output = output[output.find('\n') + 1:]
-        output = output.replace(' - Simulation: Dummy Normal', ': Simulation')
-        output = output.replace(' - Boss: Dummy', ':')
+        output = output.replace(' - Simulation:  Normal', ': Simulation')
+        output = output.replace(' - Boss: ', ':')
         output = output.replace('Normal ', '')
         return output
 

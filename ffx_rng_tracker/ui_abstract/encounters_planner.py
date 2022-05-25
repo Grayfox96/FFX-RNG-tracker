@@ -11,7 +11,8 @@ class EncountersPlanner(EncountersTracker):
     search_bar: InputWidget
 
     def edit_output(self, output: str) -> str:
-        output = output.replace(': Dummy', '')
+        output = output.replace('Simulation: ', 'Simulation')
+        output = output.replace('Boss: ', 'Boss')
 
         monsters_tally = {}
         for monster in MONSTERS.values():
