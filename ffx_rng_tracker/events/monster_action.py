@@ -62,11 +62,7 @@ class MonsterAction(Event):
             target_luck = max(target.stats[Stat.LUCK], 1)
             # unused for now
             target_reflexes = 0
-            # most attacks that check for accuracy
-            # have 90 as their accuracy
-            # action_accuracy = self.action.accuracy
-            action_accuracy = 90
-            hit_chance = (action_accuracy
+            hit_chance = (self.action.accuracy
                           - target_evasion
                           + luck
                           - target_luck
@@ -109,6 +105,8 @@ class MonsterAction(Event):
         possible_targets = self._get_possible_targets()
         if self.action.multitarget:
             if self.action.random_targeting:
+                # random targeting actions roll rng4 once
+                self._advance_rng(4)
                 for _ in range(self.action.hits):
                     if len(possible_targets) <= 1:
                         targets.append(possible_targets[0])

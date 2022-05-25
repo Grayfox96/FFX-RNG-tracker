@@ -92,7 +92,7 @@
         },
         "sin_fin": {
             "name": "Sin Fin",
-            "formation": ["sin", "sinscale", "sinscale", "sinscale"],
+            "formation": ["sinscale", "sinscale", "sinscale", "sin"],
             "forced_condition": "normal"
         },
         "echuilles": {

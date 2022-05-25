@@ -284,7 +284,6 @@ party takwlr
 # if you kill a chest monster
 # ???_2 rikku
 
-sandragora kimahri
 sandragora auron
 
 # Home

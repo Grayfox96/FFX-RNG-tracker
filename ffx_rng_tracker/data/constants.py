@@ -85,7 +85,8 @@ class DamageType(StringEnum):
     SPECIAL_MAGIC = 'Special Magic'
     ITEM = 'Item'
     FIXED = 'Fixed'
-    PERCENTAGE = 'Percentage'
+    PERCENTAGE_TOTAL = 'Percentage (Total)'
+    PERCENTAGE_CURRENT = 'Percentage (Current)'
     HEALING = 'Healing'
     GIL = 'Gil'
 

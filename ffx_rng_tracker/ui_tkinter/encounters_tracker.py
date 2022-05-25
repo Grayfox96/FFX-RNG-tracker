@@ -3,14 +3,13 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Callable
 
-from ..ui_abstract.encounters_planner import EncountersPlanner
-from ..ui_abstract.encounters_table import EncountersTable
-from ..ui_tkinter.input_widget import TkSearchBarWidget
-
 from ..configs import Configs
 from ..data.encounter_formations import ZONES
 from ..data.encounters import ANY_ENCOUNTERS
+from ..ui_abstract.encounters_planner import EncountersPlanner
+from ..ui_abstract.encounters_table import EncountersTable
 from ..ui_abstract.encounters_tracker import EncountersTracker
+from ..ui_tkinter.input_widget import TkSearchBarWidget
 from .base_widgets import BetterSpinbox, ScrollableFrame
 from .output_widget import TkOutputWidget
 

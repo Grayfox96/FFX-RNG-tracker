@@ -110,8 +110,9 @@ class CharacterAction(Event):
         elif damage_type == DamageType.FIXED:
             damage = self.action.base_damage
             return damage, damage_rng, crit
-        elif damage_type == DamageType.PERCENTAGE:
-            damage = f'{self.action.base_damage}%'
+        elif (damage_type is DamageType.PERCENTAGE_TOTAL
+                or damage_type is DamageType.PERCENTAGE_CURRENT):
+            damage = self.action.base_damage * 100 // 16
             return damage, damage_rng, crit
         elif damage_type == DamageType.HP:
             damage = self.character.stats[Stat.HP]

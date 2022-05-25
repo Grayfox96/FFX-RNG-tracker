@@ -154,10 +154,7 @@ wakka attack condor
 encounter
 # Tidus' crits are disabled
 # This is Tidus' attack
-# Miss chance roll
-roll rng36
-# Damage roll
-roll rng20
+tidus nocrit water_flan
 lulu thunder water_flan
 
 encounter
@@ -371,10 +368,7 @@ auron attack garuda_2
 encounter
 # Tidus' crits are disabled
 # This is Tidus' attack
-# Miss chance roll
-roll rng36
-# Damage roll
-roll rng20
+tidus nocrit raldo
 auron attack raldo
 
 encounter
