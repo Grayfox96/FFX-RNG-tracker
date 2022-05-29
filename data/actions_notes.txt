@@ -153,8 +153,7 @@ wakka attack condor
 
 encounter
 # Tidus' crits are disabled
-# This is Tidus' attack
-tidus nocrit water_flan
+tidus attacknocrit water_flan
 lulu thunder water_flan
 
 encounter
@@ -367,8 +366,7 @@ auron attack garuda_2
 # -- Mi'ihen --
 encounter
 # Tidus' crits are disabled
-# This is Tidus' attack
-tidus nocrit raldo
+tidus attacknocrit raldo
 auron attack raldo
 
 encounter
