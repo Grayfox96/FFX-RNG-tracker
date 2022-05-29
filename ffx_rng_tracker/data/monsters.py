@@ -4,6 +4,7 @@ from itertools import count
 
 from ..configs import Configs
 from ..utils import add_bytes
+from .actions import MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
 from .characters import CHARACTERS, Character
 from .constants import (Element, ElementalAffinity, EquipmentSlots,
@@ -31,6 +32,7 @@ class Monster:
     steal: dict[str | Rarity, int | ItemDrop | None]
     bribe: dict[str, int | ItemDrop | None]
     equipment: dict[str, int | list | dict[Character, list[int]]]
+    actions: dict[str, Action]
 
     def __str__(self) -> str:
         return self.name
@@ -417,6 +419,8 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
 
     armored = bool(prize_struct[40] & 0b00000001)
     zanmato_level = prize_struct[402]
+    actions = MONSTER_ACTIONS[monster_id]
+    actions.update(MONSTER_ACTIONS['generic_actions'])
     monster = Monster(
         name=monster_name,
         stats=stats,
@@ -434,6 +438,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         steal=steal,
         bribe=bribe,
         equipment=equipment,
+        actions=actions,
     )
     return monster
 

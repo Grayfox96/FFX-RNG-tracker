@@ -323,7 +323,9 @@ def parse_monster_action(gs: GameState,
         raise EventParsingError('Slot must be between 1 and 8')
     slot -= 1
     try:
-        action = ACTIONS[action_name]
-    except KeyError as error:
-        raise EventParsingError(f'No action named {error}')
+        action = monster.actions[action_name]
+    except KeyError:
+        action_names = ', '.join(str(a) for a in monster.actions.values())
+        raise EventParsingError(f'Available actions for {monster.name}: '
+                                f'{action_names}')
     return MonsterAction(gs, monster, action, slot)

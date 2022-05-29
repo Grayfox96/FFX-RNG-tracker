@@ -192,7 +192,7 @@
         },
         "seymour": {
             "name": "Seymour",
-            "formation": ["seymour", "guado_guardian", "guado_guardian", "anima"],
+            "formation": ["guado_guardian", "seymour", "guado_guardian", "anima"],
             "forced_condition": "normal"
         },
         "guado_encounter": {

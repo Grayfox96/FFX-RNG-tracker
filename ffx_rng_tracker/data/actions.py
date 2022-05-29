@@ -1,5 +1,5 @@
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from .constants import DamageType, Element, Status
 from .file_functions import get_resource_path
@@ -8,20 +8,21 @@ from .file_functions import get_resource_path
 @dataclass(frozen=True)
 class Action:
     name: str
-    has_target: bool
-    multitarget: bool
-    random_targeting: bool
-    can_miss: bool
-    accuracy: int
-    does_damage: bool
-    hits: int
-    can_crit: bool
-    uses_bonus_crit: bool
-    damage_type: DamageType
-    base_damage: int
-    element: Element
-    statuses: dict[Status, int]
-    rank: int
+    has_target: bool = True
+    multitarget: bool = False
+    random_targeting: bool = False
+    can_miss: bool = True
+    accuracy: int = 90
+    does_damage: bool = True
+    hits: int = 1
+    can_crit: bool = True
+    uses_bonus_crit: bool = True
+    bonus_crit: int = 0
+    damage_type: DamageType = DamageType.STRENGTH
+    base_damage: int = 16
+    element: Element | None = None
+    statuses: dict[Status, int] = field(default_factory=dict)
+    rank: int = 3
 
     def __str__(self) -> str:
         return self.name
@@ -37,6 +38,20 @@ class YojimboAction:
         return self.name
 
 
+def _get_action(action: dict) -> Action:
+    if action.get('damage_type') is not None:
+        action['damage_type'] = DamageType(action['damage_type'])
+
+    if action.get('element') is not None:
+        action['element'] = Element(action['element'])
+
+    if action.get('statuses') is not None:
+        action['statuses'] = {Status(s): v
+                              for s, v in action['statuses'].items()}
+
+    return Action(**action)
+
+
 def _get_actions(file_path: str) -> dict[str, Action]:
     absolute_file_path = get_resource_path(file_path)
     with open(absolute_file_path) as file_object:
@@ -45,39 +60,27 @@ def _get_actions(file_path: str) -> dict[str, Action]:
     for name, action in data.items():
         if name.startswith('#'):
             continue
-
-        damage_type = action.get('damage type')
-        if damage_type is not None:
-            damage_type = DamageType(action['damage type'])
-
-        element = action.get('element')
-        if element is not None:
-            element = Element(action['element'])
-
-        statuses = {Status(s): v
-                    for s, v in action.get('statuses', {}).items()}
-
-        actions[name] = Action(
-            name=action['name'],
-            has_target=action.get('has target', True),
-            multitarget=action.get('multitarget', False),
-            random_targeting=action.get('random targeting', False),
-            can_miss=action.get('can miss', True),
-            accuracy=action.get('accuracy', 90),
-            does_damage=action.get('does damage', True),
-            hits=action.get('hits', 1),
-            can_crit=action.get('can crit', True),
-            uses_bonus_crit=action.get('uses bonus crit', True),
-            damage_type=damage_type,
-            base_damage=action.get('base damage', 16),
-            element=element,
-            statuses=statuses,
-            rank=action.get('rank', 3),
-        )
+        actions[name] = _get_action(action)
     return actions
 
 
+def _get_monster_actions(file_path: str) -> dict[str, dict[str, Action]]:
+    absolute_file_path = get_resource_path(file_path)
+    with open(absolute_file_path) as file_object:
+        data: dict[str, dict[str, dict]] = json.load(file_object)
+    monster_actions = {}
+    for monster_name, _actions in data.items():
+        actions = {}
+        for name, action in _actions.items():
+            if name.startswith('#'):
+                continue
+            actions[name] = _get_action(action)
+        monster_actions[monster_name] = actions
+    return monster_actions
+
+
 ACTIONS = _get_actions('data/actions.json')
+MONSTER_ACTIONS = _get_monster_actions('data/monster_actions.json')
 
 YOJIMBO_ACTIONS = {
     'daigoro': YojimboAction('Daigoro', -1, 0),
