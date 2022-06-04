@@ -1,5 +1,5 @@
 import colorsys
-from typing import overload
+from typing import Any, overload
 
 
 def s32(integer: int) -> int:
@@ -74,3 +74,7 @@ def get_contrasting_color(color: str | tuple[int, int, int] | int,
     if return_string:
         return f'#{red:02x}{green:02x}{blue:02x}'
     return red, green, blue
+
+
+def stringify(object: Any) -> str:
+    return str(object).lower().replace(' ', '_')

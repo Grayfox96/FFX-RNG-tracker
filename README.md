@@ -4,9 +4,9 @@
 * encounters_tracker: tracks rng related to encounter formations and preemptives/ambushes.
 * seedfinder: used to find a seed given a series of action and the corresponding damage rolls.
 
-To track a PS2 run, change the ps2 setting.
+Game version and category can be changed in the configs.
 
-Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*, *monster_actions_notes.txt*) in the *ffx_rng_tracker_notes/* directory to override default ones. Prepend the notes filename with a seed number (e.g. *3556394350_actions_notes.txt*) to open them when the tracker is open with that specific seed.
+Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*, *encounters_notes.csv*) in one of the *ffx_rng_tracker_notes/* directories to override default ones. Prepend the notes filename with a seed number (e.g. *3556394350_actions_notes.txt*) to open them when the tracker is open with that specific seed.
 
 Contact [Grayfox#4644](https://discordapp.com/users/195955977223143426/) on Discord for help.
 

@@ -6,13 +6,15 @@ from ..configs import Configs
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..tracker import FFXRNGTracker
 from ..utils import s32
+from .constants import GameVersion
 
 
 def get_seed(damage_values: Iterable[int]) -> int:
-    if len(damage_values) < DAMAGE_VALUES_NEEDED:
+    damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
+    if len(damage_values) < damage_values_needed:
         raise SeedNotFoundError(
-            f'Need at least {DAMAGE_VALUES_NEEDED} damage values')
-    damage_values = damage_values[:DAMAGE_VALUES_NEEDED]
+            f'Need at least {damage_values_needed} damage values')
+    damage_values = damage_values[:damage_values_needed]
 
     damage_values_indexes = []
     for i, damage_value in enumerate(damage_values):
@@ -36,10 +38,10 @@ def get_seed(damage_values: Iterable[int]) -> int:
 
     damage_indexes_as_string = ''.join(damage_values_indexes)
 
-    if Configs.ps2:
-        absolute_file_path = _PS2_SEEDS_FILE_PATH
-    else:
+    if Configs.game_version is GameVersion.HD:
         absolute_file_path = _SEEDS_FILE_PATH
+    else:
+        absolute_file_path = _PS2_SEEDS_FILE_PATH
     with open(absolute_file_path) as file_object:
         seeds = csv.reader(file_object, delimiter=',')
         for line in seeds:
@@ -112,13 +114,15 @@ _DAMAGE_VALUES = {
     ),
 }
 
-PS2_FROM_BOOT_FRAMES = 60 * 60 * Configs.ps2_seeds_minutes
-HD_FROM_BOOT_FRAMES = 1
+FRAMES_FROM_BOOT = {
+    GameVersion.PS2NA: 60 * 60 * Configs.ps2_seeds_minutes,
+    GameVersion.HD: 1,
+}
 
-if Configs.ps2:
-    DAMAGE_VALUES_NEEDED = 8
-else:
-    DAMAGE_VALUES_NEEDED = 6
+DAMAGE_VALUES_NEEDED = {
+    GameVersion.HD: 6,
+    GameVersion.PS2NA: 8,
+}
 
 _SEEDS_DIRECTORY_PATH = 'ffx_rng_tracker_seeds'
 try:
@@ -131,9 +135,10 @@ _PS2_SEEDS_FILE_PATH = _SEEDS_DIRECTORY_PATH + '/ps2_seeds.csv'
 
 if not os.path.exists(_SEEDS_FILE_PATH):
     print('Seeds file not found.')
-    make_seeds_file(_SEEDS_FILE_PATH, HD_FROM_BOOT_FRAMES)
+    make_seeds_file(_SEEDS_FILE_PATH, FRAMES_FROM_BOOT[GameVersion.HD])
 
-if Configs.ps2:
+if Configs.game_version is not GameVersion.HD:
     if not os.path.exists(_PS2_SEEDS_FILE_PATH):
         print('Seeds file for ps2 not found.')
-        make_seeds_file(_PS2_SEEDS_FILE_PATH, PS2_FROM_BOOT_FRAMES)
+        make_seeds_file(
+            _PS2_SEEDS_FILE_PATH, FRAMES_FROM_BOOT[GameVersion.PS2NA])

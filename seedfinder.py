@@ -15,8 +15,7 @@ def main() -> None:
     root.report_callback_exception = log_tkinter_error
     root.protocol('WM_DELETE_WINDOW', root.quit)
     title = 'ffx_seedfinder v' + '.'.join(map(str, get_version()))
-    if Configs.ps2:
-        title += ' (ps2 mode)'
+    title += f' {Configs.game_version} {Configs.speedrun_category}'
     root.title(title)
     root.geometry('800x600')
 

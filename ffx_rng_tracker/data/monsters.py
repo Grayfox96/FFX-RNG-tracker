@@ -3,12 +3,12 @@ from dataclasses import dataclass
 from itertools import count
 
 from ..configs import Configs
-from ..utils import add_bytes
+from ..utils import add_bytes, stringify
 from .actions import MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
 from .characters import CHARACTERS, Character
 from .constants import (Element, ElementalAffinity, EquipmentSlots,
-                        EquipmentType, Rarity, Stat, Status)
+                        EquipmentType, GameVersion, Rarity, Stat, Status)
 from .file_functions import get_resource_path
 from .items import ITEMS, ItemDrop
 from .text_characters import TEXT_CHARACTERS
@@ -53,7 +53,7 @@ def _get_prize_structs(file_path: str) -> dict[str, list[int]]:
                 if character_id == 0:
                     break
                 monster_name += TEXT_CHARACTERS[character_id]
-            monster_name = monster_name.lower().replace(' ', '_')
+            monster_name = stringify(monster_name)
             # if the name is already in the dictionary
             # appends it with an underscore and a number
             # from 2 to 8
@@ -420,7 +420,8 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     armored = bool(prize_struct[40] & 0b00000001)
     zanmato_level = prize_struct[402]
     actions = MONSTER_ACTIONS[monster_id]
-    actions.update(MONSTER_ACTIONS['generic_actions'])
+    if not actions:
+        actions.update(MONSTER_ACTIONS['generic_actions'])
     monster = Monster(
         name=monster_name,
         stats=stats,
@@ -444,8 +445,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
 
 
 PRIZE_STRUCTS = _get_prize_structs('data/ffx_mon_data.csv')
-
-if not Configs.ps2:
+if Configs.game_version is GameVersion.HD:
     PRIZE_STRUCTS = _patch_prize_structs_for_hd(PRIZE_STRUCTS)
 
 MONSTERS = {k: _get_monster_data(k, v) for k, v in PRIZE_STRUCTS.items()}

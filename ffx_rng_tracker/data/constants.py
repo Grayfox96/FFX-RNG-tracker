@@ -1,7 +1,5 @@
 from enum import Enum, IntEnum
 
-from ..configs import Configs
-
 
 class StringEnum(str, Enum):
     """Enum subclass that creates enumerated constants
@@ -111,6 +109,18 @@ class Stat(StringEnum):
     FOCUS = 'Focus'
 
 
+class GameVersion(StringEnum):
+    PS2NA = 'PS2 NA'
+    HD = 'HD'
+
+
+class SpeedrunCategory(StringEnum):
+    ANYPERCENT = 'AnyPercent'
+    BOOSTERS = 'Boosters'
+    NSG = 'No Sphere Grid'
+    NEMESIS = 'Nemesis'
+
+
 HIT_CHANCE_TABLE = (25, 30, 30, 40, 40, 50, 60, 80, 100)
 
 RNG_CONSTANTS_1 = (
@@ -169,11 +179,19 @@ ICV_VARIANCE = (
 )
 
 # Yojimbo-related constants
-if Configs.ps2:
-    BASE_COMPATIBILITY = 50
-    COMPATIBILITY_MODIFIER = 30
-    OVERDRIVE_MOTIVATION = 2
-else:
-    BASE_COMPATIBILITY = 128
-    COMPATIBILITY_MODIFIER = 10
-    OVERDRIVE_MOTIVATION = 20
+BASE_COMPATIBILITY = {
+    GameVersion.PS2NA: 50,
+    GameVersion.HD: 128,
+}
+COMPATIBILITY_MODIFIER = {
+    GameVersion.PS2NA: 30,
+    GameVersion.HD: 10,
+}
+OVERDRIVE_MOTIVATION = {
+    GameVersion.PS2NA: 2,
+    GameVersion.HD: 20,
+}
+GIL_MOTIVATION_MODIFIER = {
+    GameVersion.PS2NA: 2,
+    GameVersion.HD: 4,
+}

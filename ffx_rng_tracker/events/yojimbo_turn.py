@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 
 from ..configs import Configs
 from ..data.actions import YOJIMBO_ACTIONS, YojimboAction
-from ..data.constants import (COMPATIBILITY_MODIFIER, OVERDRIVE_MOTIVATION,
-                              ZANMATO_LEVELS)
+from ..data.constants import (COMPATIBILITY_MODIFIER, GIL_MOTIVATION_MODIFIER,
+                              OVERDRIVE_MOTIVATION, ZANMATO_LEVELS)
 from ..data.monsters import Monster
 from .main import Event
 
@@ -65,7 +65,7 @@ class YojimboTurn(Event):
     def _get_gil(self) -> tuple[int, int]:
         """"""
         base_motivation = (self.gamestate.compatibility
-                           // COMPATIBILITY_MODIFIER)
+                           // COMPATIBILITY_MODIFIER[Configs.game_version])
         zanmato_resistance = ZANMATO_LEVELS[self.monster.zanmato_level]
         rng_motivation = self._advance_rng(17) & 0x3f
         # the zanmato level of the monster is only used to check for zanmato
@@ -78,7 +78,7 @@ class YojimboTurn(Event):
         fixed_motivation = int(base_motivation * zanmato_resistance)
         fixed_motivation += rng_motivation
         if self.overdrive:
-            fixed_motivation += OVERDRIVE_MOTIVATION
+            fixed_motivation += OVERDRIVE_MOTIVATION[Configs.game_version]
 
         motivation = fixed_motivation
         gil = 1
@@ -96,9 +96,6 @@ class YojimboTurn(Event):
 
     @staticmethod
     def gil_to_motivation(gil: int) -> int:
-        motivation = int(math.log(gil, 2))
-        if Configs.ps2:
-            motivation = (motivation - 1) * 2
-        else:
-            motivation = (motivation - 2) * 4
+        modifier = GIL_MOTIVATION_MODIFIER[Configs.game_version]
+        motivation = int(math.log(gil / modifier, 2)) * modifier
         return max(motivation, 0)

@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from itertools import product
 
 from ..configs import Configs
-from ..data.seeds import (DAMAGE_VALUES_NEEDED, HD_FROM_BOOT_FRAMES,
-                          PS2_FROM_BOOT_FRAMES, datetime_to_seed)
+from ..data.seeds import (DAMAGE_VALUES_NEEDED, FRAMES_FROM_BOOT,
+                          datetime_to_seed)
 from ..events.character_action import CharacterAction
 from .actions_tracker import ActionsTracker
 from .input_widget import InputWidget
@@ -33,9 +33,10 @@ class SeedFinder(ActionsTracker):
                 if event.action.does_damage:
                     indexes.append(index)
 
-        if len(indexes) < DAMAGE_VALUES_NEEDED:
+        damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.speedrun_category]
+        if len(indexes) < damage_values_needed:
             self.popup.print_output(
-                f'Need {DAMAGE_VALUES_NEEDED} damaging actions.')
+                f'Need {damage_values_needed} damaging actions.')
             return
 
         input_dvs = self.damage_values_widget.get_input()
@@ -57,10 +58,7 @@ class SeedFinder(ActionsTracker):
 
         damage_values = []
 
-        if Configs.ps2:
-            frames = PS2_FROM_BOOT_FRAMES
-        else:
-            frames = HD_FROM_BOOT_FRAMES
+        frames = FRAMES_FROM_BOOT[Configs.speedrun_category]
 
         for frame, dt in product(range(frames), range(256)):
             seed = datetime_to_seed(dt, frame)

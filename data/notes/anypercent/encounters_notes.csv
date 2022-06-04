@@ -1,4 +1,4 @@
-name,type,initiative,label,min,default,max
+#name,type,initiative,label,min,default,max
 sinscales,boss,false,,,,
 ammes,boss,false,,,,
 tanker,boss,false,,,,
@@ -20,7 +20,7 @@ besaid_road,random,false,Besaid Road,0,0,1
 sin_fin,boss,false,,,,
 echuilles,boss,false,,,,
 lancet_tutorial,boss,false,,,,
-lord_ochu,optional_boss,false,Lord Ochu (Way In),0,0,200
+lord_ochu,optional_boss,false,Lord Ochu (Way In),0,0,1
 kilika_woods,random,false,Kilika Woods (Way In),0,3,6
 geneaux,boss,false,,,,
 lord_ochu,optional_boss,false,Lord Ochu (Way Out),0,0,1

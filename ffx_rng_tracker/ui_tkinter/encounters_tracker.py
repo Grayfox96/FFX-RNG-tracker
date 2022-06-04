@@ -5,11 +5,12 @@ from typing import Callable
 
 from ..configs import Configs
 from ..data.encounter_formations import ZONES
-from ..data.encounters import ANY_ENCOUNTERS
+from ..data.encounters import EncounterData, get_encounters
 from ..ui_abstract.encounters_planner import EncountersPlanner
 from ..ui_abstract.encounters_table import EncountersTable
 from ..ui_abstract.encounters_tracker import EncountersTracker
 from ..ui_tkinter.input_widget import TkSearchBarWidget
+from ..utils import stringify
 from .base_widgets import BetterSpinbox, ScrollableFrame
 from .output_widget import TkOutputWidget
 
@@ -60,6 +61,8 @@ class TkEncountersInputWidget(tk.Frame):
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
+        self.encounters: list[EncounterData] = []
+
         self.callback_func: Callable = None
 
         self.initiative_equip = ttk.Checkbutton(self, text='Sentry')
@@ -73,12 +76,6 @@ class TkEncountersInputWidget(tk.Frame):
         self.rowconfigure(1, weight=1)
 
         self.sliders: dict[str, EncounterSlider] = {}
-        for encounter in ANY_ENCOUNTERS:
-            if encounter['type'] == 'boss':
-                continue
-            self.add_slider(
-                encounter['label'], encounter['min'],
-                encounter['default'], encounter['max'])
 
         self.start_button = tk.Radiobutton(
             self, text='Start', variable=self.current_zone, value='Start')
@@ -96,23 +93,23 @@ class TkEncountersInputWidget(tk.Frame):
         initiative_equip = 'selected' in self.initiative_equip.state()
 
         input_data = []
-        for encounter in ANY_ENCOUNTERS:
-            if initiative_equip and encounter['initiative'] == 'true':
+        for encounter in self.encounters:
+            if initiative_equip and encounter.initiative:
                 initiative = 'initiative'
             else:
                 initiative = ''
-            if encounter['type'] == 'boss':
+            if encounter.type == 'boss':
                 encs = 1
             else:
-                encs = self.sliders[encounter['label']].get()
+                encs = self.sliders[encounter.label].get()
                 if encs >= 0:
                     input_data.append(spacer)
-                    if current_zone == encounter['label']:
+                    if current_zone == encounter.label:
                         input_data.append('///')
-                    input_data.append(f'#     {encounter["label"]}:')
+                    input_data.append(f'#     {encounter.label}:')
             for _ in range(encs):
-                input_data.append(f'encounter {encounter["type"]} '
-                                  f'{encounter["name"]} {initiative}')
+                input_data.append(f'encounter {encounter.type} '
+                                  f'{encounter.name} {initiative}')
         return '\n'.join(input_data)
 
     def set_input(self, text: str) -> None:
@@ -147,6 +144,14 @@ class TkEncountersTracker(tk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkEncountersInputWidget(self)
+        encounters = get_encounters('encounters_notes.csv', seed)
+        input_widget.encounters = encounters
+        for encounter in encounters:
+            if encounter.type == 'boss':
+                continue
+            input_widget.add_slider(
+                encounter.label, encounter.min,
+                encounter.default, encounter.max)
         input_widget.pack(fill='y', side='left')
 
         output_widget = TkEncountersOutputWidget(self)
@@ -214,7 +219,7 @@ class TkEncountersPlannerInputWidget(tk.Frame):
 
         input_data = []
         for index, scale in enumerate(self.sliders):
-            name = scale.get_name().lower().replace(' ', '_')
+            name = stringify(scale.get_name())
             match name:
                 case 'boss':
                     name = 'dummy'

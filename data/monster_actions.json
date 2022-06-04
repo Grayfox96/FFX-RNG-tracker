@@ -94,6 +94,20 @@
     "snow_flan": {
     },
     "ice_flan": {
+        "blizzara": {
+            "name": "Blizzara",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Ice"
+        },
+        "blizzara_silence": {
+            "name": "Blizzara (Silence)",
+            "has_target": true,
+            "can_miss": false,
+            "does_damage": false
+        }
     },
     "flame_flan": {
     },
@@ -510,6 +524,20 @@
     "circle": {
     },
     "sinscale_6": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false
+        },
+        "spines": {
+            "name": "Spines",
+            "can_miss": false,
+            "base_damage": 40
+        },
+        "wings_flicker": {
+            "name": "Wings Flicker",
+            "has_target": false,
+            "does_damage": false
+        }
     },
     "sinscale_7": {
     },

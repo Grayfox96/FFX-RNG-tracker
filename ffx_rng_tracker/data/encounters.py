@@ -1,27 +1,52 @@
 import csv
+from dataclasses import dataclass
+from itertools import count
 
-from .file_functions import get_resource_path
-
-
-def _get_encounters(file_path: str) -> tuple[dict[str, str]]:
-    absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
-        file_reader = csv.reader(file_object, delimiter=',')
-        # skips first line
-        next(file_reader)
-        encounters = []
-        for line in file_reader:
-            encounter = {
-                'name': line[0],
-                'type': line[1],
-                'initiative': line[2],
-                'label': line[3],
-                'min': line[4],
-                'default': line[5],
-                'max': line[6],
-            }
-            encounters.append(encounter)
-    return tuple(encounters)
+from .notes import get_notes
 
 
-ANY_ENCOUNTERS = _get_encounters('data/any_encounters.csv')
+@dataclass
+class EncounterData:
+    name: str
+    type: str
+    initiative: bool
+    label: str
+    min: int
+    default: int
+    max: int
+
+
+def get_encounters(file_path: str, seed: int) -> list[EncounterData]:
+    encounters_notes = get_notes(file_path, seed)
+    encounters = {}
+    csv_reader = csv.reader(encounters_notes.splitlines())
+    for line in csv_reader:
+        if line[0].startswith('#'):
+            continue
+        name = line[0]
+        encounter_type = line[1]
+        initiative = line[2] == 'true'
+        label = line[3]
+        if label in encounters:
+            for i in count(2):
+                new_label = f'{label} #{i}'
+                if new_label not in encounters:
+                    label = new_label
+                    break
+
+        if encounter_type == 'boss':
+            min = default = max = 0
+        else:
+            min = int(line[4])
+            default = int(line[5])
+            max = int(line[6])
+        encounters[label] = EncounterData(
+            name=name,
+            type=encounter_type,
+            initiative=initiative,
+            label=label,
+            min=min,
+            default=default,
+            max=max,
+        )
+    return list(encounters.values())

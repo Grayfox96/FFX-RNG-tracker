@@ -7,6 +7,7 @@ from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.monsters import MONSTERS
 from ..errors import EventParsingError
 from ..gamestate import GameState
+from ..utils import stringify
 from .advance_rng import AdvanceRNG
 from .change_party import ChangeParty
 from .change_stat import ChangeStat
@@ -245,7 +246,7 @@ def parse_stat_update(gs: GameState,
     except KeyError as error:
         raise EventParsingError(f'No character named {error}')
     for stat in Stat:
-        if str(stat).lower().replace(' ', '_') == stat_name:
+        if stringify(stat) == stat_name:
             stat_value = character.stats[stat]
             break
     else:

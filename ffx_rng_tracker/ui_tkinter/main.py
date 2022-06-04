@@ -69,8 +69,7 @@ def main(widget: type[tk.Widget],
     root.withdraw()
     root.protocol('WM_DELETE_WINDOW', root.quit)
     title += ' v' + '.'.join(map(str, get_version()))
-    if Configs.ps2:
-        title += ' (ps2 mode)'
+    title += f' {Configs.game_version} {Configs.speedrun_category}'
     root.title(title)
     root.geometry(size)
 

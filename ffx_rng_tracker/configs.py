@@ -3,6 +3,7 @@ import os
 import shutil
 from dataclasses import dataclass
 
+from .data.constants import GameVersion, SpeedrunCategory
 from .data.file_functions import get_resource_path
 from .utils import get_contrasting_color
 
@@ -26,8 +27,9 @@ class Color:
 
 class Configs:
     seed: int | None
-    ps2: bool
+    game_version: GameVersion
     ps2_seeds_minutes: int
+    speedrun_category: SpeedrunCategory
     use_dark_mode: bool
     font_size: int
     use_theme: bool
@@ -68,8 +70,17 @@ class Configs:
             cls.seed = seed
         else:
             cls.seed = None
-        cls.ps2 = cls.getboolean(section, 'ps2', False)
+        try:
+            cls.game_version = GameVersion(
+                cls.get(section, 'game version', 'HD'))
+        except ValueError:
+            cls.game_version = GameVersion.HD
         cls.ps2_seeds_minutes = cls.getint(section, 'ps2 seeds minutes', 3)
+        try:
+            cls.speedrun_category = SpeedrunCategory(
+                cls.get(section, 'category', 'AnyPercent'))
+        except ValueError:
+            cls.speedrun_category = SpeedrunCategory.ANYPERCENT
 
         section = 'UI'
         cls.use_dark_mode = cls.getboolean(section, 'use dark mode', False)
