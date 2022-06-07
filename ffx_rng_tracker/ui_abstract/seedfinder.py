@@ -33,7 +33,7 @@ class SeedFinder(ActionsTracker):
                 if event.action.does_damage:
                     indexes.append(index)
 
-        damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.speedrun_category]
+        damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
         if len(indexes) < damage_values_needed:
             self.popup.print_output(
                 f'Need {damage_values_needed} damaging actions.')
@@ -58,7 +58,7 @@ class SeedFinder(ActionsTracker):
 
         damage_values = []
 
-        frames = FRAMES_FROM_BOOT[Configs.speedrun_category]
+        frames = FRAMES_FROM_BOOT[Configs.game_version]
 
         for frame, dt in product(range(frames), range(256)):
             seed = datetime_to_seed(dt, frame)

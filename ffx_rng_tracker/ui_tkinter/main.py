@@ -13,6 +13,7 @@ from .encounters_tracker import (TkEncountersPlanner, TkEncountersTable,
                                  TkEncountersTracker)
 from .monster_data_viewer import TkMonsterDataViewer
 from .seed_info import TkSeedInfo
+from .seedfinder import TkSeedFinder
 from .status_tracker import TkStatusTracker
 from .yojimbo_tracker import TkYojimboTracker
 
@@ -48,6 +49,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
             'Status': TkStatusTracker,
             'Yojimbo': TkYojimboTracker,
             'Monster Data': TkMonsterDataViewer,
+            'Seedfinder': TkSeedFinder,
             'Configs': ConfigsPage,
         }
         return widgets
