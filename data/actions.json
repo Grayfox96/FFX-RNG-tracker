@@ -12,7 +12,7 @@
         "uses_bonus_crit": true,
         "bonus_crit": 0,
         "damage_type": "Strength",
-        "base_damage": 16,
+        "base_damage": 0,
         "element": null,
         "statuses": {},
         "rank": 3

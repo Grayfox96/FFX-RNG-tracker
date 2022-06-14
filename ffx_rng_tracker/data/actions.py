@@ -19,7 +19,7 @@ class Action:
     uses_bonus_crit: bool = True
     bonus_crit: int = 0
     damage_type: DamageType = DamageType.STRENGTH
-    base_damage: int = 16
+    base_damage: int = 0
     element: Element | None = None
     statuses: dict[Status, int] = field(default_factory=dict)
     rank: int = 3

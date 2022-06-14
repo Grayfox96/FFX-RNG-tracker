@@ -86,7 +86,7 @@ def _get_formations(file_path: str) -> Formations:
             condition
         )
 
-    zones = {}
+    zones: dict[str, Zone] = {}
     for encounter, data in formations['random'].items():
         for condition in EncounterCondition:
             if condition.lower() == data['forced_condition']:
@@ -99,6 +99,10 @@ def _get_formations(file_path: str) -> Formations:
             condition,
             data['danger_value']
         )
+        for formation in zones[encounter].formations:
+            for monster in formation:
+                if zones[encounter].name not in monster.zones:
+                    monster.zones.append(zones[encounter].name)
 
     return bosses, simulations, zones
 

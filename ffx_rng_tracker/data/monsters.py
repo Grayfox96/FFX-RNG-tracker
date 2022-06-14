@@ -1,5 +1,5 @@
 import csv
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from itertools import count
 
 from ..configs import Configs
@@ -33,6 +33,7 @@ class Monster:
     bribe: dict[str, int | ItemDrop | None]
     equipment: dict[str, int | list | dict[Character, list[int]]]
     actions: dict[str, Action]
+    zones: list[str] = field(default_factory=list)
 
     def __str__(self) -> str:
         return self.name
