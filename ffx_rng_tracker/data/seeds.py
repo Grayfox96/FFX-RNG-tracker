@@ -16,27 +16,26 @@ def get_seed(damage_values: Iterable[int]) -> int:
             f'Need at least {damage_values_needed} damage values')
     damage_values = damage_values[:damage_values_needed]
 
-    damage_values_indexes = []
+    indexes = []
     for i, damage_value in enumerate(damage_values):
         if i in (0, 2, 4) or i >= 6:
             character = 'auron'
         else:
             character = 'tidus'
         try:
-            damage_value_index = _DAMAGE_VALUES[character].index(damage_value)
+            index = _DAMAGE_VALUES[character].index(damage_value)
         except ValueError:
             if damage_value % 2 != 0:
                 raise InvalidDamageValueError(
                     f'Invalid damage value for {character}: {damage_value}')
             try:
-                damage_value_index = _DAMAGE_VALUES[character].index(
-                    damage_value // 2)
+                index = _DAMAGE_VALUES[character].index(damage_value // 2) + 32
             except ValueError:
                 raise InvalidDamageValueError(
                     f'Invalid damage value for {character}: {damage_value}')
-        damage_values_indexes.append(f'{damage_value_index:02}')
+        indexes.append(index)
 
-    damage_indexes_as_string = ''.join(damage_values_indexes)
+    damage_indexes_as_string = ''.join([f'{n:02}' for n in indexes])
 
     if Configs.game_version is GameVersion.HD:
         absolute_file_path = _SEEDS_FILE_PATH
@@ -74,8 +73,7 @@ def make_seeds_file(file_path: str, frames: int) -> None:
     seeds = []
     rng_tracker = FFXRNGTracker(0)
     for frame in range(frames):
-        if frame % 60 == 0:
-            print(f'\r{frame}/{frames}', end='')
+        print(f'\r{frame}/{frames}', end='')
         for date_time in range(256):
             seed = datetime_to_seed(date_time, frame)
             rng_tracker.__init__(seed)
@@ -85,13 +83,26 @@ def make_seeds_file(file_path: str, frames: int) -> None:
             # first encounter
             # get 3 damage rolls from auron and tidus
             for i in range(1, 6, 2):
-                indexes.append(auron_rolls[i] & 31)
+                auron_damage_index = auron_rolls[i] & 31
+                # if auron crits the sinscale
+                if (auron_rolls[i + 1] % 101) < 22:
+                    auron_damage_index += 32
+                indexes.append(auron_damage_index)
                 tidus_damage = _DAMAGE_VALUES['tidus'][tidus_rolls[i] & 31]
-                indexes.append(_DAMAGE_VALUES['tidus'].index(tidus_damage))
+                tidus_damage_index = _DAMAGE_VALUES['tidus'].index(
+                    tidus_damage)
+                # if tidus crits the sinscale
+                if (tidus_rolls[i + 1] % 101) < 23:
+                    tidus_damage_index += 32
+                indexes.append(tidus_damage_index)
             # second encounter after dragon fang
             # get 2 damage rolls from auron
             for i in range(32, 35, 2):
-                indexes.append(auron_rolls[i] & 31)
+                auron_damage_index = auron_rolls[i] & 31
+                # if auron crits ammes
+                if (auron_rolls[i + 1] % 101) < 13:
+                    auron_damage_index += 32
+                indexes.append(auron_damage_index)
             damage_rolls.append(''.join([f'{n:02}' for n in indexes]))
             seeds.append(str(seed))
     print(f'\r{frames}/{frames}')
@@ -101,7 +112,7 @@ def make_seeds_file(file_path: str, frames: int) -> None:
     print('Done!')
 
 
-_DAMAGE_VALUES = {
+_DAMAGE_VALUES: dict[str, tuple[int]] = {
     'auron': (
         260, 261, 262, 263, 264, 266, 267, 268, 269, 270, 271,
         272, 273, 274, 275, 276, 278, 279, 280, 281, 282, 283,
@@ -113,15 +124,13 @@ _DAMAGE_VALUES = {
         137, 137, 138, 138, 139, 139, 140, 140, 141, 141,
     ),
 }
-
 FRAMES_FROM_BOOT = {
     GameVersion.PS2NA: 60 * 60 * Configs.ps2_seeds_minutes,
     GameVersion.HD: 1,
 }
-
 DAMAGE_VALUES_NEEDED = {
-    GameVersion.HD: 6,
     GameVersion.PS2NA: 8,
+    GameVersion.HD: 6,
 }
 
 _SEEDS_DIRECTORY_PATH = 'ffx_rng_tracker_seeds'
