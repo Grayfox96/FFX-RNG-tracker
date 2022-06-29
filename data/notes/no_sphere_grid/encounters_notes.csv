@@ -96,7 +96,7 @@ calm_lands_(north-west),random,true,Calm Lands (North-West),0,4,10
 defender_x,boss,true,,,,
 biran_&_yenke,optional_boss,false,Biran & Yenke (pre Cave),0,0,1
 calm_lands_(gorge),random,true,Calm Lands (Gorge),0,0,10
-cave_(white_zone)/cave_(green_zone),multizone,true,Cave,0,20,50
+cave_(white_zone)/cave_(green_zone),multizone,true,Cave (White zone/Green zone),0,20,50
 biran_&_yenke,optional_boss,false,Biran & Yenke,0,1,1
 gagazet_(mountain),random,false,Gagazet (Outside),0,10,20
 seymour_flux,boss,true,,,,
