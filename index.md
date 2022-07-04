@@ -1,37 +1,28 @@
-## Welcome to GitHub Pages
+# Download
+Download the latest release from [here](https://github.com/Grayfox96/FFX-RNG-tracker/releases) (first .zip file under Assets), unzip it and open `FFX RNG tracker vXX.XX.XX.exe` to use.
 
-You can use the [editor on GitHub](https://github.com/Grayfox96/FFX-RNG-tracker/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+# Configs
+Game version and category can be changed in the configs.
+It's possible to switch to dark theme, use the default ttk theme and change the font size.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# Notes
+Place personalized notes files (*actions_notes.txt*, *drops_notes.txt*, *yojimbo_notes.txt*, *encounters_notes.csv*) in one of the *ffx_rng_tracker_notes/* directories to override default ones. Prepend the notes filename with a seed number (e.g. *3556394350_actions_notes.txt*) to open them when the tracker is open with that specific seed.
 
-### Markdown
+# Help
+Contact [Grayfox#4644](https://discordapp.com/users/195955977223143426/) on Discord for help.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+# Theme
+Using the [Azure](https://github.com/rdbende/Azure-ttk-theme) theme for ttk.
 
-```markdown
-Syntax highlighted code block
+# Credits
+Credits to the #big-nerds channel in the [FFX/X-2 Speedruns Discord](https://discord.gg/X3qXHWG) for ideas and useful discussions.
 
-# Header 1
-## Header 2
-### Header 3
+Credits to [Rossy__](https://twitter.com/Rossy__TTV) for the disassembly for most of the in-game functions used, for testing a lot of random stuff and for providing the mon-data and shop-arms files.
 
-- Bulleted
-- List
+Credits to [CrimsonInferno](https://www.twitch.tv/crimsoninferno9) for the initial idea and for providing the encounter formations and a lot of other useful information.
 
-1. Numbered
-2. List
+Credits to [OddMog](https://www.twitch.tv/oddmog), [ChrisTenarium](https://www.twitch.tv/christenarium) and [Loftus](https://www.twitch.tv/loftus) for initial testing and feedback.
 
-**Bold** and _Italic_ and `Code` text
+Credits to [Madhyama](https://www.twitch.tv/madhyama) for testing the actions tracker and compiling the default actions notes.
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Grayfox96/FFX-RNG-tracker/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Credits to [Camp4r](https://www.twitch.tv/camp4r) for the idea and design of the Encounters Table and Planner widgets.
