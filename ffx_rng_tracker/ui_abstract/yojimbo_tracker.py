@@ -1,5 +1,4 @@
 from ..data.actions import YOJIMBO_ACTIONS
-from ..data.notes import get_notes
 from ..events.parsing_functions import (ParsingFunction,
                                         parse_compatibility_update,
                                         parse_death, parse_roll,
@@ -9,9 +8,7 @@ from .base_tracker import TrackerUI
 
 class YojimboTracker(TrackerUI):
     """Widget used to track Yojimbo rng."""
-
-    def get_default_input_data(self) -> str:
-        return get_notes(YOJIMBO_NOTES_FILE, self.parser.gamestate.seed)
+    notes_file = 'yojimbo_notes.txt'
 
     def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         parsing_functions = {
@@ -41,6 +38,3 @@ class YojimboTracker(TrackerUI):
             output = output.split('///')[-1]
             output = output[output.find('\n') + 1:]
         return output
-
-
-YOJIMBO_NOTES_FILE = 'yojimbo_notes.txt'

@@ -362,6 +362,16 @@
             "monsters": ["funguar", "garuda", "basilisk"],
             "forced_condition": "normal"
         },
+        "simulation_(guadosalam)": {
+            "name": "Simulation (Guadosalam)",
+            "monsters": ["larva", "iron_giant"],
+            "forced_condition": "normal"
+        },
+        "simulation_(thunder plains)": {
+            "name": "Simulation (Thunder Plains)",
+            "monsters": ["larva", "iron_giant", "chimera", "xiphos"],
+            "forced_condition": "normal"
+        },
         "simulation_(calm_lands)": {
             "name": "Simulation (Calm Lands)",
             "monsters": ["coeurl", "malboro", "bashura", "ghost"],

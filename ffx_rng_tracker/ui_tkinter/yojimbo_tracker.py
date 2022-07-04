@@ -1,6 +1,7 @@
 import tkinter as tk
 
 from ..ui_abstract.yojimbo_tracker import YojimboTracker
+from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .input_widget import TkInputWidget
 from .output_widget import TkOutputWidget
 
@@ -24,6 +25,8 @@ class TkYojimboTracker(tk.Frame):
 
         input_widget = TkInputWidget(self)
         input_widget.pack(fill='y', side='left')
+        input_widget.bind(
+            '<Control-s>', lambda _: self.tracker.save_input_data())
 
         output_widget = TkYojimboOutputWidget(self)
         output_widget.pack(expand=True, fill='both', side='right')
@@ -32,4 +35,6 @@ class TkYojimboTracker(tk.Frame):
             seed=seed,
             input_widget=input_widget,
             output_widget=output_widget,
+            warning_popup=TkWarningPopup(),
+            confirmation_popup=TkConfirmPopup(),
             )

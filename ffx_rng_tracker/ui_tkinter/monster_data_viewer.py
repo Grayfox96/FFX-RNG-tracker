@@ -2,8 +2,8 @@ import re
 import tkinter as tk
 from typing import Callable
 
-from .input_widget import TkSearchBarWidget
 from ..ui_abstract.monster_data_viewer import MonsterDataViewer
+from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
 
 

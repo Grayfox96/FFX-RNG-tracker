@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import simpledialog, ttk
+from tkinter import messagebox, simpledialog, ttk
 
 from ..configs import Configs
 from ..data.constants import GameVersion
@@ -193,4 +193,17 @@ class DamageValuesDialogue(simpledialog.Dialog):
             self.warning_label.pack(fill='x')
 
 
-DEFAULT_FONT = dict(family='Courier New', size=Configs.font_size)
+class TkWarningPopup:
+
+    def print_output(self, output: str) -> None:
+        messagebox.showwarning(message=output)
+
+
+class TkConfirmPopup:
+    confirmed: bool
+
+    def print_output(self, output: str) -> None:
+        self.confirmed = messagebox.askokcancel(message=output)
+
+
+DEFAULT_FONT_ARGS = dict(family='Courier New', size=Configs.font_size)

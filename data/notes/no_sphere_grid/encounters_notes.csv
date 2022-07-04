@@ -50,8 +50,10 @@ moonflow_(south),random,true,Moonflow (South),0,7,10
 extractor,boss,false,,,,
 rikku_tutorial,boss,false,,,,
 moonflow_(north),random,true,Moonflow (North),0,2,10
+simulation_(guadosalam),simulated,true,Simulation (Guadosalam),0,0,1
 thunder_plains_(south),random,true,Thunder Plains (South),0,3,10
 thunder_plains_(south)_(1_stone),random,true,Thunder Plains (South) (1 Stone),0,4,10
+simulation_(thunder plains),simulated,true,Simulation (Thunder Plains),0,0,1
 thunder_plains_(north),random,true,Thunder Plains (North),0,0,10
 thunder_plains_(north)_(1_stone),random,true,Thunder Plains (North) (1 Stone),0,7,10
 macalania_woods,random,false,Macalania Woods,0,8,12
@@ -106,9 +108,13 @@ zanarkand_(overpass),random,false,Zanarkand (Overpass),0,6,10
 zanarkand_(dome),random,false,Zanarkand (Dome),0,6,10
 spectral_keeper,boss,false,,,,
 yunalesca,boss,false,,,,
+simulation_(calm_lands),simulated,true,Simulation (Calm Lands),0,0,3
+omega_ruins_(lower),random,false,Omega Ruins,0,0,10
 left_fin,boss,false,,,,
 right_fin,boss,false,,,,
 sin_core,boss,false,,,,
+simulation_(calm_lands),simulated,true,Simulation (Calm Lands),0,0,3
+omega_ruins_(lower),random,false,Omega Ruins,0,0,10
 overdrive_sin,boss,false,,,,
 inside_sin_(front),random,false,Inside Sin (Front),0,0,10
 seymour_omnis,boss,false,,,,

@@ -1,6 +1,5 @@
 from ..data.characters import CHARACTERS
 from ..data.monsters import MONSTERS
-from ..data.notes import get_notes
 from ..events.parsing_functions import (ParsingFunction, parse_action,
                                         parse_encounter, parse_monster_action,
                                         parse_party_change, parse_roll,
@@ -12,8 +11,7 @@ class ActionsTracker(TrackerUI):
     """Widget used to track damage, critical chance,
     escape chance and miss chance rng.
     """
-    def get_default_input_data(self) -> str:
-        return get_notes(ACTIONS_NOTES_FILE, self.parser.gamestate.seed)
+    notes_file = 'actions_notes.txt'
 
     def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         """Returns a dictionary with strings as keys
@@ -66,6 +64,3 @@ class ActionsTracker(TrackerUI):
         output = output.replace(' - Boss: ', ':')
         output = output.replace('Normal ', '')
         return output
-
-
-ACTIONS_NOTES_FILE = 'actions_notes.txt'

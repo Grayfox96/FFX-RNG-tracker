@@ -28,7 +28,7 @@ class MonsterDataViewer:
         self.output_widget.print_output(monster_data)
 
     def filter_monsters(self, *_, **__) -> None:
-        filter = self.search_bar_widget.get_input()
+        filter = self.search_bar_widget.get_input().lower()
         monsters_names = [name
                           for name, data in self.monster_data.items()
                           if filter in name or filter in data.lower()

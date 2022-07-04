@@ -50,7 +50,9 @@ moonflow_(south),random,true,Moonflow (South),0,8,10
 extractor,boss,false,,,,
 rikku_tutorial,boss,false,,,,
 moonflow_(north),random,true,Moonflow (North),0,2,10
+simulation_(guadosalam),simulated,true,Simulation (Guadosalam),0,0,1
 thunder_plains_(south),random,true,Thunder Plains (South),0,7,10
+simulation_(thunder plains),simulated,true,Simulation (Thunder Plains),0,0,1
 thunder_plains_(north),random,true,Thunder Plains (North),0,7,10
 macalania_woods,random,false,Macalania Woods,0,8,12
 spherimorph,boss,false,,,,

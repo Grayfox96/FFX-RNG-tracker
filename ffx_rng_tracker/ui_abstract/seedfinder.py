@@ -7,13 +7,11 @@ from ..data.seeds import (DAMAGE_VALUES_NEEDED, FRAMES_FROM_BOOT,
 from ..events.character_action import CharacterAction
 from .actions_tracker import ActionsTracker
 from .input_widget import InputWidget
-from .output_widget import OutputWidget
 
 
 @dataclass
 class SeedFinder(ActionsTracker):
     damage_values_widget: InputWidget
-    popup: OutputWidget
 
     def get_default_input_data(self) -> str:
         input_data = ('encounter\n'
@@ -35,7 +33,7 @@ class SeedFinder(ActionsTracker):
 
         damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
         if len(indexes) < damage_values_needed:
-            self.popup.print_output(
+            self.warning_popup.print_output(
                 f'Need {damage_values_needed} damaging actions.')
             return
 
@@ -47,11 +45,13 @@ class SeedFinder(ActionsTracker):
             input_dvs = [int(i) for i in input_dvs]
         except ValueError as error:
             error = str(error).split(':', 1)[1]
-            self.popup.print_output(f'{error} is not a valid damage value.')
+            self.warning_popup.print_output(
+                f'{error} is not a valid damage value.')
             return
 
         if len(input_dvs) < len(indexes):
-            self.popup.print_output(f'Need {len(indexes)} damage values.')
+            self.warning_popup.print_output(
+                f'Need {len(indexes)} damage values.')
             return
 
         input_dvs = input_dvs[:len(indexes)]
@@ -72,8 +72,8 @@ class SeedFinder(ActionsTracker):
             if damage_values == input_dvs:
                 self.input_widget.set_input(
                     f'# Seed number: {seed}\n{self.input_widget.get_input()}')
-                self.popup.print_output(f'Seed: {seed}')
+                self.warning_popup.print_output(f'Seed: {seed}')
                 self.callback()
                 break
         else:
-            self.popup.print_output('Seed not found!')
+            self.warning_popup.print_output('Seed not found!')

@@ -1,9 +1,9 @@
 import tkinter as tk
-from tkinter import messagebox
 from typing import Callable
 
 from ..ui_abstract.seedfinder import SeedFinder
 from .actions_tracker import TkActionsOutputWidget
+from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .input_widget import TkInputWidget
 
 
@@ -17,13 +17,6 @@ class TkDamageValuesWidget(tk.StringVar):
 
     def register_callback(self, callback_func: Callable) -> None:
         raise NotImplementedError()
-
-
-class TkPopup:
-
-    def print_output(self, output: str) -> None:
-        """Prints the output data to the screen."""
-        messagebox.showwarning(message=output)
 
 
 class TkSeedFinder(tk.Frame):
@@ -54,7 +47,8 @@ class TkSeedFinder(tk.Frame):
             seed=seed,
             input_widget=input_widget,
             output_widget=output_widget,
+            warning_popup=TkWarningPopup(),
+            confirmation_popup=TkConfirmPopup(),
             damage_values_widget=damage_values_widget,
-            popup=TkPopup(),
         )
         button.configure(command=self.tracker.find_seed)

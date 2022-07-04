@@ -7,3 +7,7 @@ class OutputWidget(Protocol):
 
     def print_output(self, output: str) -> None:
         """Prints the output data to the screen."""
+
+
+class ConfirmationPopup(OutputWidget):
+    confirmed: bool

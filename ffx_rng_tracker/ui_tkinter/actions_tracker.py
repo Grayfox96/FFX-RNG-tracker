@@ -1,6 +1,7 @@
 import tkinter as tk
 
 from ..ui_abstract.actions_tracker import ActionsTracker
+from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .input_widget import TkInputWidget
 from .output_widget import TkOutputWidget
 
@@ -26,6 +27,8 @@ class TkActionsTracker(tk.Frame):
 
         input_widget = TkInputWidget(self)
         input_widget.pack(fill='y', side='left')
+        input_widget.bind(
+            '<Control-s>', lambda _: self.tracker.save_input_data())
 
         output_widget = TkActionsOutputWidget(self)
         output_widget.pack(expand=True, fill='both', side='right')
@@ -34,4 +37,6 @@ class TkActionsTracker(tk.Frame):
             seed=seed,
             input_widget=input_widget,
             output_widget=output_widget,
+            warning_popup=TkWarningPopup(),
+            confirmation_popup=TkConfirmPopup(),
             )

@@ -1,5 +1,4 @@
 from ..data.monsters import MONSTERS
-from ..data.notes import get_notes
 from ..events.parsing_functions import (ParsingFunction, parse_bribe,
                                         parse_death, parse_kill,
                                         parse_party_change, parse_roll,
@@ -8,9 +7,7 @@ from .base_tracker import TrackerUI
 
 
 class DropsTracker(TrackerUI):
-
-    def get_default_input_data(self) -> str:
-        return get_notes(DROPS_NOTES_FILE, self.parser.gamestate.seed)
+    notes_file = 'drops_notes.txt'
 
     def get_parsing_functions(self) -> dict[str, ParsingFunction]:
         parsing_functions = {
@@ -39,6 +36,3 @@ class DropsTracker(TrackerUI):
             output = output.split('///')[-1]
             output = output[output.find('\n') + 1:]
         return output
-
-
-DROPS_NOTES_FILE = 'drops_notes.txt'
