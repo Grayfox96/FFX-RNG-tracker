@@ -16,18 +16,18 @@
 ///
 # Zanarkand
 party ta
-sinscale_2 auron
-sinscale_2 tidus
-sinscale_2 auron
-sinscale_2 tidus
-sinscale_2 auron
-sinscale_2 tidus
+sinscale_6 auron
+sinscale_6 tidus
+sinscale_6 auron
+sinscale_6 tidus
+sinscale_6 auron
+sinscale_6 tidus
 
-sinscale_2 auron
-sinscale_2 auron
-sinscale_2 auron
-sinscale_2 auron
-sinscale_2 auron
+sinscale_6 auron
+sinscale_6 auron
+sinscale_6 auron
+sinscale_6 auron
+sinscale_6 auron
 sinspawn_ammes auron
 
 tanker tidus

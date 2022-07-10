@@ -16,19 +16,19 @@
 ///
 # Zanarkand
 party ta
-sinscale_2 auron
-sinscale_2 tidus
-sinscale_2 auron
-sinscale_2 tidus
-sinscale_2 auron
-sinscale_2 tidus
+sinscale_6 auron
+sinscale_6 tidus
+sinscale_6 auron
+sinscale_6 tidus
+sinscale_6 auron
+sinscale_6 tidus
 
-sinscale_2 auron
-sinscale_2 auron
-sinscale_2 auron
-sinscale_2 auron
-sinscale_2 auron
-sinspawn_ammes auron
+sinscale_6 auron
+sinscale_6 auron
+sinscale_6 auron
+sinscale_6 auron
+sinscale_6 auron
+sinspawn_ammes tidus
 
 tanker tidus
 
@@ -40,11 +40,11 @@ sahagin_4 tidus
 # Geosgaeno doesn't roll RNG
 ///
 party tr
-klikk tidus
+klikk rikku
 
 # Forced fight
-piranha_3 tidus
-piranha_3 tidus
+piranha_3 rikku
+piranha_3 rikku
 
 tros rikku
 
@@ -57,10 +57,7 @@ dingo tidus
 condor wakka
 water_flan lulu
 ??? tidus
-garuda_3 valefor
-dingo_2 tidus
-condor_2 wakka
-water_flan_2 lulu
+garuda_3 wakka
 
 # S.S. Liki
 party tykwl
@@ -72,9 +69,11 @@ sinscale_3 tidus
 sinscale_3 tidus
 
 # Kilika
-geneaux's_tentacle valefor
-geneaux's_tentacle valefor
-sinspawn_geneaux valefor
+geneaux's_tentacle wakka
+geneaux's_tentacle wakka
+sinspawn_geneaux wakka
+
+lord_ochu wakka
 
 # Luca
 # Fight 1
@@ -88,35 +87,35 @@ worker tidus
 # Fight 3
 worker tidus
 worker tidus
-worker tidus
-worker tidus
-worker tidus
-worker tidus
+worker kimahri
+worker kimahri
+worker lulu
+worker lulu
 
 oblitzerator tidus
 
+sahagin_chief wakka
+sahagin_chief wakka
+sahagin_chief wakka
+sahagin_chief tidus
+sahagin_chief tidus
+sahagin_chief tidus
+sahagin_chief wakka
+sahagin_chief wakka
+sahagin_chief wakka
+sahagin_chief wakka
+sahagin_chief wakka
+sahagin_chief wakka
 sahagin_chief tidus
 sahagin_chief tidus
 sahagin_chief tidus
 sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
-sahagin_chief tidus
+sahagin_chief wakka
 
 # Forced encounters
 party tyakwl
 vouivre_2 auron
-garuda_2 tidus
+garuda_2 wakka
 
 # Mi'ihen Highroad
 # Piercing tutorial
@@ -127,17 +126,13 @@ raldo_2 auron
 roll rng10 12
 
 # Gui 2
-roll rng10 9
 sinspawn_gui seymour
+roll rng10 9
 
 # Moonflow
 extractor wakka
 
 party tyakwlr
-# ??? n.3 is the tutorial chest
-# it dies when you steal from it
-steal ???_3
-???_3 rikku
 
 # Thunder Plains
 
@@ -146,7 +141,7 @@ spherimorph wakka
 
 # Lake Macalania
 negator negator
-crawler rikku
+crawler wakka
 
 # Seymour 1
 guado_guardian wakka
@@ -164,70 +159,68 @@ party takwlr
 
 # Home
 # Fight 1
-guado_guardian_3 tidus
-bomb_2 tidus
-bomb_2 tidus
-bomb_2 tidus
+guado_guardian_3 wakka
+bomb_2 wakka
+bomb_2 wakka
+bomb_2 wakka
 
-# In the next 2 fights the order
-# is random (w/ Stone Breath)
 # Fight 2
-guado_guardian_3 kimahri
-dual_horn_2 kimahri
-dual_horn_2 kimahri
+guado_guardian_3 wakka
+dual_horn_2 wakka
+dual_horn_2 wakka
 
 # Fight 3
-guado_guardian_3 kimahri
-chimera_2 kimahri
-chimera_2 kimahri
+guado_guardian_3 wakka
+chimera_2 wakka
+chimera_2 wakka
 
 # Airship
 evrae wakka
 
 # Bevelle
 # Fight 1
-warrior_monk tidus
-warrior_monk_2 tidus
-warrior_monk tidus
-rifle tidus
-fire_rifle tidus
-rifle tidus
+warrior_monk wakka
+rifle wakka
+warrior_monk_2 wakka
+fire_rifle wakka
+warrior_monk wakka
+rifle wakka
 
 # Fight 2
-ykt-63 tidus
-warrior_monk_2 kimahri
-warrior_monk_2 kimahri
-fire_rifle kimahri
-fire_rifle kimahri
+ykt-63 wakka
+warrior_monk_2 wakka
+fire_rifle wakka
+warrior_monk_2 wakka
+fire_rifle wakka
 
 # Fight 3
-warrior_monk tidus
-warrior_monk_2 tidus
-warrior_monk tidus
-rifle tidus
-fire_rifle tidus
-rifle tidus
+warrior_monk wakka
+rifle wakka
+warrior_monk_2 wakka
+fire_rifle wakka
+warrior_monk wakka
+rifle wakka
 
 # Fight 4
-ykt-63 tidus
-warrior_monk_2 kimahri
-warrior_monk_2 kimahri
-fire_rifle kimahri
-fire_rifle kimahri
+ykt-63 wakka
+warrior_monk_2 wakka
+fire_rifle wakka
+warrior_monk_2 wakka
+fire_rifle wakka
 
 # Fight 5
-warrior_monk rikku
-yat-99 rikku
-warrior_monk rikku
-rifle rikku
-rifle rikku
+warrior_monk wakka
+yat-99 wakka
+warrior_monk wakka
+rifle wakka
+rifle wakka
 
 # Via Purifico
 party ya
 
 # isaaru summons
-ifrit_2 bahamut
-valefor bahamut
+ifrit_2 ixion
+valefor ixion
 bahamut ixion
 # bahamut drops 2 items
 # but the items are both nothing
@@ -236,7 +229,7 @@ roll rng11 2
 # Via Purifico underwater
 party twr
 
-evrae_altana tidus
+evrae_altana wakka
 
 # Highbridge
 party tyakwlr

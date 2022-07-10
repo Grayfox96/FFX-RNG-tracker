@@ -273,6 +273,8 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
             break
         monster_name += TEXT_CHARACTERS[character_id]
     for i in range(16):
+        if monster_name.endswith(f'{i}'):
+            continue
         if monster_id.endswith(f'_{i}'):
             monster_name += f'#{i}'
             break
@@ -344,7 +346,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         steal[Rarity.RARE] = ItemDrop(
             ITEMS[prize_struct[166]], prize_struct[169], True)
     bribe = {
-        'cost': float('nan'),
+        'cost': stats[Stat.HP] * 25,
         'item': None,
     }
     if prize_struct[171] == 32:

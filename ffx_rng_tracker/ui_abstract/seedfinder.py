@@ -15,9 +15,9 @@ class SeedFinder(ActionsTracker):
 
     def get_default_input_data(self) -> str:
         input_data = ('encounter\n'
-                      'auron attack sinscale\ntidus attack sinscale\n'
-                      'auron attack sinscale\ntidus attack sinscale\n'
-                      'auron attack sinscale\ntidus attack sinscale\n'
+                      'auron attack sinscale_6\ntidus attack sinscale_6\n'
+                      'auron attack sinscale_6\ntidus attack sinscale_6\n'
+                      'auron attack sinscale_6\ntidus attack sinscale_6\n'
                       )
         return input_data
 

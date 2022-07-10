@@ -18,12 +18,12 @@
 party tyakwlr
 # -- Zanarkand --
 encounter
-auron attack sinscale_2
-tidus attack sinscale_2
-auron attack sinscale_2
-tidus attack sinscale_2
-auron attack sinscale_2
-tidus attack sinscale_2
+auron attack sinscale_6
+tidus attack sinscale_6
+auron attack sinscale_6
+tidus attack sinscale_6
+auron attack sinscale_6
+tidus attack sinscale_6
 
 encounter
 # auron od, ignore first set of rolls
@@ -31,18 +31,18 @@ encounter
 # damage is calculated as if you had 0 seconds left
 # actual damage is roughly x1.5
 auron dragon_fang sinspawn_ammes
-auron dragon_fang sinscale_2
-auron dragon_fang sinscale_2
-auron dragon_fang sinscale_2
-auron dragon_fang sinscale_2
-auron dragon_fang sinscale_2
+auron dragon_fang sinscale_6
+auron dragon_fang sinscale_6
+auron dragon_fang sinscale_6
+auron dragon_fang sinscale_6
+auron dragon_fang sinscale_6
 
 auron dragon_fang sinspawn_ammes
-auron dragon_fang sinscale_2
-auron dragon_fang sinscale_2
-auron dragon_fang sinscale_2
-auron dragon_fang sinscale_2
-auron dragon_fang sinscale_2
+auron dragon_fang sinscale_6
+auron dragon_fang sinscale_6
+auron dragon_fang sinscale_6
+auron dragon_fang sinscale_6
+auron dragon_fang sinscale_6
 
 tidus attack sinspawn_ammes
 # Demi 1
