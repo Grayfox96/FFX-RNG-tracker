@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass, field
 
+from ..utils import open_cp1252
 from .constants import EncounterCondition
 from .file_functions import get_resource_path
 from .monsters import MONSTERS, Monster
@@ -58,7 +59,7 @@ Formations = tuple[dict[str, Boss], dict[str, Simulation], dict[str, Zone]]
 def _get_formations(file_path: str) -> Formations:
     """Retrieves the encounter formations."""
     absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         formations: dict[str, dict] = json.load(file_object)
     bosses = {}
     for boss, data in formations['bosses'].items():

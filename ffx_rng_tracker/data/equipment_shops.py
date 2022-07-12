@@ -1,5 +1,6 @@
 import csv
 
+from ..utils import open_cp1252
 from .autoabilities import AUTOABILITIES
 from .characters import CHARACTERS
 from .constants import EquipmentType
@@ -10,7 +11,7 @@ from .file_functions import get_resource_path
 def _get_shops_equipment(file_path: str) -> tuple[Equipment]:
     """"""
     absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         equipments_file_reader = csv.reader(file_object, delimiter=',')
         equipments = []
         for line in equipments_file_reader:
@@ -45,7 +46,7 @@ def _get_equipment_shops(file_path: str) -> dict[str, tuple[Equipment]]:
     equipments = list(_get_shops_equipment('data/ffx_shop_arms.csv'))
     absolute_file_path = get_resource_path(file_path)
     shops = {}
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         shops_file_reader = csv.reader(file_object, delimiter=',')
         next(shops_file_reader)
         for line in shops_file_reader:

@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from ..configs import Configs
 from ..data.actions import YOJIMBO_ACTIONS, YojimboAction
 from ..data.constants import (COMPATIBILITY_MODIFIER, GIL_MOTIVATION_MODIFIER,
-                              OVERDRIVE_MOTIVATION, ZANMATO_LEVELS)
+                              OVERDRIVE_MOTIVATION, ZANMATO_RESISTANCES)
 from ..data.monsters import Monster
 from .main import Event
 
@@ -66,14 +66,14 @@ class YojimboTurn(Event):
         """"""
         base_motivation = (self.gamestate.compatibility
                            // COMPATIBILITY_MODIFIER[Configs.game_version])
-        zanmato_resistance = ZANMATO_LEVELS[self.monster.zanmato_level]
+        zanmato_resistance = ZANMATO_RESISTANCES[self.monster.zanmato_level]
         rng_motivation = self._advance_rng(17) & 0x3f
         # the zanmato level of the monster is only used to check for zanmato
         # if the desired attack is not zanmato then a second calculation is
         # made using the lowest zanmato level
         if (self.action != YOJIMBO_ACTIONS['zanmato']
                 and self.monster.zanmato_level > 0):
-            zanmato_resistance = ZANMATO_LEVELS[0]
+            zanmato_resistance = ZANMATO_RESISTANCES[0]
             rng_motivation = self._advance_rng(17) & 0x3f
         fixed_motivation = int(base_motivation * zanmato_resistance)
         fixed_motivation += rng_motivation

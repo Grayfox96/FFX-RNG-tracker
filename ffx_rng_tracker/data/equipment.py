@@ -1,6 +1,7 @@
 import csv
 from dataclasses import dataclass, field
 
+from ..utils import open_cp1252
 from .autoabilities import AUTOABILITIES, Autoability
 from .characters import Character
 from .constants import EquipmentType
@@ -76,7 +77,7 @@ def _get_equipment_names(file_path: str) -> dict[str, tuple[str]]:
     weapon_names = []
     armor_names = []
     absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         file_reader = csv.reader(file_object, delimiter=',')
         # skips first 3 lines
         for _ in range(3):

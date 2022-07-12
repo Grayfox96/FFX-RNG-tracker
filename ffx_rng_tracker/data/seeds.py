@@ -5,7 +5,7 @@ from typing import Iterable
 from ..configs import Configs
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..tracker import FFXRNGTracker
-from ..utils import s32
+from ..utils import open_cp1252, s32
 from .constants import GameVersion
 
 
@@ -41,7 +41,7 @@ def get_seed(damage_values: Iterable[int]) -> int:
         absolute_file_path = _SEEDS_FILE_PATH
     else:
         absolute_file_path = _PS2_SEEDS_FILE_PATH
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         seeds = csv.reader(file_object, delimiter=',')
         for line in seeds:
             if line[0].startswith(damage_indexes_as_string):
@@ -107,7 +107,7 @@ def make_seeds_file(file_path: str, frames: int) -> None:
             seeds.append(str(seed))
     print(f'\r{frames}/{frames}')
     data = '\n'.join([f'{d},{s}' for d, s in zip(damage_rolls, seeds)])
-    with open(file_path, 'w') as file:
+    with open_cp1252(file_path, 'w') as file:
         file.write(data)
     print('Done!')
 

@@ -1,4 +1,5 @@
 import colorsys
+from functools import partial
 from typing import Any, overload
 
 
@@ -78,3 +79,7 @@ def get_contrasting_color(color: str | tuple[int, int, int] | int,
 
 def stringify(object: Any) -> str:
     return str(object).lower().replace(' ', '_')
+
+
+open_cp1252 = partial(open, encoding='cp1252')
+open_cp1252.__doc__ = 'Open file with encoding \'cp1252\'.'

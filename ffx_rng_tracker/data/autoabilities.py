@@ -1,6 +1,7 @@
 import csv
 from dataclasses import dataclass
 
+from ..utils import open_cp1252
 from .file_functions import get_resource_path
 
 
@@ -18,7 +19,7 @@ def _get_autoabilities(file_path: str) -> tuple[Autoability]:
     used in the equipment price formula.
     """
     absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         abilities_file_reader = csv.reader(
             file_object, delimiter=',')
         # skips first line

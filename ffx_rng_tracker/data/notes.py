@@ -2,7 +2,7 @@ import os
 import shutil
 
 from ..configs import Configs
-from ..utils import stringify
+from ..utils import open_cp1252, stringify
 from .constants import SpeedrunCategory
 from .file_functions import get_resource_path
 
@@ -23,11 +23,11 @@ def get_notes(file_name: str, seed: int | None = None) -> str:
 
     # try opening the notes file for the current category and seed
     try:
-        with open(file_path) as notes_file:
+        with open_cp1252(file_path) as notes_file:
             notes = notes_file.read()
     # if it doesnt exist open the notes file for the current category
     except FileNotFoundError:
-        with open(default_file_path) as notes_file:
+        with open_cp1252(default_file_path) as notes_file:
             notes = notes_file.read()
 
     return notes
@@ -43,7 +43,7 @@ def save_notes(file_name: str,
     file_path = f'{_NOTES_DIRECTORY_PATH}/{category_dir}/{seed}_{file_name}'
     if not force and os.path.exists(file_path):
         raise FileExistsError(file_path)
-    with open(file_path, 'w') as notes_file:
+    with open_cp1252(file_path, 'w') as notes_file:
         notes_file.write(notes)
 
 

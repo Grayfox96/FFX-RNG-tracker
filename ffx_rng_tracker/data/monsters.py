@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from itertools import count
 
 from ..configs import Configs
-from ..utils import add_bytes, stringify
+from ..utils import add_bytes, open_cp1252, stringify
 from .actions import MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
 from .characters import CHARACTERS, Character
@@ -42,7 +42,7 @@ class Monster:
 def _get_prize_structs(file_path: str) -> dict[str, list[int]]:
     """Retrieves the prize structs for enemies."""
     absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         file_reader = csv.reader(file_object, delimiter=',')
         monsters_data = {}
         for line in file_reader:

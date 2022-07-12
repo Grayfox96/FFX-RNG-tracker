@@ -1,6 +1,7 @@
 import csv
 from dataclasses import dataclass
 
+from ..utils import open_cp1252
 from .file_functions import get_resource_path
 
 
@@ -29,7 +30,7 @@ class ItemDrop:
 def _get_items(file_path: str) -> tuple[str]:
     """Retrieves the items names."""
     absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         file_reader = csv.reader(file_object, delimiter=',')
         # skips first line
         next(file_reader)

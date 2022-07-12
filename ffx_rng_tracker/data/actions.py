@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass, field
 
+from ..utils import open_cp1252
 from .constants import DamageType, Element, Status
 from .file_functions import get_resource_path
 
@@ -54,7 +55,7 @@ def _get_action(action: dict) -> Action:
 
 def _get_actions(file_path: str) -> dict[str, Action]:
     absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         data: dict[str, dict] = json.load(file_object)
     actions = {}
     for name, action in data.items():
@@ -66,7 +67,7 @@ def _get_actions(file_path: str) -> dict[str, Action]:
 
 def _get_monster_actions(file_path: str) -> dict[str, dict[str, Action]]:
     absolute_file_path = get_resource_path(file_path)
-    with open(absolute_file_path) as file_object:
+    with open_cp1252(absolute_file_path) as file_object:
         data: dict[str, dict[str, dict]] = json.load(file_object)
     monster_actions = {}
     for monster_name, _actions in data.items():
