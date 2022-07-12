@@ -26,3 +26,5 @@ Credits to [OddMog](https://www.twitch.tv/oddmog), [ChrisTenarium](https://www.t
 Credits to [Madhyama](https://www.twitch.tv/madhyama) for testing the actions tracker and compiling the default actions notes.
 
 Credits to [Camp4r](https://www.twitch.tv/camp4r) for the idea and design of the Encounters Table and Planner widgets.
+
+Credits to [Mtbanger](https://www.twitch.tv/mtbanger) for fixing the Boosters% notes.
