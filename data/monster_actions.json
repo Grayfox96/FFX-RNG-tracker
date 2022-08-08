@@ -9,55 +9,74 @@
             "accuracy": 90,
             "does_damage": true,
             "hits": 1,
+            "uses_weapon": false,
             "can_crit": true,
-            "uses_bonus_crit": true,
             "bonus_crit": 0,
             "damage_type": "Strength",
-            "base_damage": 16,
+            "base_damage": 0,
             "element": null,
             "statuses": {},
             "rank": 3
         },
         "attack": {
-            "name": "Attack"
+            "name": "Attack",
+            "base_damage": 16
         },
         "nocrit": {
             "name": "NoCrit",
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         },
         "nomiss": {
             "name": "NoMiss",
-            "can_miss": false
+            "can_miss": false,
+            "base_damage": 16
         },
         "nomissnocrit": {
             "name": "NoMissNoCrit",
             "can_miss": false,
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         },
         "aoe": {
             "name": "AOE",
-            "multitarget": true
+            "multitarget": true,
+            "base_damage": 16
         },
         "aoenocrit": {
             "name": "AOENoCrit",
             "multitarget": true,
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         },
         "aoenomiss": {
             "name": "AOENoMiss",
             "multitarget": true,
-            "can_miss": false
+            "can_miss": false,
+            "base_damage": 16
         },
         "aoenomissnocrit": {
             "name": "AOENoMissNoCrit",
             "multitarget": true,
             "can_miss": false,
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         }    
     },
     "monster_0": {
     },
     "raldo": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Berserk": 10
+            }
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "bunyip": {
     },
@@ -74,6 +93,22 @@
     "imp": {
     },
     "dingo": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Sleep": 10,
+                "Silence": 10
+            }
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        }
     },
     "mi'ihen_fang": {
     },
@@ -88,6 +123,14 @@
     "bandersnatch": {
     },
     "water_flan": {
+        "water": {
+            "name": "Water",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Water"
+        }
     },
     "thunder_flan": {
     },
@@ -114,6 +157,19 @@
     "dark_flan": {
     },
     "dinonix": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Petrify": 10,
+                "Silence": 10
+            },
+            "rank": 3
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        }
     },
     "ipiria": {
     },
@@ -122,26 +178,33 @@
     "melusine": {
     },
     "iguion": {
-        "attack_a": {
-            "name": "Attack A",
+        "attack": {
+            "name": "Attack",
             "accuracy": 120,
+            "base_damage": 16,
             "statuses": {
                 "Petrify": 30,
                 "Silence": 30
             }
         },
-        "attack_b": {
-            "name": "Attack B",
-            "accuracy": 120
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "accuracy": 120,
+            "base_damage": 16
         },
-        "attack_c": {
-            "name": "Attack C",
-            "accuracy": 90
+        "forced_attack": {
+            "name": "Forced Attack",
+            "accuracy": 90,
+            "base_damage": 16
         }
     },
     "yowie": {
     },
     "condor": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16
+        }        
     },
     "simurgh": {
     },
@@ -151,6 +214,7 @@
         "poison_dart": {
             "name" : "Poison Dart",
             "accuracy": 100,
+            "base_damage": 16,
             "statuses": {
                 "Poison": 40
             }
@@ -174,7 +238,8 @@
         "seed_cannon": {
             "name": "Seed Cannon",
             "accuracy": 85,
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         }
     },
     "grat": {
@@ -188,6 +253,7 @@
     "garuda": {
         "attack": {
             "name": "Attack",
+            "base_damage": 16,
             "statuses": {
                 "Dark": 10
             }
@@ -222,7 +288,8 @@
     },
     "dual_horn": {
         "attack": {
-            "name": "Attack"
+            "name": "Attack",
+            "base_damage": 16
         },
         "gore": {
             "name": "Gore",
@@ -237,6 +304,32 @@
     "octopus": {
     },
     "vouivre": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "breath": {
+            "name": "Breath",
+            "multitarget": true,
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 18,
+            "element": "Fire"
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "can_crit": false,
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "can_crit": false,
+            "base_damage": 16
+        }
     },
     "lamashtu": {
     },
@@ -256,21 +349,24 @@
     },
     "piranha": {
         "attack": {
-            "name": "Attack"
+            "name": "Attack",
+            "base_damage": 16
         }
     },
     "piranha_2": {
         "gnaw": {
             "name": "GNAW",
             "can_miss": false,
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         }
     },
     "piranha_3": {
         "gnaw": {
             "name": "GNAW",
             "can_miss": false,
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         }
     },
     "splasher": {
@@ -286,6 +382,14 @@
     "vepar_3": {
     },
     "yellow_element": {
+        "thunder": {
+            "name": "Thunder",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Thunder"
+        }
     },
     "white_element": {
     },
@@ -336,7 +440,8 @@
     "tros": {
         "attack": {
             "name": "Attack",
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         },
         "tentacles": {
             "name": "Tentacles",
@@ -350,6 +455,10 @@
             "can_miss": false,
             "can_crit": false,
             "base_damage": 48
+        },
+        "flank": {
+            "name": "Flank",
+            "has_target": false
         }
     },
     "sinspawn_geneaux": {
@@ -358,12 +467,14 @@
             "multitarget": true,
             "can_miss": false,
             "can_crit": false,
-            "damage_type": "Magic"
+            "damage_type": "Magic",
+            "base_damage": 16
         },
         "venom": {
             "name": "Venom",
             "can_miss": false,
             "damage_type": "Magic",
+            "base_damage": 16,
             "statuses": {
                 "Poison": 100
             }
@@ -371,7 +482,8 @@
         "staccato": {
             "name": "Staccato",
             "multitarget": true,
-            "can_miss": false
+            "can_miss": false,
+            "base_damage": 16
         },
         "water": {
             "name": "Water",
@@ -383,6 +495,11 @@
         }
     },
     "geneaux's_tentacle": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16
+        }
     },
     "chocobo_eater": {
     },
@@ -391,10 +508,33 @@
     "mortiphasm": {
     },
     "sinscale": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16
+        },
+        "spines": {
+            "name": "Spines",
+            "can_miss": false,
+            "can_crit": false,
+            "base_damage": 40
+        },
+        "wings_flicker": {
+            "name": "Wings Flicker",
+            "has_target": false,
+            "does_damage": false
+        }
     },
     "sinscale_2": {
     },
     "geosgaeno": {
+        "attack": {
+            "name": "Attack",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Percentage (Current)",
+            "base_damage": 8
+        }
     },
     "oblitzerator": {
         "blitzball_rush": {
@@ -404,7 +544,7 @@
             "can_miss": false,
             "hits": 10,
             "can_crit": false,
-            "bonus_crit": 0,
+            "damage_type":"Special Strength",
             "base_damage": 4
         },
         "blind_ball": {
@@ -436,30 +576,86 @@
         }
     },
     "extractor": {
+        "aqua_shooter": {
+            "name": "Aqua Shooter",
+            "can_miss": false,
+            "can_crit": true,
+            "damage_type": "Magic",
+            "base_damage": 16,
+            "element": "Water"
+        },
+        "depth_charge": {
+            "name": "Depth Charge",
+            "multitarget": true,
+            "can_crit": false,
+            "damage_type": "Strength",
+            "base_damage": 16,
+            "statuses": {
+                "Dark": 50
+            }
+        },
+        "rise": {
+            "name": "Rise",
+            "has_target": true,
+            "can_miss": false,
+            "does_damage": false
+        },
+        "dive": {
+            "name": "Dive",
+            "has_target": true,
+            "can_miss": false,
+            "does_damage": false
+        }
     },
     "???": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16
+        },
+        "jump": {
+            "name": "Jump",
+            "can_miss": false,
+            "damage_type":"Special Strength",
+            "base_damage": 32
+        }
     },
     "sin": {
+        "move": {
+            "name": "Move",
+            "has_target": false,
+            "does_damage": false
+        }
     },
     "sinspawn_echuilles": {
         "drain_touch": {
             "name": "Drain Touch",
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         },
         "drain_touch_dark": {
             "name": "Drain Touch (Dark)",
             "accuracy": 10,
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         },
         "blender": {
             "name": "Blender",
             "multitarget": true,
             "can_miss": false,
             "can_crit": false,
-            "base_damage": 10
-        }
+            "damage_type": "Magic",
+            "base_damage": 10,
+            "element": "Water"
+            }
     },
     "sinscale_3": {
+        "attack": {
+            "name": "Attack",
+            "can_miss": false,
+            "can_crit": false,
+            "base_damage": 16
+        }
     },
     "sinscale_4": {
     },
@@ -496,6 +692,13 @@
     "braska's_final_aeon": {
     },
     "crane": {
+        "#use_crane": {
+            "name": "Use crane",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Percentage (Current)",
+            "base_damage": 15
+        }
     },
     "biran_ronso": {
     },
@@ -526,11 +729,13 @@
     "sinscale_6": {
         "attack": {
             "name": "Attack",
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         },
         "spines": {
             "name": "Spines",
             "can_miss": false,
+            "can_crit": false,
             "base_damage": 40
         },
         "wings_flicker": {
@@ -546,26 +751,82 @@
     "mortiphasm_3": {
     },
     "vouivre_2": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16
+        }
     },
     "worker": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16
+        }
     },
     "lord_ochu": {
+        "poison_claw": {
+            "name": "Poison Claw",
+            "base_damage": 16,
+            "statuses": {
+                "Poison": 100
+            }
+        },
+        "water": {
+            "name": "Water",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Water"
+        },
+        "earthquake": {
+            "name": "Eartquake",
+            "multitarget": true,
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Special Magic",
+            "base_damage": 8
+        },
+        "earthquake_valefor": {
+            "name": "Eartquake (Valefor)",
+            "can_miss": true,
+            "accuracy": 0,
+            "can_crit": false,
+            "base_damage": 0
+        },
+        "#falls_asleep": {
+            "name": "Falls Asleep",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Sleep": 254,
+                "Regen": 254
+            }
+        }
+
     },
     "mortiphasm_4": {
     },
     "sahagin_4": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16
+        }
     },
     "sahagin_chief": {
         "attack": {
             "name": "Attack",
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         }
     },
     "garuda_2": {
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "uses_bonus_crit": false
+            "base_damage": 16
         },
         "sonic_boom": {
             "name": "Sonic Boom",
@@ -576,8 +837,21 @@
         }
     },
     "klikk": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16
+        }
     },
     "sinspawn_ammes": {
+        "demi": {
+            "name": "Demi",
+            "multitarget": true,
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Percentage (Current)",
+            "base_damage": 4
+        }
     },
     "head": {
     },
@@ -600,6 +874,11 @@
     "[0x13]$": {
     },
     "tanker": {
+        "does_nothing": {
+            "name": "Does Nothing",
+            "has_target": false,
+            "does_damage": false
+        }
     },
     "gate_lock_2": {
     },
@@ -624,7 +903,8 @@
     "iron_giant": {
         "attack": {
             "name": "Attack",
-            "accuracy": 110
+            "accuracy": 110,
+            "base_damage": 16
         },
         "leaping_swing": {
             "name": "Leaping Swing",
@@ -665,6 +945,7 @@
         "rush": {
             "name": "RUSH",
             "accuracy": 120,
+            "base_damage": 16,
             "element": "Fire"
         },
         "fire": {
@@ -751,6 +1032,7 @@
         "rush": {
             "name": "RUSH",
             "accuracy": 120,
+            "base_damage": 16,
             "element": "Fire"
         },
         "fire": {
@@ -777,7 +1059,8 @@
     },
     "garuda_3": {
         "attack": {
-            "name": "Attack"
+            "name": "Attack",
+            "base_damage": 16
         },
         "sonic_boom": {
             "name": "Sonic Boom",
@@ -788,19 +1071,76 @@
         }
     },
     "dingo_2": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Sleep": 10,
+                "Silence": 10
+            }
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        },
+        "does_nothing": {
+            "name": "Does Nothing",
+            "has_target": false,
+            "does_damage": false
+        }
     },
     "water_flan_2": {
+        "water": {
+            "name": "Water",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Water"
+        }
     },
     "condor_2": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Dark": 10
+            }
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        },
+        "does_nothing": {
+            "name": "Does Nothing",
+            "has_target": false,
+            "does_damage": false
+        }
     },
     "ragora_2": {
         "seed_cannon": {
             "name": "Seed Cannon",
             "accuracy": 85,
-            "can_crit": false
+            "can_crit": false,
+            "base_damage": 16
         }
     },
     "raldo_2": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "bunyip_2": {
     },

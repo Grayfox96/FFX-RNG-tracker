@@ -16,8 +16,8 @@ class Action:
     accuracy: int = 90
     does_damage: bool = True
     hits: int = 1
+    uses_weapon: bool = False
     can_crit: bool = True
-    uses_bonus_crit: bool = True
     bonus_crit: int = 0
     damage_type: DamageType = DamageType.STRENGTH
     base_damage: int = 0

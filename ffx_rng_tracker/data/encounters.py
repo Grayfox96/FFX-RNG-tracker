@@ -8,7 +8,6 @@ from .notes import get_notes
 @dataclass
 class EncounterData:
     name: str
-    type: str
     initiative: bool
     label: str
     min: int
@@ -24,9 +23,10 @@ def get_encounters(file_path: str, seed: int) -> list[EncounterData]:
         if line[0].startswith('#'):
             continue
         name = line[0]
-        encounter_type = line[1]
-        initiative = line[2] == 'true'
-        label = line[3]
+        initiative = line[1].lower() == 'true'
+        label = line[2]
+        if not label:
+            label = name
         if label in encounters:
             for i in count(2):
                 new_label = f'{label} #{i}'
@@ -34,15 +34,11 @@ def get_encounters(file_path: str, seed: int) -> list[EncounterData]:
                     label = new_label
                     break
 
-        if encounter_type == 'boss':
-            min = default = max = 0
-        else:
-            min = int(line[4])
-            default = int(line[5])
-            max = int(line[6])
+        min = int(line[3])
+        default = int(line[4])
+        max = int(line[5])
         encounters[label] = EncounterData(
             name=name,
-            type=encounter_type,
             initiative=initiative,
             label=label,
             min=min,

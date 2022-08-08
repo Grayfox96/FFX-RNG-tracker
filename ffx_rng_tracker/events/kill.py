@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 
-from ..data.characters import CHARACTERS, Character
-from ..data.constants import EquipmentSlots, EquipmentType, Rarity
+from ..data.constants import Character, EquipmentSlots, EquipmentType, Rarity
 from ..data.equipment import Equipment, EquipmentDrop
 from ..data.items import ItemDrop
 from ..data.monsters import Monster
@@ -25,7 +24,7 @@ class Kill(Event):
         self.equipment_index = self._get_equipment_index()
 
     def __str__(self) -> str:
-        string = f'{self.monster.name} drops: '
+        string = f'{self.monster} drops: '
         drops = []
         if self.item_1:
             drops.append(str(self.item_1))
@@ -74,35 +73,27 @@ class Kill(Event):
         if self.monster.equipment['drop_chance'] <= rng_equipment_drop:
             return
 
-        characters_enabled = self.gamestate.party
-        equipment_owner_base = len(characters_enabled)
+        possible_owners = [c for c in tuple(Character)[:7]
+                           if c in self.gamestate.party]
         rng_equipment_owner = self._advance_rng(12)
 
         # check if killing with a party member
         # always gives the equipment to that character
-        killer_is_owner_test = rng_equipment_owner % (equipment_owner_base + 3)
-        if killer_is_owner_test >= equipment_owner_base:
+        killer_is_owner_test = rng_equipment_owner % (len(possible_owners) + 3)
+        if killer_is_owner_test >= len(possible_owners):
             killer_is_owner = True
         else:
             killer_is_owner = False
 
         # if the killer is a party member (0-6)
         # it gives them a bonus chance for the equipment to be theirs
-        if self.killer.index < 7:
-            owner = self.killer
-            equipment_owner_base += 3
-
-        rng_equipment_owner = rng_equipment_owner % equipment_owner_base
-        number_of_enabled_party_members = 0
+        if tuple(Character).index(self.killer) < 7:
+            for _ in range(3):
+                possible_owners.append(self.killer)
 
         # get equipment owner
-        characters = tuple(CHARACTERS.values())[:7]
-        for character in characters:
-            if character in characters_enabled:
-                number_of_enabled_party_members += 1
-                if rng_equipment_owner < number_of_enabled_party_members:
-                    owner = character
-                    break
+        rng_equipment_owner = rng_equipment_owner % len(possible_owners)
+        owner = possible_owners[rng_equipment_owner]
 
         # get equipment type
         rng_weapon_or_armor = self._advance_rng(12) & 1
@@ -131,7 +122,7 @@ class Kill(Event):
                                >> 3)
 
         ability_arrays = self.monster.equipment['ability_arrays']
-        ability_array = ability_arrays[owner.name][type_]
+        ability_array = ability_arrays[owner][type_]
 
         abilities = []
 
@@ -159,7 +150,7 @@ class Kill(Event):
             owner=owner,
             type_=type_,
             slots=number_of_slots,
-            abilities=tuple(abilities),
+            abilities=abilities,
             base_weapon_damage=base_weapon_damage,
             bonus_crit=bonus_crit,
         )

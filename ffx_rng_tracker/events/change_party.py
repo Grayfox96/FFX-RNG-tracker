@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from ..data.characters import Character
+from ..data.constants import Character
 from .main import Event
 
 
@@ -14,8 +14,7 @@ class ChangeParty(Event):
         self.gamestate.party = self.party_formation
 
     def __str__(self) -> str:
-        character_names = [c.name for c in self.party_formation]
-        return f'Party changed to: {", ".join(character_names)}'
+        return f'Party changed to: {", ".join(self.party_formation)}'
 
     def rollback(self) -> None:
         self.gamestate.party = self._old_party

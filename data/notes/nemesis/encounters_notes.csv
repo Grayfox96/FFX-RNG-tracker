@@ -1,117 +1,117 @@
-#name,type,initiative,label,min,default,max
-sinscales,boss,false,,,,
-ammes,boss,false,,,,
-tanker,boss,false,,,,
-sahagins,boss,false,,,,
-geosgaeno,boss,false,,,,
-klikk_1,boss,false,,,,
-klikk_2,boss,false,,,,
-underwater_ruins,random,false,Underwater Ruins,0,1,1
-piranhas,boss,false,,,,
-tros,boss,false,,,,
-besaid_lagoon,random,false,Besaid Lagoon,0,2,4
-wakka_tutorial,boss,false,,,,
-elements_tutorial,boss,false,,,,
-kimahri,boss,false,,,,
-garuda_1,boss,false,,,,
-garuda_2,boss,false,,,,
-besaid_forced_encounter,boss,false,,,,
-besaid_road,random,false,Besaid Road,0,0,1
-sin_fin,boss,false,,,,
-echuilles,boss,false,,,,
-lancet_tutorial,boss,false,,,,
-lord_ochu,optional_boss,false,Lord Ochu (Way In),0,0,1
-kilika_woods,random,false,Kilika Woods (Way In),0,3,6
-geneaux,boss,false,,,,
-lord_ochu,optional_boss,false,Lord Ochu (Way Out),0,0,1
-kilika_woods,random,false,Kilika Woods (Way Out),0,3,6
-machina_1,boss,false,,,,
-machina_2,boss,false,,,,
-machina_3,boss,false,,,,
-oblitzerator,boss,false,,,,
-sahagin_chiefs,boss,false,,,,
-vouivre,boss,false,,,,
-garuda,boss,false,,,,
-pierce_tutorial,boss,false,,,,
-mi'ihen_screen_1,random,false,Mi'ihen Screen 1,0,3,6
-mi'ihen_screen_2-3,random,false,Mi'ihen Screen 2-3,0,7,10
-simulation_(mi'ihen),simulated,false,Simulation (Mi'ihen),0,0,1
-chocobo_eater,boss,false,,,,
-old_road,random,false,Old Road,0,4,8
-simulation_(old_road),simulated,false,Simulation (Old Road),0,0,1
-clasko_skip_screen,random,false,Clasko Skip Screen,0,2,3
-mrr_-_valley,random,false,MRR - Valley,0,6,10
-mrr_-_precipice,random,false,MRR - Precipice,0,1,3
-sinspawn_gui_1,boss,false,,,,
-sinspawn_gui_2,boss,false,,,,
-djose_highroad_(front_half),random,true,Djose Highroad (Front Half),0,2,4
-djose_highroad_(back_half),random,true,Djose Highroad (Back Half),0,3,5
-moonflow_(south),random,true,Moonflow (South),0,8,10
-extractor,boss,false,,,,
-rikku_tutorial,boss,false,,,,
-moonflow_(north),random,true,Moonflow (North),0,2,10
-simulation_(guadosalam),simulated,true,Simulation (Guadosalam),0,0,1
-thunder_plains_(south),random,true,Thunder Plains (South),0,7,10
-simulation_(thunder plains),simulated,true,Simulation (Thunder Plains),0,0,1
-thunder_plains_(north),random,true,Thunder Plains (North),0,7,10
-macalania_woods,random,false,Macalania Woods,0,8,12
-spherimorph,boss,false,,,,
-lake_macalania,random,false,Lake Macalania,0,1,2
-crawler,boss,false,,,,
-seymour,boss,false,,,,
-guado_encounter,optional_boss,false,Guado Encounter,0,0,2
-crevasse,random,false,Crevasse,0,2,5
-wendigo,boss,false,,,,
-zu,boss,false,,,,
-sanubia_desert_(east),random,true,Bikanel (Pre Machina),0,3,5
-machina_steal_tutorial,boss,false,,,,
-sanubia_desert_(east),random,true,Bikanel (Post Machina),0,1,5
-sanubia_desert_(central),random,true,Bikanel (Central),0,3,5
-sanubia_desert_(ruins),random,true,Bikanel (Ruins),0,0,5
-sanubia_desert_(west),random,true,Bikanel (Pre Sandragora),0,1,2
-sandragora,optional_boss,true,Sandragora (TP Spheres),0,1,2
-sanubia_desert_(west),random,true,Bikanel (Post Sandragora),0,0,2
-sandragora,optional_boss,true,Sandragora (Skippable),0,0,5
-guado_+_3_bomb,boss,true,,,,
-guado_+_2_dual_horn,boss,true,,,,
-home,random,true,Home,0,0,2
-guado_+_2_chimera,boss,true,,,,
-airship,random,false,Airship,0,0,1
-evrae,boss,false,,,,
-bevelle_guards_1,boss,false,,,,
-bevelle_guards_2,boss,false,,,,
-bevelle_guards_3,boss,false,,,,
-bevelle_guards_4,boss,false,,,,
-bevelle_guards_5,boss,false,,,,
-via_purifico_(maze),random,true,Via Purifico (Maze),0,0,2
-via_purifico_(corridor),random,true,Via Purifico (Corridor),0,2,4
-isaaru_grothia,boss,false,,,,
-isaaru_pterya,boss,false,,,,
-isaaru_spathi,boss,false,,,,
-via_purifico_(underwater),random,false,Via Purifico (Underwater),0,1,3
-evrae_altana,boss,false,,,,
-highbridge,random,true,Highbridge,0,3,5
-seymour_natus,boss,false,,,,
-calm_lands_(south)_(before_defender_x),random,true,Calm Lands (South),0,6,10
-simulation_(calm_lands),simulated,true,Simulation (Calm Lands),0,0,1
-calm_lands_(central-north-east),random,true,Calm Lands (Central-North-East),0,4,10
-defender_x,boss,true,,,,
-biran_&_yenke,optional_boss,false,Biran & Yenke (pre Cave),0,0,1
-calm_lands_(gorge),random,true,Calm Lands (Gorge),0,0,10
-cave_(white_zone)/cave_(green_zone),multizone,true,Cave (White zone/Green zone),0,20,50
-biran_&_yenke,optional_boss,false,Biran & Yenke,0,1,1
-gagazet_(mountain),random,false,Gagazet (Outside),0,0,10
-seymour_flux,boss,true,,,,
-gagazet_(cave)/gagazet_(underwater),multizone,false,Gagazet (Inside),0,0,20
-sanctuary_keeper,boss,true,,,,
-zanarkand_(overpass),random,false,Zanarkand (Overpass),0,0,10
-zanarkand_(dome),random,false,Zanarkand (Dome),0,0,10
-spectral_keeper,boss,false,,,,
-yunalesca,boss,false,,,,
-left_fin,boss,false,,,,
-right_fin,boss,false,,,,
-sin_core,boss,false,,,,
-overdrive_sin,boss,false,,,,
-inside_sin_(front),random,false,Inside Sin (Front),0,0,10
-seymour_omnis,boss,false,,,,
-inside_sin_(back),random,false,Inside Sin (Back),0,0,10
+#name,initiative,label,min,default,max
+sinscales,false,,1,1,1
+ammes,false,,1,1,1
+tanker,false,,1,1,1
+sahagins,false,,1,1,1
+geosgaeno,false,,1,1,1
+klikk_1,false,,1,1,1
+klikk_2,false,,1,1,1
+underwater_ruins,false,Underwater Ruins,0,1,1
+piranhas,false,,1,1,1
+tros,false,,1,1,1
+besaid_lagoon,false,Besaid Lagoon,0,2,4
+wakka_tutorial,false,,1,1,1
+elements_tutorial,false,,1,1,1
+kimahri,false,,1,1,1
+garuda_1,false,,1,1,1
+garuda_2,false,,1,1,1
+besaid_forced_encounter,false,,1,1,1
+besaid_road,false,Besaid Road,0,0,1
+sin_fin,false,,1,1,1
+echuilles,false,,1,1,1
+lancet_tutorial,false,,1,1,1
+lord_ochu,false,Lord Ochu (Way In),0,0,1
+kilika_woods,false,Kilika Woods (Way In),0,3,6
+geneaux,false,,1,1,1
+lord_ochu,false,Lord Ochu (Way Out),0,0,1
+kilika_woods,false,Kilika Woods (Way Out),0,3,6
+machina_1,false,,1,1,1
+machina_2,false,,1,1,1
+machina_3,false,,1,1,1
+oblitzerator,false,,1,1,1
+sahagin_chiefs,false,,1,1,1
+vouivre,false,,1,1,1
+garuda,false,,1,1,1
+pierce_tutorial,false,,1,1,1
+mi'ihen_screen_1,false,Mi'ihen Screen 1,0,3,6
+mi'ihen_screen_2-3,false,Mi'ihen Screen 2-3,0,7,10
+simulation_(mi'ihen),false,Simulation (Mi'ihen),0,0,1
+chocobo_eater,false,,1,1,1
+old_road,false,Old Road,0,4,8
+simulation_(old_road),false,Simulation (Old Road),0,0,1
+clasko_skip_screen,false,Clasko Skip Screen,0,2,3
+mrr_-_valley,false,MRR - Valley,0,6,10
+mrr_-_precipice,false,MRR - Precipice,0,1,3
+sinspawn_gui_1,false,,1,1,1
+sinspawn_gui_2,false,,1,1,1
+djose_highroad_(front_half),true,Djose Highroad (Front Half),0,2,4
+djose_highroad_(back_half),true,Djose Highroad (Back Half),0,3,5
+moonflow_(south),true,Moonflow (South),0,8,10
+extractor,false,,1,1,1
+rikku_tutorial,false,,1,1,1
+moonflow_(north),true,Moonflow (North),0,2,10
+simulation_(guadosalam),true,Simulation (Guadosalam),0,0,1
+thunder_plains_(south),true,Thunder Plains (South),0,7,10
+simulation_(thunder_plains),true,Simulation (Thunder Plains),0,0,1
+thunder_plains_(north),true,Thunder Plains (North),0,7,10
+macalania_woods,false,Macalania Woods,0,8,12
+spherimorph,false,,1,1,1
+lake_macalania,false,Lake Macalania,0,1,2
+crawler,false,,1,1,1
+seymour,false,,1,1,1
+guado_encounter,false,Guado Encounter,0,0,2
+crevasse,false,Crevasse,0,2,5
+wendigo,false,,1,1,1
+zu,false,,1,1,1
+sanubia_desert_(east),true,Bikanel (Pre Machina),0,3,5
+machina_steal_tutorial,false,,1,1,1
+sanubia_desert_(east),true,Bikanel (Post Machina),0,1,5
+sanubia_desert_(central),true,Bikanel (Central),0,3,5
+sanubia_desert_(ruins),true,Bikanel (Ruins),0,0,5
+sanubia_desert_(west),true,Bikanel (Pre Sandragora),0,1,2
+sandragora,true,Sandragora (TP Spheres),0,1,2
+sanubia_desert_(west),true,Bikanel (Post Sandragora),0,0,2
+sandragora,true,Sandragora (Skippable),0,0,5
+guado_+_3_bomb,true,,1,1,1
+guado_+_2_dual_horn,true,,1,1,1
+home,true,Home,0,0,2
+guado_+_2_chimera,true,,1,1,1
+airship,false,Airship,0,0,1
+evrae,false,,1,1,1
+bevelle_guards_1,false,,1,1,1
+bevelle_guards_2,false,,1,1,1
+bevelle_guards_3,false,,1,1,1
+bevelle_guards_4,false,,1,1,1
+bevelle_guards_5,false,,1,1,1
+via_purifico_(maze),true,Via Purifico (Maze),0,0,2
+via_purifico_(corridor),true,Via Purifico (Corridor),0,2,4
+isaaru_grothia,false,,1,1,1
+isaaru_pterya,false,,1,1,1
+isaaru_spathi,false,,1,1,1
+via_purifico_(underwater),false,Via Purifico (Underwater),0,1,3
+evrae_altana,false,,1,1,1
+highbridge,true,Highbridge,0,3,5
+seymour_natus,false,,1,1,1
+calm_lands_(south)_(before_defender_x),true,Calm Lands (South),0,6,10
+simulation_(calm_lands),true,Simulation (Calm Lands),0,0,1
+calm_lands_(central-north-east),true,Calm Lands (Central-North-East),0,4,10
+defender_x,true,,1,1,1
+biran_&_yenke,false,Biran & Yenke (pre Cave),0,0,1
+calm_lands_(gorge),true,Calm Lands (Gorge),0,0,10
+cave_(white_zone) cave_(green_zone),true,Cave (White zone/Green zone),0,20,50
+biran_&_yenke,false,Biran & Yenke,0,1,1
+gagazet_(mountain),false,Gagazet (Outside),0,0,10
+seymour_flux,true,,1,1,1
+gagazet_(cave) gagazet_(underwater),false,Gagazet (Inside),0,0,20
+sanctuary_keeper,true,,1,1,1
+zanarkand_(overpass),false,Zanarkand (Overpass),0,0,10
+zanarkand_(dome),false,Zanarkand (Dome),0,0,10
+spectral_keeper,false,,1,1,1
+yunalesca,false,,1,1,1
+left_fin,false,,1,1,1
+right_fin,false,,1,1,1
+sin_core,false,,1,1,1
+overdrive_sin,false,,1,1,1
+inside_sin_(front),false,Inside Sin (Front),0,0,10
+seymour_omnis,false,,1,1,1
+inside_sin_(back),false,Inside Sin (Back),0,0,10

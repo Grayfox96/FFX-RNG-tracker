@@ -15,6 +15,7 @@ class TkActionsOutputWidget(TkOutputWidget):
             'ambush': 'Ambush',
             'crit': 'Crit',
             'stat update': '^.*changed to.+$',
+            'status miss': r'\[[^\]]* Fail\]'
         }
         tags.update(super().get_regex_patterns())
         return tags

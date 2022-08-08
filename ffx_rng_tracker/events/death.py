@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ..data.characters import CHARACTERS, Character
+from ..data.constants import Character
 from .main import Event
 
 
@@ -11,7 +11,7 @@ class Death(Event):
     def __post_init__(self) -> None:
         for _ in range(3):
             self._advance_rng(10)
-        if self.dead_character == CHARACTERS['yojimbo']:
+        if self.dead_character == Character.YOJIMBO:
             self._update_compatibility()
 
     def __str__(self) -> str:

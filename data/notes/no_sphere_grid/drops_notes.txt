@@ -157,7 +157,10 @@ raldo_2 auron
 # death
 
 # Gui 1 (drops are disabled)
-roll rng10 18
+roll rng10 12
+
+# If the arms respawn
+roll rng10 6
 
 # If Valefor dies
 # death valefor
@@ -166,6 +169,8 @@ roll rng10 18
 # Head always dies
 roll rng10 3
 
+# death yuna
+# death auron
 sinspawn_gui seymour
 
 # Moonflow
@@ -197,6 +202,9 @@ death yuna
 # steal iguion
 steal chimera
 steal blue_element
+steal blue_element
+steal blue_element
+
 spherimorph rikku
 
 # Lake Macalania
@@ -220,8 +228,18 @@ anima shiva
 seymour shiva
 
 # steal ice_flan
+
 steal snow_wolf
 death yuna
+death rikku
+
+steal snow_wolf
+death yuna
+death rikku
+
+steal snow_wolf
+death yuna
+death rikku
 
 # Wendigo
 guado_guardian_2 rikku
@@ -253,11 +271,13 @@ bomb_2 rikku
 # In the next 2 fights the order
 # is random (w/ Stone Breath)
 # Fight 2
+# death
 guado_guardian_3 kimahri
 dual_horn_2 kimahri
 dual_horn_2 kimahri
 
 # Fight 3
+# death
 guado_guardian_3 kimahri
 chimera_2 kimahri
 chimera_2 kimahri
@@ -265,10 +285,10 @@ chimera_2 kimahri
 # Airship
 steal evrae
 steal evrae 1
-# poison breath 1
+# Poison Breath 1
 death rikku
 death kimahri
-# poison breath 2
+# Poison Breath 2
 death rikku
 death kimahri
 evrae rikku
@@ -307,11 +327,11 @@ fire_rifle rikku
 fire_rifle rikku
 
 # Fight 5
-# Using AoE throwables
 warrior_monk rikku
 warrior_monk rikku
 rifle rikku
 rifle rikku
+# death
 yat-99 rikku
 
 # Via Purifico
@@ -340,8 +360,10 @@ evrae_altana tidus
 party tyawlr
 death yuna
 death rikku
+
 death yuna
 death rikku
+
 death yuna
 death rikku
 
@@ -353,63 +375,79 @@ seymour_natus shiva
 
 # Calm Lands
 # steal flame_flan
-# steal nebiros
-# death rikku
+# steal skoll
+
+steal nebiros
+death ???
+death ???
+
+steal nebiros
+death ???
+death ???
+
+steal nebiros
+death ???
+death ???
+
+steal nebiros
+death ???
+death ???
+
+steal nebiros
+death ???
+death ???
 
 death ???
 defender_x lulu
 
 # If you need more equipment drops
 # Biran and Yenke always drop equipment
-# steal biran_ronso
 # yenke_ronso kimahri
 # biran_ronso kimahri
 
 # Malboros can drop equipment with 2 abilities
-# malboro bahamut
+# malboro auron
 
 # Epaajs always spawn outside the cave
 # They have 50% chance to drop equipment
-# epaaj ixion
+# epaaj auron
 
 # Cavern of the Stolen Fayth
-# Killing enemies with a party member
-# Might change the equipment owner
-# ghost rikku
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
-ghost shiva
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
+ghost auron
 
 # Mt. Gagazet
 yenke_ronso kimahri
 biran_ronso kimahri
 
-# steal imp
-steal grenade
-steal grenade
 steal grenade
 steal grenade
 steal grenade

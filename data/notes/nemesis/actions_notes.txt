@@ -1,16 +1,14 @@
 # Usage:
 # encounter (preemp/ambush/simulated)
-# encounter [enc type] [enc name] (initiative)
+# encounter [enc name]
 # stat [character] [stat] [(+/-)amount]
 # party [party members initials]
 # summon [aeon name]
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
-#     evasion, accuracy, weapon_damage,
-#     bonus_crit, bonus_strength,
-#     bonus_magic, piercing, cheer,
-#     focus
+#     evasion, accuracy, cheer, focus
+# equip [character] [equip_type] [slots] (abilities)
 #
 # [character name] [action] (target)
 # [monster name] [slot] [action]
@@ -144,7 +142,7 @@ wakka attack piranha
 # wakka escape
 
 # Tidus equips Brotherhood
-stat tidus bonus_strength 5
+equip tidus weapon 4 strength_+5%
 
 # Besaid tutorial fights
 encounter
@@ -229,11 +227,13 @@ lulu fire ragora_2
 stat tidus agility +1
 
 # Kilika In encounters
+# Wakka equips Scout
+equip wakka weapon 2 icestrike sensor
 # If Wakka equips any Armguard
-# stat wakka bonus_crit +3
+# equip wakka armor 1
 
 # If Tidus equips an Icebrand
-# stat tidus bonus_strength 0
+# equip tidus weapon 1 icestrike
 
 encounter
 tidus attack dinonix
@@ -251,9 +251,9 @@ valefor energy_blast geneaux's_tentacle
 valefor energy_blast geneaux's_tentacle
 # Geneaux loses the armored status when
 # he removes the shell
-# stat valefor piercing 1
+# equip valefor weapon 1 piercing
 # valefor sonic_wings sinspawn_geneaux
-# stat valefor piercing 0
+# equip valefor weapon 4 aeon_ribbon
 valefor fire sinspawn_geneaux
 valefor fire sinspawn_geneaux
 valefor fire sinspawn_geneaux
@@ -307,7 +307,9 @@ lulu thunder oblitzerator
 # Haste grid
 stat tidus strength +1
 # If Tidus equips Lightning Steel
-# stat tidus bonus_strength 0
+# equip tidus weapon 1 lightningstrike
+# If Wakka equips Thunder Ball
+# equip wakka weapon 1 lightningstrike
 
 encounter
 tidus haste tidus
@@ -411,6 +413,7 @@ stat valefor magic 31
 
 encounter
 auron power_break sinspawn_gui
+equip wakka weapon 1
 kimahri self-destruct sinspawn_gui
 valefor energy_blast sinspawn_gui
 valefor energy_blast head
@@ -486,8 +489,11 @@ encounter
 # -- Macalania Woods --
 encounter
 
+equip tidus weapon 1 first_strike
+
 # Spherimorph (the mix damages 9 times)
 encounter
+equip tidus armor 1 lightningproof
 rikku grenade spherimorph
 rikku lightning_bolt spherimorph
 rikku lightning_bolt spherimorph
@@ -534,7 +540,7 @@ stat tidus agility +4
 # Seymour
 encounter
 # tidus equips brotherhood
-stat tidus bonus_strength 15
+equip tidus weapon 4 strength_+10% strength_+5% waterstrike
 tidus haste tidus
 # Talk talks to Seymour
 stat tidus strength +10
@@ -551,7 +557,7 @@ tidus attack seymour
 stat tidus strength -10
 
 # Tidus unequips Brotherhood
-stat tidus bonus_strength 0
+equip tidus weapon 1 first_strike
 
 # -- Crevasse --
 # Guado Guardian #2 is in Macalania
@@ -575,7 +581,7 @@ stat tidus agility +2
 encounter
 tidus haste tidus
 # Tidus equips Brotherhood
-stat tidus bonus_strength 15
+equip tidus weapon 4 strength_+10% strength_+5% waterstrike
 tidus attack Guado_Guardian_2
 # auron power_break wendigo
 # rikku lightning_marble wendigo
@@ -604,7 +610,7 @@ encounter
 tidus attack zu
 
 # Tidus unequips Brotherhood
-stat tidus bonus_strength 0
+equip tidus weapon 1 first_strike
 
 encounter
 # rikku silence_grenade sand_wolf
@@ -645,7 +651,7 @@ kimahri lancet chimera_2
 encounter
 tidus haste tidus
 # Miracle Drink effect
-stat tidus bonus_crit +100
+stat tidus luck +100
 # Elixir restores MP too
 # kimahri elixir tidus
 # kimahri elixir tidus
@@ -659,7 +665,7 @@ tidus attack evrae
 tidus attack evrae
 
 stat tidus cheer 0
-stat tidus bonus_crit -100
+stat tidus luck -100
 
 # -- Bevelle --
 # Fight 1

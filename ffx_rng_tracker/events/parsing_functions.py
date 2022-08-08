@@ -1,14 +1,15 @@
 from typing import Callable
 
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
-from ..data.characters import CHARACTERS, Character
-from ..data.constants import Stat
+from ..data.constants import Autoability, Character, EquipmentType, Stat
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
+from ..data.equipment import Equipment
 from ..data.monsters import MONSTERS
 from ..errors import EventParsingError
 from ..gamestate import GameState
-from ..utils import stringify
+from ..utils import search_stringenum, stringify
 from .advance_rng import AdvanceRNG
+from .change_equipment import ChangeEquipment
 from .change_party import ChangeParty
 from .change_stat import ChangeStat
 from .character_action import CharacterAction
@@ -31,34 +32,23 @@ ParsingFunction = (Callable[[GameState, str], Event]
 
 
 def parse_encounter(gs: GameState,
-                    type_: str = '',
                     name: str = '',
-                    initiative: str = '',
-                    *_,
+                    *zones: str,
                     ) -> Encounter:
-    match type_:
-        case 'boss' | 'optional_boss':
-            encounter_type = Encounter
-            if name not in BOSSES:
-                raise EventParsingError(f'No boss named {name}')
-        case 'random':
-            encounter_type = RandomEncounter
-            if name not in ZONES:
-                raise EventParsingError(f'No zone named {name}')
-        case 'simulated':
-            encounter_type = SimulatedEncounter
-            if name not in SIMULATIONS:
-                raise EventParsingError(f'No simulation named {name}')
-        case 'multizone':
-            encounter_type = MultizoneRandomEncounter
-            name = name.split('/')
-            for zone in name:
-                if zone not in ZONES:
-                    raise EventParsingError(f'No zone named {name}')
-        case _:
-            raise EventParsingError(f'Invalid encounter type: {type_}')
-    initiative = initiative and 'initiative'.startswith(initiative)
-    return encounter_type(gs, name, initiative)
+    if name in BOSSES:
+        encounter_type = Encounter
+    elif name in ZONES:
+        encounter_type = RandomEncounter
+    elif name in SIMULATIONS:
+        encounter_type = SimulatedEncounter
+    elif name == 'multizone':
+        for zone in zones:
+            if zone not in ZONES:
+                raise EventParsingError(f'No zone named "{zone}"')
+        return MultizoneRandomEncounter(gs, zones)
+    else:
+        raise EventParsingError(f'No encounter named "{name}"')
+    return encounter_type(gs, name)
 
 
 def parse_steal(gs: GameState,
@@ -72,7 +62,7 @@ def parse_steal(gs: GameState,
     try:
         monster = MONSTERS[monster_name]
     except KeyError:
-        raise EventParsingError(f'No monster named {monster_name!r}')
+        raise EventParsingError(f'No monster named "{monster_name}"')
     try:
         successful_steals = int(successful_steals)
     except ValueError:
@@ -94,7 +84,10 @@ def parse_kill(gs: GameState,
     except KeyError as error:
         raise EventParsingError(f'No monster named {error}')
     overkill = overkill in ('overkill', 'ok')
-    killer = CHARACTERS.get(killer_name, Character('Unknown', 18))
+    try:
+        killer = search_stringenum(Character, killer_name)
+    except ValueError:
+        raise EventParsingError(f'No character called {killer_name}')
     return Kill(gs, monster, killer, overkill)
 
 
@@ -110,12 +103,18 @@ def parse_bribe(gs: GameState,
         monster = MONSTERS[monster_name]
     except KeyError as error:
         raise EventParsingError(f'No monster named {error}')
-    killer = CHARACTERS.get(user_name, Character('Unknown', 18))
-    return Bribe(gs, monster, killer)
+    try:
+        user = search_stringenum(Character, user_name)
+    except ValueError:
+        raise EventParsingError(f'No character called {user_name}')
+    return Bribe(gs, monster, user)
 
 
-def parse_death(gs: GameState, character_name: str = 'Unknown', *_) -> Death:
-    character = CHARACTERS.get(character_name, Character('Unknown', 18))
+def parse_death(gs: GameState, character_name: str = '', *_) -> Death:
+    try:
+        character = search_stringenum(Character, character_name)
+    except ValueError:
+        character = Character.UNKNOWN
     return Death(gs, character)
 
 
@@ -148,8 +147,8 @@ def parse_party_change(gs: GameState,
     if not party_formation_string:
         raise EventParsingError(usage)
     party_formation = []
-    for character in tuple(CHARACTERS.values())[:7]:
-        initial = character.name[0].lower()
+    for character in tuple(Character)[:7]:
+        initial = stringify(character)[0]
         for letter in party_formation_string:
             if initial == letter:
                 party_formation.append(character)
@@ -168,12 +167,10 @@ def parse_summon(gs: GameState,
     if not aeon_name:
         raise EventParsingError(usage)
     if 'magus_sisters'.startswith(aeon_name):
-        party_formation = [
-            CHARACTERS['cindy'], CHARACTERS['sandy'], CHARACTERS['mindy']
-            ]
+        party_formation = [Character.CINDY, Character.SANDY, Character.MINDY]
     else:
-        for aeon in tuple(CHARACTERS.values())[7:]:
-            if aeon.name.lower().startswith(aeon_name):
+        for aeon in tuple(Character)[7:]:
+            if stringify(aeon).startswith(aeon_name):
                 party_formation = [aeon]
                 break
         else:
@@ -193,42 +190,41 @@ def parse_action(gs: GameState,
 
     if target_name.endswith('_c'):
         try:
-            target = gs.characters[target_name[:-2]]
-        except KeyError as error:
-            raise EventParsingError(f'No character named {error}')
+            target = search_stringenum(Character, target_name[:-2])
+        except ValueError:
+            raise EventParsingError(f'No target named {target_name}')
+        target = gs.characters[target]
     elif target_name:
         try:
             target = MONSTERS[target_name]
         except KeyError:
             try:
-                target = gs.characters[target_name]
-            except KeyError as error:
-                raise EventParsingError(f'No target named {error}')
+                target = search_stringenum(Character, target_name)
+            except ValueError:
+                raise EventParsingError(f'No target named {target_name}')
+            target = gs.characters[target]
     else:
         target = None
 
     try:
-        character = gs.characters[character_name]
-    except KeyError:
+        character = search_stringenum(Character, character_name)
+    except ValueError:
         raise EventParsingError(f'No character named {character_name}')
+
+    character = gs.characters[character]
 
     if action_name == 'escape':
         if character.index > 6:
             raise EventParsingError(
-                f'Character {character.name!r} can\'t perform action "Escape"'
-            )
+                f'Character "{character}" can\'t perform action "Escape"')
         return Escape(gs, character)
     else:
         try:
             action = ACTIONS[action_name]
         except KeyError:
-            raise EventParsingError(
-                f'No action named {action_name!r}'
-            )
+            raise EventParsingError(f'No action named "{action_name}"')
         if target is None:
-            raise EventParsingError(
-                f'Action {action.name!r} requires a target.'
-            )
+            raise EventParsingError(f'Action "{action}" requires a target.')
         return CharacterAction(gs, character, action, target)
 
 
@@ -242,15 +238,15 @@ def parse_stat_update(gs: GameState,
     if not character_name or not stat_name or not amount:
         raise EventParsingError(usage)
     try:
-        character = gs.characters[character_name]
-    except KeyError as error:
-        raise EventParsingError(f'No character named {error}')
-    for stat in Stat:
-        if stringify(stat) == stat_name:
-            stat_value = character.stats[stat]
-            break
-    else:
+        character = search_stringenum(Character, character_name)
+    except ValueError:
+        raise EventParsingError(f'No character named {character_name}')
+    character = gs.characters[character]
+    try:
+        stat = search_stringenum(Stat, stat_name)
+    except ValueError:
         raise EventParsingError(f'No stat named {stat_name}')
+    stat_value = character.stats[stat]
     try:
         if amount.startswith('+'):
             stat_value += int(amount[1:])
@@ -327,6 +323,57 @@ def parse_monster_action(gs: GameState,
         action = monster.actions[action_name]
     except KeyError:
         action_names = ', '.join(str(a) for a in monster.actions.values())
-        raise EventParsingError(f'Available actions for {monster.name}: '
+        raise EventParsingError(f'Available actions for {monster}: '
                                 f'{action_names}')
     return MonsterAction(gs, monster, action, slot)
+
+
+def parse_equipment_change(gs: GameState,
+                           character_name: str = '',
+                           equipment_type_name: str = '',
+                           slots: str = '',
+                           *ability_names: str,
+                           ) -> ChangeEquipment:
+    usage = 'Usage: equip [character] [equip_type] [slots] (abilities)'
+    if not all((character_name, equipment_type_name, slots)):
+        raise EventParsingError(usage)
+    try:
+        character = search_stringenum(Character, character_name)
+    except ValueError:
+        raise EventParsingError(f'No character named {character_name}')
+    try:
+        equipment_type = search_stringenum(EquipmentType, equipment_type_name)
+    except ValueError:
+        raise EventParsingError(
+            f'Equipment type can be {[t for t in EquipmentType]}')
+    try:
+        slots = int(slots)
+    except ValueError:
+        raise EventParsingError('Slots needs to be a number between 0 and 4')
+    if not (0 <= slots <= 4):
+        raise EventParsingError('Slots needs to be a number between 0 and 4')
+    abilities = []
+    for ability_name in ability_names:
+        if len(abilities) >= 4:
+            break
+        try:
+            ability = search_stringenum(Autoability, ability_name)
+        except ValueError:
+            raise EventParsingError(f'No autoability called {ability_name}')
+        if ability in abilities:
+            continue
+        abilities.append(ability)
+    slots = max(slots, len(abilities))
+    if character in (Character.VALEFOR, Character.SHIVA):
+        base_weapon_damage = 14
+    else:
+        base_weapon_damage = 16
+    equipment = Equipment(
+        owner=character,
+        type_=equipment_type,
+        slots=slots,
+        abilities=abilities,
+        base_weapon_damage=base_weapon_damage,
+        bonus_crit=3
+        )
+    return ChangeEquipment(gs, equipment)

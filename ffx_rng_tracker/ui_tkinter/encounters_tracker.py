@@ -91,15 +91,19 @@ class TkEncountersInputWidget(tk.Frame):
     def get_input(self) -> str:
         spacer = '# ' + ('=' * 60)
         current_zone = self.current_zone.get()
-        initiative_equip = 'selected' in self.initiative_equip.state()
+        initiative = 'selected' in self.initiative_equip.state()
+        initiative_equipped = False
 
         input_data = []
         for encounter in self.encounters:
-            if initiative_equip and encounter.initiative:
-                initiative = 'initiative'
-            else:
-                initiative = ''
-            if encounter.type == 'boss':
+            if initiative and encounter.initiative:
+                if not initiative_equipped:
+                    input_data.append('equip tidus weapon 1 initiative')
+                    initiative_equipped = True
+            elif initiative_equipped:
+                input_data.append('equip tidus weapon 1')
+                initiative_equipped = False
+            if encounter.label not in self.sliders:
                 encs = 1
             else:
                 encs = self.sliders[encounter.label].get()
@@ -108,9 +112,12 @@ class TkEncountersInputWidget(tk.Frame):
                     if current_zone == encounter.label:
                         input_data.append('///')
                     input_data.append(f'#     {encounter.label}:')
+            if ' ' in encounter.name:
+                multizone = 'multizone '
+            else:
+                multizone = ''
             for _ in range(encs):
-                input_data.append(f'encounter {encounter.type} '
-                                  f'{encounter.name} {initiative}')
+                input_data.append(f'encounter {multizone}{encounter.name}')
         return '\n'.join(input_data)
 
     def set_input(self, text: str) -> None:
@@ -148,7 +155,7 @@ class TkEncountersTracker(tk.Frame):
         encounters = get_encounters('encounters_notes.csv', seed)
         input_widget.encounters = encounters
         for encounter in encounters:
-            if encounter.type == 'boss':
+            if encounter.min == encounter.max:
                 continue
             input_widget.add_slider(
                 encounter.label, encounter.min,
@@ -218,20 +225,16 @@ class TkEncountersPlannerInputWidget(tk.Frame):
         spacer = '# ' + ('=' * 60)
         current_zone_index = self.current_zone_index.get()
         initiative_equip = 'selected' in self.initiative_equip.state()
-        initiative = 'initiative' if initiative_equip else ''
-
         input_data = []
+        if initiative_equip:
+            input_data.append('equip tidus weapon 1 initiative')
         for index, scale in enumerate(self.sliders):
             name = stringify(scale.get_name())
             match name:
                 case 'boss':
                     name = 'dummy'
-                    encounter_type = 'optional_boss'
                 case 'simulation':
                     name = 'simulation_(dummy)'
-                    encounter_type = 'simulated'
-                case _:
-                    encounter_type = 'random'
             for count in range(scale.get()):
                 if count == 0:
                     # if there is some data append a spacer
@@ -241,7 +244,7 @@ class TkEncountersPlannerInputWidget(tk.Frame):
                         input_data.append('///')
                     if name in ZONES:
                         input_data.append(f'#     {ZONES[name].name}:')
-                line = f'encounter {encounter_type} {name} {initiative}'
+                line = f'encounter {name}'
                 input_data.append(line)
         return '\n'.join(input_data)
 
@@ -324,17 +327,19 @@ class TkEncountersTableInputWidget(tk.Frame):
 
     def get_input(self) -> str:
         initiative_equip = 'selected' in self.initiative_equip.state()
-        initiative = 'initiative' if initiative_equip else ''
 
         input_data = []
+        if initiative_equip:
+            input_data.append('equip tidus weapon 1 initiative')
+
         for _ in range(int(self.forced_encounters.get())):
-            input_data.append('encounter boss dummy')
+            input_data.append('encounter dummy')
 
         for _ in range(int(self.random_encounters.get())):
-            input_data.append('encounter random besaid_lagoon')
+            input_data.append('encounter besaid_lagoon')
 
         for _ in range(int(self.simulated_encounters.get())):
-            input_data.append('encounter simulated simulation_(dummy)')
+            input_data.append('encounter simulation_(dummy)')
 
         zones = []
         for zone_name, active in self.zones.items():
@@ -342,8 +347,7 @@ class TkEncountersTableInputWidget(tk.Frame):
                 zones.append(zone_name)
         if zones:
             for _ in range(int(self.shown_encounters.get())):
-                input_data.append(f'encounter multizone {"/".join(zones)} '
-                                  f'{initiative}')
+                input_data.append(f'encounter multizone {" ".join(zones)}')
         return '\n'.join(input_data)
 
     def set_input(self, text: str) -> None:

@@ -6,8 +6,7 @@ from ..configs import Configs
 from ..utils import add_bytes, open_cp1252, stringify
 from .actions import MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
-from .characters import CHARACTERS, Character
-from .constants import (Element, ElementalAffinity, EquipmentSlots,
+from .constants import (Character, Element, ElementalAffinity, EquipmentSlots,
                         EquipmentType, GameVersion, Rarity, Stat, Status)
 from .file_functions import get_resource_path
 from .items import ITEMS, ItemDrop
@@ -43,7 +42,7 @@ def _get_prize_structs(file_path: str) -> dict[str, list[int]]:
     """Retrieves the prize structs for enemies."""
     absolute_file_path = get_resource_path(file_path)
     with open_cp1252(absolute_file_path) as file_object:
-        file_reader = csv.reader(file_object, delimiter=',')
+        file_reader = csv.reader(file_object)
         monsters_data = {}
         for line in file_reader:
             prize_struct = [int(value, 16) for value in line]
@@ -417,8 +416,8 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         equipment['max_ability_rolls_range'].append(ab_rolls)
 
     equipment['ability_arrays'] = {}
-    for c, i in zip(CHARACTERS.values(), range(178, 371, 32)):
-        equipment['ability_arrays'][c.name] = get_abilities(i)
+    for c, i in zip(Character, range(178, 371, 32)):
+        equipment['ability_arrays'][c] = get_abilities(i)
 
     armored = bool(prize_struct[40] & 0b00000001)
     zanmato_level = prize_struct[402]

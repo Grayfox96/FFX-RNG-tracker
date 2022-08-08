@@ -8,31 +8,44 @@
 # dismiss, autodismiss,
 # first_turn_dismiss
 ///
-zanmato seymour_flux overdrive
+# Area Conquest
+zanmato stratoavis overdrive
+zanmato malboro_menace overdrive
+zanmato kottos overdrive
+zanmato coeurlregina overdrive
+zanmato jormungand overdrive
+zanmato cactuar_king overdrive
+zanmato espada overdrive
+zanmato abyss_worm overdrive
+zanmato chimerageist overdrive
+zanmato don_tonberry overdrive
+zanmato catoblepas overdrive
+zanmato abaddon overdrive
+zanmato vorban overdrive
 
-zanmato sanctuary_keeper overdrive
+# Species Conquest
+zanmato fenrir overdrive
+zanmato ornitholestes overdrive
+zanmato pteryx overdrive
+zanmato hornet overdrive
+zanmato vidatu overdrive
+zanmato one-eye overdrive
+zanmato jumbo_flan overdrive
+zanmato nega_elemental overdrive
+zanmato tanket overdrive
+zanmato fafnir overdrive
+zanmato sleep_sprout overdrive
+zanmato bomb_king overdrive
+zanmato juggernaut overdrive
+zanmato ironclad overdrive
 
-zanmato yunalesca overdrive
-zanmato yunalesca overdrive
-# yunalesca inflicts curse
-# with her first attack
-# in third phase
-zanmato yunalesca
+# Original
+zanmato earth_eater overdrive
+zanmato greater_sphere overdrive
+zanmato catastrophe overdrive
+zanmato th'uban overdrive
+zanmato neslug overdrive
+zanmato ultima_buster overdrive
 
-zanmato left_fin overdrive
-
-zanmato right_fin overdrive
-
-# not sure if both core and genais
-# die from the first zanmato
-zanmato sinspawn_genais overdrive
-# sin core
-zanmato sin_2 overdrive
-
-# overdrive sin
-zanmato sin_3 overdrive
-
-zanmato seymour_omnis overdrive
-
-zanmato braska's_final_aeon overdrive
-zanmato braska's_final_aeon overdrive
+# nemesis
+zanmato nemesis overdrive

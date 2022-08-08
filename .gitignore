@@ -5,6 +5,7 @@ dist/*
 build/*
 .vscode/*
 .venv/*
+temp*
 ffx_rng_tracker_seeds/*
 ffx_rng_tracker_notes/*
 ffx_rng_tracker_errors.log

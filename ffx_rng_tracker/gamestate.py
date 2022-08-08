@@ -1,6 +1,6 @@
 from .configs import Configs
-from .data.characters import CHARACTERS, CharacterState
-from .data.constants import BASE_COMPATIBILITY
+from .data.characters import CHARACTERS_DEFAULTS, CharacterState
+from .data.constants import BASE_COMPATIBILITY, Character
 from .tracker import FFXRNGTracker
 
 
@@ -19,20 +19,15 @@ class GameState:
     def __repr__(self) -> str:
         return f'{type(self).__name__}(seed=({self.seed}))'
 
-    def _get_characters(self) -> dict[str, CharacterState]:
+    def _get_characters(self) -> dict[Character, CharacterState]:
         characters = {}
-        for name, c in CHARACTERS.items():
-            characters[name] = CharacterState(
-                name=c.name,
-                index=c.index,
-                _default_stats=c._default_stats.copy(),
-                elemental_affinities=c.elemental_affinities.copy(),
-            )
+        for character, defaults in CHARACTERS_DEFAULTS.items():
+            characters[character] = CharacterState(defaults)
         return characters
 
     def reset(self) -> None:
         self._rng_tracker.reset()
-        self.party = [CHARACTERS['tidus'], CHARACTERS['auron']]
+        self.party = [Character.TIDUS, Character.AURON]
         self.compatibility = BASE_COMPATIBILITY[Configs.game_version]
         self.equipment_drops = 0
         self.encounters_count = 0

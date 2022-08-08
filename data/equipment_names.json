@@ -1,0 +1,1526 @@
+{
+    "Weapon": [
+        {
+            "Tidus": "Caladbolg",
+            "Yuna": "Nirvana",
+            "Auron": "Masamune",
+            "Kimahri": "Spirit Lance",
+            "Wakka": "World Champion",
+            "Lulu": "Onion Knight",
+            "Rikku": "Godhand",
+            "Description": "Celestial Weapon"
+        },
+        {
+            "Tidus": "Brotherhood",
+            "Yuna": "-",
+            "Auron": "-",
+            "Kimahri": "-",
+            "Wakka": "-",
+            "Lulu": "-",
+            "Rikku": "-",
+            "Description": "Special weapon"
+        },
+        {
+            "Tidus": "Taming Sword",
+            "Yuna": "Herding Staff",
+            "Auron": "Beastmaster",
+            "Kimahri": "Taming Spear",
+            "Wakka": "Catcher",
+            "Lulu": "Trapper Mog",
+            "Rikku": "Iron Grip",
+            "Description": "Capture"
+        },
+        {
+            "Tidus": "Crystal Sword",
+            "Yuna": "Arc Arcana",
+            "Auron": "Conqueror",
+            "Kimahri": "Quadforce",
+            "Wakka": "Four-on-One",
+            "Lulu": "Moomba Quartet",
+            "Rikku": "Deus Ex Machina",
+            "Description": "All four elemental -strikes"
+        },
+        {
+            "Tidus": "Excalibur",
+            "Yuna": "Abraxas",
+            "Auron": "Heaven's Cloud",
+            "Kimahri": "Gungnir",
+            "Wakka": "Grand Slam",
+            "Lulu": "Soul of Mog",
+            "Rikku": "Kaiser Knuckles",
+            "Description": "Break Damage Limit"
+        },
+        {
+            "Tidus": "Ragnarok",
+            "Yuna": "Heavenly Axis",
+            "Auron": "Muramasa",
+            "Kimahri": "Luin",
+            "Wakka": "Blowout",
+            "Lulu": "Space Soul",
+            "Rikku": "Victorix",
+            "Description": "Triple Overdrive, Triple AP and Overdrive -> AP"
+        },
+        {
+            "Tidus": "Balmung",
+            "Yuna": "Judgement",
+            "Auron": "Alkaid",
+            "Kimahri": "Gae Balg",
+            "Wakka": "Rout",
+            "Lulu": "Space Master",
+            "Rikku": "Unlimited",
+            "Description": "Triple Overdrive and Overdrive -> AP"
+        },
+        {
+            "Tidus": "Save The Queen",
+            "Yuna": "Seraphim Rod",
+            "Auron": "Peacemaker",
+            "Kimahri": "Venus Gospel",
+            "Wakka": "Tie Breaker",
+            "Lulu": "Space King",
+            "Rikku": "Warmonger",
+            "Description": "Double Overdrive and Double AP"
+        },
+        {
+            "Tidus": "Heartbreaker",
+            "Yuna": "Rod of Roses",
+            "Auron": "Genji Blade",
+            "Kimahri": "Highwind",
+            "Wakka": "Winning Streak",
+            "Lulu": "Space Force",
+            "Rikku": "Overload",
+            "Description": "Triple Overdrive"
+        },
+        {
+            "Tidus": "Lionheart",
+            "Yuna": "Nimbus Rod",
+            "Auron": "Dragonkiller",
+            "Kimahri": "Berserker",
+            "Wakka": "Scoring Spree",
+            "Lulu": "Space Energy",
+            "Rikku": "Override",
+            "Description": "Double Overdrive"
+        },
+        {
+            "Tidus": "Durandal",
+            "Yuna": "Wonder Wing",
+            "Auron": "Painkiller",
+            "Kimahri": "Horn of the Ronso",
+            "Wakka": "Triple Score",
+            "Lulu": "Comet Cactuar",
+            "Rikku": "Golden Arm",
+            "Description": "Triple AP"
+        },
+        {
+            "Tidus": "Ascalon",
+            "Yuna": "Wing Wand",
+            "Auron": "Divider",
+            "Kimahri": "Chariot",
+            "Wakka": "Double Score",
+            "Lulu": "Star Cactuar",
+            "Rikku": "Golden Hand",
+            "Description": "Double AP"
+        },
+        {
+            "Tidus": "Ambitious",
+            "Yuna": "Wonder Wand",
+            "Auron": "The Nameless",
+            "Kimahri": "Transmuter",
+            "Wakka": "Rookie Star",
+            "Lulu": "Lord Cactuar",
+            "Rikku": "Ironside",
+            "Description": "Overdrive -> AP"
+        },
+        {
+            "Tidus": "Hrunting",
+            "Yuna": "Laevatein",
+            "Auron": "Ogrekiller",
+            "Kimahri": "Kain's Lance",
+            "Wakka": "Buzzerbeater",
+            "Lulu": "Space Power",
+            "Rikku": "Battle Freak",
+            "Description": "SOS Overdrive"
+        },
+        {
+            "Tidus": "Astral Sword",
+            "Yuna": "Astral Rod",
+            "Auron": "Murasame",
+            "Kimahri": "Astral Spear",
+            "Wakka": "Overtime",
+            "Lulu": "Magical Cactuar",
+            "Rikku": "Infinity",
+            "Description": "One MP Cost"
+        },
+        {
+            "Tidus": "Apocalypse",
+            "Yuna": "Chaos Rod",
+            "Auron": "Riot Blade",
+            "Kimahri": "Chaos Lance",
+            "Wakka": "Penalty Master",
+            "Lulu": "Chaotic Cait Sith",
+            "Rikku": "Tempest Claw",
+            "Description": "Any four status -strike"
+        },
+        {
+            "Tidus": "Master Sword",
+            "Yuna": "Power Staff",
+            "Auron": "Master Ogre",
+            "Kimahri": "Giant Spear",
+            "Wakka": "Ace Striker",
+            "Lulu": "Space Warrior",
+            "Rikku": "Spartan",
+            "Description": "All four Strength +X%"
+        },
+        {
+            "Tidus": "Runemaster",
+            "Yuna": "Shining Staff",
+            "Auron": "Master Djinn",
+            "Kimahri": "Titan Lance",
+            "Wakka": "Ace Wizard",
+            "Lulu": "Space Mage",
+            "Rikku": "Brunhilde",
+            "Description": "All four Magic +X%"
+        },
+        {
+            "Tidus": "Warlock",
+            "Yuna": "Faerie Staff",
+            "Auron": "Matoya's Blade",
+            "Kimahri": "Eldritch Lance",
+            "Wakka": "Over the Top",
+            "Lulu": "Mana Mog",
+            "Rikku": "Valkyrie",
+            "Description": "Magic Booster and three Magic +X%"
+        },
+        {
+            "Tidus": "Arc Sword",
+            "Yuna": "Magistral Rod",
+            "Auron": "Inducer",
+            "Kimahri": "Shamanic Spear",
+            "Wakka": "Halftime",
+            "Lulu": "Cactuar Wizard",
+            "Rikku": "Magical Rave",
+            "Description": "Half MP Cost"
+        },
+        {
+            "Tidus": "Gilventure",
+            "Yuna": "El Dorado",
+            "Auron": "Gilmonger",
+            "Kimahri": "Prospector",
+            "Wakka": "Free Agent",
+            "Lulu": "Space Bandit",
+            "Rikku": "Stickyfingers",
+            "Description": "Gillionaire"
+        },
+        {
+            "Tidus": "Tri-Steel",
+            "Yuna": "Tri-Rod",
+            "Auron": "Ichimonji",
+            "Kimahri": "Trident",
+            "Wakka": "Tricolor",
+            "Lulu": "Moomba Trio",
+            "Rikku": "Rising Sun",
+            "Description": "Any three elemental -strike"
+        },
+        {
+            "Tidus": "Helter-Skelter",
+            "Yuna": "Wicked Wand",
+            "Auron": "Corrupter",
+            "Kimahri": "Vicious Lance",
+            "Wakka": "Triple Penalty",
+            "Lulu": "Abaddon Cait Sith",
+            "Rikku": "Typhoon Claw",
+            "Description": "Any three status -strike"
+        },
+        {
+            "Tidus": "Vendetta",
+            "Yuna": "Nemesis Rod",
+            "Auron": "Ashura",
+            "Kimahri": "Dragoon Lance",
+            "Wakka": "Turnover",
+            "Lulu": "Vengeful Cactuar",
+            "Rikku": "Untouchable",
+            "Description": "Magic Counter and Counter-Attack or Evade & Counter"
+        },
+        {
+            "Tidus": "Avenger",
+            "Yuna": "Defender",
+            "Auron": "Kotetsu",
+            "Kimahri": "Rebel Lance",
+            "Wakka": "Rematch",
+            "Lulu": "Raging Cactuar",
+            "Rikku": "Tit-for-Tat",
+            "Description": "Counter-Attack or Evade & Counter"
+        },
+        {
+            "Tidus": "Prism Steel",
+            "Yuna": "Prism Rod",
+            "Auron": "Prism Blade",
+            "Kimahri": "Prism Spear",
+            "Wakka": "Prism Ball",
+            "Lulu": "Prism Cactuar",
+            "Rikku": "Prism Claw",
+            "Description": "Magic Counter"
+        },
+        {
+            "Tidus": "Mirage Sword",
+            "Yuna": "Mirage Rod",
+            "Auron": "Mirage Blade",
+            "Kimahri": "Mirage Lance",
+            "Wakka": "Mirage Ball",
+            "Lulu": "Booster Cactuar",
+            "Rikku": "Mirage Claw",
+            "Description": "Magic Booster"
+        },
+        {
+            "Tidus": "Lifesaver",
+            "Yuna": "Healing Rod",
+            "Auron": "Lifegiver",
+            "Kimahri": "Healer Spear",
+            "Wakka": "Comeback",
+            "Lulu": "Medical Mog",
+            "Rikku": "Survivor",
+            "Description": "Alchemy"
+        },
+        {
+            "Tidus": "Sonic Steel",
+            "Yuna": "Wind Rod",
+            "Auron": "Sonic Blade",
+            "Kimahri": "Sonic Lance",
+            "Wakka": "Breakaway",
+            "Lulu": "Swift Cactuar",
+            "Rikku": "Vanguard",
+            "Description": "First Strike"
+        },
+        {
+            "Tidus": "Vigilante",
+            "Yuna": "Conductor",
+            "Auron": "Sentry",
+            "Kimahri": "Detector",
+            "Wakka": "First Goal",
+            "Lulu": "Cactuar Spy",
+            "Rikku": "Sonar",
+            "Description": "Initiative"
+        },
+        {
+            "Tidus": "Dance Macabre",
+            "Yuna": "Punisher",
+            "Auron": "Assassin Blade",
+            "Kimahri": "Thanatos Lance",
+            "Wakka": "Sudden Death",
+            "Lulu": "Wicked Cait Sith",
+            "Rikku": "Executioner",
+            "Description": "Deathstrike"
+        },
+        {
+            "Tidus": "Largamente",
+            "Yuna": "Impasse",
+            "Auron": "Blockade",
+            "Kimahri": "Net Spear",
+            "Wakka": "Timeout",
+            "Lulu": "Chronos Cait Sith",
+            "Rikku": "Clockwork",
+            "Description": "Slowstrike"
+        },
+        {
+            "Tidus": "Gravestone",
+            "Yuna": "Calcite Staff",
+            "Auron": "Stillblade",
+            "Kimahri": "Rock Buster",
+            "Wakka": "Stone Cold",
+            "Lulu": "Stone Cait Sith",
+            "Rikku": "Colossus",
+            "Description": "Stonestrike"
+        },
+        {
+            "Tidus": "Sidewinder",
+            "Yuna": "Bizarre Staff",
+            "Auron": "Venomous Blade",
+            "Kimahri": "Venom Spike",
+            "Wakka": "Violation",
+            "Lulu": "Toxic Cait Sith",
+            "Rikku": "Manticore Claw",
+            "Description": "Poisonstrike"
+        },
+        {
+            "Tidus": "Nightmare",
+            "Yuna": "Staff of Thorns",
+            "Auron": "Dozing Blade",
+            "Kimahri": "Hypnos Spear",
+            "Wakka": "Sleeper",
+            "Lulu": "Dreamy Cait Sith",
+            "Rikku": "Lights Out",
+            "Description": "Sleepstrike"
+        },
+        {
+            "Tidus": "Mage Masher",
+            "Yuna": "Reticent Staff",
+            "Auron": "Tacit Blade",
+            "Kimahri": "Mage Hunter",
+            "Wakka": "Muffler",
+            "Lulu": "Mute Cait Sith",
+            "Rikku": "Mage Husher",
+            "Description": "Silencestrike"
+        },
+        {
+            "Tidus": "Nightbringer",
+            "Yuna": "Darkness Staff",
+            "Auron": "Dark Blade",
+            "Kimahri": "Darkbringer",
+            "Wakka": "Blackout",
+            "Lulu": "Dark Cait Sith",
+            "Rikku": "Jammer",
+            "Description": "Darkstrike"
+        },
+        {
+            "Tidus": "Knight Sword",
+            "Yuna": "Monk Staff",
+            "Auron": "Ogre Blade",
+            "Kimahri": "Knight Lance",
+            "Wakka": "Power Play",
+            "Lulu": "Power Mog",
+            "Rikku": "Iron Claw",
+            "Description": "Any three Strength +X%"
+        },
+        {
+            "Tidus": "Wizard Sword",
+            "Yuna": "Mage's Staff",
+            "Auron": "Djinn Blade",
+            "Kimahri": "Wizard Lance",
+            "Wakka": "Virtuoso",
+            "Lulu": "Magician Mog",
+            "Rikku": "The Ogre",
+            "Description": "Any three Magic +X%"
+        },
+        {
+            "Tidus": "Double-Edge",
+            "Yuna": "Dual Rod",
+            "Auron": "Dual Blade",
+            "Kimahri": "Twin Lance",
+            "Wakka": "Double Header",
+            "Lulu": "Moomba Duo",
+            "Rikku": "Dual Claw",
+            "Description": "Any two elemental -strike"
+        },
+        {
+            "Tidus": "Razzmatazz",
+            "Yuna": "Ominous Rod",
+            "Auron": "Chaos Blade",
+            "Kimahri": "Calamity Spear",
+            "Wakka": "Double Penalty",
+            "Lulu": "Ominous Cait Sith",
+            "Rikku": "Hurricane Claw",
+            "Description": "Any two status -touch"
+        },
+        {
+            "Tidus": "Deathbringer",
+            "Yuna": "Death Wand",
+            "Auron": "Critical Blade",
+            "Kimahri": "Matador Spear",
+            "Wakka": "Rough Play",
+            "Lulu": "Fatal Cait Sith",
+            "Rikku": "Ninja Claw",
+            "Description": "Deathtouch"
+        },
+        {
+            "Tidus": "Stunning Steel",
+            "Yuna": "Entangling Rod",
+            "Auron": "Stunner",
+            "Kimahri": "Web Lance",
+            "Wakka": "Delay of Game",
+            "Lulu": "Late Cait Sith",
+            "Rikku": "Clock Hand",
+            "Description": "Slowtouch"
+        },
+        {
+            "Tidus": "Basilisk Steel",
+            "Yuna": "Break Rod",
+            "Auron": "Gorgon Gaze",
+            "Kimahri": "Break Lance",
+            "Wakka": "T.K.O.",
+            "Lulu": "Fossil Cait Sith",
+            "Rikku": "Break Knuckles",
+            "Description": "Stonetouch"
+        },
+        {
+            "Tidus": "Poison Steel",
+            "Yuna": "Belladonna Wand",
+            "Auron": "Spider's Kiss",
+            "Kimahri": "Snakehead",
+            "Wakka": "Rulebreaker",
+            "Lulu": "Noxious Cait Sith",
+            "Rikku": "Poison Claw",
+            "Description": "Poisontouch"
+        },
+        {
+            "Tidus": "Lullaby Steel",
+            "Yuna": "Lullaby Rod",
+            "Auron": "Peaceful Slumber",
+            "Kimahri": "Dream Lance",
+            "Wakka": "Dream Team",
+            "Lulu": "Sleepy Cait Sith",
+            "Rikku": "Daydreamer",
+            "Description": "Sleeptouch"
+        },
+        {
+            "Tidus": "Muted Steel",
+            "Yuna": "Rod of Silence",
+            "Auron": "Soundless Scream",
+            "Kimahri": "Silent Spear",
+            "Wakka": "Noisebreaker",
+            "Lulu": "Quiet Cait Sith",
+            "Rikku": "Tongue Holder",
+            "Description": "Silencetouch"
+        },
+        {
+            "Tidus": "Twilight Steel",
+            "Yuna": "Rod of Darkness",
+            "Auron": "Blurry Moon",
+            "Kimahri": "Dusk Lance",
+            "Wakka": "Blind Pass",
+            "Lulu": "Blinding Cait Sith",
+            "Rikku": "Eye Poker",
+            "Description": "Darktouch"
+        },
+        {
+            "Tidus": "Hunter's Sword",
+            "Yuna": "Rod of Wisdom",
+            "Auron": "Hunter's Blade",
+            "Kimahri": "Hunter's Spear",
+            "Wakka": "Scout",
+            "Lulu": "Cactuar Scope",
+            "Rikku": "Hawkeye",
+            "Description": "Sensor"
+        },
+        {
+            "Tidus": "Flametongue",
+            "Yuna": "Rod of Fire",
+            "Auron": "Fire Blade",
+            "Kimahri": "Heat Lance",
+            "Wakka": "Fire Ball",
+            "Lulu": "Fire Moomba",
+            "Rikku": "Hot Knuckles",
+            "Description": "Firestrike"
+        },
+        {
+            "Tidus": "Ice Brand",
+            "Yuna": "Rod of Ice",
+            "Auron": "Frost Blade",
+            "Kimahri": "Ice Lance",
+            "Wakka": "Ice Ball",
+            "Lulu": "Ice Moomba",
+            "Rikku": "Ice Claw",
+            "Description": "Icestrike"
+        },
+        {
+            "Tidus": "Lightning Steel",
+            "Yuna": "Rod of Lightning",
+            "Auron": "Thunder Blade",
+            "Kimahri": "Thunder Spear",
+            "Wakka": "Thunder Ball",
+            "Lulu": "Thunder Moomba",
+            "Rikku": "Shocking Fist",
+            "Description": "Lightningstrike"
+        },
+        {
+            "Tidus": "Liquid Steel",
+            "Yuna": "Rod of Water",
+            "Auron": "Water Blade",
+            "Kimahri": "Tidal Spear",
+            "Wakka": "Water Ball",
+            "Lulu": "Water Moomba",
+            "Rikku": "Tidal Knuckles",
+            "Description": "Waterstrike"
+        },
+        {
+            "Tidus": "P-Steel",
+            "Yuna": "P-Staff",
+            "Auron": "P-Blade",
+            "Kimahri": "P-Lance",
+            "Wakka": "P-Ball",
+            "Lulu": "P-Mog",
+            "Rikku": "P-Claw",
+            "Description": "Distill Power"
+        },
+        {
+            "Tidus": "M-Steel",
+            "Yuna": "M-Staff",
+            "Auron": "M-Blade",
+            "Kimahri": "M-Lance",
+            "Wakka": "M-Ball",
+            "Lulu": "M-Mog",
+            "Rikku": "M-Claw",
+            "Description": "Distill Mana"
+        },
+        {
+            "Tidus": "S-Steel",
+            "Yuna": "S-Staff",
+            "Auron": "S-Blade",
+            "Kimahri": "S-Lance",
+            "Wakka": "S-Ball",
+            "Lulu": "S-Mog",
+            "Rikku": "S-Claw",
+            "Description": "Distill Speed"
+        },
+        {
+            "Tidus": "A-Steel",
+            "Yuna": "A-Staff",
+            "Auron": "A-Blade",
+            "Kimahri": "A-Lance",
+            "Wakka": "A-Ball",
+            "Lulu": "A-Mog",
+            "Rikku": "A-Claw",
+            "Description": "Distill Ability"
+        },
+        {
+            "Tidus": "Variable Steel",
+            "Yuna": "Malleable Staff",
+            "Auron": "Shiranui",
+            "Kimahri": "Shapeshifter",
+            "Wakka": "All-Rounder",
+            "Lulu": "Morphing Mog",
+            "Rikku": "Flexible Arm",
+            "Description": "4-slot weapon with no abilities"
+        },
+        {
+            "Tidus": "Force Saber",
+            "Yuna": "Force Rod",
+            "Auron": "Basara Blade",
+            "Kimahri": "Force Lance",
+            "Wakka": "Ovation",
+            "Lulu": "Moomba Force",
+            "Rikku": "Force Knuckles",
+            "Description": "Magic +X% and Strength +X%"
+        },
+        {
+            "Tidus": "Baroque Sword",
+            "Yuna": "Ductile Rod",
+            "Auron": "Shimmering Blade",
+            "Kimahri": "Halberd",
+            "Wakka": "Switch Hitter",
+            "Lulu": "Variable Mog",
+            "Rikku": "Devastator",
+            "Description": "2 or 3 slot weapon"
+        },
+        {
+            "Tidus": "Sorcery Sword",
+            "Yuna": "Sorcery Rod",
+            "Auron": "Spiritual Blade",
+            "Kimahri": "Magic Lance",
+            "Wakka": "Trickster",
+            "Lulu": "Moomba Mage",
+            "Rikku": "Magic Knuckles",
+            "Description": "Magic +10% or Magic +20%"
+        },
+        {
+            "Tidus": "Soldier's Saber",
+            "Yuna": "Full Metal Rod",
+            "Auron": "Nodachi",
+            "Kimahri": "Full Metal Spear",
+            "Wakka": "Striker",
+            "Lulu": "Moomba Warrior",
+            "Rikku": "Buster Knuckles",
+            "Description": "Strength +10% or Strength +20%"
+        },
+        {
+            "Tidus": "Rune Steel",
+            "Yuna": "Rune Rod",
+            "Auron": "Rune Blade",
+            "Kimahri": "Rune Lance",
+            "Wakka": "Rune Ball",
+            "Lulu": "Rune Mog",
+            "Rikku": "Magic Claw",
+            "Description": "Magic +5%"
+        },
+        {
+            "Tidus": "Enchanted Sword",
+            "Yuna": "Enchanted Rod",
+            "Auron": "Magic Blade",
+            "Kimahri": "Enchanted Lance",
+            "Wakka": "Magic Ball",
+            "Lulu": "Magical Mog",
+            "Rikku": "Magic Glove",
+            "Description": "Magic +3%"
+        },
+        {
+            "Tidus": "Fencing Saber",
+            "Yuna": "Rod of Striking",
+            "Auron": "War Blade",
+            "Kimahri": "Striking Spear",
+            "Wakka": "Hyper Ball",
+            "Lulu": "Buster Mog",
+            "Rikku": "Buster Claw",
+            "Description": "Strength +5%"
+        },
+        {
+            "Tidus": "Warrior's Sword",
+            "Yuna": "Rod of Beating",
+            "Auron": "Knight Blade",
+            "Kimahri": "Heavy Spear",
+            "Wakka": "Power Ball",
+            "Lulu": "Attack Mog",
+            "Rikku": "Buster Glove",
+            "Description": "Strength +3%"
+        },
+        {
+            "Tidus": "Slasher",
+            "Yuna": "Spiked Rod",
+            "Auron": "Katana",
+            "Kimahri": "Harpoon",
+            "Wakka": "Center Forward",
+            "Lulu": "Stinger Mog",
+            "Rikku": "Barbed Knuckles",
+            "Description": "Piercing"
+        },
+        {
+            "Tidus": "Longsword",
+            "Yuna": "Staff",
+            "Auron": "Blade",
+            "Kimahri": "Spear",
+            "Wakka": "Official Ball",
+            "Lulu": "Moogle",
+            "Rikku": "Claw",
+            "Description": "One ability slot"
+        }
+    ],
+    "Armor": [
+        {
+            "Tidus": "Endless Road",
+            "Yuna": "Solomon Ring",
+            "Auron": "Overlord",
+            "Kimahri": "Pride of the Ronso",
+            "Wakka": "Indomitable",
+            "Lulu": "Samantha Soul",
+            "Rikku": "Dreadnought",
+            "Description": "Break HP Limit and Break MP Limit"
+        },
+        {
+            "Tidus": "Sanctuary",
+            "Yuna": "Holy Ring",
+            "Auron": "Solidity",
+            "Kimahri": "Acropolis",
+            "Wakka": "Shutout",
+            "Lulu": "Eternity",
+            "Rikku": "Impervious",
+            "Description": "Ribbon"
+        },
+        {
+            "Tidus": "Genji Shield",
+            "Yuna": "Arcane Ring",
+            "Auron": "Genji Bracer",
+            "Kimahri": "Genji Armlet",
+            "Wakka": "Super Goalie",
+            "Lulu": "Minerva Bangle",
+            "Rikku": "Atlas",
+            "Description": "Break HP Limit"
+        },
+        {
+            "Tidus": "Emblem",
+            "Yuna": "Mythical Ring",
+            "Auron": "Dragon Lord",
+            "Kimahri": "Sage's Armlet",
+            "Wakka": "High Spirits",
+            "Lulu": "Mythical Bangle",
+            "Rikku": "Celestial",
+            "Description": "Break MP Limit"
+        },
+        {
+            "Tidus": "Crystal Shield",
+            "Yuna": "Sophia Ring",
+            "Auron": "Glutton",
+            "Kimahri": "Crystal Armlet",
+            "Wakka": "Final Four",
+            "Lulu": "Draupnir",
+            "Rikku": "Invincible",
+            "Description": "Four elemental -eater abilities"
+        },
+        {
+            "Tidus": "Aegis Shield",
+            "Yuna": "Aegis Ring",
+            "Auron": "Resistant",
+            "Kimahri": "Aegis Armlet",
+            "Wakka": "Great Four",
+            "Lulu": "Aegis Bangle",
+            "Rikku": "Armada",
+            "Description": "Four elemental -proof abilities"
+        },
+        {
+            "Tidus": "Golem Shield",
+            "Yuna": "Blessed Ring",
+            "Auron": "Warder",
+            "Kimahri": "Adamantite",
+            "Wakka": "The Guardian",
+            "Lulu": "Precious Bangle",
+            "Rikku": "Triumph",
+            "Description": "Auto Shell, Auto Protect, Auto Reflect and Auto Regen"
+        },
+        {
+            "Tidus": "Revive Shield",
+            "Yuna": "Savior Ring",
+            "Auron": "Immortal",
+            "Kimahri": "Orichalcum",
+            "Wakka": "Automatic",
+            "Lulu": "Imperial Bangle",
+            "Rikku": "Intrepid",
+            "Description": "Auto-Potion, Auto Med and Auto Phoenix"
+        },
+        {
+            "Tidus": "Rescue Shield",
+            "Yuna": "Healing Ring",
+            "Auron": "Healer",
+            "Kimahri": "Safe Passage",
+            "Wakka": "First Aid",
+            "Lulu": "Auto Bangle",
+            "Rikku": "Goliath",
+            "Description": "Auto Potion and Auto Med"
+        },
+        {
+            "Tidus": "Paladin Shield",
+            "Yuna": "Forbidding Ring",
+            "Auron": "Undefeated",
+            "Kimahri": "Ronso Armlet",
+            "Wakka": "Keeper",
+            "Lulu": "Black Ribbon",
+            "Rikku": "Argonaut",
+            "Description": "Any four status -proof abilities"
+        },
+        {
+            "Tidus": "Diamond Shield",
+            "Yuna": "Diamond Ring",
+            "Auron": "Diamond Bracer",
+            "Kimahri": "Diamond Armlet",
+            "Wakka": "Power Armguard",
+            "Lulu": "Diamond Bangle",
+            "Rikku": "Diamond Targe",
+            "Description": "All four Defense +X%"
+        },
+        {
+            "Tidus": "Ruby Shield",
+            "Yuna": "Ruby Ring",
+            "Auron": "Ruby Bracer",
+            "Kimahri": "Ruby Armlet",
+            "Wakka": "Magic Armguard",
+            "Lulu": "Ruby Bangle",
+            "Rikku": "Ruby Targe",
+            "Description": "All four Magic Defense +X%"
+        },
+        {
+            "Tidus": "Dynasty Shield",
+            "Yuna": "Fortitude Ring",
+            "Auron": "Battle Bracer",
+            "Kimahri": "Enhanced Armlet",
+            "Wakka": "Power Ace",
+            "Lulu": "Queen's Bangle",
+            "Rikku": "Warlord",
+            "Description": "All four HP +X%"
+        },
+        {
+            "Tidus": "Magister Shield",
+            "Yuna": "Magical Ring",
+            "Auron": "Magical Bracer",
+            "Kimahri": "Magical Armlet",
+            "Wakka": "Magic Ace",
+            "Lulu": "Magister Bangle",
+            "Rikku": "Dominator",
+            "Description": "All four MP +X%"
+        },
+        {
+            "Tidus": "Collector's Shield",
+            "Yuna": "Collector Ring",
+            "Auron": "Collector Bracer",
+            "Kimahri": "Collector Armlet",
+            "Wakka": "Best Play",
+            "Lulu": "Collector Bangle",
+            "Rikku": "Buccaneer",
+            "Description": "Master Thief"
+        },
+        {
+            "Tidus": "Treasure Shield",
+            "Yuna": "Treasure Ring",
+            "Auron": "Treasure Bracer",
+            "Kimahri": "Treasure Armlet",
+            "Wakka": "Great Play",
+            "Lulu": "Treasure Bangle",
+            "Rikku": "Corsair",
+            "Description": "Pickpocket"
+        },
+        {
+            "Tidus": "Shield of Hope",
+            "Yuna": "Ring of Hope",
+            "Auron": "Bracer of Hope",
+            "Kimahri": "Armlet of Hope",
+            "Wakka": "Benchwarmer",
+            "Lulu": "Bangle of Hope",
+            "Rikku": "Targe of Hope",
+            "Description": "HP Stroll and MP Stroll"
+        },
+        {
+            "Tidus": "Assault Shield",
+            "Yuna": "Assault Ring",
+            "Auron": "Assault Bracer",
+            "Kimahri": "Assault Armlet",
+            "Wakka": "Triple Guard",
+            "Lulu": "Assault Bangle",
+            "Rikku": "Assault Targe",
+            "Description": "Any three auto- status abilities"
+        },
+        {
+            "Tidus": "Phantom Shield",
+            "Yuna": "Phantom Ring",
+            "Auron": "Phantom Bracer",
+            "Kimahri": "Phantom Armlet",
+            "Wakka": "Element Save",
+            "Lulu": "Phantom Bangle",
+            "Rikku": "Phantom Targe",
+            "Description": "Any three -eater abilities"
+        },
+        {
+            "Tidus": "Recovery Shield",
+            "Yuna": "Recovery Ring",
+            "Auron": "Recovery Bracer",
+            "Kimahri": "Recovery Armlet",
+            "Wakka": "Recovery Armguard",
+            "Lulu": "Recovery Bangle",
+            "Rikku": "Recovery Targe",
+            "Description": "HP Stroll"
+        },
+        {
+            "Tidus": "Spiritual Shield",
+            "Yuna": "Spiritual Ring",
+            "Auron": "Spiritual Bracer",
+            "Kimahri": "Spiritual Armlet",
+            "Wakka": "Spiritual Armguard",
+            "Lulu": "Spiritual Bangle",
+            "Rikku": "Spiritual Targe",
+            "Description": "MP Stroll"
+        },
+        {
+            "Tidus": "Phoenix Shield",
+            "Yuna": "Phoenix Ring",
+            "Auron": "Phoenix Bracer",
+            "Kimahri": "Phoenix Armlet",
+            "Wakka": "Miracle Comeback",
+            "Lulu": "Phoenix Bangle",
+            "Rikku": "Phoenix Targe",
+            "Description": "Auto Phoenix"
+        },
+        {
+            "Tidus": "Curative Shield",
+            "Yuna": "Curative Ring",
+            "Auron": "Curative Bracer",
+            "Kimahri": "Curative Armlet",
+            "Wakka": "Top Shape",
+            "Lulu": "Curative Bangle",
+            "Rikku": "Curative Targe",
+            "Description": "Auto Med"
+        },
+        {
+            "Tidus": "Rainbow Shield",
+            "Yuna": "Rainbow Ring",
+            "Auron": "Rainbow Bracer",
+            "Kimahri": "Rainbow Armlet",
+            "Wakka": "Miracle Save",
+            "Lulu": "Rainbow Bangle",
+            "Rikku": "Phalanx",
+            "Description": "Four elemental SOS- abilities"
+        },
+        {
+            "Tidus": "Shining Shield",
+            "Yuna": "Shining Ring",
+            "Auron": "Shining Bracer",
+            "Kimahri": "Shining Armlet",
+            "Wakka": "Last-Ditch",
+            "Lulu": "Shining Bangle",
+            "Rikku": "Tercio",
+            "Description": "Any four SOS- status abilities"
+        },
+        {
+            "Tidus": "Faerie Shield",
+            "Yuna": "Faerie Ring",
+            "Auron": "Faerie Bracer",
+            "Kimahri": "Faerie Armlet",
+            "Wakka": "Triple Guard",
+            "Lulu": "Faerie Bangle",
+            "Rikku": "Talisman",
+            "Description": "Any three status -proof abilities"
+        },
+        {
+            "Tidus": "Peaceful Shield",
+            "Yuna": "Peaceful Ring",
+            "Auron": "Peaceful Bracer",
+            "Kimahri": "Peaceful Armlet",
+            "Wakka": "Off Season",
+            "Lulu": "Peaceful Bangle",
+            "Rikku": "Peaceful Targe",
+            "Description": "No Encounters"
+        },
+        {
+            "Tidus": "Shaman Shield",
+            "Yuna": "Shaman Ring",
+            "Auron": "Shaman Bracer",
+            "Kimahri": "Shaman Armlet",
+            "Wakka": "Shaman Armguard",
+            "Lulu": "Shaman Bangle",
+            "Rikku": "Shaman Targe",
+            "Description": "Auto Potion"
+        },
+        {
+            "Tidus": "Barrier Shield",
+            "Yuna": "Barrier Ring",
+            "Auron": "Barrier Bracer",
+            "Kimahri": "Barrier Armlet",
+            "Wakka": "Hat Trick",
+            "Lulu": "Barrier Bangle",
+            "Rikku": "Victorious",
+            "Description": "Any three elemental -proof abilities"
+        },
+        {
+            "Tidus": "Star Shield",
+            "Yuna": "Star Ring",
+            "Auron": "Star Bracer",
+            "Kimahri": "Star Armlet",
+            "Wakka": "Pep Talk",
+            "Lulu": "Star Bangle",
+            "Rikku": "Star Targe",
+            "Description": "Any three SOS- status abilities"
+        },
+        {
+            "Tidus": "Marching Shield",
+            "Yuna": "Marching Ring",
+            "Auron": "Marching Bracer",
+            "Kimahri": "Marching Armlet",
+            "Wakka": "Auto Armguard",
+            "Lulu": "Marching Bangle",
+            "Rikku": "Marching Targe",
+            "Description": "Any two auto- status abilities"
+        },
+        {
+            "Tidus": "Moon Shield",
+            "Yuna": "Moon Ring",
+            "Auron": "Moon Bracer",
+            "Kimahri": "Moon Armlet",
+            "Wakka": "Danger Armguard",
+            "Lulu": "Moon Bangle",
+            "Rikku": "Moon Targe",
+            "Description": "Any two elemental SOS- abilities"
+        },
+        {
+            "Tidus": "Regen Shield",
+            "Yuna": "Regen Ring",
+            "Auron": "Regen Bracer",
+            "Kimahri": "Regen Armlet",
+            "Wakka": "Second Wind",
+            "Lulu": "Regen Bangle",
+            "Rikku": "Regen Targe",
+            "Description": "Auto Regen or SOS Regen"
+        },
+        {
+            "Tidus": "Haste Shield",
+            "Yuna": "Haste Ring",
+            "Auron": "Haste Bracer",
+            "Kimahri": "Haste Armlet",
+            "Wakka": "Fast Break",
+            "Lulu": "Haste Bangle",
+            "Rikku": "Haste Targe",
+            "Description": "Auto Haste or SOS Haste"
+        },
+        {
+            "Tidus": "Reflect Shield",
+            "Yuna": "Reflect Ring",
+            "Auron": "Reflect Bracer",
+            "Kimahri": "Reflect Armlet",
+            "Wakka": "Reflect Armguard",
+            "Lulu": "Reflect Bangle",
+            "Rikku": "Reflect Targe",
+            "Description": "Auto Reflect or SOS Reflect"
+        },
+        {
+            "Tidus": "Shell Shield",
+            "Yuna": "Shell Ring",
+            "Auron": "Shell Bracer",
+            "Kimahri": "Shell Armlet",
+            "Wakka": "Shell Armguard",
+            "Lulu": "Shell Bangle",
+            "Rikku": "Shell Targe",
+            "Description": "Auto Shell or SOS Shell"
+        },
+        {
+            "Tidus": "Protect Shield",
+            "Yuna": "Protect Ring",
+            "Auron": "Protect Bracer",
+            "Kimahri": "Protect Armlet",
+            "Wakka": "Protect Armguard",
+            "Lulu": "Protect Bangle",
+            "Rikku": "Protect Targe",
+            "Description": "Auto Protect or SOS Protect"
+        },
+        {
+            "Tidus": "Platinum Shield",
+            "Yuna": "Platinum Ring",
+            "Auron": "Platinum Bracer",
+            "Kimahri": "Platinum Armlet",
+            "Wakka": "Platinum Armguard",
+            "Lulu": "Platinum Bangle",
+            "Rikku": "Centurion",
+            "Description": "Any three Defense +X%"
+        },
+        {
+            "Tidus": "Sapphire Shield",
+            "Yuna": "Sapphire Ring",
+            "Auron": "Sapphire Bracer",
+            "Kimahri": "Sapphire Armlet",
+            "Wakka": "Sapphire Armguard",
+            "Lulu": "Sapphire Bangle",
+            "Rikku": "Echelon",
+            "Description": "Any three Magic Defense +X%"
+        },
+        {
+            "Tidus": "Knight's Shield",
+            "Yuna": "Power Ring",
+            "Auron": "Warrior's Bracer",
+            "Kimahri": "Warrior's Armlet",
+            "Wakka": "Power Armguard",
+            "Lulu": "Power Bangle",
+            "Rikku": "Knight's Targe",
+            "Description": "Any three HP +X%"
+        },
+        {
+            "Tidus": "Wizard Shield",
+            "Yuna": "Wizard Ring",
+            "Auron": "Wizard Bracer",
+            "Kimahri": "Wizard Armlet",
+            "Wakka": "Energy Armguard",
+            "Lulu": "Wizard Bangle",
+            "Rikku": "Wizard Targe",
+            "Description": "Any three MP +X%"
+        },
+        {
+            "Tidus": "Elemental Shield",
+            "Yuna": "Elemental Ring",
+            "Auron": "Elemental Bracer",
+            "Kimahri": "Elemental Armlet",
+            "Wakka": "Elemental Armguard",
+            "Lulu": "Elemental Bangle",
+            "Rikku": "Elemental Targe",
+            "Description": "Any two elemental -proof or -eater of different elements"
+        },
+        {
+            "Tidus": "Savior Shield",
+            "Yuna": "Defending Ring",
+            "Auron": "Defending Bracer",
+            "Kimahri": "Defending Armlet",
+            "Wakka": "Low Risk",
+            "Lulu": "Savior Bangle",
+            "Rikku": "Reliant",
+            "Description": "Any two status -proof abilities"
+        },
+        {
+            "Tidus": "Crimson Shield",
+            "Yuna": "Crimson Ring",
+            "Auron": "Crimson Bracer",
+            "Kimahri": "Crimson Armlet",
+            "Wakka": "Crimson Armguard",
+            "Lulu": "Crimson Bangle",
+            "Rikku": "Crimson Targe",
+            "Description": "Fire Eater"
+        },
+        {
+            "Tidus": "Snow Shield",
+            "Yuna": "Snow Ring",
+            "Auron": "Snow Bracer",
+            "Kimahri": "Snow Armlet",
+            "Wakka": "Snow Armguard",
+            "Lulu": "Snow Bangle",
+            "Rikku": "Snow Targe",
+            "Description": "Ice Eater"
+        },
+        {
+            "Tidus": "Ochre Shield",
+            "Yuna": "Ochre Ring",
+            "Auron": "Ochre Bracer",
+            "Kimahri": "Ochre Armlet",
+            "Wakka": "Ochre Armguard",
+            "Lulu": "Ochre Bangle",
+            "Rikku": "Ochre Targe",
+            "Description": "Lightning Eater"
+        },
+        {
+            "Tidus": "Cerulean Shield",
+            "Yuna": "Cerulean Ring",
+            "Auron": "Cerulean Bracer",
+            "Kimahri": "Cerulean Armlet",
+            "Wakka": "Cerulean Armguard",
+            "Lulu": "Cerulean Bangle",
+            "Rikku": "Cerulean Targe",
+            "Description": "Water Eater"
+        },
+        {
+            "Tidus": "Medical Shield",
+            "Yuna": "Medical Ring",
+            "Auron": "Medical Bracer",
+            "Kimahri": "Medical Armlet",
+            "Wakka": "Medical Armguard",
+            "Lulu": "Medical Bangle",
+            "Rikku": "Medical Targe",
+            "Description": "Curseproof"
+        },
+        {
+            "Tidus": "Lucid Shield",
+            "Yuna": "Lucid Ring",
+            "Auron": "Lucid Bracer",
+            "Kimahri": "Lucid Armlet",
+            "Wakka": "Lucid Armguard",
+            "Lulu": "Lucid Bangle",
+            "Rikku": "Lucid Targe",
+            "Description": "Confuse Ward/Proof"
+        },
+        {
+            "Tidus": "Serene Shield",
+            "Yuna": "Serene Ring",
+            "Auron": "Serene Bracer",
+            "Kimahri": "Serene Armlet",
+            "Wakka": "Serene Armguard",
+            "Lulu": "Serene Bangle",
+            "Rikku": "Dauntless",
+            "Description": "Berserk Ward/Proof"
+        },
+        {
+            "Tidus": "Light Shield",
+            "Yuna": "Light Ring",
+            "Auron": "Light Bracer",
+            "Kimahri": "Light Armlet",
+            "Wakka": "Light Armguard",
+            "Lulu": "Light Bangle",
+            "Rikku": "Light Targe",
+            "Description": "Slow Ward/Proof"
+        },
+        {
+            "Tidus": "Soul Shield",
+            "Yuna": "Soul Ring",
+            "Auron": "Soul Bracer",
+            "Kimahri": "Soul Armlet",
+            "Wakka": "Soul Armguard",
+            "Lulu": "Soul Bangle",
+            "Rikku": "Soul Targe",
+            "Description": "Death Ward/Proof"
+        },
+        {
+            "Tidus": "Blessed Shield",
+            "Yuna": "Blessed Ring",
+            "Auron": "Blessed Bracer",
+            "Kimahri": "Blessed Armlet",
+            "Wakka": "Blessed Armguard",
+            "Lulu": "Blessed Bangle",
+            "Rikku": "Blessed Targe",
+            "Description": "Zombie Ward/Proof"
+        },
+        {
+            "Tidus": "Soft Shield",
+            "Yuna": "Soft Ring",
+            "Auron": "Soft Bracer",
+            "Kimahri": "Soft Armlet",
+            "Wakka": "Soft Armguard",
+            "Lulu": "Soft Bangle",
+            "Rikku": "Soft Targe",
+            "Description": "Stone Ward/Proof"
+        },
+        {
+            "Tidus": "Serum Shield",
+            "Yuna": "Serum Ring",
+            "Auron": "Serum Bracer",
+            "Kimahri": "Serum Armlet",
+            "Wakka": "Serum Armguard",
+            "Lulu": "Serum Bangle",
+            "Rikku": "Serum Targe",
+            "Description": "Poison Ward/Proof"
+        },
+        {
+            "Tidus": "Alert Shield",
+            "Yuna": "Alert Ring",
+            "Auron": "Alert Bracer",
+            "Kimahri": "Alert Armlet",
+            "Wakka": "Alert Armguard",
+            "Lulu": "Alert Bangle",
+            "Rikku": "Alert Targe",
+            "Description": "Sleep Ward/Proof"
+        },
+        {
+            "Tidus": "Echo Shield",
+            "Yuna": "Echo Ring",
+            "Auron": "Echo Bracer",
+            "Kimahri": "Echo Armlet",
+            "Wakka": "Echo Armguard",
+            "Lulu": "Echo Bangle",
+            "Rikku": "Echo Targe",
+            "Description": "Silence Ward/Proof"
+        },
+        {
+            "Tidus": "Bright Shield",
+            "Yuna": "Bright Ring",
+            "Auron": "Bright Bracer",
+            "Kimahri": "Bright Armlet",
+            "Wakka": "Bright Armguard",
+            "Lulu": "Bright Bangle",
+            "Rikku": "Bright Targe",
+            "Description": "Dark Ward/Proof"
+        },
+        {
+            "Tidus": "Red Shield",
+            "Yuna": "Red Ring",
+            "Auron": "Red Bracer",
+            "Kimahri": "Red Armlet",
+            "Wakka": "Red Armguard",
+            "Lulu": "Red Bangle",
+            "Rikku": "Red Targe",
+            "Description": "Fire Ward/Proof"
+        },
+        {
+            "Tidus": "White Shield",
+            "Yuna": "White Ring",
+            "Auron": "White Bracer",
+            "Kimahri": "White Armlet",
+            "Wakka": "White Armguard",
+            "Lulu": "White Bangle",
+            "Rikku": "White Targe",
+            "Description": "Ice Ward/Proof"
+        },
+        {
+            "Tidus": "Yellow Shield",
+            "Yuna": "Yellow Ring",
+            "Auron": "Yellow Bracer",
+            "Kimahri": "Yellow Armlet",
+            "Wakka": "Yellow Armguard",
+            "Lulu": "Yellow Bangle",
+            "Rikku": "Yellow Targe",
+            "Description": "Lightning Ward/Proof"
+        },
+        {
+            "Tidus": "Blue Shield",
+            "Yuna": "Blue Ring",
+            "Auron": "Blue Bracer",
+            "Kimahri": "Blue Armlet",
+            "Wakka": "Blue Armguard",
+            "Lulu": "Blue Bangle",
+            "Rikku": "Blue Targe",
+            "Description": "Water Ward/Proof"
+        },
+        {
+            "Tidus": "NulTide Shield",
+            "Yuna": "NulTide Ring",
+            "Auron": "NulTide Bracer",
+            "Kimahri": "NulTide Armlet",
+            "Wakka": "NulTide Armguard",
+            "Lulu": "NulTide Bangle",
+            "Rikku": "NulTide Targe",
+            "Description": "SOS NulTide"
+        },
+        {
+            "Tidus": "NulBlaze Shield",
+            "Yuna": "NulBlaze Ring",
+            "Auron": "NulBlaze Bracer",
+            "Kimahri": "NulBlaze Armlet",
+            "Wakka": "NulBlaze Armguard",
+            "Lulu": "NulBlaze Bangle",
+            "Rikku": "NulBlaze Targe",
+            "Description": "SOS NulBlaze"
+        },
+        {
+            "Tidus": "NulShock Shield",
+            "Yuna": "NulShock Ring",
+            "Auron": "NulShock Bracer",
+            "Kimahri": "NulShock Armlet",
+            "Wakka": "NulShock Armguard",
+            "Lulu": "NulShock Bangle",
+            "Rikku": "NulShock Targe",
+            "Description": "SOS NulShock"
+        },
+        {
+            "Tidus": "NulFrost Shield",
+            "Yuna": "NulFrost Ring",
+            "Auron": "NulFrost Bracer",
+            "Kimahri": "NulFrost Armlet",
+            "Wakka": "NulFrost Armguard",
+            "Lulu": "NulFrost Bangle",
+            "Rikku": "NulFrost Targe",
+            "Description": "SOS NulFrost"
+        },
+        {
+            "Tidus": "Adept's Shield",
+            "Yuna": "Adept's Ring",
+            "Auron": "Adept's Bracer",
+            "Kimahri": "Adept's Armlet",
+            "Wakka": "Adept's Armguard",
+            "Lulu": "Adept's Bangle",
+            "Rikku": "Adept's Targe",
+            "Description": "Any two HP +X% and any two MP +X%"
+        },
+        {
+            "Tidus": "Tetra Shield",
+            "Yuna": "Tetra Ring",
+            "Auron": "Tetra Bracer",
+            "Kimahri": "Tetra Armlet",
+            "Wakka": "Tetra Armguard",
+            "Lulu": "Tetra Bangle",
+            "Rikku": "Tetra Targe",
+            "Description": "Four slot armor with no abilities"
+        },
+        {
+            "Tidus": "Mythril Shield",
+            "Yuna": "Mythril Ring",
+            "Auron": "Mythril Bracer",
+            "Kimahri": "Mythril Armlet",
+            "Wakka": "Mythril Armguard",
+            "Lulu": "Mythril Bangle",
+            "Rikku": "Mythril Targe",
+            "Description": "Defense +X% and Magic Defense +X%"
+        },
+        {
+            "Tidus": "Gold Shield",
+            "Yuna": "Gold Ring",
+            "Auron": "Gold Bracer",
+            "Kimahri": "Gold Armlet",
+            "Wakka": "Gold Guard",
+            "Lulu": "Gold Bangle",
+            "Rikku": "Gold Targe",
+            "Description": "Any two Defense +X%"
+        },
+        {
+            "Tidus": "Emerald Shield",
+            "Yuna": "Emerald Ring",
+            "Auron": "Emerald Bracer",
+            "Kimahri": "Emerald Armlet",
+            "Wakka": "Emerald Guard",
+            "Lulu": "Emerald Bangle",
+            "Rikku": "Emerald Targe",
+            "Description": "Any two Magic Defense +X%"
+        },
+        {
+            "Tidus": "Soldier Shield",
+            "Yuna": "Soldier's Ring",
+            "Auron": "Soldier's Bracer",
+            "Kimahri": "Soldier's Armlet",
+            "Wakka": "Soldier's Guard",
+            "Lulu": "Vita Bangle",
+            "Rikku": "Soldier's Targe",
+            "Description": "Any two HP +X%"
+        },
+        {
+            "Tidus": "Mage's Shield",
+            "Yuna": "Mage's Ring",
+            "Auron": "Mage's Bracer",
+            "Kimahri": "Mage's Armlet",
+            "Wakka": "Mage's Guard",
+            "Lulu": "Mage's Bangle",
+            "Rikku": "Mage's Targe",
+            "Description": "Any two MP +X%"
+        },
+        {
+            "Tidus": "Silver Shield",
+            "Yuna": "Silver Ring",
+            "Auron": "Silver Bracer",
+            "Kimahri": "Silver Armlet",
+            "Wakka": "Silver Guard",
+            "Lulu": "Silver Bangle",
+            "Rikku": "Silver Targe",
+            "Description": "Defense +10% or Defense +20%"
+        },
+        {
+            "Tidus": "Onyx Shield",
+            "Yuna": "Onyx Ring",
+            "Auron": "Onyx Bracer",
+            "Kimahri": "Onyx Armlet",
+            "Wakka": "Onyx Armguard",
+            "Lulu": "Onyx Bangle",
+            "Rikku": "Onyx Targe",
+            "Description": "Magic Defense +10% or Magic Defense +20%"
+        },
+        {
+            "Tidus": "Sorcery Shield",
+            "Yuna": "Sorcery Ring",
+            "Auron": "Sorcery Bracer",
+            "Kimahri": "Sorcery Armlet",
+            "Wakka": "Sorcery Armguard",
+            "Lulu": "Sorcery Bangle",
+            "Rikku": "Sorcery Targe",
+            "Description": "MP +20% or MP +30%"
+        },
+        {
+            "Tidus": "Warrior's Shield",
+            "Yuna": "Tough Ring",
+            "Auron": "Warrior's Bracer",
+            "Kimahri": "Warrior's Armlet",
+            "Wakka": "Warrior's Armguard",
+            "Lulu": "Tough Bangle",
+            "Rikku": "Warrior's Targe",
+            "Description": "HP +20% or HP +30%"
+        },
+        {
+            "Tidus": "Glorious Shield",
+            "Yuna": "Glorious Ring",
+            "Auron": "Glorious Bracer",
+            "Kimahri": "Glorious Armlet",
+            "Wakka": "Glorious Armguard",
+            "Lulu": "Glorious Bangle",
+            "Rikku": "Glorious Targe",
+            "Description": "3 slot armor"
+        },
+        {
+            "Tidus": "Metal Shield",
+            "Yuna": "Metal Ring",
+            "Auron": "Metal Bracer",
+            "Kimahri": "Metal Armlet",
+            "Wakka": "Metal Armguard",
+            "Lulu": "Metal Bangle",
+            "Rikku": "Metal Targe",
+            "Description": "Defense +3% or Defense +5%"
+        },
+        {
+            "Tidus": "Pearl Shield",
+            "Yuna": "Pearl Ring",
+            "Auron": "Pearl Bracer",
+            "Kimahri": "Pearl Armlet",
+            "Wakka": "Pearl Armguard",
+            "Lulu": "Pearl Bangle",
+            "Rikku": "Pearl Targe",
+            "Description": "Magic Defense +3% or Magic Defense +5%"
+        },
+        {
+            "Tidus": "Magic Shield",
+            "Yuna": "Magic Ring",
+            "Auron": "Magic Bracer",
+            "Kimahri": "Magic Armlet",
+            "Wakka": "Magic Armguard",
+            "Lulu": "Magic Bangle",
+            "Rikku": "Magic Targe",
+            "Description": "MP +5% or MP +10%"
+        },
+        {
+            "Tidus": "Seeker's Shield",
+            "Yuna": "Seeker's Ring",
+            "Auron": "Seeker's Bracer",
+            "Kimahri": "Seeker's Armlet",
+            "Wakka": "Seeker's Armguard",
+            "Lulu": "Seeker's Bangle",
+            "Rikku": "Seeker's Targe",
+            "Description": "HP +5% or HP +10%"
+        },
+        {
+            "Tidus": "Shield",
+            "Yuna": "Wide Ring",
+            "Auron": "Guardian Bracer",
+            "Kimahri": "Guardian Armlet",
+            "Wakka": "Guardian Armguard",
+            "Lulu": "Guardian Bangle",
+            "Rikku": "Guardian Targe",
+            "Description": "Two slot armor with no abilities"
+        },
+        {
+            "Tidus": "Buckler",
+            "Yuna": "Ring",
+            "Auron": "Bracer",
+            "Kimahri": "Armlet",
+            "Wakka": "Armguard",
+            "Lulu": "Bangle",
+            "Rikku": "Targe",
+            "Description": "One ability slot"
+        }
+    ]
+}

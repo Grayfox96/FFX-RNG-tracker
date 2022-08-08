@@ -16,7 +16,7 @@ class Steal(Event):
         self.item = self._get_item()
 
     def __str__(self) -> str:
-        string = f'Steal from {self.monster.name}: '
+        string = f'Steal from {self.monster}: '
         if self.item:
             string += str(self.item)
         else:

@@ -1,16 +1,14 @@
 # Usage:
 # encounter (preemp/ambush/simulated)
-# encounter [enc type] [enc name] (initiative)
+# encounter [enc name]
 # stat [character] [stat] [(+/-)amount]
 # party [party members initials]
 # summon [aeon name]
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
-#     evasion, accuracy, weapon_damage,
-#     bonus_crit, bonus_strength,
-#     bonus_magic, piercing, cheer,
-#     focus
+#     evasion, accuracy, cheer, focus
+# equip [character] [equip_type] [slots] (abilities)
 #
 # [character name] [action] (target)
 # [monster name] [slot] [action]
@@ -76,7 +74,7 @@ rikku shining_gem tros
 # -- Besaid --
 
 # Tidus equips Brotherhood
-stat tidus bonus_strength 5
+equip tidus weapon 4 strength_+5%
 
 # Besaid tutorial fights
 encounter
@@ -204,6 +202,8 @@ wakka attack extractor
 # Mix tutorial
 encounter
 
+equip wakka weapon 2 first_strike break_damage_limit 
+
 # -- Macalania Woods --
 encounter
 wakka attack spherimorph
@@ -232,6 +232,10 @@ wakka attack Guado_Guardian_2
 wakka attack Guado_Guardian_2
 
 # -- Bikanel --
+# Forced Zu
+encounter
+
+# Machina Steal Tutorial
 encounter
 
 encounter
@@ -318,6 +322,7 @@ encounter
 wakka attack seymour_natus
 
 # -- Calm Lands --
+encounter
 wakka attack defender_x
 wakka attack defender_x
 

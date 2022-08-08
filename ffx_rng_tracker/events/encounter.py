@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 
-from ..data.constants import ICV_BASE, ICV_VARIANCE, EncounterCondition, Stat
+from ..data.constants import (ICV_BASE, ICV_VARIANCE, Autoability, Character,
+                              EncounterCondition, Stat)
 from ..data.encounter_formations import (BOSSES, FORMATIONS, SIMULATIONS,
                                          ZONES, Formation, Zone)
 from .main import Event
@@ -9,11 +10,10 @@ from .main import Event
 @dataclass
 class Encounter(Event):
     name: str
-    initiative: bool
     formation: Formation = field(init=False, repr=False)
     condition: EncounterCondition = field(init=False, repr=False)
     index: int = field(init=False, repr=False)
-    party_icvs: dict[str, int] = field(init=False, repr=False)
+    party_icvs: dict[Character, int] = field(init=False, repr=False)
     monsters_icvs: list[int] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -27,18 +27,19 @@ class Encounter(Event):
     def __str__(self) -> str:
         icvs: list[tuple[str, str]] = []
 
-        for character_name, icv in self.party_icvs.items():
-            c = self.gamestate.characters[character_name]
-            sort_key = f'{icv:03}{256 - c.stats[Stat.AGILITY]:03}{c.index:02}'
-            string = f'{c.name[:2]:2}[{icv:2}]'
+        for character, icv in self.party_icvs.items():
+            c = self.gamestate.characters[character]
+            sort_key = f'{icv:03}0{256 - c.stats[Stat.AGILITY]:03}{c.index:02}'
+            string = f'{character[:2]:2}[{icv:2}]'
             icvs.append((sort_key, string))
 
         for index, icv in enumerate(self.monsters_icvs):
-            m = self.formation[index]
-            sort_key = f'{icv:03}{256 - m.stats[Stat.AGILITY]:03}{index + 8:02}'
+            stats = self.formation[index].stats
+            sort_key = f'{icv:03}1{256 - stats[Stat.AGILITY]:03}{index + 8:02}'
             string = f'M{index + 1}[{icv:2}]'
             icvs.append((sort_key, string))
 
+        # sorting by icv, then by party, then by agility and finally by index
         icvs.sort(key=lambda v: v[0])
         icvs = [v[1] for v in icvs]
 
@@ -55,10 +56,17 @@ class Encounter(Event):
         return BOSSES[self.name].formation
 
     def _get_condition(self) -> EncounterCondition:
+        for character in self.gamestate.party:
+            character_data = self.gamestate.characters[character]
+            if Autoability.INITIATIVE in character_data.weapon.abilities:
+                initiative = True
+                break
+        else:
+            initiative = False
         condition_rng = self._advance_rng(1) & 255
         if FORMATIONS[self.name].forced_condition is not None:
             return FORMATIONS[self.name].forced_condition
-        if self.initiative:
+        if initiative:
             condition_rng -= 33
         if condition_rng < 32:
             return EncounterCondition.PREEMPTIVE
@@ -79,26 +87,30 @@ class Encounter(Event):
     def _get_party_icvs(self) -> dict[str, int]:
         icvs = {}
         if self.condition is EncounterCondition.PREEMPTIVE:
-            for c in self.gamestate.party:
-                icvs[c.name.lower()] = 0
+            for character in self.gamestate.party:
+                icvs[character] = 0
         elif self.condition is EncounterCondition.AMBUSH:
-            for c in self.gamestate.party:
-                c = self.gamestate.characters[c.name.lower()]
-                icvs[c.name.lower()] = ICV_BASE[c.stats[Stat.AGILITY]] * 3
+            for character, state in self.gamestate.characters.items():
+                if character not in self.gamestate.party:
+                    continue
+                if Autoability.FIRST_STRIKE in state.weapon.abilities:
+                    icvs[character] = 0
+                    continue
+                icvs[character] = ICV_BASE[state.stats[Stat.AGILITY]] * 3
         else:
-            for character_name, c in self.gamestate.characters.items():
-                index = c.index + 20 if c.index < 7 else 27
-                for party_member in self.gamestate.party:
-                    if party_member.name.lower() == character_name:
-                        break
-                else:
+            for character, state in self.gamestate.characters.items():
+                index = min(20 + state.index, 27)
+                if character not in self.gamestate.party:
                     self._advance_rng(index)
                     continue
-                base = ICV_BASE[c.stats[Stat.AGILITY]] * 3
                 variance_rng = self._advance_rng(index)
-                variance = ICV_VARIANCE[c.stats[Stat.AGILITY]] + 1
+                if Autoability.FIRST_STRIKE in state.weapon.abilities:
+                    icvs[character] = 0
+                    continue
+                variance = ICV_VARIANCE[state.stats[Stat.AGILITY]] + 1
                 variance = variance_rng % variance
-                icvs[c.name.lower()] = base - variance
+                base = ICV_BASE[state.stats[Stat.AGILITY]] * 3
+                icvs[character] = base - variance
         return icvs
 
     def _get_enemies_icvs(self) -> list[int]:
@@ -184,7 +196,6 @@ class RandomEncounter(Encounter):
 @dataclass
 class MultizoneRandomEncounter(Event):
     zones: list[str]
-    initiative: bool
     encounters: list[RandomEncounter] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -212,7 +223,6 @@ class MultizoneRandomEncounter(Event):
             encounter = RandomEncounter(
                 gamestate=self.gamestate,
                 name=zone,
-                initiative=self.initiative,
             )
             encounters.append(encounter)
             if count < len(self.zones):

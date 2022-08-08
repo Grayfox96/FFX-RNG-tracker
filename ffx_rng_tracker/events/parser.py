@@ -36,7 +36,7 @@ class EventParser:
             parsing_func = self._parsing_functions[event_name]
         except KeyError:
             return Comment(
-                self.gamestate, f'# Error: No event called {event_name!r}')
+                self.gamestate, f'# Error: No event called "{event_name}"')
         try:
             return parsing_func(self.gamestate, *params)
         except EventParsingError as error:

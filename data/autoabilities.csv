@@ -1,0 +1,135 @@
+Ability Name,Ability Value
+Sensor,200
+First Strike,6000
+Initiative,6000
+Counterattack,4000
+Evade & Counter,22000
+Magic Counter,25000
+Magic Booster,17000
+Alchemy,8000
+Auto-Potion,12000
+Auto-Med,10000
+Auto-Phoenix,20000
+Piercing,0
+Half MP Cost,20000
+One MP Cost,30000
+Double Overdrive,30000
+Triple Overdrive,40000
+SOS Overdrive,20000
+Overdrive -> AP,25000
+Double AP,40000
+Triple AP,60000
+No AP,0
+Pickpocket,40000
+Master Thief,60000
+Break HP Limit,0
+Break MP Limit,0
+Break Damage Limit,0
+Gillionaire,0
+HP Stroll,6000
+MP Stroll,6000
+No Encounters,6500
+Firestrike,700
+Fire Ward,1500
+Fireproof,3000
+Fire Eater,10000
+Icestrike,700
+Ice Ward,1500
+Iceproof,3000
+Ice Eater,10000
+Lightningstrike,700
+Lightning Ward,1500
+Lightningproof,3000
+Lightning Eater,10000
+Waterstrike,700
+Water Ward,1500
+Waterproof,3000
+Water Eater,10000
+Deathstrike,20000
+Deathtouch,8000
+Deathproof,4000
+Death Ward,2000
+Zombiestrike,12000
+Zombietouch,8000
+Zombieproof,4000
+Zombie Ward,2000
+Stonestrike,12000
+Stonetouch,5000
+Stoneproof,2500
+Stone Ward,1200
+Poisonstrike,10000
+Poisontouch,1500
+Poisonproof,1500
+Poison Ward,400
+Sleepstrike,8000
+Sleeptouch,1000
+Sleepproof,800
+Sleep Ward,200
+Silencestrike,8000
+Silencetouch,3000
+Silenceproof,3000
+Silence Ward,500
+Darkstrike,4000
+Darktouch,2000
+Darkproof,2000
+Dark Ward,500
+Slowstrike,7000
+Slowtouch,3000
+Slowproof,3000
+Slow Ward,1000
+Confuseproof,4000
+Confuse Ward,1000
+Berserkproof,6000
+Berserk Ward,1000
+Curseproof,8000
+Curse Ward,0
+Auto-Shell,22000
+Auto-Protect,22000
+Auto-Haste,50000
+Auto-Regen,60000
+Auto-Reflect,14000
+SOS Shell,4000
+SOS Protect,4000
+SOS Haste,20000
+SOS Regen,20000
+SOS Reflect,1000
+SOS NulTide,500
+SOS NulFrost,500
+SOS NulShock,500
+SOS NulBlaze,500
+Strength +3%,100
+Strength +5%,500
+Strength +10%,5000
+Strength +20%,10000
+Magic +3%,100
+Magic +5%,500
+Magic +10%,5000
+Magic +20%,10000
+Defense +3%,200
+Defense +5%,500
+Defense +10%,5000
+Defense +20%,10000
+Magic Def +3%,200
+Magic Def +5%,500
+Magic Def +10%,5000
+Magic Def +20%,10000
+HP +5%,100
+HP +10%,1000
+HP +20%,6000
+HP +30%,15000
+MP +5%,1200
+MP +10%,6000
+MP +20%,8000
+MP +30%,18000
+Capture,6000
+Aeon Ribbon,0
+Distill Power,10
+Distill Mana,10
+Distill Speed,10
+Distill Ability,10
+Ribbon,5000
+Extra 1,0
+Extra 2,0
+Extra 3,0
+Extra 4,0
+Extra 5,0

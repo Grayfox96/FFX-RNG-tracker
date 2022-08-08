@@ -2,8 +2,7 @@ import csv
 
 from ..utils import open_cp1252
 from .autoabilities import AUTOABILITIES
-from .characters import CHARACTERS
-from .constants import EquipmentType
+from .constants import Character, EquipmentType
 from .equipment import Equipment
 from .file_functions import get_resource_path
 
@@ -12,7 +11,7 @@ def _get_shops_equipment(file_path: str) -> tuple[Equipment]:
     """"""
     absolute_file_path = get_resource_path(file_path)
     with open_cp1252(absolute_file_path) as file_object:
-        equipments_file_reader = csv.reader(file_object, delimiter=',')
+        equipments_file_reader = csv.reader(file_object)
         equipments = []
         for line in equipments_file_reader:
             if int(line[5], 16) == 0:
@@ -20,9 +19,7 @@ def _get_shops_equipment(file_path: str) -> tuple[Equipment]:
             else:
                 equipment_type = EquipmentType.ARMOR
             owner_index = int(line[4], 16)
-            for character in CHARACTERS.values():
-                if character.index == owner_index:
-                    break
+            character = tuple(Character)[owner_index]
             slots = int(line[11], 16)
             abilities = []
             for ability, is_active in zip(line[14:21:2], line[15:22:2]):
@@ -34,7 +31,7 @@ def _get_shops_equipment(file_path: str) -> tuple[Equipment]:
                 owner=character,
                 type_=equipment_type,
                 slots=slots,
-                abilities=tuple(abilities),
+                abilities=abilities,
                 base_weapon_damage=base_weapon_damage,
                 bonus_crit=bonus_crit,
                 )
@@ -47,7 +44,7 @@ def _get_equipment_shops(file_path: str) -> dict[str, tuple[Equipment]]:
     absolute_file_path = get_resource_path(file_path)
     shops = {}
     with open_cp1252(absolute_file_path) as file_object:
-        shops_file_reader = csv.reader(file_object, delimiter=',')
+        shops_file_reader = csv.reader(file_object)
         next(shops_file_reader)
         for line in shops_file_reader:
             shops[line[0]] = [equipments.pop(0) for _ in range(int(line[1]))]

@@ -42,7 +42,7 @@ def get_seed(damage_values: Iterable[int]) -> int:
     else:
         absolute_file_path = _PS2_SEEDS_FILE_PATH
     with open_cp1252(absolute_file_path) as file_object:
-        seeds = csv.reader(file_object, delimiter=',')
+        seeds = csv.reader(file_object)
         for line in seeds:
             if line[0].startswith(damage_indexes_as_string):
                 break

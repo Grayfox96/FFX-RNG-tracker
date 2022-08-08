@@ -36,7 +36,7 @@ class YojimboTurn(Event):
             cost = 'free'
         else:
             cost = f'{self.gil} gil'
-        string = (f'{self.action.name} -> {self.monster}: '
+        string = (f'{self.action} -> {self.monster}: '
                   f'{cost} [{self.motivation}/{self.action.needed_motivation}'
                   f' motivation][{self.compatibility}/255 compatibility]')
         return string

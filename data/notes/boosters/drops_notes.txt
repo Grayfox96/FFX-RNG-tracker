@@ -140,7 +140,7 @@ party tyakwlr
 spherimorph wakka
 
 # Lake Macalania
-negator negator
+negator unknown
 crawler wakka
 
 # Seymour 1

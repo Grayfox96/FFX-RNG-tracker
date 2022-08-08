@@ -237,7 +237,7 @@ death rikku
 death rikku
 # An additional negator dies
 # at the end of the fight
-negator negator
+negator unknown
 crawler rikku
 
 # Seymour 1

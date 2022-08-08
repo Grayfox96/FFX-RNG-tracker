@@ -1,9 +1,12 @@
-from ..data.characters import CHARACTERS
+from ..data.constants import Character
 from ..data.monsters import MONSTERS
 from ..events.parsing_functions import (ParsingFunction, parse_action,
-                                        parse_encounter, parse_monster_action,
+                                        parse_encounter,
+                                        parse_equipment_change,
+                                        parse_monster_action,
                                         parse_party_change, parse_roll,
                                         parse_stat_update, parse_summon)
+from ..utils import stringify
 from .base_tracker import TrackerUI
 
 
@@ -27,17 +30,17 @@ class ActionsTracker(TrackerUI):
             'monsteraction': parse_monster_action,
             'party': parse_party_change,
             'summon': parse_summon,
+            'equip': parse_equipment_change,
         }
         return parsing_functions
 
     def edit_input(self, input_text: str) -> str:
+        character_names = [stringify(c) for c in Character]
         input_lines = input_text.splitlines()
         for index, line in enumerate(input_lines):
             match line.lower().split():
                 case ['encounter', condition]:
-                    type_ = 'boss'
                     if 'simulated'.startswith(condition):
-                        type_ = 'simulated'
                         name = 'simulation_(dummy)'
                     elif 'preemptive'.startswith(condition):
                         name = 'dummy_preemptive'
@@ -45,13 +48,15 @@ class ActionsTracker(TrackerUI):
                         name = 'dummy_ambush'
                     else:
                         continue
-                    line = f'encounter {type_} {name} false'
+                    line = f'encounter {name}'
                 case ['encounter']:
-                    line = 'encounter boss dummy false'
-                case [character, *params] if character in CHARACTERS:
+                    line = 'encounter dummy'
+                case [character, *params] if character in character_names:
                     line = ' '.join(['action', character, *params])
                 case [monster, *params] if monster in MONSTERS:
                     line = ' '.join(['monsteraction', monster, *params])
+                case _:
+                    continue
             input_lines[index] = line
         return '\n'.join(input_lines)
 

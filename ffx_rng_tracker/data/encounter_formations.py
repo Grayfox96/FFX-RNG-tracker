@@ -63,9 +63,8 @@ def _get_formations(file_path: str) -> Formations:
         formations: dict[str, dict] = json.load(file_object)
     bosses = {}
     for boss, data in formations['bosses'].items():
-        for condition in EncounterCondition:
-            if condition.lower() == data['forced_condition']:
-                break
+        if data['forced_condition']:
+            condition = EncounterCondition(data['forced_condition'])
         else:
             condition = None
         bosses[boss] = Boss(
@@ -76,9 +75,8 @@ def _get_formations(file_path: str) -> Formations:
 
     simulations = {}
     for encounter, data in formations['simulation'].items():
-        for condition in EncounterCondition:
-            if condition.lower() == data['forced_condition']:
-                break
+        if data['forced_condition']:
+            condition = EncounterCondition(data['forced_condition'])
         else:
             condition = None
         simulations[encounter] = Simulation(
@@ -89,9 +87,8 @@ def _get_formations(file_path: str) -> Formations:
 
     zones: dict[str, Zone] = {}
     for encounter, data in formations['random'].items():
-        for condition in EncounterCondition:
-            if condition.lower() == data['forced_condition']:
-                break
+        if data['forced_condition']:
+            condition = EncounterCondition(data['forced_condition'])
         else:
             condition = None
         zones[encounter] = Zone(

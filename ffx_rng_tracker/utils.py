@@ -1,6 +1,8 @@
 import colorsys
 from functools import partial
-from typing import Any, overload
+from typing import Any, TypeVar, overload
+
+from .data.constants import StringEnum
 
 
 def s32(integer: int) -> int:
@@ -79,6 +81,16 @@ def get_contrasting_color(color: str | tuple[int, int, int] | int,
 
 def stringify(object: Any) -> str:
     return str(object).lower().replace(' ', '_')
+
+
+S = TypeVar('S', bound=StringEnum)
+
+
+def search_stringenum(stringenum: type[S], string: str) -> S:
+    for instance in stringenum:
+        if stringify(instance) == string:
+            return instance
+    raise ValueError(string)
 
 
 open_cp1252 = partial(open, encoding='cp1252')
