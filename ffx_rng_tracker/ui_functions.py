@@ -54,7 +54,7 @@ def get_encounter_predictions(seed: int, delta: int = 60) -> str:
     total_occurrences = 0
     for distances_list in product(*[range(d, d+delta, 10) for d in distances]):
         total_occurrences += 1
-        gs.reset()
+        gs._rng_tracker.reset()
         for distance, zone in zip(distances_list, zones):
             n = sum([1 for e in walk(gs, distance, zone) if e.encounter])
             predictions[zone.name][n] = predictions[zone.name].get(n, 0) + 1
@@ -94,5 +94,8 @@ def format_monster_data(monster: Monster) -> str:
     wrap = 54
     string = ''
     for one, two in zip_longest(data[:wrap], data[wrap:], fillvalue=' '):
-        string += f'{one:40}|{two}\n'
+        if two:
+            string += f'{one:40}|{two}\n'
+        else:
+            string += f'{one}\n'
     return string

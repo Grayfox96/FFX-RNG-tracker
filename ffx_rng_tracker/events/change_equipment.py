@@ -11,14 +11,14 @@ class ChangeEquipment(Event):
     _old_equipment: Equipment = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._old_equipment = self._swap_old_equipment()
+        self._old_equipment = self._change_equipment()
 
     def __str__(self) -> str:
         string = (f'{self.equipment.owner}\'s {self.equipment.type_} '
                   f'changed to {self.equipment}')
         return string
 
-    def _swap_old_equipment(self) -> Equipment:
+    def _change_equipment(self) -> Equipment:
         character = self.gamestate.characters[self.equipment.owner]
         if self.equipment.type_ is EquipmentType.WEAPON:
             old_equipment = character.weapon

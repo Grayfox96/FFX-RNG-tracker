@@ -42,7 +42,7 @@ class GameState:
 
     @compatibility.setter
     def compatibility(self, value: int) -> None:
-        self._compatibility = max(min(value, 255), 0)
+        self._compatibility = min(max(0, value), 255)
 
     @property
     def seed(self) -> int:

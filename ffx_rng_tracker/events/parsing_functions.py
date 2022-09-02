@@ -17,7 +17,9 @@ from .comment import Comment
 from .death import Death
 from .encounter import (Encounter, MultizoneRandomEncounter, RandomEncounter,
                         SimulatedEncounter)
+from .end_encounter import EndEncounter
 from .escape import Escape
+from .heal_party import Heal
 from .kill import Bribe, Kill
 from .main import Event
 from .monster_action import MonsterAction
@@ -344,8 +346,7 @@ def parse_equipment_change(gs: GameState,
     try:
         equipment_type = search_stringenum(EquipmentType, equipment_type_name)
     except ValueError:
-        raise EventParsingError(
-            f'Equipment type can be {[t for t in EquipmentType]}')
+        raise EventParsingError('Equipment type can be weapon or armor')
     try:
         slots = int(slots)
     except ValueError:
@@ -377,3 +378,28 @@ def parse_equipment_change(gs: GameState,
         bonus_crit=3
         )
     return ChangeEquipment(gs, equipment)
+
+
+def parse_end_encounter(gs: GameState, *_) -> EndEncounter:
+    return EndEncounter(gs)
+
+
+def parse_heal(gs: GameState,
+               character_name: str = '',
+               amount: str = '99999',
+               *_) -> Heal:
+    characters = []
+    if character_name:
+        try:
+            character = search_stringenum(Character, character_name)
+        except ValueError:
+            raise EventParsingError(f'No character called {character_name}')
+        characters.append(character)
+    else:
+        characters.extend([c for c in Character][:-1])
+    try:
+        amount = int(amount)
+    except ValueError:
+        amount = 99999
+
+    return Heal(gs, characters, amount)

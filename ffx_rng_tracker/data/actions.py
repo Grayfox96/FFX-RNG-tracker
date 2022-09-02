@@ -39,7 +39,7 @@ class YojimboAction:
         return self.name
 
 
-def _get_action(action: dict) -> Action:
+def _get_action(action: dict[str, str | dict[str, int]]) -> Action:
     if action.get('damage_type') is not None:
         action['damage_type'] = DamageType(action['damage_type'])
 

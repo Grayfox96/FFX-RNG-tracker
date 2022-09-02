@@ -1,9 +1,9 @@
 from ..data.constants import Character
 from ..data.monsters import MONSTERS
 from ..events.parsing_functions import (ParsingFunction, parse_action,
-                                        parse_encounter,
+                                        parse_encounter, parse_end_encounter,
                                         parse_equipment_change,
-                                        parse_monster_action,
+                                        parse_heal, parse_monster_action,
                                         parse_party_change, parse_roll,
                                         parse_stat_update, parse_summon)
 from ..utils import stringify
@@ -31,6 +31,8 @@ class ActionsTracker(TrackerUI):
             'party': parse_party_change,
             'summon': parse_summon,
             'equip': parse_equipment_change,
+            'endencounter': parse_end_encounter,
+            'heal': parse_heal,
         }
         return parsing_functions
 

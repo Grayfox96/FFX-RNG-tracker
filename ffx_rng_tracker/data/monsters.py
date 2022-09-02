@@ -125,9 +125,6 @@ def _patch_prize_structs_for_hd(prize_structs: dict[str, list[int]],
     patch_abilities('killer_bee', (38, 42, 34, 30, 126, 126, 126))
     patch_abilities('yellow_element', (38, 38, 38, 38, 125, 125, 125))
 
-    # luca
-    patch_abilities('vouivre_2', (38, 42, 34, 30, 124, 124, 124))
-
     # mi'ihen
     patch_abilities('raldo_2', (38, 42, 34, 30, 124, 124, 124))
     patch_abilities('bomb', (30, 30, 30, 30, 30, 30, 125))
@@ -231,7 +228,7 @@ def get_raw_data_string(prize_struct: list[str]) -> str:
 def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     """Get a Monster from his prize struct."""
 
-    def get_elements() -> dict[str, str]:
+    def get_elements() -> dict[Element, ElementalAffinity]:
         elements = {
             Element.FIRE: 0b00001,
             Element.ICE: 0b00010,
@@ -386,9 +383,14 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     auto_statuses = []
     if prize_struct[74] & 0b00100000:
         auto_statuses.append(Status.REFLECT)
-    if (prize_struct[75] & 0b00000011
-            and prize_struct[74] & 0b11000000):
-        auto_statuses.append(Status.NULALL)
+    if prize_struct[75] & 0b00000010:
+        auto_statuses.append(Status.NULBLAZE)
+    if prize_struct[75] & 0b00000001:
+        auto_statuses.append(Status.NULFROST)
+    if prize_struct[74] & 0b10000000:
+        auto_statuses.append(Status.NULSHOCK)
+    if prize_struct[74] & 0b01000000:
+        auto_statuses.append(Status.NULTIDE)
     if prize_struct[75] & 0b00000100:
         auto_statuses.append(Status.REGEN)
 

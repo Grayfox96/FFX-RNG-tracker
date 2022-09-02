@@ -62,12 +62,12 @@
         },
         "wakka_tutorial": {
             "name": "Wakka tutorial",
-            "formation": ["dingo", "condor"],
+            "formation": ["dingo_2", "condor_2"],
             "forced_condition": "Normal"
         },
         "elements_tutorial": {
             "name": "Elements tutorial",
-            "formation": ["water_flan"],
+            "formation": ["water_flan_2"],
             "forced_condition": "Normal"
         },
         "kimahri": {
@@ -422,10 +422,10 @@
         "besaid_road": {
             "name": "Besaid Road",
             "formations": [
-                ["dingo_2", "water_flan_2"],
-                ["dingo_2", "condor_2"],
-                ["condor_2", "water_flan_2"],
-                ["dingo_2", "water_flan_2", "condor_2"]
+                ["dingo", "water_flan"],
+                ["dingo", "condor"],
+                ["condor", "water_flan"],
+                ["dingo", "water_flan", "condor"]
             ],
             "forced_condition": "",
             "danger_value": 70

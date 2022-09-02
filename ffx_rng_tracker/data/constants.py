@@ -60,10 +60,24 @@ class Status(StringEnum):
     NULFROST = 'NulFrost'
     NULSHOCK = 'NulShock'
     NULTIDE = 'NulTide'
-    NULALL = 'Nulall'
     REGEN = 'Regen'
     HASTE = 'Haste'
     SLOW = 'Slow'
+    DEFEND = 'Defend'
+    SHIELD = 'Shield'
+    BOOST = 'Boost'
+    DELAY = 'Delay'
+    POWER_DISTILLER = 'Power Distiller'
+    MANA_DISTILLER = 'Mana Distiller'
+    SPEED_DISTILLER = 'Speed Distiller'
+    ABILITY_DISTILLER = 'Ability Distiller'
+    GUARD = 'Guard'
+    SENTINEL = 'Sentinel'
+    SCAN = 'Scan'
+    LIFE = 'Life'
+    AUTOLIFE = 'Auto-Life'
+    EJECT = 'Eject'
+    DOOM = 'Doom'
     CURSE = 'Curse'
 
 
@@ -102,6 +116,7 @@ class EquipmentType(StringEnum):
 class DamageType(StringEnum):
     HP = 'HP'
     STRENGTH = 'Strength'
+    SPECIAL_STRENGTH = 'Special Strength'
     MAGIC = 'Magic'
     SPECIAL_MAGIC = 'Special Magic'
     ITEM = 'Item'
@@ -125,6 +140,121 @@ class Stat(StringEnum):
     ACCURACY = 'Accuracy'
     CHEER = 'Cheer'
     FOCUS = 'Focus'
+
+
+class Item(StringEnum):
+    POTION = 'Potion'
+    HI_POTION = 'Hi-Potion'
+    X_POTION = 'X-Potion'
+    MEGA_POTION = 'Mega-Potion'
+    ETHER = 'Ether'
+    TURBO_ETHER = 'Turbo Ether'
+    PHOENIX_DOWN = 'Phoenix Down'
+    MEGA_PHOENIX = 'Mega Phoenix'
+    ELIXIR = 'Elixir'
+    MEGALIXIR = 'Megalixir'
+    ANTIDOTE = 'Antidote'
+    SOFT = 'Soft'
+    EYE_DROPS = 'Eye Drops'
+    ECHO_SCREEN = 'Echo Screen'
+    HOLY_WATER = 'Holy Water'
+    REMEDY = 'Remedy'
+    POWER_DISTILLER = 'Power Distiller'
+    MANA_DISTILLER = 'Mana Distiller'
+    SPEED_DISTILLER = 'Speed Distiller'
+    ABILITY_DISTILLER = 'Ability Distiller'
+    AL_BHED_POTION = 'Al Bhed Potion'
+    HEALING_WATER = 'Healing Water'
+    TETRA_ELEMENT = 'Tetra Element'
+    ANTARCTIC_WIND = 'Antarctic Wind'
+    ARCTIC_WIND = 'Arctic Wind'
+    ICE_GEM = 'Ice Gem'
+    BOMB_FRAGMENT = 'Bomb Fragment'
+    BOMB_CORE = 'Bomb Core'
+    FIRE_GEM = 'Fire Gem'
+    ELECTRO_MARBLE = 'Electro Marble'
+    LIGHTNING_MARBLE = 'Lightning Marble'
+    LIGHTNING_GEM = 'Lightning Gem'
+    FISH_SCALE = 'Fish Scale'
+    DRAGON_SCALE = 'Dragon Scale'
+    WATER_GEM = 'Water Gem'
+    GRENADE = 'Grenade'
+    FRAG_GRENADE = 'Frag Grenade'
+    SLEEPING_POWDER = 'Sleeping Powder'
+    DREAM_POWDER = 'Dream Powder'
+    SILENCE_GRENADE = 'Silence Grenade'
+    SMOKE_BOMB = 'Smoke Bomb'
+    SHADOW_GEM = 'Shadow Gem'
+    SHINING_GEM = 'Shining Gem'
+    BLESSED_GEM = 'Blessed Gem'
+    SUPREME_GEM = 'Supreme Gem'
+    POISON_FANG = 'Poison Fang'
+    SILVER_HOURGLASS = 'Silver Hourglass'
+    GOLD_HOURGLASS = 'Gold Hourglass'
+    CANDLE_OF_LIFE = 'Candle of Life'
+    PETRIFY_GRENADE = 'Petrify Grenade'
+    FARPLANE_SHADOW = 'Farplane Shadow'
+    FARPLANE_WIND = 'Farplane Wind'
+    DESIGNER_WALLET = 'Designer Wallet'
+    DARK_MATTER = 'Dark Matter'
+    CHOCOBO_FEATHER = 'Chocobo Feather'
+    CHOCOBO_WING = 'Chocobo Wing'
+    LUNAR_CURTAIN = 'Lunar Curtain'
+    LIGHT_CURTAIN = 'Light Curtain'
+    STAR_CURTAIN = 'Star Curtain'
+    HEALING_SPRING = 'Healing Spring'
+    MANA_SPRING = 'Mana Spring'
+    STAMINA_SPRING = 'Stamina Spring'
+    SOUL_SPRING = 'Soul Spring'
+    PURIFYING_SALT = 'Purifying Salt'
+    STAMINA_TABLET = 'Stamina Tablet'
+    MANA_TABLET = 'Mana Tablet'
+    TWIN_STARS = 'Twin Stars'
+    STAMINA_TONIC = 'Stamina Tonic'
+    MANA_TONIC = 'Mana Tonic'
+    THREE_STARS = 'Three Stars'
+    POWER_SPHERE = 'Power Sphere'
+    MANA_SPHERE = 'Mana Sphere'
+    SPEED_SPHERE = 'Speed Sphere'
+    ABILITY_SPHERE = 'Ability Sphere'
+    FORTUNE_SPHERE = 'Fortune Sphere'
+    ATTRIBUTE_SPHERE = 'Attribute Sphere'
+    SPECIAL_SPHERE = 'Special Sphere'
+    SKILL_SPHERE = 'Skill Sphere'
+    WHT_MAGIC_SPHERE = 'Wht Magic Sphere'
+    BLK_MAGIC_SPHERE = 'Blk Magic Sphere'
+    MASTER_SPHERE = 'Master Sphere'
+    LV_1_KEY_SPHERE = 'Lv. 1 Key Sphere'
+    LV_2_KEY_SPHERE = 'Lv. 2 Key Sphere'
+    LV_3_KEY_SPHERE = 'Lv. 3 Key Sphere'
+    LV_4_KEY_SPHERE = 'Lv. 4 Key Sphere'
+    HP_SPHERE = 'HP Sphere'
+    MP_SPHERE = 'MP Sphere'
+    STRENGTH_SPHERE = 'Strength Sphere'
+    DEFENSE_SPHERE = 'Defense Sphere'
+    MAGIC_SPHERE = 'Magic Sphere'
+    MAGIC_DEF_SPHERE = 'Magic Def Sphere'
+    AGILITY_SPHERE = 'Agility Sphere'
+    EVASION_SPHERE = 'Evasion Sphere'
+    ACCURACY_SPHERE = 'Accuracy Sphere'
+    LUCK_SPHERE = 'Luck Sphere'
+    CLEAR_SPHERE = 'Clear Sphere'
+    RETURN_SPHERE = 'Return Sphere'
+    FRIEND_SPHERE = 'Friend Sphere'
+    TELEPORT_SPHERE = 'Teleport Sphere'
+    WARP_SPHERE = 'Warp Sphere'
+    MAP = 'Map'
+    RENAME_CARD = 'Rename Card'
+    MUSK = 'Musk'
+    HYPELLO_POTION = 'Hypello Potion'
+    SHINING_THORN = 'Shining Thorn'
+    PENDULUM = 'Pendulum'
+    AMULET = 'Amulet'
+    DOOR_TO_TOMORROW = 'Door to Tomorrow'
+    WINGS_TO_DISCOVERY = 'Wings to Discovery'
+    GAMBLER_S_SPIRIT = 'Gambler\'s Spirit'
+    UNDERDOG_S_SECRET = 'Underdog\'s Secret'
+    WINNING_FORMULA = 'Winning Formula'
 
 
 class Autoability(StringEnum):
@@ -361,3 +491,29 @@ ELEMENTAL_AFFINITY_MODIFIERS = {
 
 EQUIPMENT_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 5)
 EQUIPMENT_EMPTY_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 400)
+
+NO_RNG_STATUSES = {
+    Status.DEFEND,
+    Status.SHIELD,
+    Status.BOOST,
+    Status.DELAY,
+    Status.POWER_DISTILLER,
+    Status.MANA_DISTILLER,
+    Status.SPEED_DISTILLER,
+    Status.ABILITY_DISTILLER,
+    Status.GUARD,
+    Status.SENTINEL,
+    Status.SCAN,
+    Status.LIFE,
+    Status.AUTOLIFE,
+    Status.EJECT,
+    Status.DOOM,
+    Status.CURSE,
+}
+TEMPORARY_STATUSES = {
+    Status.DEFEND,
+    Status.SHIELD,
+    Status.BOOST,
+    Status.GUARD,
+    Status.SENTINEL,
+}

@@ -18,6 +18,7 @@ class YojimboTurn(Event):
     gil: int = field(init=False, repr=False)
     compatibility: int = field(init=False, repr=False)
     motivation: int = field(init=False, repr=False)
+    _old_compatibility: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.is_attack_free = self._free_attack_check()
@@ -90,6 +91,7 @@ class YojimboTurn(Event):
         return gil, motivation
 
     def _update_compatibility(self) -> int:
+        self._old_compatibility = self.gamestate.compatibility
         modifier = self.action.compatibility_modifier
         self.gamestate.compatibility += modifier
         return self.gamestate.compatibility
@@ -99,3 +101,7 @@ class YojimboTurn(Event):
         modifier = GIL_MOTIVATION_MODIFIER[Configs.game_version]
         motivation = int(math.log(gil / modifier, 2)) * modifier
         return max(motivation, 0)
+
+    def rollback(self) -> None:
+        self.gamestate.compatibility = self._old_compatibility
+        return super().rollback()

@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 from ..data.actions import Action
 from ..data.characters import CharacterState
-from ..data.constants import ICV_BASE, Character, Stat, Status
+from ..data.constants import ICV_BASE, NO_RNG_STATUSES, Character, Stat, Status
 from ..data.monsters import Monster
 from .character_action import get_damage
 from .main import Event
@@ -66,7 +66,7 @@ class MonsterAction(Event):
     def _get_hits(self) -> list[bool]:
         index = min(44 + self.slot, 51)
         luck = max(self.monster.stats[Stat.LUCK], 1)
-        # unused for now
+        # TODO
         aims = 0
         hits = []
         for target in self.targets:
@@ -76,10 +76,16 @@ class MonsterAction(Event):
             hit_rng = self._advance_rng(index) % 101
             target_evasion = target.stats[Stat.EVASION]
             target_luck = max(target.stats[Stat.LUCK], 1)
-            # unused for now
+            # TODO
             target_reflexes = 0
-            hit_chance = (self.action.accuracy
-                          - target_evasion
+            base_hit_chance = self.action.accuracy - target_evasion
+            # TODO
+            # if Status.DARK in self.monster.statuses:
+            #     base_hit_chance = (base_hit_chance
+            #                        * 0x66666667
+            #                        // 0xffffffff
+            #                        // 4)
+            hit_chance = (base_hit_chance
                           + luck
                           - target_luck
                           + ((aims - target_reflexes) * 10))
@@ -114,8 +120,10 @@ class MonsterAction(Event):
             if not hit or not self.action.does_damage:
                 damages.append(0)
                 continue
-            damages.append(get_damage(
-                self.monster, self.action, target, damage_rng, crit))
+            damage = get_damage(
+                self.monster, self.action, target, damage_rng, crit)
+            damages.append(damage)
+            target.current_hp -= damage
         return damages
 
     def _get_statuses(self) -> list[dict[Status, bool]]:
@@ -128,7 +136,10 @@ class MonsterAction(Event):
             for status, chance in self.action.statuses.items():
                 if status in (Status.HASTE, Status.SLOW):
                     self._advance_rng(min(28 + self.slot, 35))
-                status_rng = self._advance_rng(index) % 101
+                if status in NO_RNG_STATUSES:
+                    status_rng = 0
+                else:
+                    status_rng = self._advance_rng(index) % 101
                 resistance = target.status_resistances[status]
                 if chance == 255:
                     applied = True
@@ -141,16 +152,24 @@ class MonsterAction(Event):
                 else:
                     applied = False
                 statuses_applied[status] = applied
-                if status is Status.PETRIFY and applied:
-                    # advance rng once more for shatter
-                    self._advance_rng(index)
+                if applied:
+                    target.statuses.add(status)
+                    if status is Status.PETRIFY:
+                        # advance rng once more for shatter
+                        # TODO
+                        # add a shatter_chance property to action
+                        self._advance_rng(index)
             statuses.append(statuses_applied)
         return statuses
 
     def _get_possible_targets(self) -> list[CharacterState]:
         targets = []
         for character in self.gamestate.party[:3]:
-            targets.append(self.gamestate.characters[character])
+            state = self.gamestate.characters[character]
+            if (Status.EJECT in state.statuses
+                    or Status.DEATH in state.statuses):
+                continue
+            targets.append(state)
         return targets
 
     def _get_targets(self) -> list[CharacterState]:

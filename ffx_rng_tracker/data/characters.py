@@ -1,9 +1,12 @@
 import json
+from copy import deepcopy
 from dataclasses import dataclass
 
 from ..utils import open_cp1252
-from .autoabilities import (ELEMENTAL_EATERS, ELEMENTAL_PROOFS,
-                            ELEMENTAL_WARDS, STATUS_PROOFS, STATUS_WARDS)
+from .autoabilities import (AEON_RIBBON_IMMUNITIES, ELEMENTAL_EATERS,
+                            ELEMENTAL_PROOFS, ELEMENTAL_WARDS, HP_BONUSES,
+                            MP_BONUSES, RIBBON_IMMUNITIES, STATUS_PROOFS,
+                            STATUS_WARDS)
 from .constants import (Autoability, Character, Element, ElementalAffinity,
                         EquipmentType, Stat, Status)
 from .equipment import Equipment
@@ -27,6 +30,22 @@ class CharacterState:
         return str(self.character)
 
     def __post_init__(self) -> None:
+        self._weapon = Equipment(
+            owner=self.character,
+            type_=EquipmentType.WEAPON,
+            slots=0,
+            abilities=[],
+            base_weapon_damage=16,
+            bonus_crit=3,
+        )
+        self._armor = Equipment(
+            owner=self.character,
+            type_=EquipmentType.ARMOR,
+            slots=0,
+            abilities=[],
+            base_weapon_damage=16,
+            bonus_crit=0,
+        )
         self.reset()
 
     @property
@@ -45,12 +64,59 @@ class CharacterState:
                 max_value = 9999
             case Stat.CHEER | Stat.FOCUS:
                 max_value = 5
-            case Stat():
-                max_value = 255
             case _:
-                raise ValueError(f'Invalid stat name: {stat}')
-        value = min(max(value, 0), max_value)
+                max_value = 255
+        value = min(max(0, value), max_value)
         self.stats[stat] = value
+        # update current hp/mp values so they dont exceed
+        # their respective max values
+        if stat is Stat.HP:
+            self.current_hp = self.current_hp
+        elif stat is Stat.MP:
+            self.current_mp = self.current_mp
+
+    @property
+    def max_hp(self) -> int:
+        if Autoability.BREAK_HP_LIMIT in self.autoabilities:
+            max_value = 99999
+        else:
+            max_value = 9999
+        max_hp = self.stats[Stat.HP] * self._hp_multiplier // 100
+        return min(max_value, max_hp)
+
+    @property
+    def current_hp(self) -> int:
+        return self._current_hp
+
+    @current_hp.setter
+    def current_hp(self, value: int) -> None:
+        value = min(max(value, 0), self.max_hp)
+        if value == 0:
+            self.statuses.add(Status.DEATH)
+        self._current_hp = value
+
+    @property
+    def max_mp(self) -> int:
+        if Autoability.BREAK_MP_LIMIT in self.autoabilities:
+            max_value = 9999
+        else:
+            max_value = 999
+        max_mp = self.stats[Stat.MP] * self._mp_multiplier // 100
+        return min(max_value, max_mp)
+
+    @property
+    def current_mp(self) -> int:
+        return self._current_mp
+
+    @current_mp.setter
+    def current_mp(self, value) -> None:
+        value = min(max(value, 0), self.max_mp)
+        self._current_mp = value
+
+    @property
+    def in_crit(self) -> bool:
+        half_hp = self.max_hp / 2
+        return self.current_hp < half_hp
 
     @property
     def weapon(self) -> Equipment:
@@ -59,6 +125,7 @@ class CharacterState:
     @weapon.setter
     def weapon(self, equipment: Equipment) -> None:
         self._weapon = equipment
+        self._update_abilities_effects()
 
     @property
     def armor(self) -> Equipment:
@@ -66,8 +133,33 @@ class CharacterState:
 
     @armor.setter
     def armor(self, equipment: Equipment) -> None:
-        for ability in equipment.abilities:
-            if ability in ELEMENTAL_WARDS:
+        self._armor = equipment
+        self._update_abilities_effects()
+
+    @property
+    def autoabilities(self) -> list[Autoability]:
+        abilities = []
+        abilities.extend(self.weapon.abilities)
+        abilities.extend(self.armor.abilities)
+        # remove duplicate abilities and keep order
+        abilities = [a for a in dict.fromkeys(abilities)]
+        return abilities
+
+    def _update_abilities_effects(self) -> None:
+        self._hp_multiplier = 100
+        self._mp_multiplier = 100
+        self.elemental_affinities = dict.fromkeys(
+            Element, ElementalAffinity.NEUTRAL)
+        self.status_resistances = dict.fromkeys(Status, 0)
+        self.status_resistances[Status.THREATEN] = 255
+        for ability in self.autoabilities:
+            if ability is Autoability.RIBBON:
+                for status in RIBBON_IMMUNITIES:
+                    self.status_resistances[status] = 255
+            elif ability is Autoability.AEON_RIBBON:
+                for status in AEON_RIBBON_IMMUNITIES:
+                    self.status_resistances[status] = 255
+            elif ability in ELEMENTAL_WARDS:
                 element = ELEMENTAL_WARDS[ability]
                 self.elemental_affinities[element] = ElementalAffinity.RESISTS
             elif ability in ELEMENTAL_PROOFS:
@@ -78,34 +170,23 @@ class CharacterState:
                 self.elemental_affinities[element] = ElementalAffinity.ABSORBS
             elif ability in STATUS_PROOFS:
                 status = STATUS_PROOFS[ability]
-                self.status_resistances[status] = 254
+                self.status_resistances[status] = 255
             elif ability in STATUS_WARDS:
                 status = STATUS_WARDS[ability]
-                self.status_resistances[status] = 50
-        self._armor = equipment
+                self.status_resistances[status] = max(
+                    self.status_resistances[status], 50)
+            elif ability in HP_BONUSES:
+                self._hp_multiplier += HP_BONUSES[ability]
+            elif ability in MP_BONUSES:
+                self._mp_multiplier += MP_BONUSES[ability]
 
     def reset(self) -> None:
         self.stats = self.defaults.stats.copy()
-        self.elemental_affinities = {element: ElementalAffinity.NEUTRAL
-                                     for element in Element}
-        self.status_resistances = {s: 0 for s in Status}
-        self.statuses = []
-        self.weapon = Equipment(
-            owner=self.defaults.weapon.owner,
-            type_=self.defaults.weapon.type_,
-            slots=self.defaults.weapon.slots,
-            abilities=self.defaults.weapon.abilities.copy(),
-            base_weapon_damage=self.defaults.weapon.base_weapon_damage,
-            bonus_crit=self.defaults.weapon.bonus_crit
-        )
-        self.armor = Equipment(
-            owner=self.defaults.armor.owner,
-            type_=self.defaults.armor.type_,
-            slots=self.defaults.armor.slots,
-            abilities=self.defaults.armor.abilities.copy(),
-            base_weapon_damage=self.defaults.armor.base_weapon_damage,
-            bonus_crit=self.defaults.armor.bonus_crit
-        )
+        self._current_hp = self.stats[Stat.HP]
+        self._current_mp = self.stats[Stat.MP]
+        self.statuses = set()
+        self.weapon = deepcopy(self.defaults.weapon)
+        self.armor = deepcopy(self.defaults.armor)
 
 
 def _get_characters(file_path: str) -> dict[Character, DefaultCharacterState]:
@@ -114,7 +195,7 @@ def _get_characters(file_path: str) -> dict[Character, DefaultCharacterState]:
     with open_cp1252(absolute_file_path) as file_object:
         data: dict = json.load(file_object)
     characters = {}
-    for index, (character, character_data) in enumerate(data.items()):
+    for character, character_data in data.items():
         character = Character(character)
         weapon_data = character_data['weapon']
         weapon = Equipment(
@@ -136,7 +217,7 @@ def _get_characters(file_path: str) -> dict[Character, DefaultCharacterState]:
         )
         characters[character] = DefaultCharacterState(
             character=character,
-            index=index,
+            index=character_data['index'],
             stats={Stat(k): v for k, v in character_data['stats'].items()},
             weapon=weapon,
             armor=armor,

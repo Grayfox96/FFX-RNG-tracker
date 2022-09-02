@@ -58,7 +58,7 @@ class Encounter(Event):
     def _get_condition(self) -> EncounterCondition:
         for character in self.gamestate.party:
             character_data = self.gamestate.characters[character]
-            if Autoability.INITIATIVE in character_data.weapon.abilities:
+            if Autoability.INITIATIVE in character_data.autoabilities:
                 initiative = True
                 break
         else:
@@ -93,9 +93,6 @@ class Encounter(Event):
             for character, state in self.gamestate.characters.items():
                 if character not in self.gamestate.party:
                     continue
-                if Autoability.FIRST_STRIKE in state.weapon.abilities:
-                    icvs[character] = 0
-                    continue
                 icvs[character] = ICV_BASE[state.stats[Stat.AGILITY]] * 3
         else:
             for character, state in self.gamestate.characters.items():
@@ -104,13 +101,18 @@ class Encounter(Event):
                     self._advance_rng(index)
                     continue
                 variance_rng = self._advance_rng(index)
-                if Autoability.FIRST_STRIKE in state.weapon.abilities:
-                    icvs[character] = 0
-                    continue
                 variance = ICV_VARIANCE[state.stats[Stat.AGILITY]] + 1
                 variance = variance_rng % variance
                 base = ICV_BASE[state.stats[Stat.AGILITY]] * 3
                 icvs[character] = base - variance
+        for character in icvs:
+            state = self.gamestate.characters[character]
+            if Autoability.FIRST_STRIKE in state.autoabilities:
+                icvs[character] = 0
+            elif (Autoability.AUTO_HASTE in state.autoabilities
+                    or (Autoability.SOS_HASTE in state.autoabilities
+                        and state.in_crit)):
+                icvs[character] = icvs[character] // 2
         return icvs
 
     def _get_enemies_icvs(self) -> list[int]:
@@ -229,3 +231,8 @@ class MultizoneRandomEncounter(Event):
                 encounter.rollback()
                 self.gamestate.zone_encounters_counts[zone] += 1
         return encounters
+
+    def rollback(self) -> None:
+        if self.encounters:
+            self.encounters[-1].rollback()
+        return super().rollback()

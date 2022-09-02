@@ -26,13 +26,16 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
-        "base_damage": 50,
+        "base_damage": -50,
         "rank": 2
     },
     "defend": {
         "name": "Defend",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "Defend": 255
+        },
         "rank": 2
     },
     "#summon": {
@@ -239,7 +242,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
-        "base_damage": 1000,
+        "base_damage": -1000,
         "rank": 2
     },
     "healing_water": {
@@ -248,7 +251,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 16,
+        "base_damage": -16,
         "rank": 2
     },
     "tetra_element": {
@@ -256,7 +259,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 16,
+        "base_damage": -16,
         "statuses": {
             "NulBlaze": 254,
             "NulShock": 254,
@@ -1085,14 +1088,14 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 8
+        "base_damage": -8
     },
     "full-life": {
         "name": "Full-Life",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 16
+        "base_damage": -16
     },
     "haste": {
         "name": "Haste",
@@ -1198,7 +1201,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
-        "base_damage": 200,
+        "base_damage": -200,
         "rank": 2
     },
     "hi-potion": {
@@ -1206,7 +1209,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
-        "base_damage": 1000,
+        "base_damage": -1000,
         "rank": 2
     },
     "x-potion": {
@@ -1214,7 +1217,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 16,
+        "base_damage": -16,
         "rank": 2
     },
     "mega-potion": {
@@ -1223,7 +1226,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
-        "base_damage": 2000,
+        "base_damage": -2000,
         "rank": 2
     },
     "ether": {
@@ -1231,7 +1234,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
-        "base_damage": 100,
+        "base_damage": -100,
         "rank": 2
     },
     "turbo_ether": {
@@ -1239,7 +1242,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
-        "base_damage": 500,
+        "base_damage": -500,
         "rank": 2
     },
     "phoenix_down": {
@@ -1247,7 +1250,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 8,
+        "base_damage": -8,
         "rank": 2
     },
     "mega_phoenix": {
@@ -1256,7 +1259,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 16,
+        "base_damage": -16,
         "rank": 2
     },
     "elixir": {
@@ -1265,7 +1268,7 @@
         "hits": 2,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 16,
+        "base_damage": -16,
         "rank": 2
     },
     "megalixir": {
@@ -1275,7 +1278,7 @@
         "hits": 2,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 16,
+        "base_damage": -16,
         "rank": 2
     },
     "antidote": {
@@ -1341,12 +1344,18 @@
     "shield": {
         "name": "Shield",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "statuses": {
+            "Shield": 255
+        }
     },
     "boost": {
         "name": "Boost",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "statuses": {
+            "Boost": 255
+        }
     },
     "sonic_wings": {
         "name": "Sonic Wings",
@@ -1947,7 +1956,7 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": 16,
+        "base_damage": -16,
         "rank": 6
     },
     "panacea": {
