@@ -7,7 +7,8 @@ from ..utils import add_bytes, open_cp1252, stringify
 from .actions import MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
 from .constants import (Character, Element, ElementalAffinity, EquipmentSlots,
-                        EquipmentType, GameVersion, Rarity, Stat, Status)
+                        EquipmentType, GameVersion, MonsterSlot, Rarity, Stat,
+                        Status)
 from .file_functions import get_resource_path
 from .items import ITEMS, ItemDrop
 from .text_characters import TEXT_CHARACTERS
@@ -36,6 +37,86 @@ class Monster:
 
     def __str__(self) -> str:
         return self.name
+
+
+@dataclass
+class MonsterState:
+    monster: Monster
+    slot: MonsterSlot = MonsterSlot.MONSTER_1
+
+    def __str__(self) -> str:
+        return f'{str(self.monster)} (M{self.slot + 1})'
+
+    def __post_init__(self) -> None:
+        self.reset()
+
+    def set_stat(self, stat: Stat, value: int) -> None:
+        match stat:
+            case Stat.HP:
+                max_value = 99999
+            case Stat.MP:
+                max_value = 9999
+            case Stat.CHEER | Stat.FOCUS:
+                max_value = 5
+            case _:
+                max_value = 255
+        value = min(max(0, value), max_value)
+        self.stats[stat] = value
+        # update current hp/mp values so they dont exceed
+        # their respective max values
+        if stat is Stat.HP:
+            self.current_hp = self.current_hp
+        elif stat is Stat.MP:
+            self.current_mp = self.current_mp
+
+    @property
+    def max_hp(self) -> int:
+        return self.stats[Stat.HP]
+
+    @property
+    def current_hp(self) -> int:
+        return self._current_hp
+
+    @current_hp.setter
+    def current_hp(self, value: int) -> None:
+        value = min(max(value, 0), self.max_hp)
+        if value == 0:
+            self.statuses.add(Status.DEATH)
+        self._current_hp = value
+
+    @property
+    def max_mp(self) -> int:
+        return self.stats[Stat.MP]
+
+    @property
+    def current_mp(self) -> int:
+        return self._current_mp
+
+    @current_mp.setter
+    def current_mp(self, value) -> None:
+        value = min(max(value, 0), self.max_mp)
+        self._current_mp = value
+
+    @property
+    def armored(self) -> bool:
+        return self.monster.armored
+
+    @property
+    def dead(self) -> bool:
+        dead = (self.current_hp == 0
+                or Status.DEATH in self.statuses
+                or Status.PETRIFY in self.statuses)
+        return dead
+
+    def reset(self) -> None:
+        self.stats = self.monster.stats.copy()
+        for stat in Stat:
+            self.stats.setdefault(stat, 0)
+        self._current_hp = self.stats[Stat.HP]
+        self._current_mp = self.stats[Stat.MP]
+        self.statuses = set()
+        self.elemental_affinities = self.monster.elemental_affinities.copy()
+        self.status_resistances = self.monster.status_resistances.copy()
 
 
 def _get_prize_structs(file_path: str) -> dict[str, list[int]]:

@@ -1,9 +1,10 @@
 from dataclasses import dataclass, field
 
 from ..data.constants import (ICV_BASE, ICV_VARIANCE, Autoability, Character,
-                              EncounterCondition, Stat)
+                              EncounterCondition, MonsterSlot, Stat)
 from ..data.encounter_formations import (BOSSES, FORMATIONS, SIMULATIONS,
                                          ZONES, Formation, Zone)
+from ..data.monsters import MonsterState
 from .main import Event
 
 
@@ -18,6 +19,7 @@ class Encounter(Event):
 
     def __post_init__(self) -> None:
         self.formation = self._get_formation()
+        self._update_current_monster_formation()
         self.condition = self._get_condition()
         self.index = self._get_index()
         self._duplicate_monsters_rng_advances()
@@ -54,6 +56,11 @@ class Encounter(Event):
 
     def _get_formation(self) -> Formation:
         return BOSSES[self.name].formation
+
+    def _update_current_monster_formation(self) -> None:
+        self.gamestate.monster_party = []
+        for monster, slot in zip(self.formation, MonsterSlot):
+            self.gamestate.monster_party.append(MonsterState(monster, slot))
 
     def _get_condition(self) -> EncounterCondition:
         for character in self.gamestate.party:

@@ -2,8 +2,8 @@ from ..data.constants import Character
 from ..data.monsters import MONSTERS
 from ..events.parsing_functions import (ParsingFunction, parse_action,
                                         parse_encounter, parse_end_encounter,
-                                        parse_equipment_change,
-                                        parse_heal, parse_monster_action,
+                                        parse_equipment_change, parse_heal,
+                                        parse_monster_action,
                                         parse_party_change, parse_roll,
                                         parse_stat_update, parse_summon)
 from ..utils import stringify
@@ -57,6 +57,9 @@ class ActionsTracker(TrackerUI):
                     line = ' '.join(['action', character, *params])
                 case [monster, *params] if monster in MONSTERS:
                     line = ' '.join(['monsteraction', monster, *params])
+                case [monster, *params] if (monster.startswith('m')
+                                            and monster[1:].isnumeric()):
+                    line = ' '.join(['monsteraction', monster[1:], *params])
                 case _:
                     continue
             input_lines[index] = line

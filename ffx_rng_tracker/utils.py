@@ -1,5 +1,5 @@
 import colorsys
-from functools import partial
+from functools import cache, partial
 from typing import Any, TypeVar, overload
 
 from .data.constants import StringEnum
@@ -86,6 +86,7 @@ def stringify(object: Any) -> str:
 S = TypeVar('S', bound=StringEnum)
 
 
+@cache
 def search_stringenum(stringenum: type[S], string: str) -> S:
     for instance in stringenum:
         if stringify(instance) == string:

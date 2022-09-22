@@ -2,18 +2,19 @@ from dataclasses import dataclass, field
 
 from ..data.actions import Action
 from ..data.characters import CharacterState
-from ..data.constants import ICV_BASE, NO_RNG_STATUSES, Character, Stat, Status
-from ..data.monsters import Monster
+from ..data.constants import (ICV_BASE, NO_RNG_STATUSES, Character,
+                              MonsterSlot, Stat, Status, TargetType)
+from ..data.monsters import MONSTERS, MonsterState
 from .character_action import get_damage
 from .main import Event
 
 
 @dataclass
 class MonsterAction(Event):
-    monster: Monster
+    monster: MonsterState
     action: Action
-    slot: int
-    targets: list[CharacterState] = field(init=False, repr=False)
+    targets: list[CharacterState] | list[MonsterState] = field(
+        init=False, repr=False)
     hits: list[bool] = field(init=False, repr=False)
     statuses: list[dict[Status, int]] = field(init=False, repr=False)
     damages: list[int] = field(init=False, repr=False)
@@ -57,14 +58,14 @@ class MonsterAction(Event):
             else:
                 action += ' Miss'
             actions.append(action)
-        string = (f'{self.monster} M{self.slot + 1} -> '
+        string = (f'{self.monster} -> '
                   f'{self.action} [{self.ctb}]')
         if actions:
             string += ': ' + ', '.join(actions)
         return string
 
     def _get_hits(self) -> list[bool]:
-        index = min(44 + self.slot, 51)
+        index = min(44 + self.monster.slot, 51)
         luck = max(self.monster.stats[Stat.LUCK], 1)
         # TODO
         aims = 0
@@ -79,12 +80,9 @@ class MonsterAction(Event):
             # TODO
             target_reflexes = 0
             base_hit_chance = self.action.accuracy - target_evasion
-            # TODO
-            # if Status.DARK in self.monster.statuses:
-            #     base_hit_chance = (base_hit_chance
-            #                        * 0x66666667
-            #                        // 0xffffffff
-            #                        // 4)
+            if Status.DARK in self.monster.statuses:
+                base_hit_chance = base_hit_chance * 0x66666667 // 0xffffffff
+                base_hit_chance = base_hit_chance // 4
             hit_chance = (base_hit_chance
                           + luck
                           - target_luck
@@ -93,7 +91,7 @@ class MonsterAction(Event):
         return hits
 
     def _get_damage_rngs(self) -> list[int]:
-        index = min(28 + self.slot, 35)
+        index = min(28 + self.monster.slot, 35)
         luck = self.monster.stats[Stat.LUCK]
         damage_rngs = []
         crits = []
@@ -124,10 +122,13 @@ class MonsterAction(Event):
                 self.monster, self.action, target, damage_rng, crit)
             damages.append(damage)
             target.current_hp -= damage
+            if self.action.drains:
+                self.monster.current_hp += damage
+
         return damages
 
     def _get_statuses(self) -> list[dict[Status, bool]]:
-        index = min(60 + self.slot, 67)
+        index = min(60 + self.monster.slot, 67)
         statuses = []
         for target, hit in zip(self.targets, self.hits):
             if not hit:
@@ -135,7 +136,7 @@ class MonsterAction(Event):
             statuses_applied = {}
             for status, chance in self.action.statuses.items():
                 if status in (Status.HASTE, Status.SLOW):
-                    self._advance_rng(min(28 + self.slot, 35))
+                    self._advance_rng(min(28 + self.monster.slot, 35))
                 if status in NO_RNG_STATUSES:
                     status_rng = 0
                 else:
@@ -170,35 +171,50 @@ class MonsterAction(Event):
                     or Status.DEATH in state.statuses):
                 continue
             targets.append(state)
+        if not targets:
+            targets = [MonsterState(MONSTERS['dummy'])]
         return targets
 
     def _get_targets(self) -> list[CharacterState]:
-        if not self.action.has_target:
-            return []
-        targets = []
         possible_targets = self._get_possible_targets()
-        if self.action.multitarget:
-            if self.action.random_targeting:
-                # random targeting actions roll rng4 once
-                self._advance_rng(4)
-                for _ in range(self.action.hits):
-                    if len(possible_targets) == 1:
-                        targets.append(possible_targets[0])
-                    else:
-                        target_rng = self._advance_rng(5)
-                        target_index = target_rng % len(possible_targets)
-                        targets.append(possible_targets[target_index])
-                targets.sort(key=lambda c: tuple(Character).index(c.character))
-                return targets
-            else:
-                return possible_targets
-        if len(possible_targets) <= 1:
-            return possible_targets * self.action.hits
+        target = self.action.target
 
+        match target:
+            case TargetType.SELF:
+                return [self.monster]
+            case TargetType.SINGLE | TargetType.SINGLE_CHARACTER:
+                pass
+            case TargetType.ALL | TargetType.ALL_CHARACTERS:
+                possible_targets.sort(
+                    key=lambda c: tuple(Character).index(c.character))
+                return possible_targets * self.action.hits
+            case Character() if target in [c.character for c in possible_targets]:
+                return [self.gamestate.characters[self.action.target]]
+            case MonsterSlot() if len(self.gamestate.monster_party) >= target:
+                return [self.gamestate.monster_party[self.action.target]]
+            case TargetType.LAST_CHARACTER:
+                return [self.gamestate.last_character]
+            case _:
+                return [MonsterState(MONSTERS['dummy'])]
+
+        targets: list[CharacterState] = []
+        if len(possible_targets) == 1:
+            return possible_targets * self.action.hits
         target_rng = self._advance_rng(4)
-        target_index = target_rng % len(possible_targets)
-        for _ in range(self.action.hits):
+        if self.action.hits == 1:
+            target_index = target_rng % len(possible_targets)
             targets.append(possible_targets[target_index])
+        elif self.action.hits > 1:
+            for _ in range(self.action.hits):
+                if len(possible_targets) == 1:
+                    targets.append(possible_targets[0])
+                    continue
+                target_rng = self._advance_rng(5)
+                target_index = target_rng % len(possible_targets)
+                targets.append(possible_targets[target_index])
+            targets.sort(key=lambda c: tuple(Character).index(c.character))
+            return targets
+
         return targets
 
     def _get_ctb(self) -> int:

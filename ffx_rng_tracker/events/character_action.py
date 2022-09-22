@@ -9,7 +9,7 @@ from ..data.constants import (ELEMENTAL_AFFINITY_MODIFIERS, HIT_CHANCE_TABLE,
                               ICV_BASE, NO_RNG_STATUSES, TEMPORARY_STATUSES,
                               Autoability, DamageType, ElementalAffinity, Stat,
                               Status)
-from ..data.monsters import Monster
+from ..data.monsters import MonsterState
 from .main import Event
 
 
@@ -17,7 +17,8 @@ from .main import Event
 class CharacterAction(Event):
     character: CharacterState
     action: Action
-    target: CharacterState | Monster
+    target: CharacterState | MonsterState
+    time_remaining: int = 0
     hit: bool = field(init=False, repr=False)
     statuses: dict[Status, bool] = field(init=False, repr=False)
     damage: int = field(init=False, repr=False)
@@ -26,7 +27,10 @@ class CharacterAction(Event):
     ctb: int = field(init=False, repr=False)
     _old_statuses: set[Status] = field(
         default_factory=set, init=False, repr=False)
+    _old_user_hp: int = field(init=False, repr=False)
     _old_target_hp: int = field(init=False, repr=False)
+    _old_user_mp: int = field(init=False, repr=False)
+    _old_target_mp: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._old_statuses = self._remove_temporary_statuses()
@@ -36,6 +40,7 @@ class CharacterAction(Event):
         self.crit = self._get_crit()
         self.damage = self._get_damage()
         self.ctb = self._get_ctb()
+        self.gamestate.last_character = self.character
 
     def __str__(self) -> str:
         string = (f'{self.character} -> {self.action}'
@@ -90,7 +95,7 @@ class CharacterAction(Event):
             hit_chance_index = 8
         base_hit_chance = HIT_CHANCE_TABLE[hit_chance_index]
         if Status.DARK in self.character.statuses:
-            base_hit_chance = (base_hit_chance * 0x66666667) // 0xffffffff
+            base_hit_chance = base_hit_chance * 0x66666667 // 0xffffffff
             base_hit_chance = base_hit_chance // 4
         hit_chance = base_hit_chance + luck
         hit_chance += (aims - target_reflexes) * 10 - target_luck
@@ -122,10 +127,19 @@ class CharacterAction(Event):
             return 0
         damage = get_damage(
             self.character, self.action, self.target, self.damage_rng,
-            self.crit)
-        if isinstance(self.target, CharacterState):
-            self._old_target_hp = self.target.current_hp
+            self.crit, self.time_remaining)
+        self._old_user_hp = self.character.current_hp
+        self._old_target_hp = self.target.current_hp
+        self._old_user_mp = self.character.current_mp
+        self._old_target_mp = self.target.current_mp
+        if self.action.damage_type in (DamageType.MAGIC_MP, DamageType.ITEM_MP):
+            self.target.current_mp -= damage
+            if self.action.drains:
+                self.character.current_mp += damage
+        else:
             self.target.current_hp -= damage
+            if self.action.drains:
+                self.character.current_hp += damage
         return damage
 
     def _get_statuses(self) -> dict[Status, bool]:
@@ -164,11 +178,12 @@ class CharacterAction(Event):
                 applied = True
             else:
                 applied = False
-            if applied and isinstance(self.target, CharacterState):
-                self.target.statuses.add(status)
+            self.target.statuses.add(status)
             statuses_applied[status] = applied
             if status is Status.PETRIFY and applied:
                 # advance rng once more for shatter
+                # TODO
+                # add a shatter_chance property to action
                 self._advance_rng(index)
         return statuses_applied
 
@@ -186,21 +201,23 @@ class CharacterAction(Event):
         return ctb
 
     def rollback(self) -> None:
-        if isinstance(self.target, CharacterState):
-            self.target.current_hp = self._old_target_hp
+        self.character.current_hp = self._old_user_hp
+        self.target.current_hp = self._old_target_hp
+        self.character.current_mp = self._old_user_mp
+        self.target.current_mp = self._old_target_mp
         self.character.statuses = self._old_statuses
         return super().rollback()
 
 
 def get_damage(
-        user: CharacterState | Monster,
+        user: CharacterState | MonsterState,
         action: Action,
-        target: CharacterState | Monster,
-        damage_rng: int,
-        crit: bool,
+        target: CharacterState | MonsterState,
+        damage_rng: int = 0,
+        crit: bool = False,
+        time_remaining: int = 0,
         ) -> int:
     user_is_character = isinstance(user, CharacterState)
-    target_is_character = isinstance(target, CharacterState)
     variance = damage_rng + 0xf0
     damage_type = action.damage_type
     element_mods = [-1.0]
@@ -228,36 +245,29 @@ def get_damage(
         element_mods[0] = 1.0
     # special cases where the damage formula
     # is a lot less complicated
-    if damage_type == DamageType.ITEM:
+    if damage_type in (DamageType.ITEM, DamageType.ITEM_MP):
         damage = action.base_damage * 50
         damage = damage * variance // 256
         if crit:
             damage = damage * 2
         for element_mod in element_mods:
             damage = int(damage * element_mod)
+        if damage_type is DamageType.ITEM_MP:
+            damage = min(damage, target.current_mp)
         return damage
     elif damage_type == DamageType.FIXED:
         damage = action.base_damage
         return damage
     elif damage_type is DamageType.PERCENTAGE_TOTAL:
-        if target_is_character:
-            hp = target.max_hp
-        else:
-            hp = target.stats[Stat.HP]
+        hp = target.max_hp
         damage = hp * action.base_damage // 16
         return damage
     elif damage_type is DamageType.PERCENTAGE_CURRENT:
-        if target_is_character:
-            hp = target.current_hp
-        else:
-            hp = target.stats[Stat.HP]
+        hp = target.current_hp
         damage = hp * action.base_damage // 16
         return damage
     elif damage_type == DamageType.HP:
-        if user_is_character:
-            hp = user.max_hp
-        else:
-            hp = user.stats[Stat.HP]
+        hp = user.max_hp
         damage = hp * action.base_damage // 100
         if crit:
             damage = int(damage * 2)
@@ -267,29 +277,32 @@ def get_damage(
         return damage
 
     if damage_type in (DamageType.STRENGTH, DamageType.SPECIAL_STRENGTH):
-        if action.uses_weapon:
+        if user_is_character and action.uses_weapon:
             base_damage = user.weapon.base_weapon_damage
         else:
             base_damage = action.base_damage
         offensive_stat = user.stats[Stat.STRENGTH]
-        offensive_stat += user.stats.get(Stat.CHEER, 0)
-        defensive_buffs = target.stats.get(Stat.CHEER, 0)
+        offensive_stat += user.stats[Stat.CHEER]
+        defensive_buffs = target.stats[Stat.CHEER]
         bonus = 0
-        if user_is_character:
+        if user_is_character and action.uses_weapon:
             for ability in user.autoabilities:
                 bonus += STRENGTH_BONUSES.get(ability, 0)
-        defensive_stat = max(target.stats[Stat.DEFENSE], 1)
-    elif damage_type in (DamageType.MAGIC, DamageType.SPECIAL_MAGIC,
-                         DamageType.HEALING):
+        if Status.ARMOR_BREAK not in target.statuses:
+            defensive_stat = max(target.stats[Stat.DEFENSE], 1)
+        else:
+            defensive_stat = 0
+    else:  # MAGIC, SPECIAL_MAGIC or HEALING
         base_damage = action.base_damage
         offensive_stat = user.stats[Stat.MAGIC]
-        offensive_stat += user.stats.get(Stat.FOCUS, 0)
-        defensive_buffs = target.stats.get(Stat.FOCUS, 0)
+        offensive_stat += user.stats[Stat.FOCUS]
+        defensive_buffs = target.stats[Stat.FOCUS]
         bonus = 0
         if user_is_character:
             for ability in user.autoabilities:
                 bonus += MAGIC_BONUSES.get(ability, 0)
-        if action.damage_type == DamageType.MAGIC:
+        if (action.damage_type == DamageType.MAGIC
+                and Status.MENTAL_BREAK not in target.statuses):
             defensive_stat = max(target.stats[Stat.MAGIC_DEFENSE], 1)
         else:
             defensive_stat = 0
@@ -297,7 +310,7 @@ def get_damage(
                        DamageType.SPECIAL_MAGIC):
         power = offensive_stat * offensive_stat * offensive_stat
         power = (power // 0x20) + 0x1e
-    elif damage_type in (DamageType.MAGIC, DamageType.HEALING):
+    else:  # MAGIC or HEALING
         power = offensive_stat * offensive_stat
         power = (power * 0x2AAAAAAB) // 0xffffffff
         power = power + (power // 0x80000000)
@@ -331,23 +344,33 @@ def get_damage(
         damage = damage * 2
     for element_mod in element_mods:
         damage = int(damage * element_mod)
+    damage = damage + (damage * bonus // 100)
     if damage_type is DamageType.STRENGTH:
-        if target_is_character:
-            if Status.DEFEND in target.statuses:
-                damage = damage // 2
-        elif (target.armored
-                and user_is_character
+        if Status.PROTECT in target.statuses:
+            damage = damage // 2
+        if Status.BERSERK in user.statuses:
+            damage = int(damage * 1.5)
+        if Status.POWER_BREAK in user.statuses:
+            damage = damage // 2
+        if Status.DEFEND in target.statuses:
+            damage = damage // 2
+        if (user_is_character
+                and target.armored
                 and Autoability.PIERCING not in user.autoabilities):
             damage = damage // 3
-    damage = damage + (damage * bonus // 100)
-    damage = int(damage)
+    elif damage_type is DamageType.MAGIC:
+        if Status.SHELL in target.statuses:
+            damage = damage // 2
+        if Status.MAGIC_BREAK in user.statuses:
+            damage = damage // 2
     if damage_type == DamageType.HEALING:
         damage = damage * -1
-    if target_is_character:
-        if Status.BOOST in target.statuses:
-            damage = int(damage * 1.5)
-        elif Status.SHIELD in target.statuses:
-            damage = damage // 4
+    if Status.BOOST in target.statuses:
+        damage = int(damage * 1.5)
+    if Status.SHIELD in target.statuses:
+        damage = damage // 4
+    if action.timer:
+        damage += damage * time_remaining // (action.timer * 2)
     if user_is_character:
         if Autoability.BREAK_DAMAGE_LIMIT in user.autoabilities:
             damage_limit = 99999
@@ -356,4 +379,6 @@ def get_damage(
     else:
         damage_limit = 99999
     damage = min(damage, damage_limit)
+    if damage_type is DamageType.MAGIC_MP:
+        damage = min(damage, target.current_mp)
     return damage

@@ -2,9 +2,7 @@
     "generic_actions": {
         "#defaults": {
             "name": "",
-            "has_target": true,
-            "multitarget": false,
-            "random_targeting": false,
+            "target": "Single",
             "can_miss": true,
             "accuracy": 90,
             "does_damage": true,
@@ -16,7 +14,14 @@
             "base_damage": 0,
             "element": null,
             "statuses": {},
+            "drains": false,
             "rank": 3
+        },
+        "does_nothing": {
+            "name": "Does Nothing",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false
         },
         "attack": {
             "name": "Attack",
@@ -40,24 +45,24 @@
         },
         "aoe": {
             "name": "AOE",
-            "multitarget": true,
+            "target": "All characters",
             "base_damage": 16
         },
         "aoenocrit": {
             "name": "AOENoCrit",
-            "multitarget": true,
+            "target": "All characters",
             "can_crit": false,
             "base_damage": 16
         },
         "aoenomiss": {
             "name": "AOENoMiss",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "base_damage": 16
         },
         "aoenomissnocrit": {
             "name": "AOENoMissNoCrit",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 16
@@ -147,7 +152,6 @@
         },
         "blizzara_silence": {
             "name": "Blizzara (Silence)",
-            "has_target": true,
             "can_miss": false,
             "does_damage": false
         }
@@ -204,7 +208,12 @@
         "attack": {
             "name": "Attack",
             "base_damage": 16
-        }        
+        },
+        "attack_wakka": {
+            "name": "Attack Wakka",
+            "target": "Wakka",
+            "base_damage": 16
+        }
     },
     "simurgh": {
     },
@@ -258,9 +267,17 @@
                 "Dark": 10
             }
         },
+        "attack_wakka": {
+            "name": "Attack Wakka",
+            "target": "Wakka",
+            "base_damage": 16,
+            "statuses": {
+                "Dark": 10
+            }
+        },
         "sonic_boom": {
             "name": "Sonic Boom",
-            "multitarget": true,
+            "target": "All characters",
             "accuracy": 130,
             "can_crit": false,
             "base_damage": 8
@@ -313,7 +330,7 @@
         },
         "breath": {
             "name": "Breath",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -451,20 +468,22 @@
         },
         "nautilus_charge": {
             "name": "Nautilus Charge",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 48
         },
         "flank": {
             "name": "Flank",
-            "has_target": false
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false
         }
     },
     "sinspawn_geneaux": {
         "sigh": {
             "name": "Sigh",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -481,7 +500,7 @@
         },
         "staccato": {
             "name": "Staccato",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "base_damage": 16
         },
@@ -521,7 +540,8 @@
         },
         "wings_flicker": {
             "name": "Wings Flicker",
-            "has_target": false,
+            "target": "Self",
+            "can_miss": false,
             "does_damage": false
         }
     },
@@ -539,8 +559,6 @@
     "oblitzerator": {
         "blitzball_rush": {
             "name": "Blitzball Rush",
-            "multitarget": true,
-            "random_targeting": true,
             "can_miss": false,
             "hits": 10,
             "can_crit": false,
@@ -586,7 +604,7 @@
         },
         "depth_charge": {
             "name": "Depth Charge",
-            "multitarget": true,
+            "target": "All characters",
             "can_crit": false,
             "damage_type": "Strength",
             "base_damage": 16,
@@ -596,13 +614,13 @@
         },
         "rise": {
             "name": "Rise",
-            "has_target": true,
+            "target": "Self",
             "can_miss": false,
             "does_damage": false
         },
         "dive": {
             "name": "Dive",
-            "has_target": true,
+            "target": "Self",
             "can_miss": false,
             "does_damage": false
         }
@@ -623,7 +641,8 @@
     "sin": {
         "move": {
             "name": "Move",
-            "has_target": false,
+            "target": "Self",
+            "can_miss": false,
             "does_damage": false
         }
     },
@@ -631,17 +650,12 @@
         "drain_touch": {
             "name": "Drain Touch",
             "can_crit": false,
-            "base_damage": 16
-        },
-        "drain_touch_dark": {
-            "name": "Drain Touch (Dark)",
-            "accuracy": 10,
-            "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "drains": true
         },
         "blender": {
             "name": "Blender",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -692,8 +706,9 @@
     "braska's_final_aeon": {
     },
     "crane": {
-        "#use_crane": {
+        "use_crane": {
             "name": "Use crane",
+            "target": 0,
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Percentage (Current)",
@@ -740,7 +755,8 @@
         },
         "wings_flicker": {
             "name": "Wings Flicker",
-            "has_target": false,
+            "target": "Self",
+            "can_miss": false,
             "does_damage": false
         }
     },
@@ -782,7 +798,7 @@
         },
         "earthquake": {
             "name": "Eartquake",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Special Magic",
@@ -797,6 +813,7 @@
         },
         "#falls_asleep": {
             "name": "Falls Asleep",
+            "target": "Self",
             "can_miss": false,
             "does_damage": false,
             "statuses": {
@@ -828,9 +845,15 @@
             "can_crit": false,
             "base_damage": 16
         },
+        "counter": {
+            "name": "Counter",
+            "target": "Last character",
+            "can_crit": false,
+            "base_damage": 16
+        },
         "sonic_boom": {
             "name": "Sonic Boom",
-            "multitarget": true,
+            "target": "All characters",
             "accuracy": 130,
             "can_crit": false,
             "base_damage": 12
@@ -846,7 +869,7 @@
     "sinspawn_ammes": {
         "demi": {
             "name": "Demi",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Percentage (Current)",
@@ -874,11 +897,6 @@
     "[0x13]$": {
     },
     "tanker": {
-        "does_nothing": {
-            "name": "Does Nothing",
-            "has_target": false,
-            "does_damage": false
-        }
     },
     "gate_lock_2": {
     },
@@ -903,6 +921,12 @@
     "iron_giant": {
         "attack": {
             "name": "Attack",
+            "target": "Lowest HP character",
+            "accuracy": 110,
+            "base_damage": 16
+        },
+        "attack_aeon": {
+            "name": "Attack",
             "accuracy": 110,
             "base_damage": 16
         },
@@ -913,7 +937,7 @@
         },
         "reaper": {
             "name": "Reaper",
-            "multitarget": true,
+            "target": "All characters",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 13
@@ -1062,9 +1086,14 @@
             "name": "Attack",
             "base_damage": 16
         },
+        "attack_wakka": {
+            "name": "Attack Wakka",
+            "target": "Wakka",
+            "base_damage": 16
+        },
         "sonic_boom": {
             "name": "Sonic Boom",
-            "multitarget": true,
+            "target": "All characters",
             "accuracy": 130,
             "can_crit": false,
             "base_damage": 8
@@ -1082,11 +1111,6 @@
         "forced_attack": {
             "name": "Forced Attack",
             "base_damage": 16
-        },
-        "does_nothing": {
-            "name": "Does Nothing",
-            "has_target": false,
-            "does_damage": false
         }
     },
     "water_flan_2": {
@@ -1111,15 +1135,22 @@
             "name": "Forced Attack",
             "base_damage": 16
         },
-        "does_nothing": {
-            "name": "Does Nothing",
-            "has_target": false,
-            "does_damage": false
+        "attack_wakka": {
+            "name": "Attack Wakka",
+            "target": "Wakka",
+            "base_damage": 16
         }
     },
     "ragora_2": {
         "seed_cannon": {
             "name": "Seed Cannon",
+            "accuracy": 85,
+            "can_crit": false,
+            "base_damage": 16
+        },
+        "seed_cannon_kimahri": {
+            "name": "Seed Cannon (Kimahri)",
+            "target": "Kimahri",
             "accuracy": 85,
             "can_crit": false,
             "base_damage": 16

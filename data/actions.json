@@ -1,9 +1,7 @@
 {
     "#defaults": {
         "name": "",
-        "has_target": true,
-        "multitarget": false,
-        "random_targeting": false,
+        "target": "Single",
         "can_miss": true,
         "accuracy": 90,
         "does_damage": true,
@@ -15,6 +13,8 @@
         "base_damage": 0,
         "element": null,
         "statuses": {},
+        "drains": false,
+        "timer": 0,
         "rank": 3
     },
     "attack": {
@@ -23,6 +23,7 @@
     },
     "stand_by": {
         "name": "Stand By",
+        "target": "Self",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
@@ -31,6 +32,7 @@
     },
     "defend": {
         "name": "Defend",
+        "target": "Self",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -39,24 +41,10 @@
         "rank": 2
     },
     "#summon": {
-        "name": "Summon",
-        "has_target": false,
-        "can_miss": false,
-        "does_damage": false,
-        "hits": null,
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null
+        "name": "Summon"
     },
     "#skill": {
-        "name": "Skill",
-        "has_target": false,
-        "can_miss": false,
-        "does_damage": false,
-        "hits": null,
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null
+        "name": "Skill"
     },
     "sleep_attack": {
         "name": "Sleep Attack",
@@ -119,11 +107,17 @@
     "delay_attack": {
         "name": "Delay Attack",
         "uses_weapon": true,
+        "statuses": {
+            "Delay (Weak)": 255
+        },
         "rank": 6
     },
     "delay_buster": {
         "name": "Delay Buster",
         "uses_weapon": true,
+        "statuses": {
+            "Delay (Strong)": 255
+        },
         "rank": 8
     },
     "power_break": {
@@ -160,19 +154,31 @@
     },
     "extract_power": {
         "name": "Extract Power",
-        "uses_weapon": true
+        "uses_weapon": true,
+        "statuses": {
+            "Power Distiller": 255
+        }
     },
     "extract_mana": {
         "name": "Extract Mana",
-        "uses_weapon": true
+        "uses_weapon": true,
+        "statuses": {
+            "Mana Distiller": 255
+        }
     },
     "extract_speed": {
         "name": "Extract Speed",
-        "uses_weapon": true
+        "uses_weapon": true,
+        "statuses": {
+            "Speed Distiller": 255
+        }
     },
     "extract_ability": {
         "name": "Extract Ability",
-        "uses_weapon": true
+        "uses_weapon": true,
+        "statuses": {
+            "Ability Distiller": 255
+        }
     },
     "full_break": {
         "name": "Full Break",
@@ -187,10 +193,12 @@
     },
     "mug": {
         "name": "Mug",
+        "target": "Single monster",
         "uses_weapon": true
     },
     "nab_gil": {
         "name": "Nab Gil",
+        "target": "Single monster",
         "uses_weapon": true
     },
     "quick_hit": {
@@ -204,41 +212,30 @@
         "rank": 1
     },
     "#special": {
-        "name": "Special",
-        "has_target": false,
-        "can_miss": false,
-        "does_damage": false,
-        "hits": null,
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null
+        "name": "Special"
     },
     "flee": {
         "name": "Flee",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "Eject": 255
+        },
         "rank": 2
     },
     "steal": {
         "name": "Steal",
+        "target": "Single monster",
         "can_miss": false,
         "does_damage": false
     },
     "#use": {
-        "name": "Use",
-        "has_target": false,
-        "can_miss": false,
-        "does_damage": false,
-        "hits": null,
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null,
-        "rank": 2
+        "name": "Use"
     },
     "al'bhed_potion": {
         "name": "Al Bhed Potion",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
@@ -247,7 +244,7 @@
     },
     "healing_water": {
         "name": "Healing Water",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
@@ -288,8 +285,7 @@
     },
     "ice_gem": {
         "name": "Ice Gem",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "Single monster",
         "can_miss": false,
         "hits": 5,
         "can_crit": false,
@@ -318,8 +314,7 @@
     },
     "fire_gem": {
         "name": "Fire Gem",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "Single monster",
         "can_miss": false,
         "hits": 5,
         "can_crit": false,
@@ -348,8 +343,7 @@
     },
     "lightning_gem": {
         "name": "Lightning Gem",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "Single monster",
         "can_miss": false,
         "hits": 5,
         "can_crit": false,
@@ -378,8 +372,7 @@
     },
     "water_gem": {
         "name": "Water Gem",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "Single monster",
         "can_miss": false,
         "hits": 5,
         "can_crit": false,
@@ -390,7 +383,7 @@
     },
     "grenade": {
         "name": "Grenade",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 7,
@@ -398,7 +391,7 @@
     },
     "frag_grenade": {
         "name": "Frag Grenade",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 16,
@@ -409,7 +402,7 @@
     },
     "sleeping_powder": {
         "name": "Sleeping Powder",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Item",
@@ -421,7 +414,7 @@
     },
     "dream_powder": {
         "name": "Dream Powder",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Item",
@@ -433,7 +426,7 @@
     },
     "silence_grenade": {
         "name": "Silence Grenade",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Item",
@@ -445,7 +438,7 @@
     },
     "smoke_bomb": {
         "name": "Smoke Bomb",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Item",
@@ -457,7 +450,7 @@
     },
     "shadow_gem": {
         "name": "Shadow Gem",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Current)",
@@ -483,7 +476,7 @@
     },
     "supreme_gem": {
         "name": "Supreme Gem",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Item",
@@ -503,7 +496,7 @@
     },
     "silver_hourglass": {
         "name": "Silver Hourglass",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -513,7 +506,7 @@
     },
     "gold_hourglass": {
         "name": "Gold Hourglass",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Item",
@@ -531,7 +524,7 @@
     },
     "petrify_grenade": {
         "name": "Petrify Grenade",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -550,8 +543,7 @@
     },
     "farplane_wind": {
         "name": "Farplane Wind",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All monsters",
         "can_miss": false,
         "does_damage": false,
         "hits": 4,
@@ -562,7 +554,7 @@
     },
     "dark_matter": {
         "name": "Dark Matter",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Item",
@@ -580,7 +572,7 @@
     },
     "chocobo_wing": {
         "name": "Chocobo Wing",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -628,7 +620,7 @@
         "name": "Mana Spring",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Item",
+        "damage_type": "Item (MP)",
         "base_damage": 20,
         "rank": 2
     },
@@ -640,14 +632,21 @@
         "base_damage": 8,
         "rank": 2
     },
-    "soul_spring": {
-        "name": "Soul Spring",
+    "soul_spring_hp": {
+        "name": "Soul Spring (HP)",
         "can_miss": false,
-        "hits": 2,
         "can_crit": false,
         "damage_type": "Item",
         "base_damage": 30,
         "rank": 2
+    },
+    "soul_spring_mp": {
+        "name": "Soul Spring (MP)",
+        "can_miss": false,
+        "can_crit": false,
+        "damage_type": "Item (MP)",
+        "base_damage": 30,
+        "rank": 0
     },
     "purifying_salt": {
         "name": "Purifying Salt",
@@ -659,46 +658,49 @@
     },
     "stamina_tablet": {
         "name": "Stamina Tablet",
+        "target": "Single character",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "mana_tablet": {
         "name": "Mana Tablet",
+        "target": "Single character",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "twin_stars": {
         "name": "Twin Stars",
+        "target": "Single character",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "stamina_tonic": {
         "name": "Stamina Tonic",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "mana_tonic": {
         "name": "Mana Tonic",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "three_stars": {
         "name": "Three Stars",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "pray": {
         "name": "Pray",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Healing",
@@ -706,67 +708,87 @@
     },
     "cheer": {
         "name": "Cheer",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "aim": {
         "name": "Aim",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "focus": {
         "name": "Focus",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "reflex": {
         "name": "Reflex",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "luck": {
         "name": "Luck",
-        "multitarget": true,
+        "target": "All characters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
     "jinx": {
         "name": "Jinx",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "does_damage": false,
         "rank": 2
     },
-    "lancet": {
-        "name": "Lancet",
+    "lancet_hp": {
+        "name": "Lancet (HP)",
+        "target": "Single monster",
         "can_miss": false,
-        "hits": 2,
         "can_crit": false,
         "damage_type": "Magic",
         "base_damage": 6,
-        "rank": 2
+        "rank": 2,
+        "drains": true
+    },
+    "lancet_mp": {
+        "name": "Lancet (MP)",
+        "target": "Single monster",
+        "can_miss": false,
+        "can_crit": false,
+        "damage_type": "Magic (MP)",
+        "base_damage": 6,
+        "rank": 0
     },
     "guard": {
         "name": "Guard",
+        "target": "Self",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "statuses": {
+            "Guard": 255
+        }
     },
     "sentinel": {
         "name": "Sentinel",
+        "target": "Self",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "statuses": {
+            "Defend": 255,
+            "Guard": 255
+        }
     },
     "spare_change": {
         "name": "Spare Change",
+        "target": "Single monster",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Gil",
@@ -774,11 +796,16 @@
     },
     "threaten": {
         "name": "Threaten",
+        "target": "Single monster",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "statuses": {
+            "Threaten": 255
+        }
     },
     "provoke": {
         "name": "Provoke",
+        "target": "Single monster",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -787,66 +814,33 @@
     },
     "entrust": {
         "name": "Entrust",
+        "target": "Single character",
         "can_miss": false,
         "does_damage": false
     },
     "#copycat": {
-        "name": "Copycat",
-        "has_target": false,
-        "can_miss": false,
-        "does_damage": false,
-        "hits": null,
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null
+        "name": "Copycat"
     },
     "#pilfer_gil": {
         "name": "Pilfer Gil",
-        "can_miss": false,
-        "does_damage": false,
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null,
-        "rank": ""
+        "target": "Single monster"
     },
     "#quick_pockets": {
         "name": "Quick Pockets",
-        "has_target": false,
-        "can_miss": false,
-        "does_damage": false,
-        "hits": null,
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null,
         "rank": 1
     },
     "#doublecast": {
-        "name": "Doublecast",
-        "has_target": "-",
-        "multitarget": "-",
-        "can_miss": "-",
-        "does_damage": "-",
-        "hits": "",
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null
+        "name": "Doublecast"
     },
     "bribe": {
         "name": "Bribe",
+        "target": "Single monster",
         "can_miss": false,
         "damage_type": "Fixed",
         "base_damage": 0
     },
     "#blk_magic": {
-        "name": "Blk Magic",
-        "has_target": "-",
-        "multitarget": "-",
-        "can_miss": "-",
-        "does_damage": "-",
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null,
-        "rank": ""
+        "name": "Blk Magic"
     },
     "fire": {
         "name": "Fire",
@@ -954,7 +948,7 @@
     },
     "demi": {
         "name": "Demi",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Current)",
@@ -994,7 +988,7 @@
     },
     "ultima": {
         "name": "Ultima",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1002,15 +996,7 @@
         "rank": 6
     },
     "#wht_magic": {
-        "name": "Wht Magic",
-        "has_target": "-",
-        "multitarget": "-",
-        "can_miss": "-",
-        "does_damage": "-",
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null,
-        "rank": ""
+        "name": "Wht Magic"
     },
     "cure": {
         "name": "Cure",
@@ -1036,11 +1022,14 @@
     "scan": {
         "name": "Scan",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "statuses": {
+            "Scan": 255
+        }
     },
     "nulblaze": {
         "name": "NulBlaze",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1050,7 +1039,7 @@
     },
     "nulshock": {
         "name": "NulShock",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1060,7 +1049,7 @@
     },
     "nultide": {
         "name": "NulTide",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1070,7 +1059,7 @@
     },
     "nulfrost": {
         "name": "NulFrost",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1088,14 +1077,20 @@
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": -8
+        "base_damage": -8,
+        "statuses": {
+            "Life": 255
+        }
     },
     "full-life": {
         "name": "Full-Life",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
-        "base_damage": -16
+        "base_damage": -16,
+        "statuses": {
+            "Life": 255
+        }
     },
     "haste": {
         "name": "Haste",
@@ -1108,7 +1103,7 @@
     },
     "hastega": {
         "name": "Hastega",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1126,7 +1121,7 @@
     },
     "slowga": {
         "name": "Slowga",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1182,19 +1177,15 @@
     },
     "auto-life": {
         "name": "Auto-Life",
+        "target": "Single character",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "statuses": {
+            "Auto-Life": 255
+        }
     },
     "#item": {
-        "name": "Item",
-        "has_target": "-",
-        "multitarget": "-",
-        "can_miss": "-",
-        "does_damage": "-",
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null,
-        "rank": 2
+        "name": "Item"
     },
     "potion": {
         "name": "Potion",
@@ -1222,7 +1213,7 @@
     },
     "mega-potion": {
         "name": "Mega-Potion",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
@@ -1251,16 +1242,22 @@
         "can_crit": false,
         "damage_type": "Percentage (Total)",
         "base_damage": -8,
-        "rank": 2
+        "rank": 2,
+        "statuses": {
+            "Life": 255
+        }
     },
     "mega_phoenix": {
         "name": "Mega Phoenix",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
         "base_damage": -16,
-        "rank": 2
+        "rank": 2,
+        "statuses": {
+            "Life": 255
+        }
     },
     "elixir": {
         "name": "Elixir",
@@ -1273,7 +1270,7 @@
     },
     "megalixir": {
         "name": "Megalixir",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "hits": 2,
         "can_crit": false,
@@ -1319,30 +1316,47 @@
     },
     "power_distiller": {
         "name": "Power Distiller",
+        "target": "Single monster",
         "can_miss": false,
         "does_damage": false,
-        "rank": 2
+        "rank": 2,
+        "statuses": {
+            "Power Distiller": 255
+        }
     },
     "mana_distiller": {
         "name": "Mana Distiller",
+        "target": "Single monster",
         "can_miss": false,
         "does_damage": false,
-        "rank": 2
+        "rank": 2,
+        "statuses": {
+            "Mana Distiller": 255
+        }
     },
     "speed_distiller": {
         "name": "Speed Distiller",
+        "target": "Single monster",
         "can_miss": false,
         "does_damage": false,
-        "rank": 2
+        "rank": 2,
+        "statuses": {
+            "Speed Distiller": 255
+        }
     },
     "ability_distiller": {
         "name": "Ability Distiller",
+        "target": "Single monster",
         "can_miss": false,
         "does_damage": false,
-        "rank": 2
+        "rank": 2,
+        "statuses": {
+            "Ability Distiller": 255
+        }
     },
     "shield": {
         "name": "Shield",
+        "target": "Self",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1351,45 +1365,57 @@
     },
     "boost": {
         "name": "Boost",
+        "target": "Self",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
             "Boost": 255
         }
     },
+    "#dismiss": {
+        "name": "Dismiss"
+    },
     "sonic_wings": {
         "name": "Sonic Wings",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 8,
         "rank": 2
     },
     "meteor_strike": {
         "name": "Meteor Strike",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 17,
         "rank": 4
     },
     "aerospark": {
         "name": "Aerospark",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 16,
         "rank": 4
     },
     "heavenly_strike": {
         "name": "Heavenly Strike",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 17,
-        "rank": 4
+        "rank": 4,
+        "statuses": {
+            "Threaten": 255
+        }
     },
     "impulse": {
         "name": "Impulse",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "base_damage": 16,
         "rank": 6
     },
     "pain": {
         "name": "Pain",
+        "target": "Single monster",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Special Magic",
@@ -1401,28 +1427,31 @@
     },
     "daigoro": {
         "name": "Daigoro",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 10
     },
     "kozuka": {
         "name": "Kozuka",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 13
     },
     "wakizashi_(st)": {
         "name": "Wakizashi (ST)",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 18
     },
     "wakizashi_(mt)": {
         "name": "Wakizashi (MT)",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "base_damage": 18
     },
     "zanmato": {
         "name": "Zanmato",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1432,8 +1461,7 @@
     },
     "#taking_a_break": {
         "name": "Taking a break",
-        "has_target": "",
-        "multitarget": "",
+        "target": "Self",
         "can_miss": "",
         "does_damage": "",
         "hits": "",
@@ -1444,7 +1472,7 @@
     },
     "#camisade": {
         "name": "Camisade",
-        "multitarget": "",
+        "target": "All",
         "can_miss": false,
         "hits": "",
         "base_damage": 21,
@@ -1452,7 +1480,7 @@
     },
     "#razzia": {
         "name": "Razzia",
-        "multitarget": "",
+        "target": "All",
         "can_miss": false,
         "hits": "",
         "base_damage": 21,
@@ -1460,7 +1488,7 @@
     },
     "#passado": {
         "name": "Passado",
-        "multitarget": "",
+        "target": "All",
         "can_miss": false,
         "hits": "",
         "base_damage": 2,
@@ -1468,27 +1496,29 @@
     },
     "spiral_cut": {
         "name": "Spiral Cut",
+        "target": "Single monster",
         "can_miss": false,
-        "base_damage": 32
+        "base_damage": 32,
+        "timer": 3000
     },
     "spiral_cut_fail": {
         "name": "Spiral Cut fail",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 24
     },
     "slice_&_dice": {
         "name": "Slice & Dice",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All monsters",
         "can_miss": false,
         "hits": 6,
         "base_damage": 6,
+        "timer": 3000,
         "rank": 4
     },
     "slice_&_dice_fail": {
         "name": "Slice & Dice fail",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All monsters",
         "can_miss": false,
         "hits": 3,
         "base_damage": 8,
@@ -1496,100 +1526,143 @@
     },
     "energy_rain": {
         "name": "Energy Rain",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "base_damage": 26,
+        "timer": 3000,
         "rank": 5
     },
     "energy_rain_fail": {
         "name": "Energy Rain fail",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "base_damage": 20,
         "rank": 5
     },
     "blitz_ace": {
         "name": "Blitz Ace",
+        "target": "Single monster",
         "can_miss": false,
-        "hits": 10,
+        "hits": 8,
         "base_damage": 4,
+        "timer": 3000,
         "rank": 7
+    },
+    "blitz_ace_last_hit": {
+        "name": "Blitz Ace",
+        "target": "Single monster",
+        "can_miss": false,
+        "base_damage": 24,
+        "timer": 3000,
+        "rank": 0
     },
     "blitz_ace_fail": {
         "name": "Blitz Ace fail",
+        "target": "Single monster",
         "can_miss": false,
-        "hits": 9,
+        "hits": 8,
         "base_damage": 4,
         "rank": 7
     },
     "#grand_summon": {
         "name": "Grand Summon",
-        "has_target": "-",
-        "multitarget": "-",
-        "can_miss": "-",
-        "does_damage": "-",
-        "hits": "",
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null,
         "rank": 5
     },
     "dragon_fang": {
         "name": "Dragon Fang",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "base_damage": 17,
+        "timer": 4000,
+        "rank": 5,
+        "statuses": {
+            "Delay (Strong)": 255
+        }
+    },
+    "dragon_fang_fail": {
+        "name": "Dragon Fang fail",
+        "target": "All monsters",
+        "can_miss": false,
+        "base_damage": 16,
         "rank": 5
+    },
+    "dragon_fang_immune": {
+        "name": "Dragon Fang (target Immune)",
+        "target": "All monsters",
+        "can_miss": false,
+        "base_damage": 19,
+        "rank": 5,
+        "timer": 4000
     },
     "shooting_star": {
         "name": "Shooting Star",
+        "target": "Single monster",
+        "can_miss": false,
+        "base_damage": 24,
+        "rank": 5,
+        "timer": 4000,
+        "statuses": {
+            "Eject": 255
+        }
+    },
+    "shooting_star_fail": {
+        "name": "Shooting Star fail",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 24,
         "rank": 5
     },
-    "#banishing_blade": {
+    "shooting_star_immune": {
+        "name": "Shooting Star (target Immune)",
+        "target": "Single monster",
+        "can_miss": false,
+        "base_damage": 27,
+        "timer": 4000,
+        "rank": 5
+    },
+    "banishing_blade": {
         "name": "Banishing Blade",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 28,
-        "element": "",
         "statuses": {
             "Power Break": 254,
             "Magic Break": 254,
             "Armor Break": 254,
             "Mental Break": 254
         },
+        "timer": 4000,
         "rank": 6
     },
-    "#banishing_blade_fail": {
+    "banishing_blade_fail": {
         "name": "Banishing Blade fail",
+        "target": "Single monster",
         "can_miss": false,
         "base_damage": 28,
-        "element": "",
         "rank": 6
     },
-    "#tornado": {
+    "banishing_blade_immune": {
+        "name": "Banishing Blade (target Immune)",
+        "target": "Single monster",
+        "can_miss": false,
+        "base_damage": 28,
+        "timer": 4000,
+        "rank": 6
+    },
+    "tornado": {
         "name": "Tornado",
-        "multitarget": "",
-        "can_miss": "",
-        "does_damage": "",
-        "hits": "",
-        "can_crit": "",
-        "damage_type": "",
+        "target": "All monsters",
+        "can_miss": false,
+        "hits": 2,
         "base_damage": 20,
-        "element": "",
+        "timer": 4000,
         "rank": 7
     },
-    "#tornado_fail": {
+    "tornado_fail": {
         "name": "Tornado fail",
-        "has_target": "",
-        "multitarget": "",
-        "can_miss": "",
-        "does_damage": "",
-        "hits": "",
-        "can_crit": "",
-        "damage_type": "",
+        "target": "All monsters",
+        "can_miss": false,
         "base_damage": 20,
-        "element": "",
         "rank": 7
     },
     "jump": {
@@ -1599,7 +1672,7 @@
     },
     "fire_breath": {
         "name": "Fire Breath",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Special Magic",
         "base_damage": 24,
@@ -1623,7 +1696,7 @@
     },
     "stone_breath": {
         "name": "Stone Breath",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1632,7 +1705,7 @@
     },
     "aqua_breath": {
         "name": "Aqua Breath",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Special Magic",
         "base_damage": 26,
@@ -1641,11 +1714,14 @@
     "doom": {
         "name": "Doom",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "statuses": {
+            "Doom": 255
+        }
     },
     "white_wind": {
         "name": "White Wind",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Healing",
@@ -1653,7 +1729,7 @@
     },
     "bad_breath": {
         "name": "Bad Breath",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1666,7 +1742,7 @@
     },
     "mighty_guard": {
         "name": "Mighty Guard",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -1681,7 +1757,7 @@
     },
     "nova": {
         "name": "Nova",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Special Magic",
         "base_damage": 70,
@@ -1696,44 +1772,19 @@
     },
     "#attack_reels": {
         "name": "Attack Reels",
-        "has_target": "",
-        "multitarget": "",
-        "can_miss": "",
-        "does_damage": "",
-        "hits": "",
-        "can_crit": "",
-        "base_damage": 10,
-        "element": "",
         "rank": 4
     },
     "#status_reels": {
         "name": "Status Reels",
-        "has_target": "",
-        "multitarget": "",
-        "can_miss": "",
-        "does_damage": "",
-        "hits": "",
-        "can_crit": "",
-        "base_damage": 34,
-        "element": "",
         "rank": 4
     },
     "#aurochs_reels": {
         "name": "Aurochs Reels",
-        "has_target": "",
-        "multitarget": "",
-        "can_miss": "",
-        "does_damage": "",
-        "hits": "",
-        "can_crit": "",
-        "base_damage": 72,
-        "element": "",
         "rank": 4
     },
     "fire_fury": {
         "name": "Fire Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1743,8 +1794,7 @@
     },
     "thunder_fury": {
         "name": "Thunder Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1754,8 +1804,7 @@
     },
     "water_fury": {
         "name": "Water Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1765,8 +1814,7 @@
     },
     "blizzard_fury": {
         "name": "Blizzard Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1776,8 +1824,7 @@
     },
     "fira_fury": {
         "name": "Fira Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1787,8 +1834,7 @@
     },
     "thundara_fury": {
         "name": "Thundara Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1798,8 +1844,7 @@
     },
     "watera_fury": {
         "name": "Watera Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1809,8 +1854,7 @@
     },
     "blizzara_fury": {
         "name": "Blizzara Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1820,8 +1864,7 @@
     },
     "firaga_fury": {
         "name": "Firaga Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1831,8 +1874,7 @@
     },
     "thundaga_fury": {
         "name": "Thundaga Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1842,8 +1884,7 @@
     },
     "waterga_fury": {
         "name": "Waterga Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1853,8 +1894,7 @@
     },
     "blizzaga_fury": {
         "name": "Blizzaga Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1864,8 +1904,7 @@
     },
     "bio_fury": {
         "name": "Bio Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "can_crit": false,
@@ -1878,7 +1917,7 @@
     },
     "#demi_fury": {
         "name": "Demi Fury",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Current)",
@@ -1887,8 +1926,7 @@
     },
     "death_fury": {
         "name": "Death Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "can_crit": false,
@@ -1901,8 +1939,7 @@
     },
     "drain_fury": {
         "name": "Drain Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1911,8 +1948,7 @@
     },
     "osmose_fury": {
         "name": "Osmose Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1921,8 +1957,7 @@
     },
     "flare_fury": {
         "name": "Flare Fury",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1931,7 +1966,7 @@
     },
     "ultima_fury": {
         "name": "Ultima Fury",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Magic",
@@ -1939,20 +1974,11 @@
         "rank": 10
     },
     "#mix": {
-        "name": "Mix",
-        "has_target": "-",
-        "multitarget": "-",
-        "can_miss": "-",
-        "does_damage": "-",
-        "hits": "-",
-        "can_crit": false,
-        "damage_type": null,
-        "base_damage": null,
-        "rank": ""
+        "name": "Mix"
     },
     "ultra_potion": {
         "name": "Ultra Potion",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
@@ -1961,14 +1987,14 @@
     },
     "panacea": {
         "name": "Panacea",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "ultra_cure": {
         "name": "Ultra Cure",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
@@ -1977,7 +2003,7 @@
     },
     "mix_mega_phoenix": {
         "name": "Mega Phoenix",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
@@ -1986,7 +2012,7 @@
     },
     "final_phoenix": {
         "name": "Final Phoenix",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
@@ -1995,7 +2021,7 @@
     },
     "mix_elixir": {
         "name": "Elixir",
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 2,
         "can_crit": false,
@@ -2005,7 +2031,7 @@
     },
     "mix_megalixir": {
         "name": "Megalixir",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "hits": 2,
         "can_crit": false,
@@ -2015,7 +2041,7 @@
     },
     "super_elixir": {
         "name": "Super Elixir",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "hits": 2,
         "can_crit": false,
@@ -2025,7 +2051,7 @@
     },
     "final_elixir": {
         "name": "Final Elixir",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "hits": 2,
         "can_crit": false,
@@ -2035,8 +2061,7 @@
     },
     "nulall": {
         "name": "NulAll",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "Single character",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -2049,7 +2074,7 @@
     },
     "mega_nulall": {
         "name": "Mega NulAll",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -2062,7 +2087,7 @@
     },
     "hyper_nulall": {
         "name": "Hyper NulAll",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -2075,7 +2100,7 @@
     },
     "ultra_nulall": {
         "name": "Ultra NulAll",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -2088,51 +2113,49 @@
     },
     "vitality": {
         "name": "Vitality",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "mega_vitality": {
         "name": "Mega Vitality",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "hyper_vitality": {
         "name": "Hyper Vitality",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "mana": {
         "name": "Mana",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "mega_mana": {
         "name": "Mega Mana",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "hyper_mana": {
         "name": "Hyper Mana",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "mighty_wall": {
         "name": "Mighty Wall",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -2143,7 +2166,7 @@
     },
     "mighty_g": {
         "name": "Mighty G",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -2155,7 +2178,7 @@
     },
     "super_mighty_g": {
         "name": "Super Mighty G",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -2168,7 +2191,7 @@
     },
     "hyper_mighty_g": {
         "name": "Hyper Mighty G",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
@@ -2181,66 +2204,63 @@
     },
     "freedom": {
         "name": "Freedom",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "freedom_x": {
         "name": "Freedom X",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "hero_drink": {
         "name": "Hero Drink",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "miracle_drink": {
         "name": "Miracle Drink",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "quartet_of_9": {
         "name": "Quartet of 9",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "trio_of_9999": {
         "name": "Trio of 9999",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "hot_spurs": {
         "name": "Hot Spurs",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "eccentrick": {
         "name": "Eccentrick",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "does_damage": false,
         "rank": 6
     },
     "mix_grenade": {
         "name": "Grenade",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 7,
@@ -2248,7 +2268,7 @@
     },
     "mix_frag_grenade": {
         "name": "Frag Grenade",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 16,
@@ -2259,7 +2279,7 @@
     },
     "blaster_mine": {
         "name": "Blaster Mine",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 22,
@@ -2272,7 +2292,7 @@
     },
     "hazardous_shell": {
         "name": "Hazardous Shell",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 45,
@@ -2286,7 +2306,7 @@
     },
     "pineapple": {
         "name": "Pineapple",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 27,
@@ -2294,7 +2314,7 @@
     },
     "calamity_bomb": {
         "name": "Calamity Bomb",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 72,
@@ -2312,7 +2332,7 @@
     },
     "cluster_bomb": {
         "name": "Cluster Bomb",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 100,
@@ -2320,7 +2340,7 @@
     },
     "potato_masher": {
         "name": "Potato Masher",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 54,
@@ -2328,7 +2348,7 @@
     },
     "tallboy": {
         "name": "Tallboy",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 180,
@@ -2336,7 +2356,7 @@
     },
     "chaos_grenade": {
         "name": "Chaos Grenade",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "damage_type": "Item",
         "base_damage": 146,
@@ -2355,7 +2375,7 @@
     },
     "nega_burst": {
         "name": "Nega Burst",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Current)",
@@ -2364,7 +2384,7 @@
     },
     "black_hole": {
         "name": "Black Hole",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Percentage (Current)",
@@ -2373,7 +2393,7 @@
     },
     "sunburst": {
         "name": "Sunburst",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Fixed",
@@ -2382,8 +2402,7 @@
     },
     "heat_blaster": {
         "name": "Heat Blaster",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 5,
         "can_crit": false,
@@ -2394,8 +2413,7 @@
     },
     "firestorm": {
         "name": "Firestorm",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 6,
         "can_crit": false,
@@ -2406,8 +2424,7 @@
     },
     "burning_soul": {
         "name": "Burning Soul",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 9,
         "can_crit": false,
@@ -2418,8 +2435,7 @@
     },
     "brimstone": {
         "name": "Brimstone",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 3,
         "can_crit": false,
@@ -2436,8 +2452,7 @@
     },
     "abaddon_flame": {
         "name": "Abaddon Flame",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 3,
         "can_crit": false,
@@ -2458,8 +2473,7 @@
     },
     "thunderbolt": {
         "name": "Thunderbolt",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 5,
         "can_crit": false,
@@ -2470,8 +2484,7 @@
     },
     "rolling_thunder": {
         "name": "Rolling Thunder",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 6,
         "can_crit": false,
@@ -2482,8 +2495,7 @@
     },
     "lightning_bolt": {
         "name": "Lightning Bolt",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 9,
         "can_crit": false,
@@ -2494,8 +2506,7 @@
     },
     "electroshock": {
         "name": "Electroshock",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 3,
         "can_crit": false,
@@ -2512,8 +2523,7 @@
     },
     "thunderblast": {
         "name": "Thunderblast",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 3,
         "can_crit": false,
@@ -2534,8 +2544,7 @@
     },
     "waterfall": {
         "name": "Waterfall",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 5,
         "can_crit": false,
@@ -2546,8 +2555,7 @@
     },
     "flash_flood": {
         "name": "Flash Flood",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 6,
         "can_crit": false,
@@ -2558,8 +2566,7 @@
     },
     "tidal_wave": {
         "name": "Tidal Wave",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 9,
         "can_crit": false,
@@ -2570,8 +2577,7 @@
     },
     "aqua_toxin": {
         "name": "Aqua Toxin",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 3,
         "can_crit": false,
@@ -2588,8 +2594,7 @@
     },
     "dark_rain": {
         "name": "Dark Rain",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 3,
         "can_crit": false,
@@ -2610,8 +2615,7 @@
     },
     "snow_flurry": {
         "name": "Snow Flurry",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 5,
         "can_crit": false,
@@ -2622,8 +2626,7 @@
     },
     "icefall": {
         "name": "Icefall",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 6,
         "can_crit": false,
@@ -2634,8 +2637,7 @@
     },
     "winter_storm": {
         "name": "Winter Storm",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 9,
         "can_crit": false,
@@ -2646,8 +2648,7 @@
     },
     "black_ice": {
         "name": "Black Ice",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 3,
         "can_crit": false,
@@ -2664,8 +2665,7 @@
     },
     "krysta": {
         "name": "Krysta",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All",
         "can_miss": false,
         "hits": 3,
         "can_crit": false,
@@ -2686,7 +2686,7 @@
     },
     "#requiem": {
         "name": "Requiem",
-        "multitarget": true,
+        "target": "All",
         "can_miss": false,
         "can_crit": "",
         "damage_type": "Magic",
@@ -2695,7 +2695,7 @@
     },
     "energy_ray": {
         "name": "Energy Ray",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Special Magic",
@@ -2704,7 +2704,7 @@
     },
     "energy_blast": {
         "name": "Energy Blast",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Special Magic",
@@ -2713,7 +2713,7 @@
     },
     "hellfire": {
         "name": "Hellfire",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Special Magic",
@@ -2723,7 +2723,7 @@
     },
     "thor's_hammer": {
         "name": "Thor's Hammer",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Special Magic",
@@ -2733,7 +2733,7 @@
     },
     "diamond_dust": {
         "name": "Diamond Dust",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Special Magic",
@@ -2743,7 +2743,7 @@
     },
     "mega_flare": {
         "name": "Mega Flare",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
         "can_crit": false,
         "damage_type": "Special Magic",
@@ -2752,8 +2752,7 @@
     },
     "oblivion": {
         "name": "Oblivion",
-        "multitarget": true,
-        "random_targeting": true,
+        "target": "All monsters",
         "can_miss": false,
         "hits": 16,
         "can_crit": false,
@@ -2762,8 +2761,9 @@
     },
     "delta_attack": {
         "name": "Delta Attack",
-        "multitarget": true,
+        "target": "All monsters",
         "can_miss": false,
+        "hits": 6,
         "can_crit": false,
         "base_damage": 10,
         "rank": 6
@@ -2784,5 +2784,12 @@
         "name": "Attack (NoCrit)",
         "can_crit": false,
         "uses_weapon": true
+    },
+    "does_nothing": {
+        "name": "Does Nothing",
+        "target": "Self",
+        "can_miss": false,
+        "does_damage": false,
+        "rank": 3
     }
 }

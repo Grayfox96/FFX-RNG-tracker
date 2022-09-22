@@ -79,6 +79,8 @@ class Status(StringEnum):
     EJECT = 'Eject'
     DOOM = 'Doom'
     CURSE = 'Curse'
+    DELAY_WEAK = 'Delay (Weak)'
+    DELAY_STRONG = 'Delay (Strong)'
 
 
 class Character(StringEnum):
@@ -118,13 +120,38 @@ class DamageType(StringEnum):
     STRENGTH = 'Strength'
     SPECIAL_STRENGTH = 'Special Strength'
     MAGIC = 'Magic'
+    MAGIC_MP = 'Magic (MP)'
     SPECIAL_MAGIC = 'Special Magic'
     ITEM = 'Item'
+    ITEM_MP = 'Item (MP)'
     FIXED = 'Fixed'
     PERCENTAGE_TOTAL = 'Percentage (Total)'
     PERCENTAGE_CURRENT = 'Percentage (Current)'
     HEALING = 'Healing'
     GIL = 'Gil'
+
+
+class TargetType(StringEnum):
+    SELF = 'Self'
+    SINGLE = 'Single'
+    ALL = 'All'
+    SINGLE_CHARACTER = 'Single character'
+    ALL_CHARACTERS = 'All characters'
+    SINGLE_MONSTER = 'Single monster'
+    ALL_MONSTERS = 'All monsters'
+    LAST_CHARACTER = 'Last character'
+    LOWEST_HP_CHARACTER = 'Lowest HP character'
+
+
+class MonsterSlot(IntEnum):
+    MONSTER_1 = 0
+    MONSTER_2 = 1
+    MONSTER_3 = 2
+    MONSTER_4 = 3
+    MONSTER_5 = 4
+    MONSTER_6 = 5
+    MONSTER_7 = 6
+    MONSTER_8 = 7
 
 
 class Stat(StringEnum):
@@ -492,6 +519,11 @@ ELEMENTAL_AFFINITY_MODIFIERS = {
 EQUIPMENT_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 5)
 EQUIPMENT_EMPTY_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 400)
 
+TEMPORARY_STATS = {
+    Stat.CHEER,
+    Stat.FOCUS,
+}
+
 NO_RNG_STATUSES = {
     Status.DEFEND,
     Status.SHIELD,
@@ -502,13 +534,14 @@ NO_RNG_STATUSES = {
     Status.SPEED_DISTILLER,
     Status.ABILITY_DISTILLER,
     Status.GUARD,
-    Status.SENTINEL,
     Status.SCAN,
     Status.LIFE,
     Status.AUTOLIFE,
     Status.EJECT,
     Status.DOOM,
     Status.CURSE,
+    Status.DELAY_WEAK,
+    Status.DELAY_STRONG,
 }
 TEMPORARY_STATUSES = {
     Status.DEFEND,

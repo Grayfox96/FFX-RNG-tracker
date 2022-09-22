@@ -17,8 +17,11 @@ class Heal(Event):
         self._heal()
 
     def __str__(self) -> str:
-        characters = [str(c) for c in self.characters]
-        string = f'Healed {", ".join(characters)} by {self.amount}'
+        if len(self.characters) == len(tuple(Character)) - 1:
+            characters = 'everyone'
+        else:
+            characters = ', '.join([str(c) for c in self.characters])
+        string = f'Healed {characters} by {self.amount}'
         return string
 
     def _heal(self) -> None:

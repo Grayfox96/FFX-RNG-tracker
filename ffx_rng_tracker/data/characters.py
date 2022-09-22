@@ -114,6 +114,10 @@ class CharacterState:
         self._current_mp = value
 
     @property
+    def armored(self) -> bool:
+        return False
+
+    @property
     def in_crit(self) -> bool:
         half_hp = self.max_hp / 2
         return self.current_hp < half_hp

@@ -21,7 +21,7 @@ class EventParser:
     def parse(self, text: str) -> list[Event]:
         """Parse through the input text and returns a list of events."""
         events = []
-        for line in text.split('\n'):
+        for line in text.splitlines():
             event = self.parse_line(line)
             events.append(event)
         return events

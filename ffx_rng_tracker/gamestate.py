@@ -1,6 +1,7 @@
 from .configs import Configs
 from .data.characters import CHARACTERS_DEFAULTS, CharacterState
 from .data.constants import BASE_COMPATIBILITY, Character
+from .data.monsters import MONSTERS, MonsterState
 from .tracker import FFXRNGTracker
 
 
@@ -28,6 +29,8 @@ class GameState:
     def reset(self) -> None:
         self._rng_tracker.reset()
         self.party = [Character.TIDUS, Character.AURON]
+        self.monster_party = [MonsterState(MONSTERS['dummy'])]
+        self.last_character = self.characters[Character.TIDUS]
         self.compatibility = BASE_COMPATIBILITY[Configs.game_version]
         self.equipment_drops = 0
         self.encounters_count = 0

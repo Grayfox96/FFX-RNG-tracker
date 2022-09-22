@@ -102,7 +102,7 @@
         },
         "lancet_tutorial": {
             "name": "Lancet tutorial",
-            "formation": ["ragora"],
+            "formation": ["ragora_2"],
             "forced_condition": "Normal"
         },
         "lord_ochu": {

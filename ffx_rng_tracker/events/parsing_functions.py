@@ -1,10 +1,11 @@
 from typing import Callable
 
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
-from ..data.constants import Autoability, Character, EquipmentType, Stat
+from ..data.constants import (Autoability, Character, EquipmentType, Stat,
+                              TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
-from ..data.monsters import MONSTERS
+from ..data.monsters import MONSTERS, MonsterState
 from ..errors import EventParsingError
 from ..gamestate import GameState
 from ..utils import search_stringenum, stringify
@@ -184,29 +185,12 @@ def parse_action(gs: GameState,
                  character_name: str = '',
                  action_name: str = '',
                  target_name: str = '',
+                 time_remaining: str = '0',
                  *_,
                  ) -> CharacterAction | Escape:
     usage = 'Usage: [character] [action name] (target)'
     if not character_name or not action_name:
         raise EventParsingError(usage)
-
-    if target_name.endswith('_c'):
-        try:
-            target = search_stringenum(Character, target_name[:-2])
-        except ValueError:
-            raise EventParsingError(f'No target named {target_name}')
-        target = gs.characters[target]
-    elif target_name:
-        try:
-            target = MONSTERS[target_name]
-        except KeyError:
-            try:
-                target = search_stringenum(Character, target_name)
-            except ValueError:
-                raise EventParsingError(f'No target named {target_name}')
-            target = gs.characters[target]
-    else:
-        target = None
 
     try:
         character = search_stringenum(Character, character_name)
@@ -216,18 +200,46 @@ def parse_action(gs: GameState,
     character = gs.characters[character]
 
     if action_name == 'escape':
-        if character.index > 6:
-            raise EventParsingError(
-                f'Character "{character}" can\'t perform action "Escape"')
         return Escape(gs, character)
-    else:
+    try:
+        action = ACTIONS[action_name]
+    except KeyError:
+        raise EventParsingError(f'No action named "{action_name}"')
+
+    if action.target is TargetType.SELF:
+        target = character
+    elif target_name.startswith('m') and target_name[1:].isdigit():
+        target_index = int(target_name[1:]) - 1
         try:
-            action = ACTIONS[action_name]
+            target = gs.monster_party[target_index]
+        except IndexError:
+            raise EventParsingError(
+                f'Monster slot must be between 1 and {len(gs.monster_party)}')
+    elif target_name.endswith('_c'):
+        try:
+            target = search_stringenum(Character, target_name[:-2])
+        except ValueError:
+            raise EventParsingError(f'No target named {target_name}')
+        target = gs.characters[target]
+    elif target_name:
+        try:
+            target = MonsterState(MONSTERS[target_name])
         except KeyError:
-            raise EventParsingError(f'No action named "{action_name}"')
-        if target is None:
-            raise EventParsingError(f'Action "{action}" requires a target.')
-        return CharacterAction(gs, character, action, target)
+            try:
+                target = search_stringenum(Character, target_name)
+            except ValueError:
+                raise EventParsingError(f'No target named {target_name}')
+            target = gs.characters[target]
+    else:
+        target = None
+
+    if target is None:
+        raise EventParsingError(f'Action "{action}" requires a target.')
+    try:
+        time_remaining = int(time_remaining)
+    except ValueError:
+        time_remaining = 0
+    return CharacterAction(gs, character, action, target, time_remaining)
 
 
 def parse_stat_update(gs: GameState,
@@ -305,29 +317,34 @@ def parse_compatibility_update(gs: GameState,
 
 def parse_monster_action(gs: GameState,
                          monster_name: str = '',
-                         slot: str = '',
                          action_name: str = '',
                          *_,
                          ) -> MonsterAction:
-    usage = 'Usage: monsteraction [monster_name] [slot] [action_name]'
+    usage = 'Usage: monsteraction [monster slot/name] [action_name]'
+
+    if monster_name.isdecimal():
+        slot = int(monster_name)
+        if not (1 <= slot <= 8):
+            raise EventParsingError('Slot must be between 1 and 8')
+        slot -= 1
+        try:
+            monster = gs.monster_party[slot]
+        except IndexError:
+            raise EventParsingError(
+                f'Slot must be between 1 and {len(gs.monster_party)}')
+    else:
+        try:
+            monster = MONSTERS[monster_name]
+        except KeyError:
+            raise EventParsingError(usage)
+        monster = MonsterState(monster)
     try:
-        monster = MONSTERS[monster_name]
+        action = monster.monster.actions[action_name]
     except KeyError:
-        raise EventParsingError(usage)
-    try:
-        slot = int(slot)
-    except ValueError:
-        raise EventParsingError('Slot must be an integer')
-    if not (1 <= slot <= 8):
-        raise EventParsingError('Slot must be between 1 and 8')
-    slot -= 1
-    try:
-        action = monster.actions[action_name]
-    except KeyError:
-        action_names = ', '.join(str(a) for a in monster.actions.values())
+        action_names = ', '.join(str(a) for a in monster.monster.actions)
         raise EventParsingError(f'Available actions for {monster}: '
                                 f'{action_names}')
-    return MonsterAction(gs, monster, action, slot)
+    return MonsterAction(gs, monster, action)
 
 
 def parse_equipment_change(gs: GameState,
@@ -350,9 +367,9 @@ def parse_equipment_change(gs: GameState,
     try:
         slots = int(slots)
     except ValueError:
-        raise EventParsingError('Slots needs to be a number between 0 and 4')
+        raise EventParsingError('Slots must be a number between 0 and 4')
     if not (0 <= slots <= 4):
-        raise EventParsingError('Slots needs to be a number between 0 and 4')
+        raise EventParsingError('Slots must be a number between 0 and 4')
     abilities = []
     for ability_name in ability_names:
         if len(abilities) >= 4:

@@ -2,16 +2,15 @@ import json
 from dataclasses import dataclass, field
 
 from ..utils import open_cp1252
-from .constants import DamageType, Element, Status
+from .constants import (Character, DamageType, Element, MonsterSlot, Status,
+                        TargetType)
 from .file_functions import get_resource_path
 
 
 @dataclass(frozen=True)
 class Action:
     name: str
-    has_target: bool = True
-    multitarget: bool = False
-    random_targeting: bool = False
+    target: TargetType | Character | MonsterSlot = TargetType.SINGLE
     can_miss: bool = True
     accuracy: int = 90
     does_damage: bool = True
@@ -23,6 +22,8 @@ class Action:
     base_damage: int = 0
     element: Element | None = None
     statuses: dict[Status, int] = field(default_factory=dict)
+    drains: bool = False
+    timer: int = 0
     rank: int = 3
 
     def __str__(self) -> str:
@@ -40,6 +41,16 @@ class YojimboAction:
 
 
 def _get_action(action: dict[str, str | dict[str, int]]) -> Action:
+    if action.get('target') is not None:
+        try:
+            target = TargetType(action['target'])
+        except ValueError:
+            try:
+                target = Character(action['target'])
+            except ValueError:
+                target = MonsterSlot(action['target'])
+        action['target'] = target
+
     if action.get('damage_type') is not None:
         action['damage_type'] = DamageType(action['damage_type'])
 
