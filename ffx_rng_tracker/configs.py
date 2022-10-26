@@ -26,15 +26,15 @@ class Color:
 
 
 class Configs:
-    seed: int | None
-    game_version: GameVersion
-    ps2_seeds_minutes: int
-    speedrun_category: SpeedrunCategory
-    use_dark_mode: bool
-    font_size: int
-    use_theme: bool
+    seed: int | None = None
+    game_version: GameVersion = GameVersion.HD
+    ps2_seeds_minutes: int = 3
+    speedrun_category: SpeedrunCategory = SpeedrunCategory.ANYPERCENT
+    use_dark_mode: bool = False
+    font_size: int = 9
+    use_theme: bool = True
     colors: dict[str, Color] = {}
-    important_monsters: list[str]
+    important_monsters: list[str] = []
     ui_widgets: dict[str, UIWidgetConfigs] = {}
     _parser = configparser.ConfigParser()
     _configs_file = 'ffx_rng_tracker_configs.ini'
@@ -151,7 +151,7 @@ class Configs:
         return configs
 
     @classmethod
-    def _init_configs(cls) -> None:
+    def init_configs(cls) -> None:
         if not os.path.exists(cls._configs_file):
             shutil.copyfile(
                 get_resource_path(cls._default_configs_file),
@@ -160,4 +160,4 @@ class Configs:
         Configs.load_configs()
 
 
-Configs._init_configs()
+Configs.init_configs()

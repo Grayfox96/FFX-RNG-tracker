@@ -1,13 +1,13 @@
 from tkinter import font
 
 from ..configs import Configs
-from .base_widgets import DEFAULT_FONT_ARGS, ScrollableText
+from .base_widgets import ScrollableText, get_default_font_args
 
 
 class TkOutputWidget(ScrollableText):
 
     def __init__(self, parent, *args, **kwargs) -> None:
-        kwargs.setdefault('font', font.Font(**DEFAULT_FONT_ARGS))
+        kwargs.setdefault('font', font.Font(**get_default_font_args()))
         kwargs.setdefault('state', 'disabled')
         kwargs.setdefault('wrap', 'word')
         super().__init__(parent, *args, **kwargs)

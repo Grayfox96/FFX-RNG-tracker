@@ -124,11 +124,8 @@ class TkEncountersInputWidget(tk.Frame):
         return
 
     def register_callback(self, callback_func: Callable) -> None:
-        self.initiative_equip.config(command=callback_func)
-        self.start_button.config(command=callback_func)
-        for slider in self.sliders.values():
-            slider.config(command=callback_func)
-        self.callback_func = callback_func
+        callback_func()
+        self.after(100, self.register_callback, callback_func)
 
 
 class TkEncountersOutputWidget(TkOutputWidget):
@@ -252,11 +249,8 @@ class TkEncountersPlannerInputWidget(tk.Frame):
         return
 
     def register_callback(self, callback_func: Callable) -> None:
-        self.searchbar.register_callback(callback_func)
-        self.initiative_equip.config(command=callback_func)
-        for slider in self.sliders:
-            slider.config(command=callback_func)
-        self.callback_func = callback_func
+        callback_func()
+        self.after(100, self.register_callback, callback_func)
 
 
 class TkEncountersPlanner(tk.Frame):
@@ -354,14 +348,8 @@ class TkEncountersTableInputWidget(tk.Frame):
         return
 
     def register_callback(self, callback_func: Callable) -> None:
-        self.searchbar.register_callback(callback_func)
-        self.initiative_equip.config(command=callback_func)
-        self.random_encounters.config(command=callback_func)
-        self.forced_encounters.config(command=callback_func)
-        self.simulated_encounters.config(command=callback_func)
-        for button in self.zones_buttons.values():
-            button.config(command=callback_func)
-        self.shown_encounters.config(command=callback_func)
+        callback_func()
+        self.after(100, self.register_callback, callback_func)
 
 
 class TkEncountersTable(tk.Frame):

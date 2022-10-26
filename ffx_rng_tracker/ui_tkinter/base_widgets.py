@@ -206,4 +206,9 @@ class TkConfirmPopup:
         self.confirmed = messagebox.askokcancel(message=output)
 
 
-DEFAULT_FONT_ARGS = dict(family='Courier New', size=Configs.font_size)
+def get_default_font_args() -> dict[str, str]:
+    default_font_args = {
+        'family': 'Courier New',
+        'size': Configs.font_size,
+    }
+    return default_font_args

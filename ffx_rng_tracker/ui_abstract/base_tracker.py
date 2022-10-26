@@ -28,8 +28,6 @@ class TrackerUI(ABC):
         self.input_widget.set_input(self.get_default_input_data())
         self.input_widget.register_callback(self.callback)
 
-        self.callback()
-
     def get_default_input_data(self) -> str:
         """Returns the default input data."""
         return get_notes(self.notes_file, self.parser.gamestate.seed)
