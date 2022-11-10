@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 
 from ..data.constants import TEMPORARY_STATS, Character, Stat, Status
 from ..data.monsters import MonsterState
+from ..ui_functions import ctb_sorter
 from .main import Event
 
 
@@ -15,32 +16,56 @@ class EndEncounter(Event):
         default_factory=list, init=False, repr=False)
     _temp_stats: dict[Character, dict[Stat, int]] = field(
         default_factory=dict, init=False, repr=False)
+    _old_characters_ctbs: dict[Character, int] = field(
+        default_factory=dict, init=False, repr=False)
+    _old_monsters_ctbs: list[int] = field(
+        default_factory=list, init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.ctbs_string = self._get_ctbs_string()
         self._cleanup()
 
     def __str__(self) -> str:
-        hps = ', '.join([f'{c} {hp}' for c, hp in self._hps.items()])
+        hps = ' '.join([f'{c[:2]:2}[{hp}]' for c, hp in self._hps.items()])
         if not hps:
-            hps = 'everyone is at max HP'
-        dead_monsters = ', '.join([f'{m}' for m in self._old_monster_party
-                                   if m.dead])
-        if not dead_monsters:
-            dead_monsters = 'none'
-        return f'Characters hps: {hps} | Dead monsters: {dead_monsters}'
+            hps = 'Characters at full HP'
+        monsters_hps = ' '.join([f'{m.monster}[{m.current_hp}]'
+                                 for m in self._old_monster_party])
+        if not monsters_hps:
+            monsters_hps = 'Monsters at full HP'
+        string = (f'CTBs: {self.ctbs_string} | '
+                  f'Characters HPs: {hps} | '
+                  f'Monsters HPs: {monsters_hps}')
+        return string
+
+    def _get_ctbs_string(self) -> str:
+        characters = []
+        for c, cs in self.gamestate.characters.items():
+            if c in self.gamestate.party and not cs.dead and not cs.inactive:
+                characters.append(cs)
+        monsters = []
+        for m in self.gamestate.monster_party:
+            if not m.dead:
+                monsters.append(m)
+        return ctb_sorter(characters, monsters)
 
     def _cleanup(self) -> None:
         for character, state in self.gamestate.characters.items():
-            if Status.DEATH in state.statuses:
-                state.current_hp = 1
             if state.current_hp < state.max_hp:
                 self._hps[character] = state.current_hp
+            if state.dead:
+                state.current_hp = 1
+            if character in self.gamestate.party:
+                self._old_characters_ctbs[character] = state.ctb
+            state.ctb = 0
             self._statuses[character] = state.statuses.copy()
             state.statuses.clear()
             self._temp_stats[character] = {}
             for stat in TEMPORARY_STATS:
                 self._temp_stats[character][stat] = state.stats[stat]
                 state.stats[stat] = 0
+        for m in self.gamestate.monster_party:
+            self._old_monsters_ctbs.append(m.ctb)
         self._old_monster_party = self.gamestate.monster_party
         self.gamestate.monster_party = []
 
@@ -52,4 +77,6 @@ class EndEncounter(Event):
         for character, stats in self._temp_stats.items():
             for stat, value in stats.items():
                 self.gamestate.characters[character].stats[stat] = value
+        for character, ctb in self._old_characters_ctbs.items():
+            self.gamestate.characters[character].ctb = ctb
         return super().rollback()

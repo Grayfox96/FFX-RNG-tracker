@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field
 
-from ..data.constants import (ICV_BASE, ICV_VARIANCE, Autoability, Character,
+from ..data.constants import (ICV_VARIANCE, Autoability, Character,
                               EncounterCondition, MonsterSlot, Stat)
 from ..data.encounter_formations import (BOSSES, FORMATIONS, SIMULATIONS,
                                          ZONES, Formation, Zone)
 from ..data.monsters import MonsterState
+from ..ui_functions import ctb_sorter
 from .main import Event
 
 
@@ -16,6 +17,7 @@ class Encounter(Event):
     index: int = field(init=False, repr=False)
     party_icvs: dict[Character, int] = field(init=False, repr=False)
     monsters_icvs: list[int] = field(init=False, repr=False)
+    icvs_string: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.formation = self._get_formation()
@@ -25,29 +27,13 @@ class Encounter(Event):
         self._duplicate_monsters_rng_advances()
         self.party_icvs = self._get_party_icvs()
         self.monsters_icvs = self._get_enemies_icvs()
+        self.icvs_string = self._get_icvs_string()
+        self.gamestate.normalize_ctbs()
 
     def __str__(self) -> str:
-        icvs: list[tuple[str, str]] = []
-
-        for character, icv in self.party_icvs.items():
-            c = self.gamestate.characters[character]
-            sort_key = f'{icv:03}0{256 - c.stats[Stat.AGILITY]:03}{c.index:02}'
-            string = f'{character[:2]:2}[{icv:2}]'
-            icvs.append((sort_key, string))
-
-        for index, icv in enumerate(self.monsters_icvs):
-            stats = self.formation[index].stats
-            sort_key = f'{icv:03}1{256 - stats[Stat.AGILITY]:03}{index + 8:02}'
-            string = f'M{index + 1}[{icv:2}]'
-            icvs.append((sort_key, string))
-
-        # sorting by icv, then by party, then by agility and finally by index
-        icvs.sort(key=lambda v: v[0])
-        icvs = [v[1] for v in icvs]
-
         name = FORMATIONS[self.name].name
         string = (f'Encounter {self.index:3} - {name}: {self.formation} '
-                  f'{self.condition} {" ".join(icvs)}')
+                  f'{self.condition} {self.icvs_string}')
         return string
 
     def _get_index(self) -> int:
@@ -96,13 +82,18 @@ class Encounter(Event):
         if self.condition is EncounterCondition.PREEMPTIVE:
             for character in self.gamestate.party:
                 icvs[character] = 0
+                self.gamestate.characters[character].ctb = 0
         elif self.condition is EncounterCondition.AMBUSH:
             for character, state in self.gamestate.characters.items():
                 if character not in self.gamestate.party:
                     continue
-                icvs[character] = ICV_BASE[state.stats[Stat.AGILITY]] * 3
+                icv = state.base_ctb * 3
+                icvs[character] = icv
+                state.ctb = icv
         else:
             for character, state in self.gamestate.characters.items():
+                if character is Character.UNKNOWN:
+                    continue
                 index = min(20 + state.index, 27)
                 if character not in self.gamestate.party:
                     self._advance_rng(index)
@@ -110,37 +101,51 @@ class Encounter(Event):
                 variance_rng = self._advance_rng(index)
                 variance = ICV_VARIANCE[state.stats[Stat.AGILITY]] + 1
                 variance = variance_rng % variance
-                base = ICV_BASE[state.stats[Stat.AGILITY]] * 3
+                base = state.base_ctb * 3
                 icvs[character] = base - variance
+                state.ctb = base - variance
         for character in icvs:
             state = self.gamestate.characters[character]
             if Autoability.FIRST_STRIKE in state.autoabilities:
                 icvs[character] = 0
+                state.ctb = 0
             elif (Autoability.AUTO_HASTE in state.autoabilities
                     or (Autoability.SOS_HASTE in state.autoabilities
                         and state.in_crit)):
-                icvs[character] = icvs[character] // 2
+                icv = icvs[character] // 2
+                icvs[character] = icv
+                state.ctb = icv
         return icvs
 
     def _get_enemies_icvs(self) -> list[int]:
         icvs = []
         if self.condition is EncounterCondition.PREEMPTIVE:
-            for m in self.formation:
-                icvs.append(ICV_BASE[m.stats[Stat.AGILITY]] * 3)
+            for m in self.gamestate.monster_party:
+                icv = m.base_ctb * 3
+                icvs.append(icv)
+                m.ctb = icv
         elif self.condition is EncounterCondition.AMBUSH:
-            for m in self.formation:
+            for m in self.gamestate.monster_party:
                 icvs.append(0)
+                m.ctb = 0
         else:
-            for index, m in enumerate(self.formation):
-                base = ICV_BASE[m.stats[Stat.AGILITY]] * 3 * 100
-                index = index + 28 if index < 7 else 35
+            for m in self.gamestate.monster_party:
+                base = m.base_ctb * 3 * 100
+                index = min(m.slot + 28, 35)
                 variance_rng = self._advance_rng(index)
                 variance = 100 - (variance_rng % 11)
                 icvs.append(base // variance)
+                m.ctb = base // variance
             # empty enemy party slots still advance rng
             for index in range(28 + len(self.formation), 36):
                 self._advance_rng(index)
         return icvs
+
+    def _get_icvs_string(self) -> str:
+        characters = [cs for c, cs in self.gamestate.characters.items()
+                      if c in self.gamestate.party]
+        monsters = self.gamestate.monster_party
+        return ctb_sorter(characters, monsters)
 
     def rollback(self) -> None:
         self.gamestate.encounters_count -= 1

@@ -6,9 +6,9 @@ from ..configs import Configs
 from ..utils import add_bytes, open_cp1252, stringify
 from .actions import MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
-from .constants import (Character, Element, ElementalAffinity, EquipmentSlots,
-                        EquipmentType, GameVersion, MonsterSlot, Rarity, Stat,
-                        Status)
+from .constants import (ICV_BASE, Character, Element, ElementalAffinity,
+                        EquipmentSlots, EquipmentType, GameVersion,
+                        MonsterSlot, Rarity, Stat, Status)
 from .file_functions import get_resource_path
 from .items import ITEMS, ItemDrop
 from .text_characters import TEXT_CHARACTERS
@@ -52,7 +52,7 @@ class MonsterState:
 
     def set_stat(self, stat: Stat, value: int) -> None:
         match stat:
-            case Stat.HP:
+            case Stat.HP | Stat.CTB:
                 max_value = 99999
             case Stat.MP:
                 max_value = 9999
@@ -98,20 +98,30 @@ class MonsterState:
         self._current_mp = value
 
     @property
-    def armored(self) -> bool:
-        return self.monster.armored
+    def base_ctb(self) -> int:
+        return ICV_BASE[self.stats[Stat.AGILITY]]
+
+    @property
+    def ctb(self) -> int:
+        return self.stats[Stat.CTB]
+
+    @ctb.setter
+    def ctb(self, value) -> None:
+        self.set_stat(Stat.CTB, value)
 
     @property
     def dead(self) -> bool:
         dead = (self.current_hp == 0
                 or Status.DEATH in self.statuses
-                or Status.PETRIFY in self.statuses)
+                or Status.PETRIFY in self.statuses
+                or Status.EJECT in self.statuses)
         return dead
 
     def reset(self) -> None:
         self.stats = self.monster.stats.copy()
         for stat in Stat:
             self.stats.setdefault(stat, 0)
+        self.armored = self.monster.armored
         self._current_hp = self.stats[Stat.HP]
         self._current_mp = self.stats[Stat.MP]
         self.statuses = set()

@@ -4,15 +4,6 @@
 # steal [monster_name] (successful steals)
 # death (character)
 # bribe [monster_name] [user]
-#
-# add comments with a # at the start
-# of the line
-#
-# blank lines create a blank line
-#
-# type /// to hide everything
-# above that line
-#
 ///
 # Zanarkand
 party ta
@@ -43,7 +34,7 @@ party tr
 steal klikk
 steal klikk 1
 # steal klikk 1
-# steal klikk 1
+# steal klikk 2
 klikk tidus
 
 # Chain encounter
@@ -141,6 +132,8 @@ sahagin_chief tidus
 # Forced encounters
 party tyakwl
 vouivre_2 auron
+# death tidus
+# death wakka
 garuda_2 auron
 
 # Mi'ihen Highroad
@@ -148,12 +141,11 @@ garuda_2 auron
 raldo_2 auron
 
 # death
-# death
+
+# Old Road
 # death
 
 # Mushroom Rock Road
-# death
-# death
 # death
 
 # Gui 1 (drops are disabled)
@@ -175,6 +167,7 @@ sinspawn_gui seymour
 
 # Moonflow
 # death
+
 extractor wakka
 
 party tyakwlr
@@ -182,14 +175,18 @@ party tyakwlr
 # it dies when you steal from it
 steal ???_3
 ???_3 rikku
+# steal bunyip
 
 # steal bite_bug
 # steal garm
 
+# if you steal from a chest
+# steal ???_2
+# ???_2 rikku
+# roll rng11
+
 # Thunder Plains
-# steal aerouge
 # steal melusine
-steal gold_element
 steal larva
 steal larva
 steal qactuar
@@ -251,14 +248,11 @@ party takwlr
 
 # steal alcyone
 # steal cactuar
-steal zu_2
+steal zu
 steal sand_wolf
 steal sand_worm
 
 # Home
-# Guado Guardian n.3 is in Home
-# and Airship encounters
-
 # Fight 1
 steal bomb_2
 steal bomb_2
@@ -353,6 +347,7 @@ roll rng11 2
 
 # Via Purifico underwater
 party twr
+
 death ???
 evrae_altana tidus
 
@@ -371,6 +366,7 @@ party tyakwlr
 death valefor
 # death rikku
 # death kimahri
+# death shiva
 seymour_natus shiva
 
 # Calm Lands

@@ -7,8 +7,8 @@ from .autoabilities import (AEON_RIBBON_IMMUNITIES, ELEMENTAL_EATERS,
                             ELEMENTAL_PROOFS, ELEMENTAL_WARDS, HP_BONUSES,
                             MP_BONUSES, RIBBON_IMMUNITIES, STATUS_PROOFS,
                             STATUS_WARDS)
-from .constants import (Autoability, Character, Element, ElementalAffinity,
-                        EquipmentType, Stat, Status)
+from .constants import (ICV_BASE, Autoability, Character, Element,
+                        ElementalAffinity, EquipmentType, Stat, Status)
 from .equipment import Equipment
 from .file_functions import get_resource_path
 
@@ -30,6 +30,7 @@ class CharacterState:
         return str(self.character)
 
     def __post_init__(self) -> None:
+        self.armored = False
         self._weapon = Equipment(
             owner=self.character,
             type_=EquipmentType.WEAPON,
@@ -58,7 +59,7 @@ class CharacterState:
 
     def set_stat(self, stat: Stat, value: int) -> None:
         match stat:
-            case Stat.HP:
+            case Stat.HP | Stat.CTB:
                 max_value = 99999
             case Stat.MP:
                 max_value = 9999
@@ -82,6 +83,8 @@ class CharacterState:
         else:
             max_value = 9999
         max_hp = self.stats[Stat.HP] * self._hp_multiplier // 100
+        if Status.MAX_HP_X_2 in self.statuses:
+            max_hp = max_hp * 2
         return min(max_value, max_hp)
 
     @property
@@ -102,6 +105,8 @@ class CharacterState:
         else:
             max_value = 999
         max_mp = self.stats[Stat.MP] * self._mp_multiplier // 100
+        if Status.MAX_MP_X_2 in self.statuses:
+            max_mp = max_mp * 2
         return min(max_value, max_mp)
 
     @property
@@ -114,13 +119,34 @@ class CharacterState:
         self._current_mp = value
 
     @property
-    def armored(self) -> bool:
-        return False
+    def base_ctb(self) -> int:
+        return ICV_BASE[self.stats[Stat.AGILITY]]
+
+    @property
+    def ctb(self) -> int:
+        return self.stats[Stat.CTB]
+
+    @ctb.setter
+    def ctb(self, value) -> None:
+        self.set_stat(Stat.CTB, value)
 
     @property
     def in_crit(self) -> bool:
         half_hp = self.max_hp / 2
         return self.current_hp < half_hp
+
+    @property
+    def dead(self) -> bool:
+        dead = (self.current_hp == 0
+                or Status.DEATH in self.statuses
+                or Status.PETRIFY in self.statuses)
+        return dead
+
+    @property
+    def inactive(self) -> bool:
+        inactive = (Status.ESCAPE in self.statuses
+                    or Status.EJECT in self.statuses)
+        return inactive
 
     @property
     def weapon(self) -> Equipment:
@@ -146,7 +172,7 @@ class CharacterState:
         abilities.extend(self.weapon.abilities)
         abilities.extend(self.armor.abilities)
         # remove duplicate abilities and keep order
-        abilities = [a for a in dict.fromkeys(abilities)]
+        abilities = list(dict.fromkeys(abilities))
         return abilities
 
     def _update_abilities_effects(self) -> None:
@@ -186,6 +212,8 @@ class CharacterState:
 
     def reset(self) -> None:
         self.stats = self.defaults.stats.copy()
+        for stat in Stat:
+            self.stats.setdefault(stat, 0)
         self._current_hp = self.stats[Stat.HP]
         self._current_mp = self.stats[Stat.MP]
         self.statuses = set()

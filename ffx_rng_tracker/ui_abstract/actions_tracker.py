@@ -60,6 +60,8 @@ class ActionsTracker(TrackerUI):
                 case [monster, *params] if (monster.startswith('m')
                                             and monster[1:].isnumeric()):
                     line = ' '.join(['monsteraction', monster[1:], *params])
+                case [equip_type, *params] if equip_type in ('weapon', 'armor'):
+                    line = ' '.join(['equip', equip_type, *params])
                 case _:
                     continue
             input_lines[index] = line

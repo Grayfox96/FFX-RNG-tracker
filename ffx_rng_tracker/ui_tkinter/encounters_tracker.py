@@ -98,10 +98,10 @@ class TkEncountersInputWidget(tk.Frame):
         for encounter in self.encounters:
             if initiative and encounter.initiative:
                 if not initiative_equipped:
-                    input_data.append('equip tidus weapon 1 initiative')
+                    input_data.append('equip weapon tidus 1 initiative')
                     initiative_equipped = True
             elif initiative_equipped:
-                input_data.append('equip tidus weapon 1')
+                input_data.append('equip weapon tidus 1')
                 initiative_equipped = False
             if encounter.label not in self.sliders:
                 encs = 1
@@ -139,6 +139,7 @@ class TkEncountersOutputWidget(TkOutputWidget):
             'ambush': 'Ambush',
             'important monster': important_monsters,
             'encounter': '^#(.+?)?$',
+            'error': '^.*# Error: .+$',
         }
         return patterns
 
@@ -224,7 +225,7 @@ class TkEncountersPlannerInputWidget(tk.Frame):
         initiative_equip = 'selected' in self.initiative_equip.state()
         input_data = []
         if initiative_equip:
-            input_data.append('equip tidus weapon 1 initiative')
+            input_data.append('equip weapon tidus 1 initiative')
         for index, scale in enumerate(self.sliders):
             name = stringify(scale.get_name())
             match name:
@@ -324,7 +325,7 @@ class TkEncountersTableInputWidget(tk.Frame):
 
         input_data = []
         if initiative_equip:
-            input_data.append('equip tidus weapon 1 initiative')
+            input_data.append('equip weapon tidus 1 initiative')
 
         for _ in range(int(self.forced_encounters.get())):
             input_data.append('encounter dummy')

@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from ..data.characters import CharacterState
-from ..data.constants import ICV_BASE, Stat, Status
+from ..data.constants import Autoability, Status
 from .main import Event
 
 
@@ -9,6 +9,7 @@ from .main import Event
 class Escape(Event):
     character: CharacterState
     escape: bool = field(init=False, repr=False)
+    _old_ctb: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.escape = self._get_escape()
@@ -27,13 +28,23 @@ class Escape(Event):
         escape_roll = self._advance_rng(index) & 255
         escape = escape_roll < 191
         if escape:
-            self.character.statuses.add(Status.EJECT)
+            self.character.statuses.add(Status.ESCAPE)
         return escape
 
     def _get_ctb(self) -> int:
-        ctb_base = ICV_BASE[self.character.stats[Stat.AGILITY]]
-        return ctb_base
+        self._old_ctb = self.character.ctb
+        ctb = self.character.base_ctb
+        if (Status.HASTE in self.character.statuses
+                or Autoability.AUTO_HASTE in self.character.autoabilities
+                or (Autoability.SOS_HASTE in self.character.autoabilities
+                    and self.character.in_crit)):
+            ctb = ctb // 2
+        elif Status.SLOW in self.character.statuses:
+            ctb = ctb * 2
+        self.character.ctb += ctb
+        return ctb
 
     def rollback(self) -> None:
-        self.character.statuses.discard(Status.EJECT)
+        self.character.statuses.discard(Status.ESCAPE)
+        self.character.ctb = self._old_ctb
         return super().rollback()

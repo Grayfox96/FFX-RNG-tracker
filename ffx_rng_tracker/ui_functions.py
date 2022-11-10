@@ -1,8 +1,9 @@
 from itertools import product, zip_longest
 
-from .data.constants import EquipmentType
+from .data.characters import CharacterState
+from .data.constants import EquipmentType, Stat
 from .data.encounter_formations import ZONES
-from .data.monsters import Monster
+from .data.monsters import Monster, MonsterState
 from .events.encounter_check import walk
 from .gamestate import GameState
 from .tracker import FFXRNGTracker
@@ -99,3 +100,24 @@ def format_monster_data(monster: Monster) -> str:
         else:
             string += f'{one}\n'
     return string
+
+
+def ctb_sorter(characters: list[CharacterState],
+               monsters: list[MonsterState],
+               ) -> str:
+    ctbs: list[tuple[str, str]] = []
+
+    for c in characters:
+        sort_key = f'{c.ctb:03}0{256 - c.stats[Stat.AGILITY]:03}{c.index:02}'
+        string = f'{c.character[:2]:2}[{c.ctb}]'
+        ctbs.append((sort_key, string))
+
+    for m in monsters:
+        sort_key = f'{m.ctb:03}1{m.slot:02}{256 - m.stats[Stat.AGILITY]:03}'
+        string = f'M{m.slot + 1}[{m.ctb}]'
+        ctbs.append((sort_key, string))
+
+    # sorting by icv, then by party, then by agility and finally by index
+    ctbs.sort(key=lambda v: v[0])
+    ctbs = [v[1] for v in ctbs]
+    return ' '.join(ctbs)

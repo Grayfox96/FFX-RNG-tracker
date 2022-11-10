@@ -34,15 +34,24 @@ def get_encounters(file_path: str, seed: int) -> list[EncounterData]:
                     label = new_label
                     break
 
-        min = int(line[3])
-        default = int(line[4])
-        max = int(line[5])
+        try:
+            minimum = max(int(line[3]), 0)
+        except ValueError:
+            minimum = 1
+        try:
+            default = max(minimum, int(line[4]))
+        except ValueError:
+            default = max(minimum, 1)
+        try:
+            maximum = max(default, int(line[5]))
+        except ValueError:
+            maximum = max(default, 1)
         encounters[label] = EncounterData(
             name=name,
             initiative=initiative,
             label=label,
-            min=min,
+            min=minimum,
             default=default,
-            max=max,
+            max=maximum,
         )
     return list(encounters.values())

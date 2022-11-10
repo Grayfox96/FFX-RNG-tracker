@@ -1,17 +1,18 @@
 # Usage:
 # encounter (preemp/ambush/simulated)
 # encounter [enc name]
-# stat [character] [stat] [(+/-)amount]
 # party [party members initials]
 # summon [aeon name]
+# (equip) [equip_type] [character] [slots] (abilities)
+# (action) [character name] [action] (target)
+# (monsteraction) [monster slot/name] [action_name]
+# heal (character) (amount)
+# endencounter
+# stat [character] [stat] [(+/-)amount]
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
 #     evasion, accuracy, cheer, focus
-# equip [character] [equip_type] [slots] (abilities)
-#
-# [character name] [action] (target)
-# [monster name] [slot] [action]
 
 party tyakwlr
 # -- Zanarkand --
@@ -26,8 +27,6 @@ tidus attack sinscale_6
 encounter
 # auron od, ignore first set of rolls
 # second set is actual rolls
-# damage is calculated as if you had 0 seconds left
-# actual damage is roughly x1.5
 auron dragon_fang sinspawn_ammes
 auron dragon_fang sinscale_6
 auron dragon_fang sinscale_6
@@ -35,12 +34,12 @@ auron dragon_fang sinscale_6
 auron dragon_fang sinscale_6
 auron dragon_fang sinscale_6
 
-auron dragon_fang sinspawn_ammes
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
+auron dragon_fang sinspawn_ammes 2.0
+auron dragon_fang sinscale_6 2.0
+auron dragon_fang sinscale_6 2.0
+auron dragon_fang sinscale_6 2.0
+auron dragon_fang sinscale_6 2.0
+auron dragon_fang sinscale_6 2.0
 
 tidus attack sinspawn_ammes
 # Demi 1
@@ -74,7 +73,7 @@ rikku shining_gem tros
 # -- Besaid --
 
 # Tidus equips Brotherhood
-equip tidus weapon 4 strength_+5%
+weapon tidus 4 strength_+5%
 
 # Besaid tutorial fights
 encounter
@@ -202,7 +201,7 @@ wakka attack extractor
 # Mix tutorial
 encounter
 
-equip wakka weapon 2 first_strike break_damage_limit 
+weapon wakka 2 first_strike break_damage_limit 
 
 # -- Macalania Woods --
 encounter
@@ -342,9 +341,9 @@ wakka attack spectral_keeper
 
 encounter
 wakka attack yunalesca
-tidus defend tidus
+tidus defend
 wakka attack yunalesca
-tidus defend tidus
+tidus defend
 wakka attack yunalesca
 
 encounter

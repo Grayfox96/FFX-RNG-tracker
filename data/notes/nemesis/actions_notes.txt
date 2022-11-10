@@ -1,17 +1,18 @@
 # Usage:
 # encounter (preemp/ambush/simulated)
 # encounter [enc name]
-# stat [character] [stat] [(+/-)amount]
 # party [party members initials]
 # summon [aeon name]
+# (equip) [equip_type] [character] [slots] (abilities)
+# (action) [character name] [action] (target)
+# (monsteraction) [monster slot/name] [action_name]
+# heal (character) (amount)
+# endencounter
+# stat [character] [stat] [(+/-)amount]
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
 #     evasion, accuracy, cheer, focus
-# equip [character] [equip_type] [slots] (abilities)
-#
-# [character name] [action] (target)
-# [monster name] [slot] [action]
 
 party tyakwlr
 # -- Zanarkand --
@@ -26,8 +27,6 @@ tidus attack sinscale_6
 encounter
 # auron od, ignore first set of rolls
 # second set is actual rolls
-# damage is calculated as if you had 0 seconds left
-# actual damage is roughly x1.5
 auron dragon_fang sinspawn_ammes
 auron dragon_fang sinscale_6
 auron dragon_fang sinscale_6
@@ -35,12 +34,12 @@ auron dragon_fang sinscale_6
 auron dragon_fang sinscale_6
 auron dragon_fang sinscale_6
 
-auron dragon_fang sinspawn_ammes
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
+auron dragon_fang sinspawn_ammes 2.0
+auron dragon_fang sinscale_6 2.0
+auron dragon_fang sinscale_6 2.0
+auron dragon_fang sinscale_6 2.0
+auron dragon_fang sinscale_6 2.0
+auron dragon_fang sinscale_6 2.0
 
 tidus attack sinspawn_ammes
 # Demi 1
@@ -48,7 +47,7 @@ tidus attack sinspawn_ammes
 # tidus od, ignore first roll
 # second line is actual roll
 tidus spiral_cut sinspawn_ammes
-tidus spiral_cut sinspawn_ammes
+tidus spiral_cut sinspawn_ammes 2.5
 auron attack sinspawn_ammes
 # Demi 2
 tidus attack sinspawn_ammes
@@ -123,11 +122,11 @@ tidus attack piranha_3
 encounter
 rikku grenade tros
 tidus attack tros
-tidus stand_by tidus
+tidus stand_by
 rikku grenade tros
 rikku grenade tros
 rikku grenade tros
-# tidus stand_by tidus
+# tidus stand_by
 rikku grenade tros
 rikku grenade tros
 
@@ -142,7 +141,7 @@ wakka attack piranha
 # wakka escape
 
 # Tidus equips Brotherhood
-equip tidus weapon 4 strength_+5%
+weapon tidus 4 strength_+5%
 
 # Besaid tutorial fights
 encounter
@@ -163,9 +162,6 @@ tidus attack ???
 tidus attack ???
 tidus attack ???
 
-# Besaid grid
-stat tidus strength +1
-
 encounter
 valefor thunder garuda_3
 valefor thunder garuda_3
@@ -173,6 +169,9 @@ valefor thunder garuda_3
 valefor thunder garuda_3
 valefor thunder garuda_3
 valefor thunder garuda_3
+
+# Besaid grid
+stat tidus strength +1
 
 encounter
 tidus escape
@@ -187,10 +186,10 @@ lulu thunder water_flan_2
 # -- S.S. Liki --
 encounter
 lulu thunder sin
-kimahri lancet sin
-kimahri lancet sin
-kimahri lancet sin
-kimahri lancet sin
+kimahri lancet_hp sin
+kimahri lancet_mp sin
+kimahri lancet_hp sin
+kimahri lancet_mp sin
 lulu thunder sin
 valefor energy_blast sin
 
@@ -211,15 +210,15 @@ tidus attack sinspawn_echuilles
 wakka attack sinspawn_echuilles
 
 tidus spiral_cut sinspawn_echuilles
-tidus spiral_cut sinspawn_echuilles
+tidus spiral_cut sinspawn_echuilles 2.5
 
 stat tidus cheer 0
 stat wakka cheer 0
 
 # -- Kilika --
 encounter
-kimahri lancet ragora_2
-kimahri lancet ragora_2
+kimahri lancet_hp ragora_2
+kimahri lancet_mp ragora_2
 tidus attack ragora_2
 lulu fire ragora_2
 
@@ -228,12 +227,12 @@ stat tidus agility +1
 
 # Kilika In encounters
 # Wakka equips Scout
-equip wakka weapon 2 icestrike sensor
+weapon wakka 2 icestrike sensor
 # If Wakka equips any Armguard
-# equip wakka armor 1
+# armor wakka 1
 
 # If Tidus equips an Icebrand
-# equip tidus weapon 1 icestrike
+# weapon tidus 1 icestrike
 
 encounter
 tidus attack dinonix
@@ -246,14 +245,15 @@ tidus attack dinonix
 wakka attack killer_bee
 
 encounter
+tidus attack sinspawn_geneaux
 valefor energy_blast sinspawn_geneaux
 valefor energy_blast geneaux's_tentacle
 valefor energy_blast geneaux's_tentacle
 # Geneaux loses the armored status when
 # he removes the shell
-# equip valefor weapon 1 piercing
+# weapon valefor 1 piercing
 # valefor sonic_wings sinspawn_geneaux
-# equip valefor weapon 4 aeon_ribbon
+# weapon valefor 4 aeon_ribbon
 valefor fire sinspawn_geneaux
 valefor fire sinspawn_geneaux
 valefor fire sinspawn_geneaux
@@ -307,9 +307,9 @@ lulu thunder oblitzerator
 # Haste grid
 stat tidus strength +1
 # If Tidus equips Lightning Steel
-# equip tidus weapon 1 lightningstrike
+# weapon tidus 1 lightningstrike
 # If Wakka equips Thunder Ball
-# equip wakka weapon 1 lightningstrike
+# weapon wakka 1 lightningstrike
 
 encounter
 tidus haste tidus
@@ -372,8 +372,8 @@ tidus attacknocrit raldo
 auron attack raldo
 
 encounter
-kimahri lancet bomb
-kimahri lancet bomb
+kimahri lancet_hp bomb
+kimahri lancet_mp bomb
 
 encounter
 tidus haste chocobo_eater
@@ -413,7 +413,7 @@ stat valefor magic 31
 
 encounter
 auron power_break sinspawn_gui
-equip wakka weapon 1
+weapon wakka 1
 kimahri self-destruct sinspawn_gui
 valefor energy_blast sinspawn_gui
 valefor energy_blast head
@@ -442,8 +442,8 @@ stat wakka strength +2
 
 # -- Djose --
 encounter
-kimahri lancet basilisk
-kimahri lancet basilisk
+kimahri lancet_hp basilisk
+kimahri lancet_mp basilisk
 
 # -- Moonflow --
 encounter
@@ -460,7 +460,8 @@ wakka attack extractor
 wakka attack extractor
 wakka attack extractor
 wakka attack extractor
-wakka element_reels extractor
+wakka element_reels_thunder extractor
+wakka element_reels_thunder extractor 16.0
 wakka attack extractor
 
 tidus attack extractor
@@ -489,11 +490,11 @@ encounter
 # -- Macalania Woods --
 encounter
 
-equip tidus weapon 1 first_strike
+weapon tidus 1 first_strike
 
 # Spherimorph (the mix damages 9 times)
 encounter
-equip tidus armor 1 lightningproof
+armor tidus 1 lightningproof
 rikku grenade spherimorph
 rikku lightning_bolt spherimorph
 rikku lightning_bolt spherimorph
@@ -540,12 +541,12 @@ stat tidus agility +4
 # Seymour
 encounter
 # tidus equips brotherhood
-equip tidus weapon 4 strength_+10% strength_+5% waterstrike
+weapon tidus 4 strength_+10% strength_+5% waterstrike
 tidus haste tidus
 # Talk talks to Seymour
 stat tidus strength +10
 tidus spiral_cut seymour
-tidus spiral_cut seymour
+tidus spiral_cut seymour 2.5
 
 tidus attack anima
 tidus attack anima
@@ -557,7 +558,7 @@ tidus attack seymour
 stat tidus strength -10
 
 # Tidus unequips Brotherhood
-equip tidus weapon 1 first_strike
+weapon tidus 1 first_strike
 
 # -- Crevasse --
 # Guado Guardian #2 is in Macalania
@@ -581,7 +582,7 @@ stat tidus agility +2
 encounter
 tidus haste tidus
 # Tidus equips Brotherhood
-equip tidus weapon 4 strength_+10% strength_+5% waterstrike
+weapon tidus 4 strength_+10% strength_+5% waterstrike
 tidus attack Guado_Guardian_2
 # auron power_break wendigo
 # rikku lightning_marble wendigo
@@ -607,10 +608,10 @@ tidus attack guado_guardian_2
 
 # -- Bikanel --
 encounter
-tidus attack zu
+tidus attack zu_2
 
 # Tidus unequips Brotherhood
-equip tidus weapon 1 first_strike
+weapon tidus 1 first_strike
 
 encounter
 # rikku silence_grenade sand_wolf
@@ -624,7 +625,7 @@ tidus haste kimahri
 encounter
 tidus haste auron
 auron shooting_star sandragora
-auron shooting_star sandragora
+auron shooting_star sandragora 2.0
 
 # -- Home --
 # Guado Guardian #3 is in Home
@@ -638,12 +639,12 @@ tidus attack bomb_2
 tidus attack bomb_2
 
 encounter
-kimahri lancet dual_horn_2
-kimahri lancet dual_horn_2
+kimahri lancet_hp dual_horn_2
+kimahri lancet_mp dual_horn_2
 
 encounter
-kimahri lancet chimera_2
-kimahri lancet chimera_2
+kimahri lancet_hp chimera_2
+kimahri lancet_mp chimera_2
 
 # -- Airship --
 # encounter
@@ -896,10 +897,10 @@ rikku armor_break braska's_final_aeon
 # rikku chaos_grenade braska's_final_aeon
 # rikku chaos_grenade yu_pagoda
 # rikku chaos_grenade yu_pagoda
-bahamut attack  braska's_final_aeon
+bahamut attack braska's_final_aeon
 
-bahamut attack  braska's_final_aeon
-bahamut attack  braska's_final_aeon
+bahamut attack braska's_final_aeon
+bahamut attack braska's_final_aeon
 
 # Possessed Aeons' Luck is 1
 stat valefor luck 1

@@ -22,6 +22,8 @@ class Action:
     base_damage: int = 0
     element: Element | None = None
     statuses: dict[Status, int] = field(default_factory=dict)
+    dispels: set[Status] = field(default_factory=set)
+    shatter_chance: int = 10
     drains: bool = False
     timer: int = 0
     rank: int = 3
@@ -60,6 +62,9 @@ def _get_action(action: dict[str, str | dict[str, int]]) -> Action:
     if action.get('statuses') is not None:
         action['statuses'] = {Status(s): v
                               for s, v in action['statuses'].items()}
+
+    if action.get('dispels') is not None:
+        action['dispels'] = {Status(s) for s in action['dispels']}
 
     return Action(**action)
 

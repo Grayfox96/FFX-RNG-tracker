@@ -17,7 +17,7 @@ class EncounterCheck(Event):
         self.encounter, self.distance = self.check_encounter()
 
     def __str__(self) -> str:
-        string = f'{self.zone}'
+        string = f'{self.zone}: '
         if self.encounter:
             string += f'Encounter at {self.distance} units'
         else:

@@ -4,15 +4,6 @@
 # steal [monster_name] (successful steals)
 # death (character)
 # bribe [monster_name] [user]
-#
-# add comments with a # at the start
-# of the line
-#
-# blank lines create a blank line
-#
-# type /// to hide everything
-# above that line
-#
 ///
 # Zanarkand
 party ta

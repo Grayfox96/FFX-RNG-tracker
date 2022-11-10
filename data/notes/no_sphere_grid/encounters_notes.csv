@@ -1,4 +1,4 @@
-#name,initiative,label,min,default,max
+#name or zone,initiative (true or false),label (optional),min,default,max
 sinscales,false,,1,1,1
 ammes,false,,1,1,1
 tanker,false,,1,1,1
@@ -116,6 +116,6 @@ sin_core,false,,1,1,1
 simulation_(calm_lands),true,Simulation (Calm Lands),0,0,3
 omega_ruins_(lower),false,Omega Ruins,0,0,10
 overdrive_sin,false,,1,1,1
-inside_sin_(front),false,Inside Sin (Front),0,0,10
+inside_sin_(front),false,Inside Sin (Front),0,0,15
 seymour_omnis,false,,1,1,1
 inside_sin_(back),false,Inside Sin (Back),0,0,10

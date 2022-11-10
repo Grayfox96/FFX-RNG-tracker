@@ -26,6 +26,26 @@ class GameState:
             characters[character] = CharacterState(defaults)
         return characters
 
+    def normalize_ctbs(self) -> None:
+        ctbs = []
+        for c, cs in self.characters.items():
+            if c not in self.party or cs.dead or cs.inactive:
+                cs.ctb = 0
+            else:
+                ctbs.append(cs.ctb)
+        for m in self.monster_party:
+            if m.dead:
+                m.ctb = 0
+            else:
+                ctbs.append(m.ctb)
+        if not ctbs:
+            return
+        min_ctb = min(ctbs)
+        for c in self.characters.values():
+            c.ctb -= min_ctb
+        for m in self.monster_party:
+            m.ctb -= min_ctb
+
     def reset(self) -> None:
         self._rng_tracker.reset()
         self.party = [Character.TIDUS, Character.AURON]

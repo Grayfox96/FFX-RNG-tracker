@@ -1,4 +1,4 @@
-{   
+{
     "bosses": {
         "dummy": {
             "name" : "Boss",
@@ -152,7 +152,7 @@
         },
         "pierce_tutorial": {
             "name": "Pierce tutorial",
-            "formation": ["raldo"],
+            "formation": ["raldo_2"],
             "forced_condition": "Normal"
         },
         "chocobo_eater": {
@@ -177,7 +177,7 @@
         },
         "rikku_tutorial": {
             "name": "Rikku tutorial",
-            "formation": ["???_3", "bunyip"],
+            "formation": ["???_3", "bunyip_2"],
             "forced_condition": "Normal"
         },
         "spherimorph": {
@@ -454,9 +454,9 @@
             "name": "Mi'ihen Screen 1",
             "formations": [
                 ["mi'ihen_fang", "white_element", "floating_eye"],
-                ["mi'ihen_fang", "white_element", "raldo_2"],
-                ["floating_eye", "mi'ihen_fang", "raldo_2"],
-                ["raldo_2", "white_element", "floating_eye"],
+                ["mi'ihen_fang", "white_element", "raldo"],
+                ["floating_eye", "mi'ihen_fang", "raldo"],
+                ["raldo", "white_element", "floating_eye"],
                 ["bomb"],
                 ["dual_horn"]
             ],
@@ -479,15 +479,15 @@
                 ["white_element", "mi'ihen_fang", "floating_eye"],
                 ["white_element", "mi'ihen_fang", "floating_eye"],
                 ["white_element", "mi'ihen_fang", "floating_eye"],
-                ["mi'ihen_fang", "white_element", "raldo_2"],
-                ["mi'ihen_fang", "white_element", "raldo_2"],
-                ["mi'ihen_fang", "white_element", "raldo_2"],
-                ["mi'ihen_fang", "raldo_2", "floating_eye"],
-                ["mi'ihen_fang", "raldo_2", "floating_eye"],
-                ["mi'ihen_fang", "raldo_2", "floating_eye"],
-                ["raldo_2", "white_element", "floating_eye"],
-                ["raldo_2", "white_element", "floating_eye"],
-                ["raldo_2", "white_element", "floating_eye"],
+                ["mi'ihen_fang", "white_element", "raldo"],
+                ["mi'ihen_fang", "white_element", "raldo"],
+                ["mi'ihen_fang", "white_element", "raldo"],
+                ["mi'ihen_fang", "raldo", "floating_eye"],
+                ["mi'ihen_fang", "raldo", "floating_eye"],
+                ["mi'ihen_fang", "raldo", "floating_eye"],
+                ["raldo", "white_element", "floating_eye"],
+                ["raldo", "white_element", "floating_eye"],
+                ["raldo", "white_element", "floating_eye"],
                 ["dual_horn", "mi'ihen_fang"],
                 ["dual_horn", "mi'ihen_fang"],
                 ["bomb", "bomb", "dual_horn"],
@@ -634,12 +634,12 @@
         "djose_highroad_(back_half)": {
             "name": "Djose Highroad (Back Half)",
             "formations": [
-                ["garm", "bunyip_2", "snow_flan"],
-                ["garm", "bunyip_2", "snow_flan"],
-                ["garm", "bunyip_2", "snow_flan"],
-                ["garm", "bunyip_2", "snow_flan"],
-                ["garm", "bunyip_2", "simurgh"],
-                ["garm", "bunyip_2", "simurgh"],
+                ["garm", "bunyip", "snow_flan"],
+                ["garm", "bunyip", "snow_flan"],
+                ["garm", "bunyip", "snow_flan"],
+                ["garm", "bunyip", "snow_flan"],
+                ["garm", "bunyip", "simurgh"],
+                ["garm", "bunyip", "simurgh"],
                 ["gandarewa", "funguar", "gandarewa"],
                 ["gandarewa", "gandarewa", "snow_flan"],
                 ["basilisk", "funguar", "funguar"],
@@ -656,17 +656,17 @@
         "moonflow_(south)": {
             "name": "Moonflow (South)",
             "formations": [
-                ["bunyip_2", "garm", "bite_bug"],
+                ["bunyip", "garm", "bite_bug"],
                 ["ochu", "bite_bug", "bite_bug"],
                 ["ochu", "bite_bug", "bite_bug"],
                 ["ochu", "garm"],
                 ["ochu", "garm"],
                 ["ochu"],
                 ["ochu"],
-                ["garm", "bunyip_2", "snow_flan"],
-                ["garm", "bunyip_2", "snow_flan"],
-                ["garm", "bunyip_2", "snow_flan"],
-                ["garm", "bunyip_2", "snow_flan"],
+                ["garm", "bunyip", "snow_flan"],
+                ["garm", "bunyip", "snow_flan"],
+                ["garm", "bunyip", "snow_flan"],
+                ["garm", "bunyip", "snow_flan"],
                 ["gandarewa", "funguar", "gandarewa"]
             ],
             "forced_condition": "",
@@ -675,11 +675,11 @@
         "moonflow_(north)": {
             "name": "Moonflow (North)",
             "formations": [
-                ["???_2", "garm", "bunyip_2"],
+                ["???_2", "garm", "bunyip"],
                 ["???_2", "bite_bug", "bite_bug"],
-                ["???_2", "bunyip_2", "bite_bug", "bite_bug"],
+                ["???_2", "bunyip", "bite_bug", "bite_bug"],
                 ["ochu", "garm"],
-                ["garm", "bunyip_2", "snow_flan"]
+                ["garm", "bunyip", "snow_flan"]
             ],
             "forced_condition": "",
             "danger_value": 35

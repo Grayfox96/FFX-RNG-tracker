@@ -1,4 +1,4 @@
-#name,initiative,label,min,default,max
+#name or zone,initiative (true or false),label (optional),min,default,max
 sinscales,false,,1,1,1
 ammes,false,,1,1,1
 tanker,false,,1,1,1

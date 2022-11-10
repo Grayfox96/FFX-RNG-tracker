@@ -66,7 +66,8 @@ class Status(StringEnum):
     DEFEND = 'Defend'
     SHIELD = 'Shield'
     BOOST = 'Boost'
-    DELAY = 'Delay'
+    DELAY_WEAK = 'Delay (Weak)'
+    DELAY_STRONG = 'Delay (Strong)'
     POWER_DISTILLER = 'Power Distiller'
     MANA_DISTILLER = 'Mana Distiller'
     SPEED_DISTILLER = 'Speed Distiller'
@@ -79,8 +80,10 @@ class Status(StringEnum):
     EJECT = 'Eject'
     DOOM = 'Doom'
     CURSE = 'Curse'
-    DELAY_WEAK = 'Delay (Weak)'
-    DELAY_STRONG = 'Delay (Strong)'
+    MAX_HP_X_2 = 'MAX HP x 2'
+    MAX_MP_X_2 = 'MAX MP x 2'
+    MP_0 = 'MP = 0'
+    ESCAPE = 'Escape'
 
 
 class Character(StringEnum):
@@ -126,9 +129,11 @@ class DamageType(StringEnum):
     ITEM_MP = 'Item (MP)'
     FIXED = 'Fixed'
     PERCENTAGE_TOTAL = 'Percentage (Total)'
+    PERCENTAGE_TOTAL_MP = 'Percentage (Total) (MP)'
     PERCENTAGE_CURRENT = 'Percentage (Current)'
     HEALING = 'Healing'
     GIL = 'Gil'
+    CTB = 'CTB'
 
 
 class TargetType(StringEnum):
@@ -136,10 +141,13 @@ class TargetType(StringEnum):
     SINGLE = 'Single'
     ALL = 'All'
     SINGLE_CHARACTER = 'Single character'
+    RANDOM_CHARACTER = 'Random character'
     ALL_CHARACTERS = 'All characters'
     SINGLE_MONSTER = 'Single monster'
+    RANDOM_MONSTER = 'Random monster'
     ALL_MONSTERS = 'All monsters'
     LAST_CHARACTER = 'Last character'
+    HIGHEST_HP_CHARACTER = 'Highest HP character'
     LOWEST_HP_CHARACTER = 'Lowest HP character'
 
 
@@ -165,6 +173,7 @@ class Stat(StringEnum):
     LUCK = 'Luck'
     EVASION = 'Evasion'
     ACCURACY = 'Accuracy'
+    CTB = 'CTB'
     CHEER = 'Cheer'
     FOCUS = 'Focus'
 
@@ -524,24 +533,34 @@ TEMPORARY_STATS = {
     Stat.FOCUS,
 }
 
+NUL_STATUSES = {
+    Element.FIRE: Status.NULBLAZE,
+    Element.ICE: Status.NULFROST,
+    Element.THUNDER: Status.NULSHOCK,
+    Element.WATER: Status.NULTIDE,
+}
 NO_RNG_STATUSES = {
     Status.DEFEND,
     Status.SHIELD,
     Status.BOOST,
-    Status.DELAY,
+    Status.DELAY_WEAK,
+    Status.DELAY_STRONG,
     Status.POWER_DISTILLER,
     Status.MANA_DISTILLER,
     Status.SPEED_DISTILLER,
     Status.ABILITY_DISTILLER,
     Status.GUARD,
+    Status.SENTINEL,
     Status.SCAN,
     Status.LIFE,
     Status.AUTOLIFE,
     Status.EJECT,
     Status.DOOM,
     Status.CURSE,
-    Status.DELAY_WEAK,
-    Status.DELAY_STRONG,
+    Status.MAX_HP_X_2,
+    Status.MAX_MP_X_2,
+    Status.MP_0,
+    Status.ESCAPE,
 }
 TEMPORARY_STATUSES = {
     Status.DEFEND,

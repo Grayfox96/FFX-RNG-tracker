@@ -14,7 +14,10 @@
             "base_damage": 0,
             "element": null,
             "statuses": {},
+            "dispels": [],
+            "shatter_chance": 10,
             "drains": false,
+            "timer": 0,
             "rank": 3
         },
         "does_nothing": {
@@ -66,7 +69,7 @@
             "can_miss": false,
             "can_crit": false,
             "base_damage": 16
-        }    
+        }
     },
     "monster_0": {
     },
@@ -75,8 +78,12 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Berserk": 10
+                "Slow": 10
             }
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
         },
         "forced_attack": {
             "name": "Forced Attack",
@@ -84,22 +91,104 @@
         }
     },
     "bunyip": {
+        "attack": {
+            "name": "Attack",
+            "target": "Single",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "attack_auron": {
+            "name": "Attack Auron",
+            "target": "Auron",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "target": "Single",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "target": "Single",
+            "base_damage": 16
+        }
     },
     "murussu": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "attack_auron": {
+            "name": "Attack Auron",
+            "target": "Auron",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "mafdet": {
     },
     "shred": {
     },
     "gandarewa": {
+        "thunder": {
+            "name": "Thunder",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Thunder"
+        }
     },
     "aerouge": {
+        "thundara": {
+            "name": "Thundara",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Thunder"
+        }
     },
     "imp": {
     },
     "dingo": {
         "attack": {
             "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Sleep": 10,
+                "Silence": 10
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
                 "Sleep": 10,
@@ -116,8 +205,58 @@
         }
     },
     "mi'ihen_fang": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Sleep": 10,
+                "Silence": 10
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "base_damage": 16,
+            "statuses": {
+                "Sleep": 10,
+                "Silence": 10
+            }
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "garm": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Sleep": 10,
+                "Silence": 10
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "base_damage": 16,
+            "statuses": {
+                "Sleep": 10,
+                "Silence": 10
+            }
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "snow_wolf": {
     },
@@ -138,8 +277,24 @@
         }
     },
     "thunder_flan": {
+        "thunder": {
+            "name": "Thunder",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Thunder"
+        }
     },
     "snow_flan": {
+        "blizzard": {
+            "name": "Blizzard",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Ice"
+        }
     },
     "ice_flan": {
         "blizzara": {
@@ -168,18 +323,75 @@
                 "Petrify": 10,
                 "Silence": 10
             },
+            "shatter_chance": 0,
             "rank": 3
         },
         "attack_aeon": {
             "name": "Attack (vs Aeons)",
             "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
         }
     },
     "ipiria": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Petrify": 10,
+                "Silence": 10
+            },
+            "shatter_chance": 0
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "raptor": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Petrify": 10,
+                "Silence": 10
+            },
+            "shatter_chance": 0
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "melusine": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Petrify": 10,
+                "Silence": 10
+            },
+            "shatter_chance": 0,
+            "rank": 3
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "iguion": {
         "attack": {
@@ -189,7 +401,8 @@
             "statuses": {
                 "Petrify": 30,
                 "Silence": 30
-            }
+            },
+            "shatter_chance": 0
         },
         "attack_aeon": {
             "name": "Attack (vs Aeons)",
@@ -198,7 +411,6 @@
         },
         "forced_attack": {
             "name": "Forced Attack",
-            "accuracy": 90,
             "base_damage": 16
         }
     },
@@ -216,6 +428,27 @@
         }
     },
     "simurgh": {
+        "attack": {
+            "name": "Attack",
+            "accuracy": 120,
+            "base_damage": 16,
+            "statuses": {
+                "Dark": 30
+            }
+        },
+        "attack_wakka": {
+            "name": "Attack Wakka",
+            "target": "Wakka",
+            "accuracy": 120,
+            "base_damage": 16,
+            "statuses": {
+                "Dark": 30
+            }
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "alcyone": {
     },
@@ -230,14 +463,52 @@
         }
     },
     "bite_bug": {
+        "poison_dart": {
+            "name" : "Poison Dart",
+            "accuracy": 100,
+            "base_damage": 16,
+            "statuses": {
+                "Poison": 40
+            }
+        }
     },
     "wasp": {
+        "poison_dart": {
+            "name" : "Poison Dart",
+            "accuracy": 100,
+            "base_damage": 16,
+            "statuses": {
+                "Poison": 40
+            }
+        }
     },
     "nebiros": {
     },
     "floating_eye": {
+        "gaze": {
+            "name": "Gaze",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "statuses": {
+                "Confuse": 10
+            },
+            "shatter_chance": 0
+        }
     },
     "buer": {
+        "gaze": {
+            "name": "Gaze",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "statuses": {
+                "Confuse": 10
+            },
+            "shatter_chance": 0
+        }
     },
     "evil_eye": {
     },
@@ -248,7 +519,8 @@
             "name": "Seed Cannon",
             "accuracy": 85,
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "grat": {
@@ -280,7 +552,8 @@
             "target": "All characters",
             "accuracy": 130,
             "can_crit": false,
-            "base_damage": 8
+            "base_damage": 8,
+            "shatter_chance": 0
         }
     },
     "zu": {
@@ -311,7 +584,8 @@
         "gore": {
             "name": "Gore",
             "accuracy": 150,
-            "base_damage": 25
+            "base_damage": 25,
+            "shatter_chance": 0
         }
     },
     "valaha": {
@@ -328,6 +602,14 @@
                 "Slow": 10
             }
         },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
         "breath": {
             "name": "Breath",
             "target": "All characters",
@@ -335,22 +617,87 @@
             "can_crit": false,
             "damage_type": "Magic",
             "base_damage": 18,
-            "element": "Fire"
+            "element": "Fire",
+            "shatter_chance": 0
         },
         "attack_aeon": {
             "name": "Attack (vs Aeons)",
-            "can_crit": false,
             "base_damage": 16
         },
         "forced_attack": {
             "name": "Forced Attack",
-            "can_crit": false,
             "base_damage": 16
         }
     },
     "lamashtu": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "breath": {
+            "name": "Breath",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 18,
+            "element": "Ice",
+            "shatter_chance": 0
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "kusariqqu": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": 10
+            }
+        },
+        "breath": {
+            "name": "Breath",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 18,
+            "element": "Thunder",
+            "shatter_chance": 0
+        },
+        "attack_aeon": {
+            "name": "Attack (vs Aeons)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        }
     },
     "mushussu": {
     },
@@ -375,7 +722,8 @@
             "name": "GNAW",
             "can_miss": false,
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "piranha_3": {
@@ -383,7 +731,8 @@
             "name": "GNAW",
             "can_miss": false,
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "splasher": {
@@ -409,12 +758,52 @@
         }
     },
     "white_element": {
+        "blizzard": {
+            "name": "Blizzard",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Ice"
+        }
     },
     "red_element": {
+        "fire": {
+            "name": "Fire",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Fire"
+        }
     },
     "gold_element": {
+        "thunder": {
+            "name": "Thunder",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Thunder"
+        },
+        "forced_attack": {
+            "name": "Thundara",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Thunder"
+        }
     },
     "blue_element": {
+        "watera": {
+            "name": "Watera",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Water"
+        }
     },
     "dark_element": {
     },
@@ -427,6 +816,42 @@
     "behemoth_king": {
     },
     "chimera": {
+        "rush": {
+            "name": "RUSH",
+            "target": "Single",
+            "accuracy": 120,
+            "damage_type": "Percentage (Current)",
+            "base_damage": 4,
+            "shatter_chance": 0
+        },
+        "thundara": {
+            "name": "Thundara",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Thunder"
+        },
+        "megiddo_flame": {
+            "name": "Megiddo Flame",
+            "target": "Single",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 35,
+            "element": "Fire",
+            "shatter_chance": 0
+        },
+        "aqua_breath": {
+            "name": "Aqua Breath",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Special Magic",
+            "base_damage": 17,
+            "element": "Water",
+            "shatter_chance": 0
+        }
     },
     "chimera_brain": {
     },
@@ -458,7 +883,8 @@
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         },
         "tentacles": {
             "name": "Tentacles",
@@ -471,13 +897,15 @@
             "target": "All characters",
             "can_miss": false,
             "can_crit": false,
-            "base_damage": 48
+            "base_damage": 48,
+            "shatter_chance": 0
         },
         "flank": {
             "name": "Flank",
             "target": "Self",
             "can_miss": false,
-            "does_damage": false
+            "does_damage": false,
+            "shatter_chance": 0
         }
     },
     "sinspawn_geneaux": {
@@ -487,25 +915,30 @@
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         },
         "venom": {
             "name": "Venom",
+            "target": "Highest HP character",
             "can_miss": false,
             "damage_type": "Magic",
             "base_damage": 16,
             "statuses": {
                 "Poison": 100
-            }
+            },
+            "shatter_chance": 0
         },
         "staccato": {
             "name": "Staccato",
             "target": "All characters",
             "can_miss": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         },
         "water": {
             "name": "Water",
+            "target": "Lowest HP character",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -517,10 +950,39 @@
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "chocobo_eater": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16,
+            "shatter_chance": 0
+        },
+        "fists_of_fury": {
+            "name": "Fists of Fury",
+            "can_miss": false,
+            "can_crit": false,
+            "base_damage": 32
+        },
+        "blizzard": {
+            "name": "Blizzard",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Ice"
+        },
+        "thwack": {
+            "name": "Thwack",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Percentage (Current)",
+            "base_damage": 3
+        }
     },
     "neslug": {
     },
@@ -530,7 +992,8 @@
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         },
         "spines": {
             "name": "Spines",
@@ -548,59 +1011,71 @@
     "sinscale_2": {
     },
     "geosgaeno": {
-        "attack": {
-            "name": "Attack",
+        "half_hp": {
+            "name": "Half HP",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Percentage (Current)",
-            "base_damage": 8
+            "base_damage": 8,
+            "shatter_chance": 0
         }
     },
     "oblitzerator": {
         "blitzball_rush": {
             "name": "Blitzball Rush",
+            "target": "Random character",
             "can_miss": false,
             "hits": 10,
             "can_crit": false,
             "damage_type":"Special Strength",
-            "base_damage": 4
+            "base_damage": 4,
+            "shatter_chance": 0
         },
         "blind_ball": {
             "name": "Blind Ball",
+            "target": "Last character",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 10,
             "statuses": {
                 "Dark": 254
-            }
+            },
+            "shatter_chance": 0,
+            "rank": 0
         },
         "mute_ball": {
             "name": "Mute Ball",
+            "target": "Last character",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 7,
             "statuses": {
                 "Silence": 254
-            }
+            },
+            "shatter_chance": 0,
+            "rank": 0
         },
         "doze_ball": {
             "name": "Doze Ball",
+            "target": "Last character",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 7,
             "statuses": {
                 "Sleep": 254
-            }
+            },
+            "shatter_chance": 0,
+            "rank": 0
         }
     },
     "extractor": {
         "aqua_shooter": {
             "name": "Aqua Shooter",
             "can_miss": false,
-            "can_crit": true,
             "damage_type": "Magic",
             "base_damage": 16,
-            "element": "Water"
+            "element": "Water",
+            "shatter_chance": 0
         },
         "depth_charge": {
             "name": "Depth Charge",
@@ -610,32 +1085,44 @@
             "base_damage": 16,
             "statuses": {
                 "Dark": 50
-            }
+            },
+            "shatter_chance": 0
         },
         "rise": {
             "name": "Rise",
             "target": "Self",
             "can_miss": false,
-            "does_damage": false
+            "does_damage": false,
+            "shatter_chance": 0
         },
         "dive": {
             "name": "Dive",
             "target": "Self",
             "can_miss": false,
-            "does_damage": false
+            "does_damage": false,
+            "shatter_chance": 0
+        },
+        "aqua_shooter_fix": {
+            "name": "Wasting RNG4",
+            "can_miss": false,
+            "does_damage": false,
+            "shatter_chance": 0,
+            "rank": 0
         }
     },
     "???": {
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         },
         "jump": {
             "name": "Jump",
             "can_miss": false,
             "damage_type":"Special Strength",
-            "base_damage": 32
+            "base_damage": 32,
+            "shatter_chance": 50
         }
     },
     "sin": {
@@ -643,7 +1130,8 @@
             "name": "Move",
             "target": "Self",
             "can_miss": false,
-            "does_damage": false
+            "does_damage": false,
+            "shatter_chance": 0
         }
     },
     "sinspawn_echuilles": {
@@ -651,7 +1139,8 @@
             "name": "Drain Touch",
             "can_crit": false,
             "base_damage": 16,
-            "drains": true
+            "drains": true,
+            "shatter_chance": 0
         },
         "blender": {
             "name": "Blender",
@@ -660,7 +1149,8 @@
             "can_crit": false,
             "damage_type": "Magic",
             "base_damage": 10,
-            "element": "Water"
+            "element": "Water",
+            "shatter_chance": 0
             }
     },
     "sinscale_3": {
@@ -668,12 +1158,51 @@
             "name": "Attack",
             "can_miss": false,
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "sinscale_4": {
     },
     "sinspawn_gui": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16,
+            "shatter_chance": 0
+        },
+        "demi": {
+            "name": "Demi",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Percentage (Current)",
+            "base_damage": 4
+        },
+        "thunder": {
+            "name": "Thunder",
+            "target": "Single",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Thunder",
+            "rank": 0
+        },
+        "venom": {
+            "name": "Venom",
+            "target": "Single",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "statuses": {
+                "Poison": 100,
+                "Slow": 100
+            },
+            "shatter_chance": 0,
+            "rank": 0
+        }
     },
     "mortiphasm_2": {
     },
@@ -682,14 +1211,180 @@
     "evrae_altana": {
     },
     "spherimorph": {
+        "attack": {
+            "name": "Attack",
+            "can_crit": false,
+            "base_damage": 16,
+            "shatter_chance": 0
+        },
+        "press": {
+            "name": "Press",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Percentage (Current)",
+            "base_damage": 8,
+            "shatter_chance": 0
+        },
+        "fire_counter": {
+            "name": "Fire (Counter)",
+            "target": "Last character",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Fire",
+            "rank": 0
+        },
+        "blizzard_counter": {
+            "name": "Blizzard (Counter)",
+            "target": "Last character",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Ice",
+            "rank": 0
+        },
+        "thunder_counter": {
+            "name": "Thunder (Counter)",
+            "target": "Last character",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Thunder",
+            "rank": 0
+        },
+        "water_counter": {
+            "name": "Water (Counter)",
+            "target": "Last character",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Water",
+            "rank": 0
+        },
+        "fire_all": {
+            "name": "Fire (Counter) (All)",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 16,
+            "element": "Fire",
+            "shatter_chance": 0,
+            "rank": 0
+        },
+        "blizzard_all": {
+            "name": "Blizzard (Counter) (All)",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 16,
+            "element": "Ice",
+            "shatter_chance": 0,
+            "rank": 0
+        },
+        "thunder_all": {
+            "name": "Thunder (Counter) (All)",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 16,
+            "element": "Thunder",
+            "shatter_chance": 0,
+            "rank": 0
+        },
+        "water_all": {
+            "name": "Water (Counter) (All)",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 16,
+            "element": "Water",
+            "shatter_chance": 0,
+            "rank": 0
+        }
     },
     "crawler": {
+        "gatling_gun": {
+            "name": "Gatling Gun",
+            "target": "Random character",
+            "can_miss": true,
+            "accuracy": 100,
+            "does_damage": true,
+            "hits": 8,
+            "can_crit": false,
+            "base_damage": 4,
+            "shatter_chance": 0
+        },
+        "mana_beam": {
+            "name": "Mana Beam",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 36,
+            "shatter_chance": 0
+        },
+        "assault": {
+            "name": "Assault",
+            "target": "Last character",
+            "accuracy": 120,
+            "can_crit": false,
+            "base_damage": 32,
+            "shatter_chance": 0,
+            "rank": 0
+        }
     },
     "negator": {
     },
     "seymour": {
+        "shell": {
+            "name": "Shell",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Shell": 254
+            },
+            "shatter_chance": 0
+        },
+        "blizzara": {
+            "name": "Blizzara",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Ice"
+        }
     },
     "anima": {
+        "pain": {
+            "name": "Pain",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Special Magic",
+            "base_damage": 28,
+            "statuses": {
+                "Death": 100
+            },
+            "shatter_chance": 0
+        },
+        "boost": {
+            "name": "Boost",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Boost": 254
+            }
+        }
     },
     "seymour_natus": {
     },
@@ -712,7 +1407,8 @@
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Percentage (Current)",
-            "base_damage": 15
+            "base_damage": 15,
+            "shatter_chance": 0
         }
     },
     "biran_ronso": {
@@ -770,14 +1466,16 @@
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "worker": {
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "lord_ochu": {
@@ -786,7 +1484,8 @@
             "base_damage": 16,
             "statuses": {
                 "Poison": 100
-            }
+            },
+            "shatter_chance": 0
         },
         "water": {
             "name": "Water",
@@ -802,16 +1501,18 @@
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Special Magic",
-            "base_damage": 8
+            "base_damage": 8,
+            "shatter_chance": 0
         },
         "earthquake_valefor": {
             "name": "Eartquake (Valefor)",
             "can_miss": true,
             "accuracy": 0,
             "can_crit": false,
-            "base_damage": 0
+            "base_damage": 0,
+            "shatter_chance": 0
         },
-        "#falls_asleep": {
+        "falls_asleep": {
             "name": "Falls Asleep",
             "target": "Self",
             "can_miss": false,
@@ -819,7 +1520,8 @@
             "statuses": {
                 "Sleep": 254,
                 "Regen": 254
-            }
+            },
+            "shatter_chance": 0
         }
 
     },
@@ -829,41 +1531,48 @@
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "sahagin_chief": {
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "garuda_2": {
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         },
         "counter": {
             "name": "Counter",
             "target": "Last character",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0,
+            "rank": 0
         },
         "sonic_boom": {
             "name": "Sonic Boom",
             "target": "All characters",
             "accuracy": 130,
             "can_crit": false,
-            "base_damage": 12
+            "base_damage": 12,
+            "shatter_chance": 0
         }
     },
     "klikk": {
         "attack": {
             "name": "Attack",
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "sinspawn_ammes": {
@@ -933,14 +1642,16 @@
         "leaping_swing": {
             "name": "Leaping Swing",
             "accuracy": 95,
-            "base_damage": 25
+            "base_damage": 25,
+            "shatter_chance": 0
         },
         "reaper": {
             "name": "Reaper",
             "target": "All characters",
             "can_miss": false,
             "can_crit": false,
-            "base_damage": 13
+            "base_damage": 13,
+            "shatter_chance": 0
         }
     },
     "gemini": {
@@ -950,6 +1661,19 @@
     "gemini_3": {
     },
     "basilisk": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16
+        },
+        "stone_gaze": {
+            "name": "Stone Gaze",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Petrify": 50
+            },
+            "shatter_chance": 0
+        }
     },
     "anacondaur": {
     },
@@ -958,6 +1682,30 @@
     "varuna": {
     },
     "ochu": {
+        "attack": {
+            "name": "Attack",
+            "accuracy": 120,
+            "base_damage": 16,
+            "statuses": {
+                "Poison": 80
+            },
+            "shatter_chance": 0
+        },
+        "ochu_dance": {
+            "name": "Ochu Dance",
+            "target": "All characters",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Confuse": 20,
+                "Silence": 80,
+                "Dark": 80,
+                "Slow": 20
+            },
+            "shatter_chance": 0,
+            "drains": false,
+            "rank": 3
+        }
     },
     "mandragora": {
     },
@@ -970,7 +1718,8 @@
             "name": "RUSH",
             "accuracy": 120,
             "base_damage": 16,
-            "element": "Fire"
+            "element": "Fire",
+            "shatter_chance": 0
         },
         "fire": {
             "name": "Fire",
@@ -985,7 +1734,15 @@
             "can_miss": false,
             "damage_type": "Item",
             "base_damage": 12,
-            "element": "Fire"
+            "element": "Fire",
+            "shatter_chance": 0
+        },
+        "grow": {
+            "name": "Grow",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "shatter_chance": 0
         }
     },
     "grenade": {
@@ -999,6 +1756,16 @@
     "fallen_monk": {
     },
     "warrior_monk_2": {
+        "flamethrower": {
+            "name": "Flamethrower",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 22,
+            "element": "Fire",
+            "shatter_chance": 0
+        }
     },
     "fallen_monk_2": {
     },
@@ -1015,10 +1782,48 @@
     "magic_urn_5": {
     },
     "qactuar": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16
+        },
+        "1000_needles": {
+            "name": "1,000 Needles",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Fixed",
+            "base_damage": 1000,
+            "shatter_chance": 0
+        },
+        "run_away": {
+            "name": "Run Away",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Escape": 254
+            },
+            "shatter_chance": 0
+        }
     },
     "cactuar": {
     },
     "larva": {
+        "Thundara": {
+            "name": "Thundara",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Thunder"
+        },
+        "forced_attack": {
+            "name": "Fire",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Fire"
+        }
     },
     "barbatos": {
     },
@@ -1027,14 +1832,85 @@
     "wendigo": {
     },
     "guado_guardian_2": {
+        "thundara": {
+            "name": "Thundara",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Thunder"
+        },
+        "blizzara": {
+            "name": "Blizzara",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 24,
+            "element": "Ice"
+        },
+        "berserk_wendigo": {
+            "name": "Berserk Wendigo",
+            "target": 1,
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Berserk": 120
+            },
+            "shatter_chance": 0
+        },
+        "protect_wendigo": {
+            "name": "Protect Wendigo",
+            "target": 1,
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Protect": 254
+            },
+            "shatter_chance": 0,
+            "rank": 0
+        },
+        "shell_wendigo": {
+            "name": "Shell Wendigo",
+            "target": 1,
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Shell": 120
+            },
+            "shatter_chance": 0,
+            "rank": 0
+        }
     },
     "funguar": {
+        "fire": {
+            "name": "Fire",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Fire"
+        },
+        "pollen": {
+            "name": "Pollen",
+            "target": "All characters",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Sleep": 80
+            },
+            "shatter_chance": 0
+        }
     },
     "thorn": {
     },
     "exoray": {
     },
     "xiphos": {
+        "attack": {
+            "name": "Attack",
+            "target": "Single",
+            "base_damage": 16
+        }
     },
     "puroboros": {
     },
@@ -1057,7 +1933,8 @@
             "name": "RUSH",
             "accuracy": 120,
             "base_damage": 16,
-            "element": "Fire"
+            "element": "Fire",
+            "shatter_chance": 0
         },
         "fire": {
             "name": "Fire",
@@ -1072,7 +1949,15 @@
             "can_miss": false,
             "damage_type": "Item",
             "base_damage": 20,
-            "element": "Fire"
+            "element": "Fire",
+            "shatter_chance": 0
+        },
+        "grow": {
+            "name": "Grow",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "shatter_chance": 0
         }
     },
     "chimera_2": {
@@ -1096,12 +1981,22 @@
             "target": "All characters",
             "accuracy": 130,
             "can_crit": false,
-            "base_damage": 8
+            "base_damage": 8,
+            "shatter_chance": 0
         }
     },
     "dingo_2": {
         "attack": {
             "name": "Attack",
+            "base_damage": 16,
+            "statuses": {
+                "Sleep": 10,
+                "Silence": 10
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
                 "Sleep": 10,
@@ -1116,6 +2011,15 @@
     "water_flan_2": {
         "water": {
             "name": "Water",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Water"
+        },
+        "water_self": {
+            "name": "Water (self)",
+            "target": "Self",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -1146,14 +2050,16 @@
             "name": "Seed Cannon",
             "accuracy": 85,
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         },
         "seed_cannon_kimahri": {
             "name": "Seed Cannon (Kimahri)",
             "target": "Kimahri",
             "accuracy": 85,
             "can_crit": false,
-            "base_damage": 16
+            "base_damage": 16,
+            "shatter_chance": 0
         }
     },
     "raldo_2": {
@@ -1161,7 +2067,23 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Berserk": 10
+            }
+        },
+        "attack_auron": {
+            "name": "Attack Auron",
+            "target": "Auron",
+            "base_damage": 16,
+            "statuses": {
+                "Berserk": 10
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "base_damage": 16,
+            "statuses": {
+                "Berserk": 10
             }
         },
         "attack_aeon": {
@@ -1174,6 +2096,10 @@
         }
     },
     "bunyip_2": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16
+        }
     },
     "???_3": {
     },
@@ -1220,6 +2146,23 @@
     "valefor_2": {
     },
     "ifrit": {
+        "attack_first_turn": {
+            "name": "Attack (first turn only)",
+            "can_miss": false,
+            "base_damage": 20
+        },
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16
+        },
+        "meteor_strike": {
+            "name": "Meteor Strike",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 28,
+            "shatter_chance": 0
+        }
     },
     "mimic_parts_2": {
     },
@@ -1272,6 +2215,52 @@
     "ifrit_2": {
     },
     "ixion": {
+        "attack": {
+            "name": "Attack",
+            "base_damage": 16
+        },
+        "aerospark": {
+            "name": "Aerospark",
+            "can_miss": false,
+            "can_crit": false,
+            "base_damage": 22,
+            "element": null,
+            "dispels": [
+                "Protect",
+                "Shell",
+                "Regen",
+                "Reflect",
+                "NulBlaze",
+                "NulFrost",
+                "NulShock",
+                "NulTide",
+                "Haste"
+            ],
+            "shatter_chance": 0
+        },
+        "thors_hammer": {
+            "name": "Thor's Hammer",
+            "target": "All characters",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Special Magic",
+            "base_damage": 40,
+            "element": "Thunder",
+            "shatter_chance": 0
+        },
+        "haste": {
+            "name": "Haste",
+            "target": "Self",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "CTB",
+            "base_damage": 8,
+            "statuses": {
+                "Haste": 254
+            },
+            "shatter_chance": 0,
+            "rank": 4
+        }
     },
     "shiva": {
     },

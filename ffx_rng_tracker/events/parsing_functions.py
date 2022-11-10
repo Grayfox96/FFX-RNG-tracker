@@ -37,7 +37,7 @@ ParsingFunction = (Callable[[GameState, str], Event]
 def parse_encounter(gs: GameState,
                     name: str = '',
                     *zones: str,
-                    ) -> Encounter:
+                    ) -> Encounter | MultizoneRandomEncounter:
     if name in BOSSES:
         encounter_type = Encounter
     elif name in ZONES:
@@ -113,7 +113,7 @@ def parse_bribe(gs: GameState,
     return Bribe(gs, monster, user)
 
 
-def parse_death(gs: GameState, character_name: str = '', *_) -> Death:
+def parse_death(gs: GameState, character_name: str = 'unknown', *_) -> Death:
     try:
         character = search_stringenum(Character, character_name)
     except ValueError:
@@ -150,12 +150,14 @@ def parse_party_change(gs: GameState,
     if not party_formation_string:
         raise EventParsingError(usage)
     party_formation = []
-    for character in tuple(Character)[:7]:
-        initial = stringify(character)[0]
-        for letter in party_formation_string:
-            if initial == letter:
+    for letter in party_formation_string:
+        for character in tuple(Character)[:8]:
+            if letter == stringify(character)[0]:
                 party_formation.append(character)
                 break
+
+    # remove duplicates and keep order
+    party_formation = list(dict.fromkeys(party_formation))
 
     if not party_formation:
         raise EventParsingError(usage)
@@ -172,7 +174,7 @@ def parse_summon(gs: GameState,
     if 'magus_sisters'.startswith(aeon_name):
         party_formation = [Character.CINDY, Character.SANDY, Character.MINDY]
     else:
-        for aeon in tuple(Character)[7:]:
+        for aeon in tuple(Character)[8:]:
             if stringify(aeon).startswith(aeon_name):
                 party_formation = [aeon]
                 break
@@ -236,41 +238,47 @@ def parse_action(gs: GameState,
     if target is None:
         raise EventParsingError(f'Action "{action}" requires a target.')
     try:
-        time_remaining = int(time_remaining)
+        time_remaining = float(time_remaining)
     except ValueError:
         time_remaining = 0
+    time_remaining = int(time_remaining * 1000)
     return CharacterAction(gs, character, action, target, time_remaining)
 
 
 def parse_stat_update(gs: GameState,
-                      character_name: str = '',
+                      target_name: str = '',
                       stat_name: str = '',
                       amount: str = '',
                       *_,
                       ) -> ChangeStat:
     usage = 'Usage: stat [character] [stat] [(+/-) amount]'
-    if not character_name or not stat_name or not amount:
+    if not target_name or not stat_name or not amount:
         raise EventParsingError(usage)
-    try:
-        character = search_stringenum(Character, character_name)
-    except ValueError:
-        raise EventParsingError(f'No character named {character_name}')
-    character = gs.characters[character]
+    if target_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
+        index = int(target_name[1]) - 1
+        try:
+            target = gs.monster_party[index]
+        except IndexError:
+            raise EventParsingError(f'No monster in slot {index + 1}')
+    else:
+        try:
+            target = search_stringenum(Character, target_name)
+        except ValueError:
+            raise EventParsingError(f'No character named {target_name}')
+        target = gs.characters[target]
     try:
         stat = search_stringenum(Stat, stat_name)
     except ValueError:
         raise EventParsingError(f'No stat named {stat_name}')
-    stat_value = character.stats[stat]
+    stat_value = target.stats[stat]
     try:
-        if amount.startswith('+'):
-            stat_value += int(amount[1:])
-        elif amount.startswith('-'):
-            stat_value -= int(amount[1:])
+        if amount.startswith(('+', '-')):
+            stat_value += int(amount)
         else:
             stat_value = int(amount)
     except ValueError:
         raise EventParsingError('Stat value should be an integer.')
-    return ChangeStat(gs, character, stat, stat_value)
+    return ChangeStat(gs, target, stat, stat_value)
 
 
 def parse_yojimbo_action(gs: GameState,
@@ -303,10 +311,8 @@ def parse_compatibility_update(gs: GameState,
                                ) -> Comment:
     usage = 'Usage: compatibility [(+/-)amount]'
     try:
-        if compatibility.startswith('+'):
-            gs.compatibility += int(compatibility[1:])
-        elif compatibility.startswith('-'):
-            gs.compatibility -= int(compatibility[1:])
+        if compatibility.startswith(('+', '-')):
+            gs.compatibility += int(compatibility)
         else:
             gs.compatibility = int(compatibility)
     except ValueError:
@@ -348,28 +354,28 @@ def parse_monster_action(gs: GameState,
 
 
 def parse_equipment_change(gs: GameState,
-                           character_name: str = '',
                            equipment_type_name: str = '',
+                           character_name: str = '',
                            slots: str = '',
                            *ability_names: str,
                            ) -> ChangeEquipment:
-    usage = 'Usage: equip [character] [equip_type] [slots] (abilities)'
-    if not all((character_name, equipment_type_name, slots)):
+    usage = 'Usage: equip [equip_type] [character] [slots] (abilities)'
+    if not all((equipment_type_name, character_name, slots)):
         raise EventParsingError(usage)
-    try:
-        character = search_stringenum(Character, character_name)
-    except ValueError:
-        raise EventParsingError(f'No character named {character_name}')
     try:
         equipment_type = search_stringenum(EquipmentType, equipment_type_name)
     except ValueError:
         raise EventParsingError('Equipment type can be weapon or armor')
     try:
+        character = search_stringenum(Character, character_name)
+    except ValueError:
+        raise EventParsingError(f'No character named {character_name}')
+    try:
         slots = int(slots)
     except ValueError:
-        raise EventParsingError('Slots must be a number between 0 and 4')
+        raise EventParsingError('Slots must be between 0 and 4')
     if not (0 <= slots <= 4):
-        raise EventParsingError('Slots must be a number between 0 and 4')
+        raise EventParsingError('Slots must be between 0 and 4')
     abilities = []
     for ability_name in ability_names:
         if len(abilities) >= 4:
@@ -413,7 +419,7 @@ def parse_heal(gs: GameState,
             raise EventParsingError(f'No character called {character_name}')
         characters.append(character)
     else:
-        characters.extend([c for c in Character][:-1])
+        characters.extend(tuple(Character))
     try:
         amount = int(amount)
     except ValueError:

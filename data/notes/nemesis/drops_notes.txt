@@ -4,15 +4,6 @@
 # steal [monster_name] (successful steals)
 # death (character)
 # bribe [monster_name] [user]
-#
-# add comments with a # at the start
-# of the line
-#
-# blank lines create a blank line
-#
-# type /// to hide everything
-# above that line
-#
 ///
 # Zanarkand
 party ta
@@ -43,7 +34,7 @@ party tr
 steal klikk
 steal klikk 1
 # steal klikk 1
-# steal klikk 1
+# steal klikk 2
 klikk tidus
 
 # Chain encounter
@@ -158,6 +149,8 @@ sahagin_chief tidus
 # Forced encounters
 party tyakwl
 vouivre_2 auron
+# death tidus
+# death wakka
 garuda_2 auron
 
 # Mi'ihen Highroad
@@ -165,7 +158,8 @@ garuda_2 auron
 raldo_2 auron
 
 # death
-# death
+
+# Old Road
 # death
 
 # Mushroom Rock Road
@@ -207,6 +201,7 @@ sinspawn_gui seymour
 
 # Moonflow
 # death
+
 extractor wakka
 
 party tyakwlr
@@ -228,6 +223,7 @@ death rikku
 steal chimera
 steal blue_element
 # steal iguion
+
 spherimorph rikku
 
 # Lake Macalania
@@ -252,8 +248,6 @@ anima tidus
 death rikku
 seymour tidus
 
-# Guado Guardian 2 is in macalania
-# and Wendigo fights
 # guado_guardian_2 rikku
 # snow_wolf rikku
 # mafdet rikku
@@ -274,7 +268,7 @@ guado_guardian_2 tidus
 party takwlr
 
 # Bikanel Desert monsters
-# steal zu_2
+# steal zu
 # steal sand_wolf
 # steal alcyone
 # sand_wolf rikku
@@ -287,9 +281,6 @@ party takwlr
 sandragora auron
 
 # Home
-# Guado Guardian n.3 is in Home
-# and Airship encounters
-
 # Fight 1
 guado_guardian_3 tidus
 bomb_2 tidus
@@ -377,9 +368,11 @@ roll rng11 2
 
 # Via Purifico underwater
 party twr
+
 # phlegyas tidus
 # sahagin_3 tidus
 
+# death
 evrae_altana tidus
 
 # Highbridge
