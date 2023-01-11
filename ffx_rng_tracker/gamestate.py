@@ -1,7 +1,13 @@
+from itertools import chain
+
 from .configs import Configs
+from .data.autoabilities import AUTO_STATUSES, ELEMENTAL_SOSES, STATUS_SOSES
 from .data.characters import CHARACTERS_DEFAULTS, CharacterState
-from .data.constants import BASE_COMPATIBILITY, Character
-from .data.monsters import MONSTERS, MonsterState
+from .data.constants import BASE_COMPATIBILITY, Character, Item, Status
+from .data.equipment import Equipment
+from .data.items import InventorySlot
+from .data.monsters import MonsterState
+from .data.statuses import DURATION_STATUSES, TEMPORARY_STATUSES
 from .tracker import FFXRNGTracker
 
 
@@ -26,7 +32,7 @@ class GameState:
             characters[character] = CharacterState(defaults)
         return characters
 
-    def normalize_ctbs(self) -> None:
+    def normalize_ctbs(self) -> int:
         ctbs = []
         for c, cs in self.characters.items():
             if c not in self.party or cs.dead or cs.inactive:
@@ -45,12 +51,77 @@ class GameState:
             c.ctb -= min_ctb
         for m in self.monster_party:
             m.ctb -= min_ctb
+        return min_ctb
+
+    def setup_autostatuses(self) -> None:
+        for character in self.characters.values():
+            for autoability in character.autoabilities:
+                if autoability in AUTO_STATUSES:
+                    status = AUTO_STATUSES[autoability]
+                elif autoability in ELEMENTAL_SOSES and character.in_crit:
+                    status = ELEMENTAL_SOSES[autoability]
+                elif autoability in STATUS_SOSES and character.in_crit:
+                    status = STATUS_SOSES[autoability]
+                else:
+                    continue
+                if status not in character.statuses:
+                    character.statuses[status] = 255
+        for monster in self.monster_party:
+            for status in monster.monster.auto_statuses:
+                if status not in monster.statuses:
+                    monster.statuses[status] = 255
+
+    def process_start_of_turn(self,
+                              actor: CharacterState | MonsterState) -> None:
+        for status in TEMPORARY_STATUSES:
+            actor.statuses.pop(status, None)
+        self.setup_autostatuses()
+
+    def process_end_of_turn(self,
+                            actor: CharacterState | MonsterState) -> None:
+        self.last_actor = actor
+        statuses = actor.statuses.copy()
+        for status, stacks in statuses.items():
+            if status is Status.POISON:
+                actor.current_hp -= actor.max_hp // 4
+            if stacks >= 254:
+                continue
+            if status not in DURATION_STATUSES:
+                continue
+            stacks -= 1
+            if stacks <= 0:
+                if status is Status.DOOM:
+                    actor.statuses[Status.DEATH] = 254
+                actor.statuses.pop(status, None)
+            else:
+                actor.statuses[status] = stacks
+        ctb_ticks = self.normalize_ctbs()
+        actors = chain(self.characters.values(), self.monster_party)
+        for actor in actors:
+            if Status.REGEN in actor.statuses:
+                actor.current_hp += (ctb_ticks * actor.max_hp // 256) + 100
+
+    def add_to_inventory(self, item: Item, quantity: int) -> None:
+        empty_slot = None
+        for slot in self.inventory:
+            if not empty_slot and not slot.item:
+                empty_slot = slot
+            elif slot.item is item:
+                slot.quantity += quantity
+                return
+        empty_slot.item = item
+        empty_slot.quantity = quantity
 
     def reset(self) -> None:
         self._rng_tracker.reset()
+        self.inventory = [InventorySlot() for _ in Item]
+        self.inventory[0] = InventorySlot(Item.POTION, 10)
+        self.inventory[1] = InventorySlot(Item.PHOENIX_DOWN, 3)
+        self.equipment_inventory: list[Equipment] = []
+        self.gil = 300
         self.party = [Character.TIDUS, Character.AURON]
-        self.monster_party = [MonsterState(MONSTERS['dummy'])]
-        self.last_character = self.characters[Character.TIDUS]
+        self.monster_party: list[MonsterState] = []
+        self.last_actor: CharacterState | MonsterState = self.characters[Character.TIDUS]
         self.compatibility = BASE_COMPATIBILITY[Configs.game_version]
         self.equipment_drops = 0
         self.encounters_count = 0
@@ -58,6 +129,15 @@ class GameState:
         self.zone_encounters_counts.clear()
         for character in self.characters.values():
             character.reset()
+
+    @property
+    def gil(self) -> int:
+        return self._gil
+
+    @gil.setter
+    def gil(self, value: int) -> None:
+        value = min(max(0, value), 999999999)
+        self._gil = value
 
     @property
     def compatibility(self) -> int:

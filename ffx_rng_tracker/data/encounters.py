@@ -15,7 +15,7 @@ class EncounterData:
     max: int
 
 
-def get_encounters(file_path: str, seed: int) -> list[EncounterData]:
+def get_encounter_notes(file_path: str, seed: int) -> list[EncounterData]:
     encounters_notes = get_notes(file_path, seed)
     encounters = {}
     csv_reader = csv.reader(encounters_notes.splitlines())
@@ -24,7 +24,10 @@ def get_encounters(file_path: str, seed: int) -> list[EncounterData]:
             continue
         name = line[0]
         initiative = line[1].lower() == 'true'
-        label = line[2]
+        try:
+            label = line[2]
+        except IndexError:
+            label = name
         if not label:
             label = name
         if label in encounters:
@@ -33,18 +36,17 @@ def get_encounters(file_path: str, seed: int) -> list[EncounterData]:
                 if new_label not in encounters:
                     label = new_label
                     break
-
         try:
             minimum = max(int(line[3]), 0)
-        except ValueError:
+        except (ValueError, IndexError):
             minimum = 1
         try:
             default = max(minimum, int(line[4]))
-        except ValueError:
+        except (ValueError, IndexError):
             default = max(minimum, 1)
         try:
             maximum = max(default, int(line[5]))
-        except ValueError:
+        except (ValueError, IndexError):
             maximum = max(default, 1)
         encounters[label] = EncounterData(
             name=name,
@@ -55,3 +57,46 @@ def get_encounters(file_path: str, seed: int) -> list[EncounterData]:
             max=maximum,
         )
     return list(encounters.values())
+
+
+def get_steps_notes(file_path: str, seed: int) -> list[EncounterData]:
+    steps_notes = get_notes(file_path, seed)
+    steps = {}
+    csv_reader = csv.reader(steps_notes.splitlines())
+    for line in csv_reader:
+        if line[0].startswith('#'):
+            continue
+        name = line[0]
+        try:
+            label = line[1]
+        except IndexError:
+            label = name
+        if not label:
+            label = name
+        if label in steps:
+            for i in count(2):
+                new_label = f'{label} #{i}'
+                if new_label not in steps:
+                    label = new_label
+                    break
+        try:
+            minimum = max(int(line[2]), 0)
+        except (ValueError, IndexError):
+            minimum = 0
+        try:
+            default = max(minimum, int(line[3]))
+        except (ValueError, IndexError):
+            default = max(minimum, 1)
+        try:
+            maximum = max(default, int(line[4]))
+        except (ValueError, IndexError):
+            maximum = max(default, 1)
+        steps[label] = EncounterData(
+            name=name,
+            initiative=False,
+            label=label,
+            min=minimum,
+            default=default,
+            max=maximum,
+        )
+    return list(steps.values())

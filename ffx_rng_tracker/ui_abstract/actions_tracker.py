@@ -1,9 +1,11 @@
 from ..data.constants import Character
 from ..data.monsters import MONSTERS
 from ..events.parsing_functions import (ParsingFunction, parse_action,
+                                        parse_character_status,
                                         parse_encounter, parse_end_encounter,
                                         parse_equipment_change, parse_heal,
                                         parse_monster_action,
+                                        parse_monster_spawn,
                                         parse_party_change, parse_roll,
                                         parse_stat_update, parse_summon)
 from ..utils import stringify
@@ -33,6 +35,8 @@ class ActionsTracker(TrackerUI):
             'equip': parse_equipment_change,
             'endencounter': parse_end_encounter,
             'heal': parse_heal,
+            'status': parse_character_status,
+            'spawn': parse_monster_spawn,
         }
         return parsing_functions
 
@@ -43,7 +47,7 @@ class ActionsTracker(TrackerUI):
             match line.lower().split():
                 case ['encounter', condition]:
                     if 'simulated'.startswith(condition):
-                        name = 'simulation_(dummy)'
+                        name = 'simulation'
                     elif 'preemptive'.startswith(condition):
                         name = 'dummy_preemptive'
                     elif 'ambush'.startswith(condition):

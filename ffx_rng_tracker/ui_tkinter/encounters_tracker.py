@@ -5,7 +5,7 @@ from typing import Callable
 
 from ..configs import Configs
 from ..data.encounter_formations import ZONES
-from ..data.encounters import EncounterData, get_encounters
+from ..data.encounters import EncounterData, get_encounter_notes
 from ..ui_abstract.encounters_planner import EncountersPlanner
 from ..ui_abstract.encounters_table import EncountersTable
 from ..ui_abstract.encounters_tracker import EncountersTracker
@@ -104,7 +104,7 @@ class TkEncountersInputWidget(tk.Frame):
                 input_data.append('equip weapon tidus 1')
                 initiative_equipped = False
             if encounter.label not in self.sliders:
-                encs = 1
+                encs = encounter.default
             else:
                 encs = self.sliders[encounter.label].get()
                 if encs >= 0:
@@ -150,7 +150,7 @@ class TkEncountersTracker(tk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkEncountersInputWidget(self)
-        encounters = get_encounters('encounters_notes.csv', seed)
+        encounters = get_encounter_notes('encounters_notes.csv', seed)
         input_widget.encounters = encounters
         for encounter in encounters:
             if encounter.min == encounter.max:
@@ -227,12 +227,19 @@ class TkEncountersPlannerInputWidget(tk.Frame):
         if initiative_equip:
             input_data.append('equip weapon tidus 1 initiative')
         for index, scale in enumerate(self.sliders):
-            name = stringify(scale.get_name())
+            name = (stringify(scale.get_name())
+                    .replace('(', '')
+                    .replace(')', '')
+                    .replace('-', '_')
+                    .replace('\'', '')
+                    )
+            while '__' in name:
+                name = name.replace('__', '_')
             match name:
                 case 'boss':
                     name = 'dummy'
                 case 'simulation':
-                    name = 'simulation_(dummy)'
+                    name = 'simulation'
             for count in range(scale.get()):
                 if count == 0:
                     # if there is some data append a spacer
@@ -334,7 +341,7 @@ class TkEncountersTableInputWidget(tk.Frame):
             input_data.append('encounter besaid_lagoon')
 
         for _ in range(int(self.simulated_encounters.get())):
-            input_data.append('encounter simulation_(dummy)')
+            input_data.append('encounter simulation')
 
         zones = []
         for zone_name, active in self.zones.items():

@@ -401,7 +401,7 @@ defender_x bahamut
 # epaaj ixion
 
 # Cavern of the Stolen Fayth
-# Killing enemies with a party member
+# Killing monsters with a party member
 # Might change the equipment owner
 # ghost yuna
 # ghost tidus

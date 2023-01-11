@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from ..data.constants import (ICV_VARIANCE, Autoability, Character,
-                              EncounterCondition, MonsterSlot, Stat)
+                              EncounterCondition, MonsterSlot, Stat, Status)
 from ..data.encounter_formations import (BOSSES, FORMATIONS, SIMULATIONS,
                                          ZONES, Formation, Zone)
 from ..data.monsters import MonsterState
@@ -45,7 +45,7 @@ class Encounter(Event):
 
     def _update_current_monster_formation(self) -> None:
         self.gamestate.monster_party = []
-        for monster, slot in zip(self.formation, MonsterSlot):
+        for monster, slot in zip(self.formation.monsters, MonsterSlot):
             self.gamestate.monster_party.append(MonsterState(monster, slot))
 
     def _get_condition(self) -> EncounterCondition:
@@ -57,8 +57,8 @@ class Encounter(Event):
         else:
             initiative = False
         condition_rng = self._advance_rng(1) & 255
-        if FORMATIONS[self.name].forced_condition is not None:
-            return FORMATIONS[self.name].forced_condition
+        if self.formation.forced_condition is not None:
+            return self.formation.forced_condition
         if initiative:
             condition_rng -= 33
         if condition_rng < 32:
@@ -69,10 +69,11 @@ class Encounter(Event):
             return EncounterCondition.AMBUSH
 
     def _duplicate_monsters_rng_advances(self) -> None:
-        for index, monster in enumerate(self.formation):
-            count = self.formation.count(monster)
+        monsters = self.formation.monsters
+        for index, monster in enumerate(monsters):
+            count = monsters.count(monster)
             if count > 1:
-                if self.formation.index(monster) == index:
+                if monsters.index(monster) == index:
                     for _ in range(count):
                         self._advance_rng(28 + index)
                 self._advance_rng(28 + index)
@@ -109,9 +110,7 @@ class Encounter(Event):
             if Autoability.FIRST_STRIKE in state.autoabilities:
                 icvs[character] = 0
                 state.ctb = 0
-            elif (Autoability.AUTO_HASTE in state.autoabilities
-                    or (Autoability.SOS_HASTE in state.autoabilities
-                        and state.in_crit)):
+            elif Status.HASTE in state.statuses:
                 icv = icvs[character] // 2
                 icvs[character] = icv
                 state.ctb = icv
@@ -137,7 +136,7 @@ class Encounter(Event):
                 icvs.append(base // variance)
                 m.ctb = base // variance
             # empty enemy party slots still advance rng
-            for index in range(28 + len(self.formation), 36):
+            for index in range(28 + len(self.formation.monsters), 36):
                 self._advance_rng(index)
         return icvs
 

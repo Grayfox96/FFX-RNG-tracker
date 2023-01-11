@@ -1,11 +1,12 @@
 import csv
+from itertools import islice
 import os
 from typing import Iterable
 
 from ..configs import Configs
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..tracker import FFXRNGTracker
-from ..utils import open_cp1252, s32
+from ..utils import open_cp1252
 from .constants import GameVersion
 
 
@@ -53,14 +54,10 @@ def get_seed(damage_values: Iterable[int]) -> int:
 
 
 def datetime_to_seed(datetime: int, frames: int) -> int:
-    seed = s32((datetime + 1) * (s32(frames) + 1))
-    seed = s32(s32(seed * 1108104919) + 11786)
-    seed = s32(s32(seed * 1566083941) + 15413)
-    seed = s32(s32(seed >> 16) + s32(seed << 16))
-    if seed >= 0:
-        return seed
-    else:
-        return 0x100000000 + seed
+    seed = (datetime + 1) * (frames + 1)
+    seed = (seed * 0x420C56D7 + 0x2E0A) * 0x5D588B65 + 0x3C35
+    seed = ((seed & 0xffffffff) ^ 0x80000000) - 0x80000000
+    return ((seed >> 0x10) + (seed << 0x10)) & 0xffffffff
 
 
 def make_seeds_file(file_path: str, frames: int) -> None:
@@ -69,44 +66,47 @@ def make_seeds_file(file_path: str, frames: int) -> None:
     if os.path.exists(file_path):
         print(f'File {file_path} already exists!')
         return
-    damage_rolls = []
-    seeds = []
-    rng_tracker = FFXRNGTracker(0)
+    tidus_damage_rolls = _DAMAGE_VALUES['tidus']
+    lines = []
+    seeds = set()
+    tracker = FFXRNGTracker(0)
     for frame in range(frames):
-        print(f'\r{frame}/{frames}', end='')
+        if len(seeds) & 256 == 0:
+            print(f'\r{frame}/{frames}', end='')
         for date_time in range(256):
             seed = datetime_to_seed(date_time, frame)
-            rng_tracker.__init__(seed)
-            auron_rolls = [rng_tracker.advance_rng(22) for _ in range(37)]
-            tidus_rolls = [rng_tracker.advance_rng(20) for _ in range(7)]
+            tracker.seed = seed
+            if seed in seeds:
+                continue
+            tracker.rng_initial_values = tracker.get_rng_initial_values(23)
+            auron_rolls = tuple(islice(tracker.get_rng_generator(22), 37))
+            tidus_rolls = tuple(islice(tracker.get_rng_generator(20), 7))
             indexes = []
             # first encounter
             # get 3 damage rolls from auron and tidus
-            for i in range(1, 6, 2):
+            for i in (1, 3, 5):
                 auron_damage_index = auron_rolls[i] & 31
-                # if auron crits the sinscale
-                if (auron_rolls[i + 1] % 101) < 22:
-                    auron_damage_index += 32
+                # if auron crits the sinscale adds 32, otherwise 0
+                auron_damage_index += 32 * ((auron_rolls[i + 1] % 101) < 22)
                 indexes.append(auron_damage_index)
-                tidus_damage = _DAMAGE_VALUES['tidus'][tidus_rolls[i] & 31]
-                tidus_damage_index = _DAMAGE_VALUES['tidus'].index(
+                tidus_damage = tidus_damage_rolls[tidus_rolls[i] & 31]
+                tidus_damage_index = tidus_damage_rolls.index(
                     tidus_damage)
-                # if tidus crits the sinscale
-                if (tidus_rolls[i + 1] % 101) < 23:
-                    tidus_damage_index += 32
+                # if tidus crits the sinscale adds 32, otherwise 0
+                tidus_damage_index += 32 * ((tidus_rolls[i + 1] % 101) < 23)
                 indexes.append(tidus_damage_index)
             # second encounter after dragon fang
             # get 2 damage rolls from auron
-            for i in range(32, 35, 2):
+            for i in (32, 34):
                 auron_damage_index = auron_rolls[i] & 31
-                # if auron crits ammes
-                if (auron_rolls[i + 1] % 101) < 13:
-                    auron_damage_index += 32
+                # if auron crits ammes adds 32, otherwise 0
+                auron_damage_index += 32 * ((auron_rolls[i + 1] % 101) < 13)
                 indexes.append(auron_damage_index)
-            damage_rolls.append(''.join([f'{n:02}' for n in indexes]))
-            seeds.append(str(seed))
+            lines.append(
+                ''.join([f'{n:02}' for n in indexes]) + ',' + str(seed))
+            seeds.add(seed)
     print(f'\r{frames}/{frames}')
-    data = '\n'.join([f'{d},{s}' for d, s in zip(damage_rolls, seeds)])
+    data = '\n'.join(lines)
     with open_cp1252(file_path, 'w') as file:
         file.write(data)
     print('Done!')
@@ -125,7 +125,7 @@ _DAMAGE_VALUES: dict[str, tuple[int]] = {
     ),
 }
 FRAMES_FROM_BOOT = {
-    GameVersion.PS2NA: 60 * 60 * Configs.ps2_seeds_minutes,
+    GameVersion.PS2NA: 60 * 30 * Configs.ps2_seeds_minutes,
     GameVersion.HD: 1,
 }
 DAMAGE_VALUES_NEEDED = {

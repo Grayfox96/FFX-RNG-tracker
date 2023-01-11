@@ -83,6 +83,10 @@ class Status(StringEnum):
     MAX_HP_X_2 = 'MAX HP x 2'
     MAX_MP_X_2 = 'MAX MP x 2'
     MP_0 = 'MP = 0'
+    CRITICAL = 'Critical'
+    DAMAGE_9999 = 'Damage 9999'
+    OVERDRIVE_X1_5 = 'OverDrive x1.5'
+    OVERDRIVE_X_2 = 'OverDrive x 2'
     ESCAPE = 'Escape'
 
 
@@ -123,13 +127,10 @@ class DamageType(StringEnum):
     STRENGTH = 'Strength'
     SPECIAL_STRENGTH = 'Special Strength'
     MAGIC = 'Magic'
-    MAGIC_MP = 'Magic (MP)'
     SPECIAL_MAGIC = 'Special Magic'
     ITEM = 'Item'
-    ITEM_MP = 'Item (MP)'
     FIXED = 'Fixed'
     PERCENTAGE_TOTAL = 'Percentage (Total)'
-    PERCENTAGE_TOTAL_MP = 'Percentage (Total) (MP)'
     PERCENTAGE_CURRENT = 'Percentage (Current)'
     HEALING = 'Healing'
     GIL = 'Gil'
@@ -146,7 +147,7 @@ class TargetType(StringEnum):
     SINGLE_MONSTER = 'Single monster'
     RANDOM_MONSTER = 'Random monster'
     ALL_MONSTERS = 'All monsters'
-    LAST_CHARACTER = 'Last character'
+    LAST_ACTOR = 'Last character'
     HIGHEST_HP_CHARACTER = 'Highest HP character'
     LOWEST_HP_CHARACTER = 'Lowest HP character'
 
@@ -174,8 +175,15 @@ class Stat(StringEnum):
     EVASION = 'Evasion'
     ACCURACY = 'Accuracy'
     CTB = 'CTB'
+
+
+class Buff(StringEnum):
     CHEER = 'Cheer'
+    AIM = 'Aim'
     FOCUS = 'Focus'
+    REFLEX = 'Reflex'
+    LUCK = 'Luck'
+    JINX = 'Jinx'
 
 
 class Item(StringEnum):
@@ -527,45 +535,3 @@ ELEMENTAL_AFFINITY_MODIFIERS = {
 
 EQUIPMENT_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 5)
 EQUIPMENT_EMPTY_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 400)
-
-TEMPORARY_STATS = {
-    Stat.CHEER,
-    Stat.FOCUS,
-}
-
-NUL_STATUSES = {
-    Element.FIRE: Status.NULBLAZE,
-    Element.ICE: Status.NULFROST,
-    Element.THUNDER: Status.NULSHOCK,
-    Element.WATER: Status.NULTIDE,
-}
-NO_RNG_STATUSES = {
-    Status.DEFEND,
-    Status.SHIELD,
-    Status.BOOST,
-    Status.DELAY_WEAK,
-    Status.DELAY_STRONG,
-    Status.POWER_DISTILLER,
-    Status.MANA_DISTILLER,
-    Status.SPEED_DISTILLER,
-    Status.ABILITY_DISTILLER,
-    Status.GUARD,
-    Status.SENTINEL,
-    Status.SCAN,
-    Status.LIFE,
-    Status.AUTOLIFE,
-    Status.EJECT,
-    Status.DOOM,
-    Status.CURSE,
-    Status.MAX_HP_X_2,
-    Status.MAX_MP_X_2,
-    Status.MP_0,
-    Status.ESCAPE,
-}
-TEMPORARY_STATUSES = {
-    Status.DEFEND,
-    Status.SHIELD,
-    Status.BOOST,
-    Status.GUARD,
-    Status.SENTINEL,
-}

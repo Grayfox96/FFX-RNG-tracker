@@ -1,7 +1,6 @@
 from typing import Iterator
 
 from .data.constants import RNG_CONSTANTS_1, RNG_CONSTANTS_2
-from .utils import s32
 
 
 class FFXRNGTracker:
@@ -30,7 +29,7 @@ class FFXRNGTracker:
 
     def __init__(self, seed: int) -> None:
         self.seed = seed
-        self.rng_initial_values = self.get_rng_array()
+        self.rng_initial_values = self.get_rng_initial_values()
 
         # get rng generators
         self._rng_generators = tuple(
@@ -42,13 +41,15 @@ class FFXRNGTracker:
     def __repr__(self) -> str:
         return f'{type(self).__name__}(seed=({self.seed}))'
 
-    def get_rng_array(self) -> list[int]:
+    def get_rng_initial_values(self, amount: int = 68) -> list[int]:
         """Calculates the starting values of the rng arrays."""
-        rng_value = s32(self.seed)
+        rng_value = ((self.seed & 0xffffffff) ^ 0x80000000) - 0x80000000
         initial_values = []
-        for _ in range(68):
-            rng_value = s32(s32(rng_value * 0x5d588b65) + 0x3c35)
-            rng_value = s32((rng_value >> 0x10) + (rng_value << 0x10))
+        for _ in range(amount):
+            rng_value = rng_value * 0x5d588b65 + 0x3c35
+            rng_value = ((rng_value & 0xffffffff) ^ 0x80000000) - 0x80000000
+            rng_value = (rng_value >> 0x10) + (rng_value << 0x10)
+            rng_value = ((rng_value & 0xffffffff) ^ 0x80000000) - 0x80000000
             initial_values.append(rng_value & 0x7fffffff)
         return initial_values
 
@@ -56,13 +57,16 @@ class FFXRNGTracker:
         """Returns a generator object that yields rng values
         for a given rng index.
         """
-        rng_value = s32(self.rng_initial_values[rng_index])
+        rng_value = self.rng_initial_values[rng_index]
+        rng_value = ((rng_value & 0xffffffff) ^ 0x80000000) - 0x80000000
         rng_constant_1 = RNG_CONSTANTS_1[rng_index]
         rng_constant_2 = RNG_CONSTANTS_2[rng_index]
 
         while True:
-            rng_value = s32(rng_value * rng_constant_1 ^ rng_constant_2)
-            rng_value = s32((rng_value >> 0x10) + (rng_value << 0x10))
+            rng_value = rng_value * rng_constant_1 ^ rng_constant_2
+            rng_value = ((rng_value & 0xffffffff) ^ 0x80000000) - 0x80000000
+            rng_value = (rng_value >> 0x10) + (rng_value << 0x10)
+            rng_value = ((rng_value & 0xffffffff) ^ 0x80000000) - 0x80000000
             yield rng_value & 0x7fffffff
 
     def advance_rng(self, index: int) -> int:

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from ..data.constants import TEMPORARY_STATS, Character, Stat, Status
+from ..data.constants import Buff, Character, Status
 from ..data.monsters import MonsterState
 from ..ui_functions import ctb_sorter
 from .main import Event
@@ -14,7 +14,7 @@ class EndEncounter(Event):
         default_factory=dict, init=False, repr=False)
     _old_monster_party: list[MonsterState] = field(
         default_factory=list, init=False, repr=False)
-    _temp_stats: dict[Character, dict[Stat, int]] = field(
+    _buffs: dict[Character, dict[Buff, int]] = field(
         default_factory=dict, init=False, repr=False)
     _old_characters_ctbs: dict[Character, int] = field(
         default_factory=dict, init=False, repr=False)
@@ -53,17 +53,16 @@ class EndEncounter(Event):
         for character, state in self.gamestate.characters.items():
             if state.current_hp < state.max_hp:
                 self._hps[character] = state.current_hp
-            if state.dead:
+            if Status.DEATH in state.statuses:
                 state.current_hp = 1
             if character in self.gamestate.party:
                 self._old_characters_ctbs[character] = state.ctb
             state.ctb = 0
             self._statuses[character] = state.statuses.copy()
             state.statuses.clear()
-            self._temp_stats[character] = {}
-            for stat in TEMPORARY_STATS:
-                self._temp_stats[character][stat] = state.stats[stat]
-                state.stats[stat] = 0
+            self._buffs[character] = state.buffs.copy()
+            for buff in state.buffs:
+                state.buffs[buff] = 0
         for m in self.gamestate.monster_party:
             self._old_monsters_ctbs.append(m.ctb)
         self._old_monster_party = self.gamestate.monster_party
@@ -74,9 +73,8 @@ class EndEncounter(Event):
             self.gamestate.characters[character].statuses = statuses
         for character, hp in self._hps.items():
             self.gamestate.characters[character].current_hp = hp
-        for character, stats in self._temp_stats.items():
-            for stat, value in stats.items():
-                self.gamestate.characters[character].stats[stat] = value
+        for character, buffs in self._buffs.items():
+            self.gamestate.characters[character].buffs = buffs.copy()
         for character, ctb in self._old_characters_ctbs.items():
             self.gamestate.characters[character].ctb = ctb
         return super().rollback()

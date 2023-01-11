@@ -10,9 +10,11 @@
         "can_crit": true,
         "bonus_crit": 0,
         "damage_type": "Strength",
+        "damages_mp": false,
         "base_damage": 0,
         "element": null,
         "statuses": {},
+        "buffs": {},
         "dispels": [],
         "shatter_chance": 10,
         "drains": false,
@@ -37,7 +39,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Defend": 254
+            "Defend": [254, 254]
         },
         "rank": 2
     },
@@ -65,65 +67,65 @@
         "name": "Sleep Attack",
         "uses_weapon": true,
         "statuses": {
-            "Sleep": 100
+            "Sleep": [100, 3]
         }
     },
     "silence_attack": {
         "name": "Silence Attack",
         "uses_weapon": true,
         "statuses": {
-            "Silence": 100
+            "Silence": [100, 3]
         }
     },
     "dark_attack": {
         "name": "Dark Attack",
         "uses_weapon": true,
         "statuses": {
-            "Dark": 100
+            "Dark": [100, 3]
         }
     },
     "sleep_buster": {
         "name": "Sleep Buster",
         "uses_weapon": true,
         "statuses": {
-            "Sleep": 254
+            "Sleep": [254, 1]
         }
     },
     "silence_buster": {
         "name": "Silence Buster",
         "uses_weapon": true,
         "statuses": {
-            "Silence": 254
+            "Silence": [254, 1]
         }
     },
     "dark_buster": {
         "name": "Dark Buster",
         "uses_weapon": true,
         "statuses": {
-            "Dark": 254
+            "Dark": [254, 1]
         }
     },
     "zombie_attack": {
         "name": "Zombie Attack",
         "uses_weapon": true,
         "statuses": {
-            "Zombie": 100
+            "Zombie": [100, 254]
         }
     },
     "triple_foul": {
         "name": "Triple Foul",
         "uses_weapon": true,
         "statuses": {
-            "Sleep": 100,
-            "Silence": 100,
-            "Dark": 100
+            "Sleep": [100, 3],
+            "Silence": [100, 3],
+            "Dark": [100, 3]
         }
     },
     "delay_attack": {
         "name": "Delay Attack",
         "uses_weapon": true,
         "statuses": {
-            "Delay (Weak)": 254
+            "Delay (Weak)": [254, 254]
         },
         "rank": 6
     },
@@ -131,7 +133,7 @@
         "name": "Delay Buster",
         "uses_weapon": true,
         "statuses": {
-            "Delay (Strong)": 254
+            "Delay (Strong)": [254, 254]
         },
         "rank": 8
     },
@@ -139,7 +141,7 @@
         "name": "Power Break",
         "uses_weapon": true,
         "statuses": {
-            "Power Break": 100
+            "Power Break": [100, 254]
         },
         "rank": 4
     },
@@ -147,7 +149,7 @@
         "name": "Magic Break",
         "uses_weapon": true,
         "statuses": {
-            "Magic Break": 100
+            "Magic Break": [100, 254]
         },
         "rank": 4
     },
@@ -155,7 +157,7 @@
         "name": "Armor Break",
         "uses_weapon": true,
         "statuses": {
-            "Armor Break": 100
+            "Armor Break": [100, 254]
         },
         "rank": 4
     },
@@ -163,7 +165,7 @@
         "name": "Mental Break",
         "uses_weapon": true,
         "statuses": {
-            "Mental Break": 100
+            "Mental Break": [100, 254]
         },
         "rank": 4
     },
@@ -171,38 +173,58 @@
         "name": "Extract Power",
         "uses_weapon": true,
         "statuses": {
-            "Power Distiller": 254
-        }
+            "Power Distiller": [254, 254]
+        },
+        "dispels": [
+            "Mana Distiller",
+            "Speed Distiller",
+            "Ability Distiller"
+        ]
     },
     "extract_mana": {
         "name": "Extract Mana",
         "uses_weapon": true,
         "statuses": {
-            "Mana Distiller": 254
-        }
+            "Mana Distiller": [254, 254]
+        },
+        "dispels": [
+            "Power Distiller",
+            "Speed Distiller",
+            "Ability Distiller"
+        ]
     },
     "extract_speed": {
         "name": "Extract Speed",
         "uses_weapon": true,
         "statuses": {
-            "Speed Distiller": 254
-        }
+            "Speed Distiller": [254, 254]
+        },
+        "dispels": [
+            "Power Distiller",
+            "Mana Distiller",
+            "Ability Distiller"
+        ]
     },
     "extract_ability": {
         "name": "Extract Ability",
         "uses_weapon": true,
         "statuses": {
-            "Ability Distiller": 254
-        }
+            "Ability Distiller": [254, 254]
+        },
+        "dispels": [
+            "Power Distiller",
+            "Mana Distiller",
+            "Speed Distiller"
+        ]
     },
     "full_break": {
         "name": "Full Break",
         "uses_weapon": true,
         "statuses": {
-            "Power Break": 100,
-            "Magic Break": 100,
-            "Armor Break": 100,
-            "Mental Break": 100
+            "Power Break": [100, 254],
+            "Magic Break": [100, 254],
+            "Armor Break": [100, 254],
+            "Mental Break": [100, 254]
         },
         "rank": 5
     },
@@ -235,7 +257,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Escape": 254
+            "Escape": [254, 254]
         },
         "rank": 2
     },
@@ -255,6 +277,11 @@
         "can_crit": false,
         "damage_type": "Fixed",
         "base_damage": -1000,
+        "dispels": [
+            "Petrify",
+            "Poison",
+            "Silence"
+        ],
         "rank": 2
     },
     "healing_water": {
@@ -273,10 +300,10 @@
         "damage_type": "Percentage (Total)",
         "base_damage": -16,
         "statuses": {
-            "NulBlaze": 254,
-            "NulFrost": 254,
-            "NulShock": 254,
-            "NulTide": 254
+            "NulBlaze": [254, 1],
+            "NulFrost": [254, 1],
+            "NulShock": [254, 1],
+            "NulTide": [254, 1]
         },
         "rank": 2
     },
@@ -411,7 +438,7 @@
         "damage_type": "Item",
         "base_damage": 16,
         "statuses": {
-            "Armor Break": 254
+            "Armor Break": [254, 254]
         },
         "rank": 2
     },
@@ -423,7 +450,7 @@
         "damage_type": "Item",
         "base_damage": 15,
         "statuses": {
-            "Sleep": 254
+            "Sleep": [254, 5]
         },
         "rank": 2
     },
@@ -435,7 +462,7 @@
         "damage_type": "Item",
         "base_damage": 20,
         "statuses": {
-            "Sleep": 254
+            "Sleep": [254, 8]
         },
         "rank": 2
     },
@@ -447,7 +474,7 @@
         "damage_type": "Item",
         "base_damage": 15,
         "statuses": {
-            "Silence": 254
+            "Silence": [254, 8]
         },
         "rank": 2
     },
@@ -459,7 +486,7 @@
         "damage_type": "Item",
         "base_damage": 15,
         "statuses": {
-            "Dark": 254
+            "Dark": [254, 8]
         },
         "rank": 2
     },
@@ -505,7 +532,7 @@
         "damage_type": "Item",
         "base_damage": 40,
         "statuses": {
-            "Poison": 254
+            "Poison": [254, 254]
         },
         "rank": 2
     },
@@ -517,7 +544,7 @@
         "damage_type": "CTB",
         "base_damage": -16,
         "statuses": {
-            "Slow": 254
+            "Slow": [254, 254]
         },
         "rank": 2
     },
@@ -538,7 +565,7 @@
         "damage_type": "CTB",
         "base_damage": -16,
         "statuses": {
-            "Slow": 254
+            "Slow": [254, 254]
         },
         "rank": 2
     },
@@ -547,7 +574,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Doom": 254
+            "Doom": [254, 254]
         },
         "rank": 2
     },
@@ -557,7 +584,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Petrify": 254
+            "Petrify": [254, 254]
         },
         "rank": 2
     },
@@ -566,7 +593,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Death": 100
+            "Death": [100, 254]
         },
         "rank": 2
     },
@@ -577,7 +604,7 @@
         "does_damage": false,
         "hits": 4,
         "statuses": {
-            "Death": 100
+            "Death": [100, 254]
         },
         "rank": 2
     },
@@ -597,7 +624,7 @@
         "damage_type": "CTB",
         "base_damage": 8,
         "statuses": {
-            "Haste": 254
+            "Haste": [254, 254]
         },
         "rank": 2
     },
@@ -609,7 +636,7 @@
         "damage_type": "CTB",
         "base_damage": 8,
         "statuses": {
-            "Haste": 254
+            "Haste": [254, 254]
         },
         "rank": 2
     },
@@ -618,7 +645,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Shell": 254
+            "Shell": [254, 254]
         },
         "rank": 2
     },
@@ -627,7 +654,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Protect": 254
+            "Protect": [254, 254]
         },
         "rank": 2
     },
@@ -636,7 +663,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Reflect": 254
+            "Reflect": [254, 254]
         },
         "rank": 2
     },
@@ -645,7 +672,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Regen": 254
+            "Regen": [254, 10]
         },
         "rank": 2
     },
@@ -653,7 +680,8 @@
         "name": "Mana Spring",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Item (MP)",
+        "damage_type": "Item",
+        "damages_mp": true,
         "base_damage": 20,
         "rank": 2
     },
@@ -677,7 +705,8 @@
         "name": "Soul Spring (MP)",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Item (MP)",
+        "damage_type": "Item",
+        "damages_mp": true,
         "base_damage": 30,
         "rank": 2
     },
@@ -687,6 +716,22 @@
         "can_crit": false,
         "damage_type": "Item",
         "base_damage": 22,
+        "dispels": [
+            "Power Break",
+            "Magic Break",
+            "Armor Break",
+            "Mental Break",
+            "Protect",
+            "Shell",
+            "Reflect",
+            "NulBlaze",
+            "NulFrost",
+            "NulShock",
+            "NulTide",
+            "Regen",
+            "Haste",
+            "Curse"
+        ],
         "rank": 2
     },
     "stamina_tablet": {
@@ -695,7 +740,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "MAX HP x 2": 254
+            "MAX HP x 2": [254, 254]
         },
         "rank": 2
     },
@@ -705,7 +750,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "MAX MP x 2": 254
+            "MAX MP x 2": [254, 254]
         },
         "rank": 2
     },
@@ -715,7 +760,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "MAX HP x 2": 254
+            "MAX HP x 2": [254, 254]
         },
         "rank": 2
     },
@@ -725,7 +770,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "MAX MP x 2": 254
+            "MAX MP x 2": [254, 254]
         },
         "rank": 2
     },
@@ -735,7 +780,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "MP = 0": 254
+            "MP = 0": [254, 254]
         },
         "rank": 2
     },
@@ -745,7 +790,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "MP = 0": 254
+            "MP = 0": [254, 254]
         },
         "rank": 2
     },
@@ -762,6 +807,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "buffs": {
+            "Cheer": 1
+        },
         "rank": 2
     },
     "aim": {
@@ -769,6 +817,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "buffs": {
+            "Aim": 1
+        },
         "rank": 2
     },
     "focus": {
@@ -776,6 +827,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "buffs": {
+            "Focus": 1
+        },
         "rank": 2
     },
     "reflex": {
@@ -783,6 +837,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "buffs": {
+            "Reflex": 1
+        },
         "rank": 2
     },
     "luck": {
@@ -790,6 +847,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "buffs": {
+            "Luck": 1
+        },
         "rank": 2
     },
     "jinx": {
@@ -797,6 +857,9 @@
         "target": "All monsters",
         "can_miss": false,
         "does_damage": false,
+        "buffs": {
+            "Jinx": 1
+        },
         "rank": 2
     },
     "lancet_hp": {
@@ -814,7 +877,8 @@
         "target": "Single monster",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Magic (MP)",
+        "damage_type": "Magic",
+        "damages_mp": true,
         "base_damage": 6,
         "drains": true,
         "rank": 2
@@ -825,7 +889,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Guard": 254
+            "Guard": [254, 254]
         }
     },
     "sentinel": {
@@ -834,8 +898,8 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Defend": 254,
-            "Guard": 254
+            "Defend": [254, 254],
+            "Guard": [254, 254]
         }
     },
     "spare_change": {
@@ -852,7 +916,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Threaten": 254
+            "Threaten": [254, 254]
         }
     },
     "provoke": {
@@ -861,7 +925,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Provoke": 100
+            "Provoke": [100, 254]
         }
     },
     "entrust": {
@@ -995,7 +1059,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Poison": 254
+            "Poison": [254, 254]
         }
     },
     "demi": {
@@ -1011,7 +1075,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Death": 80
+            "Death": [80, 254]
         }
     },
     "drain": {
@@ -1027,7 +1091,8 @@
         "name": "Osmose",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Magic (MP)",
+        "damage_type": "Magic",
+        "damages_mp": true,
         "base_damage": 10,
         "drains": true,
         "rank": 2
@@ -1078,7 +1143,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Scan": 254
+            "Scan": [254, 254]
         }
     },
     "nulblaze": {
@@ -1087,7 +1152,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "NulBlaze": 254
+            "NulBlaze": [254, 1]
         },
         "rank": 2
     },
@@ -1097,7 +1162,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "NulShock": 254
+            "NulShock": [254, 1]
         },
         "rank": 2
     },
@@ -1107,7 +1172,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "NulTide": 254
+            "NulTide": [254, 1]
         },
         "rank": 2
     },
@@ -1117,14 +1182,24 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "NulFrost": 254
+            "NulFrost": [254, 1]
         },
         "rank": 2
     },
     "esuna": {
         "name": "Esuna",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "dispels": [
+            "Petrify",
+            "Poison",
+            "Confuse",
+            "Berserk",
+            "Sleep",
+            "Silence",
+            "Dark",
+            "Slow"
+        ]
     },
     "life": {
         "name": "Life",
@@ -1133,8 +1208,11 @@
         "damage_type": "Percentage (Total)",
         "base_damage": -8,
         "statuses": {
-            "Life": 254
-        }
+            "Life": [254, 254]
+        },
+        "dispels": [
+            "Death"
+        ]
     },
     "full-life": {
         "name": "Full-Life",
@@ -1143,8 +1221,11 @@
         "damage_type": "Percentage (Total)",
         "base_damage": -16,
         "statuses": {
-            "Life": 254
-        }
+            "Life": [254, 254]
+        },
+        "dispels": [
+            "Death"
+        ]
     },
     "haste": {
         "name": "Haste",
@@ -1153,7 +1234,7 @@
         "damage_type": "CTB",
         "base_damage": 8,
         "statuses": {
-            "Haste": 254
+            "Haste": [254, 254]
         },
         "rank": 4
     },
@@ -1165,7 +1246,7 @@
         "damage_type": "CTB",
         "base_damage": 8,
         "statuses": {
-            "Haste": 254
+            "Haste": [254, 254]
         },
         "rank": 6
     },
@@ -1176,7 +1257,7 @@
         "damage_type": "CTB",
         "base_damage": -16,
         "statuses": {
-            "Slow": 100
+            "Slow": [100, 254]
         }
     },
     "slowga": {
@@ -1187,7 +1268,7 @@
         "damage_type": "CTB",
         "base_damage": -16,
         "statuses": {
-            "Slow": 100
+            "Slow": [100, 254]
         },
         "rank": 4
     },
@@ -1196,7 +1277,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Shell": 254
+            "Shell": [254, 254]
         }
     },
     "protect": {
@@ -1204,7 +1285,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Protect": 254
+            "Protect": [254, 254]
         }
     },
     "reflect": {
@@ -1212,20 +1293,36 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Reflect": 254
+            "Reflect": [254, 254]
         }
     },
     "dispel": {
         "name": "Dispel",
         "can_miss": false,
-        "does_damage": false
+        "does_damage": false,
+        "dispels": [
+            "Power Break",
+            "Magic Break",
+            "Armor Break",
+            "Mental Break",
+            "Protect",
+            "Shell",
+            "Reflect",
+            "NulBlaze",
+            "NulFrost",
+            "NulShock",
+            "NulTide",
+            "Regen",
+            "Haste",
+            "Curse"
+        ]
     },
     "regen": {
         "name": "Regen",
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Regen": 100
+            "Regen": [100, 10]
         }
     },
     "holy": {
@@ -1243,7 +1340,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Auto-Life": 254
+            "Auto-Life": [254, 254]
         }
     },
     "#item": {
@@ -1305,8 +1402,11 @@
         "damage_type": "Percentage (Total)",
         "base_damage": -8,
         "statuses": {
-            "Life": 254
+            "Life": [254, 254]
         },
+        "dispels": [
+            "Death"
+        ],
         "rank": 2
     },
     "mega_phoenix": {
@@ -1317,8 +1417,11 @@
         "damage_type": "Percentage (Total)",
         "base_damage": -16,
         "statuses": {
-            "Life": 254
+            "Life": [254, 254]
         },
+        "dispels": [
+            "Death"
+        ],
         "rank": 2
     },
     "elixir_hp": {
@@ -1333,7 +1436,8 @@
         "name": "Elixir (MP)",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Percentage (Total) (MP)",
+        "damage_type": "Percentage (Total)",
+        "damages_mp": true,
         "base_damage": -16,
         "rank": 2
     },
@@ -1351,7 +1455,8 @@
         "target": "All",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Percentage (Total) (MP)",
+        "damage_type": "Percentage (Total)",
+        "damages_mp": true,
         "base_damage": -16,
         "rank": 2
     },
@@ -1359,36 +1464,62 @@
         "name": "Antidote",
         "can_miss": false,
         "does_damage": false,
+        "dispels": [
+            "Poison"
+        ],
         "rank": 2
     },
     "soft": {
         "name": "Soft",
         "can_miss": false,
         "does_damage": false,
+        "dispels": [
+            "Petrify"
+        ],
         "rank": 2
     },
     "eye_drops": {
         "name": "Eye Drops",
         "can_miss": false,
         "does_damage": false,
+        "dispels": [
+            "Dark"
+        ],
         "rank": 2
     },
     "echo_screen": {
         "name": "Echo Screen",
         "can_miss": false,
         "does_damage": false,
+        "dispels": [
+            "Silence"
+        ],
         "rank": 2
     },
     "holy_water": {
         "name": "Holy Water",
         "can_miss": false,
         "does_damage": false,
+        "dispels": [
+            "Zombie",
+            "Curse"
+        ],
         "rank": 2
     },
     "remedy": {
         "name": "Remedy",
         "can_miss": false,
         "does_damage": false,
+        "dispels": [
+            "Petrify",
+            "Poison",
+            "Confuse",
+            "Berserk",
+            "Sleep",
+            "Silence",
+            "Dark",
+            "Slow"
+        ],
         "rank": 2
     },
     "power_distiller": {
@@ -1397,8 +1528,13 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Power Distiller": 254
+            "Power Distiller": [254, 254]
         },
+        "dispels": [
+            "Mana Distiller",
+            "Speed Distiller",
+            "Ability Distiller"
+        ],
         "rank": 2
     },
     "mana_distiller": {
@@ -1407,8 +1543,13 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Mana Distiller": 254
+            "Mana Distiller": [254, 254]
         },
+        "dispels": [
+            "Power Distiller",
+            "Speed Distiller",
+            "Ability Distiller"
+        ],
         "rank": 2
     },
     "speed_distiller": {
@@ -1417,8 +1558,13 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Speed Distiller": 254
+            "Speed Distiller": [254, 254]
         },
+        "dispels": [
+            "Power Distiller",
+            "Mana Distiller",
+            "Ability Distiller"
+        ],
         "rank": 2
     },
     "ability_distiller": {
@@ -1427,8 +1573,13 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Ability Distiller": 254
+            "Ability Distiller": [254, 254]
         },
+        "dispels": [
+            "Power Distiller",
+            "Mana Distiller",
+            "Speed Distiller"
+        ],
         "rank": 2
     },
     "shield": {
@@ -1437,7 +1588,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Shield": 254
+            "Shield": [254, 254]
         }
     },
     "boost": {
@@ -1446,7 +1597,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Boost": 254
+            "Boost": [254, 254]
         }
     },
     "#dismiss": {
@@ -1459,7 +1610,7 @@
         "uses_weapon": true,
         "base_damage": 8,
         "statuses": {
-            "Delay (Weak)": 254
+            "Delay (Weak)": [254, 254]
         },
         "rank": 2
     },
@@ -1477,6 +1628,22 @@
         "can_miss": false,
         "uses_weapon": true,
         "base_damage": 16,
+        "dispels": [
+            "Power Break",
+            "Magic Break",
+            "Armor Break",
+            "Mental Break",
+            "Protect",
+            "Shell",
+            "Reflect",
+            "NulBlaze",
+            "NulFrost",
+            "NulShock",
+            "NulTide",
+            "Regen",
+            "Haste",
+            "Curse"
+        ],
         "rank": 4
     },
     "heavenly_strike": {
@@ -1486,7 +1653,7 @@
         "uses_weapon": true,
         "base_damage": 17,
         "statuses": {
-            "Threaten": 254
+            "Threaten": [254, 254]
         },
         "rank": 4
     },
@@ -1506,7 +1673,7 @@
         "damage_type": "Special Magic",
         "base_damage": 20,
         "statuses": {
-            "Death": 100
+            "Death": [100, 254]
         },
         "rank": 6
     },
@@ -1544,7 +1711,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Death": 255
+            "Death": [255, 254]
         },
         "rank": 8
     },
@@ -1658,7 +1825,7 @@
         "can_miss": false,
         "base_damage": 17,
         "statuses": {
-            "Delay (Strong)": 254
+            "Delay (Strong)": [254, 254]
         },
         "timer": 4000,
         "rank": 5
@@ -1684,7 +1851,7 @@
         "can_miss": false,
         "base_damage": 24,
         "statuses": {
-            "Eject": 254
+            "Eject": [254, 254]
         },
         "timer": 4000,
         "rank": 5
@@ -1710,10 +1877,10 @@
         "can_miss": false,
         "base_damage": 28,
         "statuses": {
-            "Power Break": 254,
-            "Magic Break": 254,
-            "Armor Break": 254,
-            "Mental Break": 254
+            "Power Break": [254, 254],
+            "Magic Break": [254, 254],
+            "Armor Break": [254, 254],
+            "Mental Break": [254, 254]
         },
         "timer": 4000,
         "rank": 6
@@ -1788,7 +1955,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Petrify": 254
+            "Petrify": [254, 254]
         }
     },
     "aqua_breath": {
@@ -1805,7 +1972,7 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Doom": 254
+            "Doom": [254, 254]
         }
     },
     "white_wind": {
@@ -1822,10 +1989,10 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Poison": 100,
-            "Sleep": 100,
-            "Silence": 100,
-            "Dark": 100
+            "Poison": [100, 254],
+            "Sleep": [100, 10],
+            "Silence": [100, 10],
+            "Dark": [100, 10]
         },
         "rank": 4
     },
@@ -1835,12 +2002,12 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Protect": 254,
-            "Shell": 254,
-            "NulBlaze": 254,
-            "NulFrost": 254,
-            "NulShock": 254,
-            "NulTide": 254
+            "Protect": [254, 254],
+            "Shell": [254, 254],
+            "NulBlaze": [254, 1],
+            "NulFrost": [254, 1],
+            "NulShock": [254, 1],
+            "NulTide": [254, 1]
         },
         "rank": 4
     },
@@ -2082,7 +2249,7 @@
         "damage_type": null,
         "base_damage": null,
         "statuses": {
-            "Poison": 80
+            "Poison": [80, 254]
         },
         "rank": 5
     },
@@ -2104,7 +2271,7 @@
         "damage_type": null,
         "base_damage": null,
         "statuses": {
-            "Death": 80
+            "Death": [80, 254]
         },
         "rank": 5
     },
@@ -2163,7 +2330,18 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
-        "dispels": [],
+        "dispels": [
+            "Zombie",
+            "Petrify",
+            "Poison",
+            "Confuse",
+            "Berserk",
+            "Sleep",
+            "Silence",
+            "Dark",
+            "Slow",
+            "Curse"
+        ],
         "rank": 6
     },
     "ultra_cure": {
@@ -2173,7 +2351,18 @@
         "can_crit": false,
         "damage_type": "Percentage (Total)",
         "base_damage": 8,
-        "dispels": [],
+        "dispels": [
+            "Zombie",
+            "Petrify",
+            "Poison",
+            "Confuse",
+            "Berserk",
+            "Sleep",
+            "Silence",
+            "Dark",
+            "Slow",
+            "Curse"
+        ],
         "rank": 6
     },
     "mix_mega_phoenix": {
@@ -2184,8 +2373,11 @@
         "damage_type": "Percentage (Total)",
         "base_damage": 16,
         "statuses": {
-            "Life": 254
+            "Life": [254, 254]
         },
+        "dispels": [
+            "Death"
+        ],
         "rank": 6
     },
     "final_phoenix": {
@@ -2196,8 +2388,11 @@
         "damage_type": "Percentage (Total)",
         "base_damage": 16,
         "statuses": {
-            "Life": 254
+            "Life": [254, 254]
         },
+        "dispels": [
+            "Death"
+        ],
         "rank": 6
     },
     "mix_elixir_hp": {
@@ -2214,7 +2409,8 @@
         "target": "Random character",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Percentage (Total) (MP)",
+        "damage_type": "Percentage (Total)",
+        "damages_mp": true,
         "base_damage": 16,
         "rank": 6
     },
@@ -2232,30 +2428,99 @@
         "target": "All characters",
         "can_miss": false,
         "can_crit": false,
-        "damage_type": "Percentage (Total) (MP)",
+        "damage_type": "Percentage (Total)",
+        "damages_mp": true,
         "base_damage": 16,
         "rank": 6
     },
-    "super_elixir": {
-        "name": "Super Elixir",
+    "super_elixir_hp": {
+        "name": "Super Elixir (HP)",
         "target": "All characters",
         "can_miss": false,
         "hits": 2,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
         "base_damage": 16,
-        "dispels": [],
+        "dispels": [
+            "Zombie",
+            "Petrify",
+            "Poison",
+            "Confuse",
+            "Berserk",
+            "Sleep",
+            "Silence",
+            "Dark",
+            "Slow",
+            "Curse"
+        ],
+        "rank": 0
+    },
+    "super_elixir_mp": {
+        "name": "Super Elixir (MP)",
+        "target": "All characters",
+        "can_miss": false,
+        "hits": 2,
+        "can_crit": false,
+        "damage_type": "Percentage (Total)",
+        "damages_mp": true,
+        "base_damage": 16,
+        "dispels": [
+            "Zombie",
+            "Petrify",
+            "Poison",
+            "Confuse",
+            "Berserk",
+            "Sleep",
+            "Silence",
+            "Dark",
+            "Slow",
+            "Curse"
+        ],
         "rank": 6
     },
-    "final_elixir": {
-        "name": "Final Elixir",
+    "final_elixir_hp": {
+        "name": "Final Elixir (HP)",
         "target": "All characters",
         "can_miss": false,
         "hits": 2,
         "can_crit": false,
         "damage_type": "Percentage (Total)",
         "base_damage": 16,
-        "dispels": [],
+        "dispels": [
+            "Zombie",
+            "Petrify",
+            "Poison",
+            "Confuse",
+            "Berserk",
+            "Sleep",
+            "Silence",
+            "Dark",
+            "Slow",
+            "Curse"
+        ],
+        "rank": 0
+    },
+    "final_elixir_mp": {
+        "name": "Final Elixir (MP)",
+        "target": "All characters",
+        "can_miss": false,
+        "hits": 2,
+        "can_crit": false,
+        "damage_type": "Percentage (Total)",
+        "damages_mp": true,
+        "base_damage": 16,
+        "dispels": [
+            "Zombie",
+            "Petrify",
+            "Poison",
+            "Confuse",
+            "Berserk",
+            "Sleep",
+            "Silence",
+            "Dark",
+            "Slow",
+            "Curse"
+        ],
         "rank": 6
     },
     "nulall": {
@@ -2264,10 +2529,10 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "NulBlaze": 254,
-            "NulFrost": 254,
-            "NulShock": 254,
-            "NulTide": 254
+            "NulBlaze": [254, 1],
+            "NulFrost": [254, 1],
+            "NulShock": [254, 1],
+            "NulTide": [254, 1]
         },
         "rank": 6
     },
@@ -2277,10 +2542,10 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "NulBlaze": 254,
-            "NulFrost": 254,
-            "NulShock": 254,
-            "NulTide": 254
+            "NulBlaze": [254, 1],
+            "NulFrost": [254, 1],
+            "NulShock": [254, 1],
+            "NulTide": [254, 1]
         },
         "rank": 6
     },
@@ -2290,10 +2555,14 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "NulBlaze": 254,
-            "NulFrost": 254,
-            "NulShock": 254,
-            "NulTide": 254
+            "NulBlaze": [254, 1],
+            "NulFrost": [254, 1],
+            "NulShock": [254, 1],
+            "NulTide": [254, 1]
+        },
+        "buffs": {
+            "Cheer": 5,
+            "Focus": 5
         },
         "rank": 6
     },
@@ -2303,10 +2572,16 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "NulBlaze": 254,
-            "NulFrost": 254,
-            "NulShock": 254,
-            "NulTide": 254
+            "NulBlaze": [254, 1],
+            "NulFrost": [254, 1],
+            "NulShock": [254, 1],
+            "NulTide": [254, 1]
+        },
+        "buffs": {
+            "Cheer": 5,
+            "Focus": 5,
+            "Aim": 5,
+            "Reflex": 5
         },
         "rank": 6
     },
@@ -2315,6 +2590,9 @@
         "target": "Random character",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "MAX HP x 2": [254, 254]
+        },
         "rank": 6
     },
     "mega_vitality": {
@@ -2322,6 +2600,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "MAX HP x 2": [254, 254]
+        },
         "rank": 6
     },
     "hyper_vitality": {
@@ -2329,6 +2610,12 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "MAX HP x 2": [254, 254]
+        },
+        "buffs": {
+            "Cheer": 5
+        },
         "rank": 6
     },
     "mana": {
@@ -2336,6 +2623,9 @@
         "target": "Random character",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "MAX MP x 2": [254, 254]
+        },
         "rank": 6
     },
     "mega_mana": {
@@ -2343,6 +2633,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "MAX MP x 2": [254, 254]
+        },
         "rank": 6
     },
     "hyper_mana": {
@@ -2350,6 +2643,12 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "MAX MP x 2": [254, 254]
+        },
+        "buffs": {
+            "Focus": 5
+        },
         "rank": 6
     },
     "mighty_wall": {
@@ -2358,8 +2657,8 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Protect": 254,
-            "Shell": 254
+            "Protect": [254, 254],
+            "Shell": [254, 254]
         },
         "rank": 6
     },
@@ -2369,9 +2668,9 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Protect": 254,
-            "Shell": 254,
-            "Haste": 254
+            "Protect": [254, 254],
+            "Shell": [254, 254],
+            "Haste": [254, 254]
         },
         "rank": 6
     },
@@ -2381,10 +2680,10 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Protect": 254,
-            "Shell": 254,
-            "Regen": 254,
-            "Haste": 254
+            "Protect": [254, 254],
+            "Shell": [254, 254],
+            "Regen": [254, 20],
+            "Haste": [254, 254]
         },
         "rank": 6
     },
@@ -2394,10 +2693,11 @@
         "can_miss": false,
         "does_damage": false,
         "statuses": {
-            "Protect": 254,
-            "Shell": 254,
-            "Regen": 254,
-            "Haste": 254
+            "Protect": [254, 254],
+            "Shell": [254, 254],
+            "Regen": [254, 20],
+            "Haste": [254, 254],
+            "Auto-Life": [254, 254]
         },
         "rank": 6
     },
@@ -2406,6 +2706,9 @@
         "target": "Random character",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "MP = 0": [254, 254]
+        },
         "rank": 6
     },
     "freedom_x": {
@@ -2413,6 +2716,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "MP = 0": [254, 254]
+        },
         "rank": 6
     },
     "hero_drink": {
@@ -2420,6 +2726,9 @@
         "target": "Random character",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "Critical": [254, 254]
+        },
         "rank": 6
     },
     "miracle_drink": {
@@ -2427,6 +2736,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "Critical": [254, 254]
+        },
         "rank": 6
     },
     "quartet_of_9": {
@@ -2434,6 +2746,9 @@
         "target": "Random character",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "Damage 9999": [254, 254]
+        },
         "rank": 6
     },
     "trio_of_9999": {
@@ -2441,6 +2756,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "Damage 9999": [254, 254]
+        },
         "rank": 6
     },
     "hot_spurs": {
@@ -2448,6 +2766,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "OverDrive x1.5": [254, 254]
+        },
         "rank": 6
     },
     "eccentrick": {
@@ -2455,6 +2776,9 @@
         "target": "All characters",
         "can_miss": false,
         "does_damage": false,
+        "statuses": {
+            "OverDrive x 2": [254, 254]
+        },
         "rank": 6
     },
     "mix_grenade": {
@@ -2472,7 +2796,7 @@
         "damage_type": "Item",
         "base_damage": 16,
         "statuses": {
-            "Armor Break": 254
+            "Armor Break": [254, 254]
         },
         "rank": 6
     },
@@ -2483,9 +2807,9 @@
         "damage_type": "Item",
         "base_damage": 22,
         "statuses": {
-            "Sleep": 150,
-            "Silence": 150,
-            "Dark": 150
+            "Sleep": [150, 3],
+            "Silence": [150, 3],
+            "Dark": [150, 3]
         },
         "rank": 6
     },
@@ -2496,10 +2820,10 @@
         "damage_type": "Item",
         "base_damage": 45,
         "statuses": {
-            "Poison": 150,
-            "Sleep": 254,
-            "Silence": 254,
-            "Dark": 254
+            "Poison": [150, 254],
+            "Sleep": [254, 4],
+            "Silence": [254, 4],
+            "Dark": [254, 4]
         },
         "rank": 6
     },
@@ -2518,14 +2842,14 @@
         "damage_type": "Item",
         "base_damage": 72,
         "statuses": {
-            "Poison": 254,
-            "Power Break": 50,
-            "Magic Break": 50,
-            "Armor Break": 50,
-            "Mental Break": 50,
-            "Sleep": 254,
-            "Silence": 254,
-            "Dark": 254
+            "Poison": [254, 254],
+            "Power Break": [50, 254],
+            "Magic Break": [50, 254],
+            "Armor Break": [50, 254],
+            "Mental Break": [50, 254],
+            "Sleep": [254, 5],
+            "Silence": [254, 5],
+            "Dark": [254, 5]
         },
         "rank": 6
     },
@@ -2560,15 +2884,15 @@
         "damage_type": "Item",
         "base_damage": 146,
         "statuses": {
-            "Poison": 254,
-            "Power Break": 150,
-            "Magic Break": 150,
-            "Armor Break": 150,
-            "Mental Break": 150,
-            "Sleep": 254,
-            "Silence": 254,
-            "Dark": 254,
-            "Slow": 254
+            "Poison": [254, 254],
+            "Power Break": [150, 254],
+            "Magic Break": [150, 254],
+            "Armor Break": [150, 254],
+            "Mental Break": [150, 254],
+            "Sleep": [254, 8],
+            "Silence": [254, 8],
+            "Dark": [254, 8],
+            "Slow": [254, 254]
         },
         "rank": 6
     },
@@ -2642,10 +2966,10 @@
         "base_damage": 8,
         "element": "Fire",
         "statuses": {
-            "Poison": 150,
-            "Sleep": 150,
-            "Silence": 150,
-            "Dark": 150
+            "Poison": [150, 254],
+            "Sleep": [150, 3],
+            "Silence": [150, 3],
+            "Dark": [150, 3]
         },
         "rank": 6
     },
@@ -2659,14 +2983,14 @@
         "base_damage": 18,
         "element": "Fire",
         "statuses": {
-            "Poison": 254,
-            "Power Break": 50,
-            "Magic Break": 50,
-            "Armor Break": 50,
-            "Mental Break": 50,
-            "Sleep": 254,
-            "Silence": 254,
-            "Dark": 254
+            "Poison": [254, 254],
+            "Power Break": [50, 254],
+            "Magic Break": [50, 254],
+            "Armor Break": [50, 254],
+            "Mental Break": [50, 254],
+            "Sleep": [254, 3],
+            "Silence": [254, 3],
+            "Dark": [254, 3]
         },
         "rank": 6
     },
@@ -2713,10 +3037,10 @@
         "base_damage": 8,
         "element": "Thunder",
         "statuses": {
-            "Poison": 150,
-            "Sleep": 150,
-            "Silence": 150,
-            "Dark": 150
+            "Poison": [150, 254],
+            "Sleep": [150, 3],
+            "Silence": [150, 3],
+            "Dark": [150, 3]
         },
         "rank": 6
     },
@@ -2730,14 +3054,14 @@
         "base_damage": 18,
         "element": "Thunder",
         "statuses": {
-            "Poison": 254,
-            "Power Break": 50,
-            "Magic Break": 50,
-            "Armor Break": 50,
-            "Mental Break": 50,
-            "Sleep": 254,
-            "Silence": 254,
-            "Dark": 254
+            "Poison": [254, 254],
+            "Power Break": [50, 254],
+            "Magic Break": [50, 254],
+            "Armor Break": [50, 254],
+            "Mental Break": [50, 254],
+            "Sleep": [254, 3],
+            "Silence": [254, 3],
+            "Dark": [254, 3]
         },
         "rank": 6
     },
@@ -2784,10 +3108,10 @@
         "base_damage": 8,
         "element": "Water",
         "statuses": {
-            "Poison": 150,
-            "Sleep": 150,
-            "Silence": 150,
-            "Dark": 150
+            "Poison": [150, 254],
+            "Sleep": [150, 3],
+            "Silence": [150, 3],
+            "Dark": [150, 3]
         },
         "rank": 6
     },
@@ -2801,14 +3125,14 @@
         "base_damage": 18,
         "element": "Water",
         "statuses": {
-            "Poison": 254,
-            "Power Break": 50,
-            "Magic Break": 50,
-            "Armor Break": 50,
-            "Mental Break": 50,
-            "Sleep": 254,
-            "Silence": 254,
-            "Dark": 254
+            "Poison": [254, 254],
+            "Power Break": [50, 254],
+            "Magic Break": [50, 254],
+            "Armor Break": [50, 254],
+            "Mental Break": [50, 254],
+            "Sleep": [254, 3],
+            "Silence": [254, 3],
+            "Dark": [254, 3]
         },
         "rank": 6
     },
@@ -2855,10 +3179,10 @@
         "base_damage": 8,
         "element": "Ice",
         "statuses": {
-            "Poison": 150,
-            "Sleep": 150,
-            "Silence": 150,
-            "Dark": 150
+            "Poison": [150, 254],
+            "Sleep": [150, 3],
+            "Silence": [150, 3],
+            "Dark": [150, 3]
         },
         "rank": 6
     },
@@ -2872,14 +3196,14 @@
         "base_damage": 18,
         "element": "Ice",
         "statuses": {
-            "Poison": 254,
-            "Power Break": 50,
-            "Magic Break": 50,
-            "Armor Break": 50,
-            "Mental Break": 50,
-            "Sleep": 254,
-            "Silence": 254,
-            "Dark": 254
+            "Poison": [254, 254],
+            "Power Break": [50, 254],
+            "Magic Break": [50, 254],
+            "Armor Break": [50, 254],
+            "Mental Break": [50, 254],
+            "Sleep": [254, 3],
+            "Silence": [254, 3],
+            "Dark": [254, 3]
         },
         "rank": 6
     },
@@ -2976,7 +3300,7 @@
         "damage_type": null,
         "base_damage": null,
         "statuses": {
-            "Death": 255
+            "Death": [255, 254]
         },
         "rank": 6
     },

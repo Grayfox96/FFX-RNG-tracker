@@ -12,7 +12,7 @@
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
-#     evasion, accuracy, cheer, focus
+#     evasion, accuracy
 
 party tyakwlr
 # -- Zanarkand --
@@ -719,22 +719,19 @@ kimahri lancet_mp chimera_2
 
 encounter
 tidus haste tidus
-# Miracle Drink effect
-stat tidus luck +100
-# Elixir restores MP too
-# kimahri elixir tidus
-# kimahri elixir tidus
-# kimahri x-potion tidus
-stat tidus cheer +1
-tidus attack evrae
-tidus attack evrae
-stat tidus cheer +1
-tidus attack evrae
-tidus attack evrae
-tidus attack evrae
+rikku miracle_drink tidus
 
-stat tidus cheer 0
-stat tidus luck -100
+# kimahri elixir_hp tidus
+# kimahri elixir_mp tidus
+# kimahri x-potion tidus
+
+tidus cheer tidus
+tidus attack evrae
+tidus attack evrae
+tidus cheer tidus
+tidus attack evrae
+tidus attack evrae
+tidus attack evrae
 
 # -- Bevelle --
 # Fight 1
@@ -828,11 +825,10 @@ encounter
 # tidus attack phlegyas
 
 encounter
-# Elixir does mp damage too
-tidus elixir evrae_altana
-tidus elixir evrae_altana
-tidus elixir evrae_altana
-tidus elixir evrae_altana
+tidus elixir_hp evrae_altana
+tidus elixir_mp evrae_altana
+tidus elixir_hp evrae_altana
+tidus elixir_mp evrae_altana
 # tidus phoenix_down evrae_altana
 # tidus phoenix_down evrae_altana
 

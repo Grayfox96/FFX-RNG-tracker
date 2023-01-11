@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 from ..data.characters import CharacterState
-from ..data.constants import Autoability, Status
+from ..data.constants import Status
 from .main import Event
 
 
@@ -28,16 +28,13 @@ class Escape(Event):
         escape_roll = self._advance_rng(index) & 255
         escape = escape_roll < 191
         if escape:
-            self.character.statuses.add(Status.ESCAPE)
+            self.character.statuses[Status.ESCAPE] = 254
         return escape
 
     def _get_ctb(self) -> int:
         self._old_ctb = self.character.ctb
         ctb = self.character.base_ctb
-        if (Status.HASTE in self.character.statuses
-                or Autoability.AUTO_HASTE in self.character.autoabilities
-                or (Autoability.SOS_HASTE in self.character.autoabilities
-                    and self.character.in_crit)):
+        if Status.HASTE in self.character.statuses:
             ctb = ctb // 2
         elif Status.SLOW in self.character.statuses:
             ctb = ctb * 2
@@ -45,6 +42,6 @@ class Escape(Event):
         return ctb
 
     def rollback(self) -> None:
-        self.character.statuses.discard(Status.ESCAPE)
+        del self.character.statuses[Status.ESCAPE]
         self.character.ctb = self._old_ctb
         return super().rollback()

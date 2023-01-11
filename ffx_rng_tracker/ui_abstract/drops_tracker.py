@@ -1,8 +1,8 @@
 from ..data.monsters import MONSTERS
 from ..events.parsing_functions import (ParsingFunction, parse_bribe,
-                                        parse_death, parse_kill,
-                                        parse_party_change, parse_roll,
-                                        parse_steal)
+                                        parse_death, parse_inventory_command,
+                                        parse_kill, parse_party_change,
+                                        parse_roll, parse_steal)
 from .base_tracker import TrackerUI
 
 
@@ -19,6 +19,7 @@ class DropsTracker(TrackerUI):
             'death': parse_death,
             'party': parse_party_change,
             'bribe': parse_bribe,
+            'inventory': parse_inventory_command,
         }
         return parsing_functions
 

@@ -1,15 +1,13 @@
 from dataclasses import dataclass, field
-from typing import Iterator
 
 from ..data.encounter_formations import Zone
-from ..gamestate import GameState
 from .main import Event
 
 
 @dataclass
 class EncounterCheck(Event):
-    max_distance: int
     zone: Zone
+    max_distance: int
     encounter: bool = field(init=False, repr=False)
     distance: int = field(init=False, repr=False)
 
@@ -42,11 +40,42 @@ class EncounterCheck(Event):
         return encounter, distance
 
 
-def walk(gamestate: GameState,
-         distance: int,
-         zone: Zone,
-         ) -> Iterator[EncounterCheck]:
-    while distance > 0:
-        encounter_check = EncounterCheck(gamestate, distance, zone)
-        yield encounter_check
-        distance -= encounter_check.distance
+@dataclass
+class EncounterChecks(Event):
+    zone: Zone
+    max_distance: int
+    checks: list[EncounterCheck] = field(
+        default_factory=list, init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        self.checks = self._perform_checks()
+
+    def __str__(self) -> str:
+        string = f'{self.zone}:'
+        n_of_encs = sum([1 for c in self.checks if c.encounter])
+        total_distance = 0
+        encounters = []
+        for check in self.checks:
+            if check.encounter:
+                total_distance += check.distance
+                encounters.append(f'{total_distance // 10}')
+        if n_of_encs:
+            string += (f' {n_of_encs} encounters'
+                       f' at steps {", ".join(encounters)}')
+        else:
+            string += ' no encounters'
+        if len(self.checks) == n_of_encs:
+            string += ' (0 steps before end of the zone)'
+        else:
+            string += f' ({check.distance // 10} steps before end of the zone)'
+
+        return string
+
+    def _perform_checks(self) -> list[EncounterCheck]:
+        distance = self.max_distance
+        checks = []
+        while distance > 0:
+            check = EncounterCheck(self.gamestate, self.zone, distance)
+            checks.append(check)
+            distance -= check.distance
+        return checks

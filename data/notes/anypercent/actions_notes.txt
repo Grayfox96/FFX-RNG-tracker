@@ -12,7 +12,7 @@
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
-#     evasion, accuracy, cheer, focus
+#     evasion, accuracy
 
 party tyakwlr
 # -- Zanarkand --
@@ -200,11 +200,11 @@ lulu thunder sin
 valefor energy_blast sin
 
 encounter
-stat tidus cheer +1
-stat wakka cheer +1
+tidus cheer tidus
+tidus cheer wakka
 wakka dark_attack sinspawn_echuilles
-stat tidus cheer +1
-stat wakka cheer +1
+tidus cheer tidus
+tidus cheer wakka
 wakka attack sinspawn_echuilles
 tidus attack sinspawn_echuilles
 wakka attack sinspawn_echuilles
@@ -217,9 +217,6 @@ wakka attack sinspawn_echuilles
 
 tidus spiral_cut sinspawn_echuilles
 tidus spiral_cut sinspawn_echuilles 2.5
-
-stat tidus cheer 0
-stat wakka cheer 0
 
 # -- Kilika --
 encounter
@@ -323,8 +320,8 @@ stat tidus strength +1
 
 encounter
 tidus haste tidus
-# stat tidus cheer +3
-# stat wakka cheer +3
+# tidus cheer tidus
+# tidus cheer wakka
 wakka attack sahagin_chief
 # tidus haste wakka
 
@@ -356,9 +353,6 @@ wakka attack sahagin_chief
 wakka attack sahagin_chief
 wakka attack sahagin_chief
 wakka attack sahagin_chief
-
-stat tidus cheer 0
-stat wakka cheer 0
 
 encounter
 auron attack vouivre_2
@@ -461,8 +455,8 @@ encounter
 encounter
 tidus haste tidus
 tidus haste wakka
-stat tidus cheer +1
-stat wakka cheer +1
+tidus cheer tidus
+tidus cheer wakka
 # tidus potion tidus
 # wakka potion wakka
 wakka attack extractor
@@ -479,9 +473,6 @@ tidus attack extractor
 tidus attack extractor
 tidus attack extractor
 tidus attack extractor
-
-stat tidus cheer 0
-stat wakka cheer 0
 
 # Mix tutorial
 encounter
@@ -611,9 +602,8 @@ tidus attack wendigo
 # tidus mega_phoenix rikku
 # yuna x-potion tidus
 
-# Elixir restores MP too
-# yuna elixir tidus
-# yuna elixir tidus
+# yuna elixir_hp tidus
+# yuna elixir_mp tidus
 tidus attack guado_guardian_2
 
 # -- Bikanel --
@@ -661,22 +651,19 @@ kimahri lancet_mp chimera_2
 
 encounter
 tidus haste tidus
-# Miracle Drink effect
-stat tidus luck +100
-# Elixir restores MP too
-# kimahri elixir tidus
-# kimahri elixir tidus
-# kimahri x-potion tidus
-stat tidus cheer +1
-tidus attack evrae
-tidus attack evrae
-stat tidus cheer +1
-tidus attack evrae
-tidus attack evrae
-tidus attack evrae
+rikku miracle_drink tidus
 
-stat tidus cheer 0
-stat tidus luck -100
+# kimahri elixir_hp tidus
+# kimahri elixir_mp tidus
+# kimahri x-potion tidus
+
+tidus cheer tidus
+tidus attack evrae
+tidus attack evrae
+tidus cheer tidus
+tidus attack evrae
+tidus attack evrae
+tidus attack evrae
 
 # -- Bevelle --
 # Fight 1
@@ -770,11 +757,10 @@ encounter
 # tidus attack phlegyas
 
 encounter
-# Elixir does mp damage too
-tidus elixir evrae_altana
-tidus elixir evrae_altana
-tidus elixir evrae_altana
-tidus elixir evrae_altana
+tidus elixir_hp evrae_altana
+tidus elixir_mp evrae_altana
+tidus elixir_hp evrae_altana
+tidus elixir_mp evrae_altana
 # tidus phoenix_down evrae_altana
 # tidus phoenix_down evrae_altana
 

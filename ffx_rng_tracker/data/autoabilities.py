@@ -3,6 +3,7 @@ import csv
 from ..utils import open_cp1252
 from .constants import Autoability, Element, Status
 from .file_functions import get_resource_path
+from .statuses import StatusApplication
 
 
 def _get_autoabilities_gil_values(file_path: str) -> dict[Autoability, int]:
@@ -45,24 +46,24 @@ ELEMENTAL_EATERS = {
     Autoability.WATER_EATER: Element.WATER,
 }
 STATUS_TOUCHES = {
-    Autoability.DEATHTOUCH: Status.DEATH,
-    Autoability.ZOMBIETOUCH: Status.ZOMBIE,
-    Autoability.STONETOUCH: Status.PETRIFY,
-    Autoability.POISONTOUCH: Status.POISON,
-    Autoability.SLEEPTOUCH: Status.SLEEP,
-    Autoability.SILENCETOUCH: Status.SILENCE,
-    Autoability.DARKTOUCH: Status.DARK,
-    Autoability.SLOWTOUCH: Status.SLOW,
+    Autoability.DEATHTOUCH: StatusApplication(Status.DEATH, 50, 254),
+    Autoability.ZOMBIETOUCH: StatusApplication(Status.ZOMBIE, 50, 254),
+    Autoability.STONETOUCH: StatusApplication(Status.PETRIFY, 50, 254),
+    Autoability.POISONTOUCH: StatusApplication(Status.POISON, 50, 254),
+    Autoability.SLEEPTOUCH: StatusApplication(Status.SLEEP, 50, 254),
+    Autoability.SILENCETOUCH: StatusApplication(Status.SILENCE, 50, 254),
+    Autoability.DARKTOUCH: StatusApplication(Status.DARK, 50, 254),
+    Autoability.SLOWTOUCH: StatusApplication(Status.SLOW, 50, 254),
 }
 STATUS_STRIKES = {
-    Autoability.DEATHSTRIKE: Status.DEATH,
-    Autoability.ZOMBIESTRIKE: Status.ZOMBIE,
-    Autoability.STONESTRIKE: Status.PETRIFY,
-    Autoability.POISONSTRIKE: Status.POISON,
-    Autoability.SLEEPSTRIKE: Status.SLEEP,
-    Autoability.SILENCESTRIKE: Status.SILENCE,
-    Autoability.DARKSTRIKE: Status.DARK,
-    Autoability.SLOWSTRIKE: Status.SLOW,
+    Autoability.DEATHSTRIKE: StatusApplication(Status.DEATH, 100, 254),
+    Autoability.ZOMBIESTRIKE: StatusApplication(Status.ZOMBIE, 100, 254),
+    Autoability.STONESTRIKE: StatusApplication(Status.PETRIFY, 100, 254),
+    Autoability.POISONSTRIKE: StatusApplication(Status.POISON, 100, 254),
+    Autoability.SLEEPSTRIKE: StatusApplication(Status.SLEEP, 100, 254),
+    Autoability.SILENCESTRIKE: StatusApplication(Status.SILENCE, 100, 254),
+    Autoability.DARKSTRIKE: StatusApplication(Status.DARK, 100, 254),
+    Autoability.SLOWSTRIKE: StatusApplication(Status.SLOW, 100, 254),
 }
 STATUS_WARDS = {
     Autoability.DEATH_WARD: Status.DEATH,

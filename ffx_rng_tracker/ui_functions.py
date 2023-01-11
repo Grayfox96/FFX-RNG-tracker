@@ -1,11 +1,9 @@
-from itertools import product, zip_longest
+from itertools import zip_longest
 
 from .data.characters import CharacterState
 from .data.constants import EquipmentType, Stat
-from .data.encounter_formations import ZONES
+from .data.items import InventorySlot
 from .data.monsters import Monster, MonsterState
-from .events.encounter_check import walk
-from .gamestate import GameState
 from .tracker import FFXRNGTracker
 from .utils import treeview
 
@@ -37,34 +35,6 @@ def get_equipment_types(seed: int, amount: int, columns: int = 2) -> str:
         data += '|\n'
     data += spacer
     return data
-
-
-def get_encounter_predictions(seed: int, delta: int = 60) -> str:
-    distances = (
-        620,
-        1420,
-        390,
-    )
-    zones = (
-        ZONES['underwater_ruins'],
-        ZONES['besaid_lagoon'],
-        ZONES['besaid_road'],
-    )
-    gs = GameState(seed)
-    predictions = {z.name: {} for z in zones}
-    total_occurrences = 0
-    for distances_list in product(*[range(d, d+delta, 10) for d in distances]):
-        total_occurrences += 1
-        gs._rng_tracker.reset()
-        for distance, zone in zip(distances_list, zones):
-            n = sum([1 for e in walk(gs, distance, zone) if e.encounter])
-            predictions[zone.name][n] = predictions[zone.name].get(n, 0) + 1
-    for (zone, prediction), distance in zip(predictions.items(), distances):
-        for n_encs, occurrences in prediction.items():
-            prediction[n_encs] = f'{occurrences*100 / total_occurrences:.5}%'
-        new_key = f'{zone}, {distance // 10}-{(distance + delta) // 10} steps'
-        predictions[new_key] = predictions.pop(zone)
-    return predictions
 
 
 def get_status_chance_string(seed: int, amount: int = 50) -> str:
@@ -121,3 +91,41 @@ def ctb_sorter(characters: list[CharacterState],
     ctbs.sort(key=lambda v: v[0])
     ctbs = [v[1] for v in ctbs]
     return ' '.join(ctbs)
+
+
+def get_inventory_table(inventory: list[InventorySlot]) -> str:
+    left = True
+    left_padding = 0
+    right_padding = 0
+    for slot in inventory:
+        padding = len(str(slot)) - 1
+        if left:
+            left_padding = max(left_padding, padding)
+            left = False
+        else:
+            right_padding = max(right_padding, padding)
+            left = True
+
+    text = f'+-{"-" * left_padding}-+-{"-" * right_padding}-+\n'
+    rows = []
+    for slot_index in range(0, len(inventory), 2):
+        row = '|'
+        left_slot = inventory[slot_index]
+        if left_slot.item:
+            padding = left_padding - len(left_slot.item)
+            row += f' {left_slot.item}{left_slot.quantity:{padding}} |'
+        else:
+            row += f' {"-":{left_padding}} |'
+        right_slot = inventory[slot_index + 1]
+        if right_slot.item:
+            padding = right_padding - len(right_slot.item)
+            row += f' {right_slot.item}{right_slot.quantity:{padding}} |'
+        else:
+            row += f' {"-":{right_padding}} |'
+        rows.append(row)
+    empty_row = f'| {"-":{left_padding}} | {"-":{right_padding}} |'
+    while rows[-1] == empty_row:
+        rows.pop()
+    text += '\n'.join(rows)
+    text += f'\n+-{"-" * left_padding}-+-{"-" * right_padding}-+'
+    return text

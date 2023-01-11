@@ -1,13 +1,15 @@
 from typing import Callable
 
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
-from ..data.constants import (Autoability, Character, EquipmentType, Stat,
-                              TargetType)
+from ..data.constants import (Autoability, Character, EquipmentType, Item,
+                              MonsterSlot, Stat, TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
+from ..data.items import ITEM_PRICES
 from ..data.monsters import MONSTERS, MonsterState
 from ..errors import EventParsingError
 from ..gamestate import GameState
+from ..ui_functions import get_inventory_table
 from ..utils import search_stringenum, stringify
 from .advance_rng import AdvanceRNG
 from .change_equipment import ChangeEquipment
@@ -18,12 +20,14 @@ from .comment import Comment
 from .death import Death
 from .encounter import (Encounter, MultizoneRandomEncounter, RandomEncounter,
                         SimulatedEncounter)
+from .encounter_check import EncounterChecks
 from .end_encounter import EndEncounter
 from .escape import Escape
 from .heal_party import Heal
 from .kill import Bribe, Kill
 from .main import Event
 from .monster_action import MonsterAction
+from .monster_spawn import MonsterSpawn
 from .steal import Steal
 from .yojimbo_turn import YojimboTurn
 
@@ -426,3 +430,136 @@ def parse_heal(gs: GameState,
         amount = 99999
 
     return Heal(gs, characters, amount)
+
+
+def parse_character_status(gs: GameState,
+                           character_name: str = '',
+                           *_) -> Comment:
+    try:
+        character = search_stringenum(Character, character_name)
+    except ValueError:
+        raise EventParsingError(f'No character named {character_name}')
+    state = gs.characters[character]
+    text = f'{character}: hp {state.current_hp}, statuses {state.statuses}'
+    return Comment(gs, text)
+
+
+def parse_monster_spawn(gs: GameState,
+                        monster_name: str = '',
+                        slot: str = '',
+                        forced_ctb: str = '0',
+                        *_) -> Comment:
+    usage = 'spawn [monster_name] [slot] (forced ctb)'
+    if not monster_name or not slot:
+        raise EventParsingError(usage)
+    try:
+        monster = MONSTERS[monster_name]
+    except KeyError:
+        raise EventParsingError(f'No monster named "{monster_name}"')
+    try:
+        slot = int(slot)
+    except ValueError:
+        raise EventParsingError('Slot must be an integer')
+    if not (1 <= slot <= (len(gs.monster_party) + 1)):
+        raise EventParsingError(
+            f'Slot must be between 1 and {len(gs.monster_party) + 1}')
+    slot = MonsterSlot(slot - 1)
+    try:
+        forced_ctb = int(forced_ctb)
+    except ValueError:
+        forced_ctb = 0
+    return MonsterSpawn(gs, monster, slot, forced_ctb)
+
+
+def parse_encounter_checks(gs: GameState,
+                           zone_name: str = '',
+                           steps: str = '',
+                           *_) -> Comment:
+    usage = 'walk [zone] [steps]'
+    if not zone_name or not steps:
+        raise EventParsingError(usage)
+
+    try:
+        zone = ZONES[zone_name]
+    except KeyError:
+        raise EventParsingError(f'No zone names {zone_name}')
+    try:
+        distance = int(steps) * 10
+    except ValueError:
+        raise EventParsingError(usage)
+
+    return EncounterChecks(gs, zone, distance)
+
+
+def parse_inventory_command(gs: GameState,
+                            command: str = '',
+                            *params) -> Comment:
+    match command:
+        case 'show':
+            show_equipment = bool(params) and params[0] == 'equipment'
+            if show_equipment:
+                text = 'Equipment: '
+                text += '\n           '.join(
+                    [str(e) for e in gs.equipment_inventory])
+            else:
+                text = f'Gil: {gs.gil}\n'
+                text += get_inventory_table(gs.inventory)
+        case 'use' | 'get' | 'buy' | 'sell':
+            usage = f'Usage: inventory {command} [item name] [quantity]'
+            try:
+                item_name, quantity, *_ = params
+                item = search_stringenum(Item, item_name)
+                quantity = int(quantity)
+            except ValueError:
+                raise EventParsingError(usage)
+            if quantity < 1:
+                raise EventParsingError(
+                    f'Can\'t {command} a negative quantity of items')
+            if command == 'buy':
+                gil = ITEM_PRICES[item] * quantity
+                if gil > gs.gil:
+                    raise EventParsingError('Not enough gil')
+                gs.gil -= gil
+                text = f'Bought {item} x{quantity} with {gil} gil'
+            elif command == 'sell':
+                items = [s.item for s in gs.inventory]
+                if item not in items:
+                    raise EventParsingError(f'{item} is not in the inventory')
+                slot = gs.inventory[items.index(item)]
+                if quantity > slot.quantity:
+                    raise EventParsingError(f'Not enough {item} to sell')
+                gil = max(1, (ITEM_PRICES[item] // 4)) * quantity
+                gs.gil += gil
+                text = f'Sold {item} x{quantity} for {gil} gil'
+                quantity = quantity * -1
+            elif command == 'use':
+                text = f'Used {item} x{quantity}'
+                quantity = quantity * -1
+            else:
+                text = f'Added {item} x{quantity} to inventory'
+            gs.add_to_inventory(item, quantity)
+        case 'switch':
+            usage = f'Usage: inventory {command} [slot 1] [slot 2]'
+            try:
+                slot_1_index, slot_2_index, *_ = params
+                slot_1_index = int(slot_1_index)
+                slot_2_index = int(slot_2_index)
+            except ValueError:
+                raise EventParsingError(usage)
+            if max(slot_1_index, slot_2_index) > len(gs.inventory):
+                raise EventParsingError('Inventory slot needs to be between'
+                                        f' 1 and {len(gs.inventory)}')
+            slot_1 = gs.inventory[slot_1_index]
+            slot_2 = gs.inventory[slot_2_index]
+            gs.inventory[slot_1_index] = slot_2
+            gs.inventory[slot_2_index] = slot_1
+            text = (f'Switched {slot_1.item} (slot {slot_1_index})'
+                    f' for {slot_2.item} (slot {slot_2_index})')
+        case 'autosort':
+            items = list(Item) + [None]
+            gs.inventory.sort(key=lambda s: items.index(s.item))
+            text = 'Autosorted inventory'
+        case _:
+            usage = 'Usage: inventory [use/get/buy/sell/switch/autosort]'
+            raise EventParsingError(usage)
+    return Comment(gs, text)

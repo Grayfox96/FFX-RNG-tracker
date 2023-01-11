@@ -12,7 +12,7 @@
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
-#     evasion, accuracy, cheer, focus
+#     evasion, accuracy
 
 party tyakwlr
 # -- Zanarkand --

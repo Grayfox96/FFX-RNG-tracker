@@ -2,9 +2,10 @@ import json
 from dataclasses import dataclass, field
 
 from ..utils import open_cp1252
-from .constants import (Character, DamageType, Element, MonsterSlot, Status,
-                        TargetType)
+from .constants import (Buff, Character, DamageType, Element, MonsterSlot,
+                        Status, TargetType)
 from .file_functions import get_resource_path
+from .statuses import StatusApplication
 
 
 @dataclass(frozen=True)
@@ -19,9 +20,11 @@ class Action:
     can_crit: bool = True
     bonus_crit: int = 0
     damage_type: DamageType = DamageType.STRENGTH
+    damages_mp: bool = False
     base_damage: int = 0
     element: Element | None = None
-    statuses: dict[Status, int] = field(default_factory=dict)
+    statuses: dict[Status, StatusApplication] = field(default_factory=dict)
+    buffs: dict[Buff, int] = field(default_factory=dict)
     dispels: set[Status] = field(default_factory=set)
     shatter_chance: int = 10
     drains: bool = False
@@ -60,8 +63,19 @@ def _get_action(action: dict[str, str | dict[str, int]]) -> Action:
         action['element'] = Element(action['element'])
 
     if action.get('statuses') is not None:
-        action['statuses'] = {Status(s): v
-                              for s, v in action['statuses'].items()}
+        statuses: dict[str, tuple[int, int]] = action['statuses'].copy()
+        action['statuses'].clear()
+        for status, (chance, stacks) in statuses.items():
+            status = Status(status)
+            action['statuses'][status] = StatusApplication(
+                status, chance, stacks)
+
+    if action.get('buffs') is not None:
+        buffs: dict[str, int] = action['buffs'].copy()
+        action['buffs'].clear()
+        for buff, amount in buffs.items():
+            buff = Buff(buff)
+            action['buffs'][buff] = amount
 
     if action.get('dispels') is not None:
         action['dispels'] = {Status(s) for s in action['dispels']}

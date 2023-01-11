@@ -78,7 +78,23 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
+            }
+        },
+        "attack_auron": {
+            "name": "Attack Auron",
+            "target": "Auron",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": [10, 3]
+            }
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "base_damage": 16,
+            "statuses": {
+                "Slow": [10, 3]
             }
         },
         "attack_aeon": {
@@ -88,6 +104,12 @@
         "forced_attack": {
             "name": "Forced Attack",
             "base_damage": 16
+        },
+        "does_nothing": {
+            "name": "Does Nothing",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false
         }
     },
     "bunyip": {
@@ -96,7 +118,7 @@
             "target": "Single",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "attack_auron": {
@@ -104,7 +126,7 @@
             "target": "Auron",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "attack_aeon": {
@@ -123,7 +145,7 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "attack_auron": {
@@ -131,7 +153,7 @@
             "target": "Auron",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "attack_low_hp_char": {
@@ -139,7 +161,7 @@
             "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "attack_aeon": {
@@ -182,8 +204,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Sleep": 10,
-                "Silence": 10
+                "Sleep": [10, 3],
+                "Silence": [10, 3]
             }
         },
         "attack_low_hp_char": {
@@ -191,8 +213,8 @@
             "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
-                "Sleep": 10,
-                "Silence": 10
+                "Sleep": [10, 3],
+                "Silence": [10, 3]
             }
         },
         "forced_attack": {
@@ -209,8 +231,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Sleep": 10,
-                "Silence": 10
+                "Sleep": [10, 3],
+                "Silence": [10, 3]
             }
         },
         "attack_low_hp_char": {
@@ -218,8 +240,8 @@
             "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
-                "Sleep": 10,
-                "Silence": 10
+                "Sleep": [10, 3],
+                "Silence": [10, 3]
             }
         },
         "attack_aeon": {
@@ -236,8 +258,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Sleep": 10,
-                "Silence": 10
+                "Sleep": [10, 3],
+                "Silence": [10, 3]
             }
         },
         "attack_low_hp_char": {
@@ -245,8 +267,8 @@
             "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
-                "Sleep": 10,
-                "Silence": 10
+                "Sleep": [10, 3],
+                "Silence": [10, 3]
             }
         },
         "attack_aeon": {
@@ -320,8 +342,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Petrify": 10,
-                "Silence": 10
+                "Petrify": [10, 254],
+                "Silence": [10, 3]
             },
             "shatter_chance": 0,
             "rank": 3
@@ -340,8 +362,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Petrify": 10,
-                "Silence": 10
+                "Petrify": [10, 254],
+                "Silence": [10, 3]
             },
             "shatter_chance": 0
         },
@@ -359,8 +381,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Petrify": 10,
-                "Silence": 10
+                "Petrify": [10, 254],
+                "Silence": [10, 3]
             },
             "shatter_chance": 0
         },
@@ -378,8 +400,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Petrify": 10,
-                "Silence": 10
+                "Petrify": [10, 254],
+                "Silence": [10, 3]
             },
             "shatter_chance": 0,
             "rank": 3
@@ -399,8 +421,8 @@
             "accuracy": 120,
             "base_damage": 16,
             "statuses": {
-                "Petrify": 30,
-                "Silence": 30
+                "Petrify": [30, 254],
+                "Silence": [30, 3]
             },
             "shatter_chance": 0
         },
@@ -433,7 +455,7 @@
             "accuracy": 120,
             "base_damage": 16,
             "statuses": {
-                "Dark": 30
+                "Dark": [30, 3]
             }
         },
         "attack_wakka": {
@@ -442,7 +464,7 @@
             "accuracy": 120,
             "base_damage": 16,
             "statuses": {
-                "Dark": 30
+                "Dark": [30, 3]
             }
         },
         "forced_attack": {
@@ -458,7 +480,7 @@
             "accuracy": 100,
             "base_damage": 16,
             "statuses": {
-                "Poison": 40
+                "Poison": [40, 254]
             }
         }
     },
@@ -468,7 +490,7 @@
             "accuracy": 100,
             "base_damage": 16,
             "statuses": {
-                "Poison": 40
+                "Poison": [40, 254]
             }
         }
     },
@@ -478,7 +500,7 @@
             "accuracy": 100,
             "base_damage": 16,
             "statuses": {
-                "Poison": 40
+                "Poison": [40, 254]
             }
         }
     },
@@ -492,7 +514,7 @@
             "damage_type": "Magic",
             "base_damage": 12,
             "statuses": {
-                "Confuse": 10
+                "Confuse": [10, 254]
             },
             "shatter_chance": 0
         }
@@ -505,7 +527,7 @@
             "damage_type": "Magic",
             "base_damage": 12,
             "statuses": {
-                "Confuse": 10
+                "Confuse": [10, 254]
             },
             "shatter_chance": 0
         }
@@ -536,7 +558,7 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Dark": 10
+                "Dark": [10, 3]
             }
         },
         "attack_wakka": {
@@ -544,7 +566,7 @@
             "target": "Wakka",
             "base_damage": 16,
             "statuses": {
-                "Dark": 10
+                "Dark": [10, 3]
             }
         },
         "sonic_boom": {
@@ -599,7 +621,7 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "attack_low_hp_char": {
@@ -607,7 +629,7 @@
             "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "breath": {
@@ -634,7 +656,7 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "attack_low_hp_char": {
@@ -642,7 +664,7 @@
             "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "breath": {
@@ -669,7 +691,7 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "attack_low_hp_char": {
@@ -677,7 +699,7 @@
             "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
-                "Slow": 10
+                "Slow": [10, 3]
             }
         },
         "breath": {
@@ -925,7 +947,7 @@
             "damage_type": "Magic",
             "base_damage": 16,
             "statuses": {
-                "Poison": 100
+                "Poison": [100, 254]
             },
             "shatter_chance": 0
         },
@@ -944,6 +966,12 @@
             "damage_type": "Magic",
             "base_damage": 12,
             "element": "Water"
+        },
+        "does_nothing": {
+            "name": "Does Nothing",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false
         }
     },
     "geneaux's_tentacle": {
@@ -1038,7 +1066,7 @@
             "can_crit": false,
             "base_damage": 10,
             "statuses": {
-                "Dark": 254
+                "Dark": [254, 1]
             },
             "shatter_chance": 0,
             "rank": 0
@@ -1050,7 +1078,7 @@
             "can_crit": false,
             "base_damage": 7,
             "statuses": {
-                "Silence": 254
+                "Silence": [254, 1]
             },
             "shatter_chance": 0,
             "rank": 0
@@ -1062,7 +1090,7 @@
             "can_crit": false,
             "base_damage": 7,
             "statuses": {
-                "Sleep": 254
+                "Sleep": [254, 1]
             },
             "shatter_chance": 0,
             "rank": 0
@@ -1084,7 +1112,7 @@
             "damage_type": "Strength",
             "base_damage": 16,
             "statuses": {
-                "Dark": 50
+                "Dark": [50, 3]
             },
             "shatter_chance": 0
         },
@@ -1197,8 +1225,8 @@
             "damage_type": "Magic",
             "base_damage": 24,
             "statuses": {
-                "Poison": 100,
-                "Slow": 100
+                "Poison": [100, 254],
+                "Slow": [100, 0]
             },
             "shatter_chance": 0,
             "rank": 0
@@ -1351,7 +1379,7 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Shell": 254
+                "Shell": [254, 254]
             },
             "shatter_chance": 0
         },
@@ -1372,7 +1400,7 @@
             "damage_type": "Special Magic",
             "base_damage": 28,
             "statuses": {
-                "Death": 100
+                "Death": [100, 254]
             },
             "shatter_chance": 0
         },
@@ -1382,7 +1410,7 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Boost": 254
+                "Boost": [254, 254]
             }
         }
     },
@@ -1483,7 +1511,7 @@
             "name": "Poison Claw",
             "base_damage": 16,
             "statuses": {
-                "Poison": 100
+                "Poison": [100, 254]
             },
             "shatter_chance": 0
         },
@@ -1518,8 +1546,8 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Sleep": 254,
-                "Regen": 254
+                "Sleep": [254, 3],
+                "Regen": [254, 2]
             },
             "shatter_chance": 0
         }
@@ -1670,7 +1698,7 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Petrify": 50
+                "Petrify": [50, 254]
             },
             "shatter_chance": 0
         }
@@ -1687,7 +1715,7 @@
             "accuracy": 120,
             "base_damage": 16,
             "statuses": {
-                "Poison": 80
+                "Poison": [80, 254]
             },
             "shatter_chance": 0
         },
@@ -1697,10 +1725,10 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Confuse": 20,
-                "Silence": 80,
-                "Dark": 80,
-                "Slow": 20
+                "Confuse": [20, 254],
+                "Silence": [80, 3],
+                "Dark": [80, 3],
+                "Slow": [20, 5]
             },
             "shatter_chance": 0,
             "drains": false,
@@ -1800,7 +1828,7 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Escape": 254
+                "Escape": [254, 254]
             },
             "shatter_chance": 0
         }
@@ -1854,7 +1882,7 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Berserk": 120
+                "Berserk": [120, 254]
             },
             "shatter_chance": 0
         },
@@ -1864,7 +1892,7 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Protect": 254
+                "Protect": [254, 254]
             },
             "shatter_chance": 0,
             "rank": 0
@@ -1875,7 +1903,7 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Shell": 120
+                "Shell": [120, 254]
             },
             "shatter_chance": 0,
             "rank": 0
@@ -1896,7 +1924,7 @@
             "can_miss": false,
             "does_damage": false,
             "statuses": {
-                "Sleep": 80
+                "Sleep": [80, 2]
             },
             "shatter_chance": 0
         }
@@ -1990,8 +2018,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Sleep": 10,
-                "Silence": 10
+                "Sleep": [10, 3],
+                "Silence": [10, 3]
             }
         },
         "attack_low_hp_char": {
@@ -1999,8 +2027,8 @@
             "target": "Lowest HP character",
             "base_damage": 16,
             "statuses": {
-                "Sleep": 10,
-                "Silence": 10
+                "Sleep": [10, 3],
+                "Silence": [10, 3]
             }
         },
         "forced_attack": {
@@ -2032,7 +2060,7 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Dark": 10
+                "Dark": [10, 3]
             }
         },
         "forced_attack": {
@@ -2067,28 +2095,8 @@
             "name": "Attack",
             "base_damage": 16,
             "statuses": {
-                "Berserk": 10
+                "Berserk": [10, 254]
             }
-        },
-        "attack_auron": {
-            "name": "Attack Auron",
-            "target": "Auron",
-            "base_damage": 16,
-            "statuses": {
-                "Berserk": 10
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Berserk": 10
-            }
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
         },
         "forced_attack": {
             "name": "Forced Attack",
@@ -2256,7 +2264,7 @@
             "damage_type": "CTB",
             "base_damage": 8,
             "statuses": {
-                "Haste": 254
+                "Haste": [254, 254]
             },
             "shatter_chance": 0,
             "rank": 4

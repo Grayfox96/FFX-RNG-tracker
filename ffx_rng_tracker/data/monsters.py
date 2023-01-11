@@ -6,7 +6,7 @@ from ..configs import Configs
 from ..utils import add_bytes, open_cp1252, stringify
 from .actions import MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
-from .constants import (ICV_BASE, Character, Element, ElementalAffinity,
+from .constants import (ICV_BASE, Buff, Character, Element, ElementalAffinity,
                         EquipmentSlots, EquipmentType, GameVersion,
                         MonsterSlot, Rarity, Stat, Status)
 from .file_functions import get_resource_path
@@ -24,7 +24,7 @@ class Monster:
     zanmato_level: int
     armored: bool
     undead: bool
-    auto_statuses: list[Status]
+    auto_statuses: set[Status]
     gil: int
     ap: dict[str, int]
     item_1: dict[str, int | dict[Rarity, ItemDrop | None]]
@@ -56,8 +56,9 @@ class MonsterState:
                 max_value = 99999
             case Stat.MP:
                 max_value = 9999
-            case Stat.CHEER | Stat.FOCUS:
-                max_value = 5
+            case Buff():
+                self.buffs[stat] = min(max(0, value), 5)
+                return
             case _:
                 max_value = 255
         value = min(max(0, value), max_value)
@@ -81,7 +82,7 @@ class MonsterState:
     def current_hp(self, value: int) -> None:
         value = min(max(value, 0), self.max_hp)
         if value == 0:
-            self.statuses.add(Status.DEATH)
+            self.statuses[Status.DEATH] = 254
         self._current_hp = value
 
     @property
@@ -119,12 +120,12 @@ class MonsterState:
 
     def reset(self) -> None:
         self.stats = self.monster.stats.copy()
-        for stat in Stat:
-            self.stats.setdefault(stat, 0)
+        self.stats[Stat.CTB] = 0
+        self.buffs: dict[Buff, int] = {b: 0 for b in Buff}
         self.armored = self.monster.armored
         self._current_hp = self.stats[Stat.HP]
         self._current_mp = self.stats[Stat.MP]
-        self.statuses = set()
+        self.statuses = {}
         self.elemental_affinities = self.monster.elemental_affinities.copy()
         self.status_resistances = self.monster.status_resistances.copy()
 
@@ -342,7 +343,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         return affinities
 
     def get_abilities(address: int) -> dict[str, list[str | None]]:
-        abilities = {}
+        abilities: dict[EquipmentType, list[str | None]] = {}
         equipment_types = (EquipmentType.WEAPON, 0), (EquipmentType.ARMOR, 16)
         for equipment_type, offset in equipment_types:
             abilities[equipment_type] = []
@@ -471,19 +472,19 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     }
     poison_tick_damage = stats[Stat.HP] * prize_struct[42] // 100
     undead = prize_struct[72] == 2
-    auto_statuses = []
+    auto_statuses = set()
     if prize_struct[74] & 0b00100000:
-        auto_statuses.append(Status.REFLECT)
+        auto_statuses.add(Status.REFLECT)
     if prize_struct[75] & 0b00000010:
-        auto_statuses.append(Status.NULBLAZE)
+        auto_statuses.add(Status.NULBLAZE)
     if prize_struct[75] & 0b00000001:
-        auto_statuses.append(Status.NULFROST)
+        auto_statuses.add(Status.NULFROST)
     if prize_struct[74] & 0b10000000:
-        auto_statuses.append(Status.NULSHOCK)
+        auto_statuses.add(Status.NULSHOCK)
     if prize_struct[74] & 0b01000000:
-        auto_statuses.append(Status.NULTIDE)
+        auto_statuses.add(Status.NULTIDE)
     if prize_struct[75] & 0b00000100:
-        auto_statuses.append(Status.REGEN)
+        auto_statuses.add(Status.REGEN)
 
     equipment = {
         'drop_chance': prize_struct[139],

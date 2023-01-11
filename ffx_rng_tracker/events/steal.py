@@ -14,6 +14,8 @@ class Steal(Event):
 
     def __post_init__(self) -> None:
         self.item = self._get_item()
+        if self.item:
+            self.gamestate.add_to_inventory(self.item.item, self.item.quantity)
 
     def __str__(self) -> str:
         string = f'Steal from {self.monster}: '

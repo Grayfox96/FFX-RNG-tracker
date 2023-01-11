@@ -2,9 +2,10 @@ from dataclasses import dataclass, field
 
 from ..data.actions import Action
 from ..data.characters import CharacterState
-from ..data.constants import (NO_RNG_STATUSES, Character, DamageType,
-                              MonsterSlot, Stat, Status, TargetType)
-from ..data.monsters import MonsterState
+from ..data.constants import (Buff, Character, DamageType, MonsterSlot, Stat,
+                              Status, TargetType)
+from ..data.monsters import MONSTERS, MonsterState
+from ..data.statuses import NO_RNG_STATUSES
 from .character_action import get_damage
 from .main import Event
 
@@ -23,13 +24,15 @@ class MonsterAction(Event):
     ctb: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.gamestate.process_start_of_turn(self.monster)
         self.targets = self._get_targets()
         self.hits = self._get_hits()
         self.statuses = self._get_statuses()
+        self.removed_statuses = self._remove_statuses()
         self.damage_rngs, self.crits = self._get_damage_rngs()
         self.damages = self._get_damages()
         self.ctb = self._get_ctb()
-        self.gamestate.normalize_ctbs()
+        self.gamestate.process_end_of_turn(self.monster)
 
     def __str__(self) -> str:
         actions = []
@@ -39,6 +42,7 @@ class MonsterAction(Event):
             damage_rng = self.damage_rngs[i]
             crit = self.crits[i]
             statuses = self.statuses[i]
+            removed_statuses = self.removed_statuses[i]
             action = f'{target} ->'
             if hit:
                 if self.action.does_damage:
@@ -55,7 +59,10 @@ class MonsterAction(Event):
                             action += f'[{status}]'
                         else:
                             action += f'[{status} Fail]'
-                    action += ''
+                if removed_statuses:
+                    action += ' '
+                    statuses = [f'[-{s}]' for s in removed_statuses]
+                    action += ''.join(statuses)
             else:
                 action += ' Miss'
             actions.append(action)
@@ -68,8 +75,7 @@ class MonsterAction(Event):
     def _get_hits(self) -> list[bool]:
         index = min(44 + self.monster.slot, 51)
         luck = max(self.monster.stats[Stat.LUCK], 1)
-        # TODO
-        aims = 0
+        aims = self.monster.buffs[Buff.AIM]
         hits = []
         for target in self.targets:
             if not self.action.can_miss:
@@ -78,8 +84,7 @@ class MonsterAction(Event):
             hit_rng = self._advance_rng(index) % 101
             target_evasion = target.stats[Stat.EVASION]
             target_luck = max(target.stats[Stat.LUCK], 1)
-            # TODO
-            target_reflexes = 0
+            target_reflexes = target.buffs[Buff.REFLEX]
             base_hit_chance = self.action.accuracy - target_evasion
             if Status.DARK in self.monster.statuses:
                 base_hit_chance = base_hit_chance * 0x66666667 // 0xffffffff
@@ -94,6 +99,7 @@ class MonsterAction(Event):
     def _get_damage_rngs(self) -> tuple[list[int], list[bool]]:
         index = min(28 + self.monster.slot, 35)
         luck = self.monster.stats[Stat.LUCK]
+        luck += self.monster.buffs[Buff.LUCK] * 10
         damage_rngs = []
         crits = []
         for target, hit in zip(self.targets, self.hits):
@@ -107,6 +113,7 @@ class MonsterAction(Event):
                 continue
             crit_roll = self._advance_rng(index) % 101
             target_luck = max(target.stats[Stat.LUCK], 1)
+            target_luck -= target.buffs[Buff.JINX] * 10
             crit_chance = luck - target_luck
             crit_chance += self.action.bonus_crit
             crits.append(crit_roll < crit_chance)
@@ -122,17 +129,16 @@ class MonsterAction(Event):
             damage = get_damage(
                 self.monster, self.action, target, damage_rng, crit)
             damages.append(damage)
-            match self.action.damage_type:
-                case DamageType.MAGIC_MP | DamageType.ITEM_MP | DamageType.PERCENTAGE_TOTAL_MP:
-                    target.current_mp -= damage
-                    if self.action.drains:
-                        self.monster.current_mp += damage
-                case DamageType.CTB:
-                    target.ctb -= damage
-                case _:
-                    target.current_hp -= damage
-                    if self.action.drains:
-                        self.monster.current_hp += damage
+            if self.action.damages_mp:
+                target.current_mp -= damage
+                if self.action.drains:
+                    self.monster.current_mp += damage
+            elif self.action.damage_type is DamageType.CTB:
+                target.ctb -= damage
+            else:
+                target.current_hp -= damage
+                if self.action.drains:
+                    self.monster.current_hp += damage
         return damages
 
     def _get_statuses(self) -> list[dict[Status, bool]]:
@@ -143,33 +149,65 @@ class MonsterAction(Event):
                 statuses.append({})
                 continue
             statuses_applied = {}
-            for status, chance in self.action.statuses.items():
+            for status, status_application in self.action.statuses.items():
                 if status in NO_RNG_STATUSES:
                     status_rng = 0
                 else:
                     status_rng = self._advance_rng(index) % 101
                 resistance = target.status_resistances.get(status, 0)
-                if chance == 255:
+                if status_application.chance == 255:
                     applied = True
                 elif resistance == 255:
                     applied = False
-                elif chance == 254:
+                elif status_application.chance == 254:
                     applied = True
-                elif (chance - resistance) > status_rng:
+                elif (status_application.chance - resistance) > status_rng:
                     applied = True
                 else:
                     applied = False
                 statuses_applied[status] = applied
-                if applied:
-                    target.statuses.add(status)
+                if not applied:
+                    continue
+                if status is Status.DELAY_WEAK:
+                    target.ctb += target.base_ctb * 3 // 2
+                    continue
+                elif status is Status.DELAY_STRONG:
+                    target.ctb += target.base_ctb * 3
+                    continue
+                elif status is Status.HASTE:
+                    if target.statuses.get(Status.SLOW, 0) >= 255:
+                        continue
+                    target.statuses.pop(Status.SLOW, None)
+                elif status is Status.SLOW:
+                    if target.statuses.get(Status.HASTE, 0) >= 255:
+                        continue
+                    target.statuses.pop(Status.HASTE, None)
+                target.statuses[status] = status_application.stacks
             if Status.PETRIFY in target.statuses:
                 # TODO
                 # check if "% 101" is correct
                 shatter_rng = self._advance_rng(index) % 101
                 if self.action.shatter_chance > shatter_rng:
-                    target.statuses.add(Status.DEATH)
-                    target.statuses.add(Status.EJECT)
+                    target.statuses[Status.DEATH] = 254
+                    target.statuses[Status.EJECT] = 254
             statuses.append(statuses_applied)
+        return statuses
+
+    def _remove_statuses(self) -> list[list[Status]]:
+        statuses = []
+        for target, hit in zip(self.targets, self.hits):
+            if not hit:
+                statuses.append([])
+                continue
+            statuses_removed = []
+            for status in self.action.dispels:
+                if status not in target.statuses:
+                    continue
+                if target.statuses[status] >= 255:
+                    continue
+                target.statuses.pop(status)
+                statuses_removed.append(status)
+            statuses.append(statuses_removed)
         return statuses
 
     def _get_possible_targets(self) -> list[CharacterState]:
@@ -196,7 +234,10 @@ class MonsterAction(Event):
             case TargetType.SINGLE | TargetType.SINGLE_CHARACTER | TargetType.RANDOM_CHARACTER:
                 pass
             case TargetType.SINGLE_MONSTER | TargetType.RANDOM_MONSTER:
-                possible_targets = self.gamestate.monster_party
+                if self.gamestate.monster_party:
+                    possible_targets = self.gamestate.monster_party
+                else:
+                    possible_targets = [MonsterState(MONSTERS['dummy'])]
             case TargetType.HIGHEST_HP_CHARACTER:
                 if len(possible_targets) > 1:
                     possible_targets.sort(key=lambda c: c.current_hp, reverse=True)
@@ -213,8 +254,8 @@ class MonsterAction(Event):
                 possible_targets = [self.gamestate.characters[target]]
             case MonsterSlot() if len(self.gamestate.monster_party) > target:
                 possible_targets = [self.gamestate.monster_party[target]]
-            case TargetType.LAST_CHARACTER:
-                possible_targets = [self.gamestate.last_character]
+            case TargetType.LAST_ACTOR:
+                possible_targets = [self.gamestate.last_actor]
             case _:
                 return possible_targets * self.action.hits
 

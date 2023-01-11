@@ -15,6 +15,7 @@ from .monster_data_viewer import TkMonsterDataViewer
 from .seed_info import TkSeedInfo
 from .seedfinder import TkSeedFinder
 from .status_tracker import TkStatusTracker
+from .steps_tracker import TkStepsTracker
 from .yojimbo_tracker import TkYojimboTracker
 
 
@@ -43,6 +44,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
             'Seed info': TkSeedInfo,
             'Drops': TkDropsTracker,
             'Encounters': TkEncountersTracker,
+            'Steps': TkStepsTracker,
             'Encounters Planner': TkEncountersPlanner,
             'Encounters Table': TkEncountersTable,
             'Actions': TkActionsTracker,
@@ -57,7 +59,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
 
 @log_exceptions()
 def main(widget: type[tk.Widget],
-         title='ffx_rng_tracker',
+         title='FFX RNG tracker',
          size='1280x830',
          ) -> None:
     """Creates a Tkinter main window, initializes the rng tracker

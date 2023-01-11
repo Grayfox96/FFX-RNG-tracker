@@ -38,7 +38,8 @@ class EncountersTable(EncountersTracker):
                             line = (f'{enc.index:4}|{enc.random_index:4}|'
                                     f'{enc.zone_index:3}: {enc.condition:10} ')
                         padding = self.paddings[enc.name]
-                        line += f'{enc.formation:{padding}}'
+                        formation = str(enc.formation)
+                        line += f'{formation:{padding}}'
                     output.append(line)
 
         important_monsters = self.search_bar.get_input()
@@ -60,6 +61,7 @@ class EncountersTable(EncountersTracker):
         for zone, data in ZONES.items():
             padding = len(zone)
             for f in data.formations:
-                padding = max(padding, len(', '.join([str(m) for m in f])))
+                monsters_padding = len(', '.join([str(m) for m in f.monsters]))
+                padding = max(padding, monsters_padding)
             paddings[zone] = padding + 1
         return paddings

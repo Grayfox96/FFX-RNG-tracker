@@ -7,7 +7,7 @@ from .autoabilities import (AEON_RIBBON_IMMUNITIES, ELEMENTAL_EATERS,
                             ELEMENTAL_PROOFS, ELEMENTAL_WARDS, HP_BONUSES,
                             MP_BONUSES, RIBBON_IMMUNITIES, STATUS_PROOFS,
                             STATUS_WARDS)
-from .constants import (ICV_BASE, Autoability, Character, Element,
+from .constants import (ICV_BASE, Autoability, Buff, Character, Element,
                         ElementalAffinity, EquipmentType, Stat, Status)
 from .equipment import Equipment
 from .file_functions import get_resource_path
@@ -57,14 +57,15 @@ class CharacterState:
     def index(self) -> int:
         return self.defaults.index
 
-    def set_stat(self, stat: Stat, value: int) -> None:
+    def set_stat(self, stat: Stat | Buff, value: int) -> None:
         match stat:
             case Stat.HP | Stat.CTB:
                 max_value = 99999
             case Stat.MP:
                 max_value = 9999
-            case Stat.CHEER | Stat.FOCUS:
-                max_value = 5
+            case Buff():
+                self.buffs[stat] = min(max(0, value), 5)
+                return
             case _:
                 max_value = 255
         value = min(max(0, value), max_value)
@@ -95,7 +96,7 @@ class CharacterState:
     def current_hp(self, value: int) -> None:
         value = min(max(value, 0), self.max_hp)
         if value == 0:
-            self.statuses.add(Status.DEATH)
+            self.statuses[Status.DEATH] = 254
         self._current_hp = value
 
     @property
@@ -212,11 +213,11 @@ class CharacterState:
 
     def reset(self) -> None:
         self.stats = self.defaults.stats.copy()
-        for stat in Stat:
-            self.stats.setdefault(stat, 0)
+        self.stats[Stat.CTB] = 0
+        self.buffs: dict[Buff, int] = dict.fromkeys(Buff, 0)
         self._current_hp = self.stats[Stat.HP]
         self._current_mp = self.stats[Stat.MP]
-        self.statuses = set()
+        self.statuses: dict[Status, int] = {}
         self.weapon = deepcopy(self.defaults.weapon)
         self.armor = deepcopy(self.defaults.armor)
 

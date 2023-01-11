@@ -6,6 +6,29 @@ from .constants import Item
 from .file_functions import get_resource_path
 
 
+@dataclass
+class InventorySlot:
+    item: Item | None = None
+    quantity: int = 0
+
+    def __str__(self) -> str:
+        if not self.item:
+            return 'Empty'
+        return f'{self.item} x{self.quantity}'
+
+    @property
+    def quantity(self) -> int:
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, value: int) -> None:
+        if type(value) is property:
+            return
+        self._quantity = min(max(0, value), 99)
+        if self._quantity == 0:
+            self.item = None
+
+
 @dataclass(frozen=True)
 class ItemDrop:
     item: Item

@@ -129,7 +129,7 @@ class Configs:
             cls.colors[option] = Color(fg, bg, select_fg, select_bg)
 
         ui_widgets = (
-            'Seed info', 'Drops', 'Encounters', 'Encounters Table',
+            'Seed info', 'Drops', 'Encounters', 'Steps', 'Encounters Table',
             'Encounters Planner', 'Actions', 'Monster Targeting', 'Status',
             'Yojimbo', 'Monster Data', 'Seedfinder', 'Configs',
         )

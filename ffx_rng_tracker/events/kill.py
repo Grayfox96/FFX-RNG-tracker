@@ -19,9 +19,18 @@ class Kill(Event):
 
     def __post_init__(self) -> None:
         self.item_1 = self._get_item_1()
+        if self.item_1:
+            self.gamestate.add_to_inventory(
+                self.item_1.item, self.item_1.quantity)
         self.item_2 = self._get_item_2()
+        if self.item_2:
+            self.gamestate.add_to_inventory(
+                self.item_2.item, self.item_2.quantity)
         self.equipment = self._get_equipment()
+        if self.equipment:
+            self.gamestate.equipment_inventory.append(self.equipment.equipment)
         self.equipment_index = self._get_equipment_index()
+        self.gamestate.gil += self.monster.gil
 
     def __str__(self) -> str:
         string = f'{self.monster} drops: '
