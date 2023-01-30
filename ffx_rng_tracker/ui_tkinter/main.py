@@ -4,10 +4,10 @@ from tkinter import ttk
 
 from ..configs import Configs
 from ..data.file_functions import get_resource_path, get_version
-from ..logger import log_exceptions, log_tkinter_error, setup_logger
+from ..logger import log_exceptions, log_tkinter_error
 from .actions_tracker import TkActionsTracker
 from .base_widgets import DamageValuesDialogue
-from .configs import ConfigsPage
+from .configslog import TkConfigsLogViewer
 from .drops_tracker import TkDropsTracker
 from .encounters_tracker import (TkEncountersPlanner, TkEncountersTable,
                                  TkEncountersTracker)
@@ -27,7 +27,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
 
         widgets = self.get_widgets()
         for name, widget in widgets.items():
-            configs = Configs.ui_widgets.get(name, None)
+            configs = Configs.ui_widgets.get(name)
             if configs is None or not configs.shown:
                 continue
             if configs.windowed:
@@ -52,7 +52,7 @@ class FFXRNGTrackerUI(ttk.Notebook):
             'Yojimbo': TkYojimboTracker,
             'Monster Data': TkMonsterDataViewer,
             'Seedfinder': TkSeedFinder,
-            'Configs': ConfigsPage,
+            'Configs/Log': TkConfigsLogViewer,
         }
         return widgets
 
@@ -65,8 +65,6 @@ def main(widget: type[tk.Widget],
     """Creates a Tkinter main window, initializes the rng tracker
     and the root logger.
     """
-    setup_logger()
-
     root = tk.Tk()
     # redirects errors to another function
     root.report_callback_exception = log_tkinter_error

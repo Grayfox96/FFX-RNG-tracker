@@ -4,6 +4,10 @@
 # steal [monster_name] (successful steals)
 # death (character)
 # bribe [monster_name] [user]
+# inventory show (equipment)
+# inventory [use/get/buy/sell] [item name] [quantity]
+# inventory switch [slow 1] [slot 2]
+# inventory autosort
 ///
 # Zanarkand
 party ta

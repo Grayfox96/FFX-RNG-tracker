@@ -1,6 +1,7 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from ..data.constants import Character, EquipmentSlots, EquipmentType, Rarity
+from ..data.constants import (Character, EquipmentSlots, EquipmentType,
+                              KillType, Rarity)
 from ..data.equipment import Equipment, EquipmentDrop
 from ..data.items import ItemDrop
 from ..data.monsters import Monster
@@ -12,10 +13,6 @@ class Kill(Event):
     monster: Monster
     killer: Character
     overkill: bool = False
-    item_1: ItemDrop | None = field(init=False, repr=False)
-    item_2: ItemDrop | None = field(init=False, repr=False)
-    equipment: EquipmentDrop | None = field(init=False, repr=False)
-    equipment_index: int | None = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.item_1 = self._get_item_1()
@@ -26,11 +23,11 @@ class Kill(Event):
         if self.item_2:
             self.gamestate.add_to_inventory(
                 self.item_2.item, self.item_2.quantity)
+        self.gamestate.gil += self.monster.gil
         self.equipment = self._get_equipment()
         if self.equipment:
             self.gamestate.equipment_inventory.append(self.equipment.equipment)
         self.equipment_index = self._get_equipment_index()
-        self.gamestate.gil += self.monster.gil
 
     def __str__(self) -> str:
         string = f'{self.monster} drops: '
@@ -42,7 +39,7 @@ class Kill(Event):
         if self.equipment:
             drops.append(f'Equipment #{self.equipment_index} '
                          f'{str(self.equipment)}')
-        if len(drops):
+        if drops:
             string += ', '.join(drops)
         else:
             string += 'No drops'
@@ -51,35 +48,35 @@ class Kill(Event):
     def _get_item_1(self) -> ItemDrop | None:
         rng_drop = self._advance_rng(10) % 255
         if self.overkill:
-            drop_type = 'overkill'
+            kill_type = KillType.OVERKILL
         else:
-            drop_type = 'normal'
-        if self.monster.item_1['drop_chance'] > rng_drop:
+            kill_type = KillType.NORMAL
+        if self.monster.item_1.drop_chance > rng_drop:
             rng_rarity = self._advance_rng(11) & 255
             if rng_rarity < 32:
-                return self.monster.item_1[drop_type][Rarity.RARE]
+                return self.monster.item_1.items[kill_type, Rarity.RARE]
             else:
-                return self.monster.item_1[drop_type][Rarity.COMMON]
+                return self.monster.item_1.items[kill_type, Rarity.COMMON]
 
     def _get_item_2(self) -> ItemDrop | None:
         rng_drop = self._advance_rng(10) % 255
         if self.overkill:
-            drop_type = 'overkill'
+            kill_type = KillType.OVERKILL
         else:
-            drop_type = 'normal'
-        if self.monster.item_2['drop_chance'] > rng_drop:
+            kill_type = KillType.NORMAL
+        if self.monster.item_2.drop_chance > rng_drop:
             rng_rarity = self._advance_rng(11) & 255
             if rng_rarity < 32:
-                return self.monster.item_2[drop_type][Rarity.RARE]
+                return self.monster.item_2.items[kill_type, Rarity.RARE]
             else:
-                return self.monster.item_2[drop_type][Rarity.COMMON]
+                return self.monster.item_2.items[kill_type, Rarity.COMMON]
 
     def _get_equipment(self) -> EquipmentDrop | None:
         """Returns equipment obtained from killing a monster
         at the current rng position and advances rng accordingly.
         """
         rng_equipment_drop = self._advance_rng(10) % 255
-        if self.monster.equipment['drop_chance'] <= rng_equipment_drop:
+        if self.monster.equipment.drop_chance <= rng_equipment_drop:
             return
 
         possible_owners = [c for c in tuple(Character)[:7]
@@ -100,23 +97,17 @@ class Kill(Event):
             for _ in range(3):
                 possible_owners.append(self.killer)
 
-        # get equipment owner
         rng_equipment_owner = rng_equipment_owner % len(possible_owners)
         owner = possible_owners[rng_equipment_owner]
 
-        # get equipment type
         rng_weapon_or_armor = self._advance_rng(12) & 1
         if rng_weapon_or_armor == 0:
             type_ = EquipmentType.WEAPON
         else:
             type_ = EquipmentType.ARMOR
 
-        # get number of slots
         rng_number_of_slots = self._advance_rng(12) & 7
-        slots_mod = (self.monster.equipment['slots_modifier']
-                     + rng_number_of_slots
-                     - 4)
-        number_of_slots = (slots_mod + ((slots_mod >> 31) & 3)) >> 2
+        number_of_slots = self.monster.equipment.slots_range[rng_number_of_slots]
         if number_of_slots > EquipmentSlots.MAX:
             number_of_slots = EquipmentSlots.MAX.value
         elif number_of_slots < EquipmentSlots.MIN:
@@ -124,21 +115,14 @@ class Kill(Event):
 
         # get number of abilities
         rng_number_of_abilities = self._advance_rng(12) & 7
-        abilities_mod = (self.monster.equipment['max_ability_rolls_modifier']
-                         + rng_number_of_abilities
-                         - 4)
-        number_of_abilities = ((abilities_mod + ((abilities_mod >> 31) & 7))
-                               >> 3)
+        number_of_abilities = self.monster.equipment.max_ability_rolls_range[rng_number_of_abilities]
 
-        ability_arrays = self.monster.equipment['ability_arrays']
-        ability_array = ability_arrays[owner][type_]
+        abilities_list = self.monster.equipment.ability_lists[owner, type_]
 
         abilities = []
 
-        # the first ability of the array is usually None, but for kimahri's
-        # and auron's weapons and for drops from specific enemies it exists
-        forced_ability = ability_array[0]
-        if number_of_slots != 0 and forced_ability:
+        forced_ability = abilities_list[0]
+        if forced_ability:
             abilities.append(forced_ability)
 
         for _ in range(number_of_abilities):
@@ -146,14 +130,14 @@ class Kill(Event):
             if len(abilities) >= number_of_slots:
                 break
             rng_ability_index = self._advance_rng(13) % 7 + 1
-            ability = ability_array[rng_ability_index]
+            ability = abilities_list[rng_ability_index]
             # if the ability is not null and not a duplicate add it
             if ability and ability not in abilities:
                 abilities.append(ability)
 
         # other equipment information
-        base_weapon_damage = self.monster.equipment['base_weapon_damage']
-        bonus_crit = self.monster.equipment['bonus_critical_chance']
+        base_weapon_damage = self.monster.equipment.base_weapon_damage
+        bonus_crit = self.monster.equipment.bonus_critical_chance
 
         equipment = Equipment(
             owner=owner,
@@ -181,6 +165,10 @@ class Kill(Event):
 
 @dataclass
 class Bribe(Kill):
+
+    def __post_init__(self) -> None:
+        self.overkill = False
+        super().__post_init__()
 
     def _get_item_1(self) -> ItemDrop | None:
         return self.monster.bribe['item']

@@ -3314,5 +3314,16 @@
         "target": "Self",
         "can_miss": false,
         "does_damage": false
+    },
+    "use_crane": {
+        "name": "Use Crane",
+        "target": "Self",
+        "can_miss": false,
+        "does_damage": false
+    },
+    "talk": {
+        "name": "Talk",
+        "can_miss": false,
+        "does_damage": false
     }
 }

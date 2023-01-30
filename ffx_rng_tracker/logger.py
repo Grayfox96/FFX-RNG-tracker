@@ -1,15 +1,32 @@
 import logging
+import sys
 from functools import wraps
 from traceback import format_tb
 from types import TracebackType
 
-from .data.file_functions import get_version
+from .ui_abstract.output_widget import OutputWidget
+
+
+class UIHandler(logging.Handler):
+    """Handler to log records into an OutputWidget."""
+
+    def __init__(self, output_widget: OutputWidget) -> None:
+        super().__init__()
+        self.output_widget = output_widget
+        self.log = ''
+
+    def emit(self, record: logging.LogRecord) -> None:
+        msg = self.format(record)
+        if not msg.endswith('\n'):
+            msg += '\n'
+        self.log += msg
+        self.output_widget.print_output(self.log)
 
 
 def log_exceptions(logger: logging.Logger | None = None):
     """Decorator used to log unhandled exceptions."""
     if logger is None:
-        logger = logging.getLogger(LOGGER_NAME)
+        logger = logging.getLogger(__name__)
 
     def decorator(func):
         @wraps(func)
@@ -17,22 +34,33 @@ def log_exceptions(logger: logging.Logger | None = None):
             try:
                 return func(*args, **kwargs)
             except Exception:
-                issue = 'exception in '+func.__name__+'\n\n'
+                issue = 'exception in ' + func.__name__ + '\n'
                 logger.exception(issue)
                 raise
         return wrapper
     return decorator
 
 
-def setup_logger(logger: logging.Logger | None = None) -> None:
-    """Setup for a logger, defaults to the root logger."""
-    if logger is None:
-        logger = logging.getLogger(LOGGER_NAME)
-    logger.setLevel(logging.INFO)
-    logfile = logging.FileHandler('ffx_rng_tracker_errors.log')
-    logger.addHandler(logfile)
-    fmt = '=============\n%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    logfile.setFormatter(logging.Formatter(fmt))
+def setup_main_logger() -> None:
+    """Setup the main logger."""
+    logger = logging.getLogger(__name__.split('.')[0])
+
+    logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter(
+        fmt='{asctime} - {name} - {levelname} - {message}',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        style='{',
+        )
+
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
+
+    file_handler = logging.FileHandler('ffx_rng_tracker_log.log')
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.INFO)
+    logger.addHandler(file_handler)
 
 
 def log_tkinter_error(error: Exception,
@@ -46,9 +74,5 @@ def log_tkinter_error(error: Exception,
                      f'Traceback (most recent call last):\n'
                      f'{"".join(format_tb(tb))}'
                      f'{error.__name__}: {message}')
-    logger = logging.getLogger(LOGGER_NAME)
+    logger = logging.getLogger(__name__)
     logger.error(error_message)
-    print(error_message)
-
-
-LOGGER_NAME = f'{__name__} v{".".join(map(str, get_version()))}'

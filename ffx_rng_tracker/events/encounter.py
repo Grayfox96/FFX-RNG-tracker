@@ -1,9 +1,9 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from ..data.constants import (ICV_VARIANCE, Autoability, Character,
                               EncounterCondition, MonsterSlot, Stat, Status)
 from ..data.encounter_formations import (BOSSES, FORMATIONS, SIMULATIONS,
-                                         ZONES, Formation, Zone)
+                                         ZONES, Formation)
 from ..data.monsters import MonsterState
 from ..ui_functions import ctb_sorter
 from .main import Event
@@ -12,21 +12,16 @@ from .main import Event
 @dataclass
 class Encounter(Event):
     name: str
-    formation: Formation = field(init=False, repr=False)
-    condition: EncounterCondition = field(init=False, repr=False)
-    index: int = field(init=False, repr=False)
-    party_icvs: dict[Character, int] = field(init=False, repr=False)
-    monsters_icvs: list[int] = field(init=False, repr=False)
-    icvs_string: str = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.gamestate.process_start_of_encounter()
         self.formation = self._get_formation()
         self._update_current_monster_formation()
         self.condition = self._get_condition()
         self.index = self._get_index()
         self._duplicate_monsters_rng_advances()
         self.party_icvs = self._get_party_icvs()
-        self.monsters_icvs = self._get_enemies_icvs()
+        self.monsters_icvs = self._get_monsters_icvs()
         self.icvs_string = self._get_icvs_string()
         self.gamestate.normalize_ctbs()
 
@@ -44,23 +39,18 @@ class Encounter(Event):
         return BOSSES[self.name].formation
 
     def _update_current_monster_formation(self) -> None:
-        self.gamestate.monster_party = []
         for monster, slot in zip(self.formation.monsters, MonsterSlot):
             self.gamestate.monster_party.append(MonsterState(monster, slot))
 
     def _get_condition(self) -> EncounterCondition:
-        for character in self.gamestate.party:
-            character_data = self.gamestate.characters[character]
-            if Autoability.INITIATIVE in character_data.autoabilities:
-                initiative = True
-                break
-        else:
-            initiative = False
         condition_rng = self._advance_rng(1) & 255
         if self.formation.forced_condition is not None:
             return self.formation.forced_condition
-        if initiative:
-            condition_rng -= 33
+        for character in self.gamestate.party:
+            character_state = self.gamestate.characters[character]
+            if Autoability.INITIATIVE in character_state.autoabilities:
+                condition_rng -= 33
+                break
         if condition_rng < 32:
             return EncounterCondition.PREEMPTIVE
         elif condition_rng < 255 - 32:
@@ -116,7 +106,7 @@ class Encounter(Event):
                 state.ctb = icv
         return icvs
 
-    def _get_enemies_icvs(self) -> list[int]:
+    def _get_monsters_icvs(self) -> list[int]:
         icvs = []
         if self.condition is EncounterCondition.PREEMPTIVE:
             for m in self.gamestate.monster_party:
@@ -135,7 +125,7 @@ class Encounter(Event):
                 variance = 100 - (variance_rng % 11)
                 icvs.append(base // variance)
                 m.ctb = base // variance
-            # empty enemy party slots still advance rng
+            # empty monster party slots still advance rng
             for index in range(28 + len(self.formation.monsters), 36):
                 self._advance_rng(index)
         return icvs
@@ -145,10 +135,6 @@ class Encounter(Event):
                       if c in self.gamestate.party]
         monsters = self.gamestate.monster_party
         return ctb_sorter(characters, monsters)
-
-    def rollback(self) -> None:
-        self.gamestate.encounters_count -= 1
-        return super().rollback()
 
 
 @dataclass
@@ -162,18 +148,12 @@ class SimulatedEncounter(Encounter):
     def _get_formation(self) -> Formation:
         return SIMULATIONS[self.name].monsters
 
-    def rollback(self) -> None:
-        self.gamestate.encounters_count += 1
-        return super().rollback()
-
 
 @dataclass
 class RandomEncounter(Encounter):
-    zone: Zone = field(init=False, repr=False)
-    random_index: int = field(init=False, repr=False)
-    zone_index: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.zone = ZONES[self.name]
         super().__post_init__()
         self.random_index = self._get_random_index()
         self.zone_index = self._get_zone_index()
@@ -187,9 +167,8 @@ class RandomEncounter(Encounter):
 
     def _get_formation(self) -> Formation:
         rng_value = self._advance_rng(1)
-        zone = ZONES[self.name]
-        formation_index = rng_value % len(zone.formations)
-        return zone.formations[formation_index]
+        formation_index = rng_value % len(self.zone.formations)
+        return self.zone.formations[formation_index]
 
     def _get_random_index(self) -> int:
         self.gamestate.random_encounters_count += 1
@@ -200,38 +179,33 @@ class RandomEncounter(Encounter):
         self.gamestate.zone_encounters_counts[self.name] = index
         return index
 
-    def rollback(self) -> None:
-        self.gamestate.random_encounters_count -= 1
-        self.gamestate.zone_encounters_counts[self.name] -= 1
-        return super().rollback()
-
 
 @dataclass
 class MultizoneRandomEncounter(Event):
     zones: list[str]
-    encounters: list[RandomEncounter] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.encounters = self._get_encounters()
 
     def __str__(self) -> str:
         string = ''
-        zones = []
+        zones_names = []
         formations = []
         for count, enc in enumerate(self.encounters, 1):
             if count == 1:
                 string += str(enc)[:24]
-            zone = ZONES[enc.name].name
-            zones.append(zone)
+            zone_name = ZONES[enc.name].name
+            zones_names.append(zone_name)
             formation = f'[{enc.formation}]'
             formations.append(formation)
-            if count == len(self.encounters):
-                string += (f'{"/".join(zones)}: {"/".join(formations)} '
-                           f'{enc.condition}')
+        string += (f'{"/".join(zones_names)}: {"/".join(formations)} '
+                   f'{enc.condition}')
         return string
 
     def _get_encounters(self) -> list[RandomEncounter]:
         encounters = []
+        tracker = self.gamestate._rng_tracker
+        saved_rng_positions = tracker._rng_current_positions.copy()
         for count, zone in enumerate(self.zones, 1):
             encounter = RandomEncounter(
                 gamestate=self.gamestate,
@@ -239,11 +213,8 @@ class MultizoneRandomEncounter(Event):
             )
             encounters.append(encounter)
             if count < len(self.zones):
-                encounter.rollback()
-                self.gamestate.zone_encounters_counts[zone] += 1
+                self.gamestate.encounters_count -= 1
+                self.gamestate.random_encounters_count -= 1
+                tracker._rng_current_positions.clear()
+                tracker._rng_current_positions.extend(saved_rng_positions)
         return encounters
-
-    def rollback(self) -> None:
-        if self.encounters:
-            self.encounters[-1].rollback()
-        return super().rollback()

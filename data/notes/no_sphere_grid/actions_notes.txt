@@ -4,19 +4,22 @@
 # party [party members initials]
 # summon [aeon name]
 # (equip) [equip_type] [character] [slots] (abilities)
-# (action) [character name] [action] (target)
+# (action) [character name] [action] (target) (time)
 # (monsteraction) [monster slot/name] [action_name]
 # heal (character) (amount)
 # endencounter
+# status [character]
+# spawn [monster_name] [slot] (forced ctb)
 # stat [character] [stat] [(+/-)amount]
+# stat [monster slot] [stat] [(+/-)amount]
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
-#     evasion, accuracy
+#     evasion, accuracy, ctb
 
 party tyakwlr
 # -- Zanarkand --
-encounter
+encounter sinscales
 auron attack sinscale_6
 tidus attack sinscale_6
 auron attack sinscale_6
@@ -24,7 +27,7 @@ tidus attack sinscale_6
 auron attack sinscale_6
 tidus attack sinscale_6
 
-encounter
+encounter ammes
 # auron od, ignore first set of rolls
 # second set is actual rolls
 auron dragon_fang sinspawn_ammes
@@ -62,23 +65,23 @@ auron attack sinspawn_ammes
 # tidus attack sinspawn_ammes
 # auron attack sinspawn_ammes
 
-encounter
+encounter tanker
 auron attack auron
 tidus attack tanker
 auron attack tanker
 tidus attack tanker
 
 # -- Underwater Ruins --
-encounter
+encounter sahagins
 tidus attack sahagin_4
 tidus attack sahagin_4
 
-encounter
+encounter geosgaeno
 # tidus attack geosgaeno
 # tidus attack geosgaeno
 # tidus attack geosgaeno
 
-encounter
+encounter klikk_1
 # tidus potion tidus
 tidus attack klikk
 tidus attack klikk
@@ -88,7 +91,7 @@ tidus attack klikk
 tidus attack klikk
 tidus attack klikk
 
-encounter
+encounter klikk_2
 rikku grenade klikk
 tidus attack klikk
 
@@ -105,13 +108,13 @@ rikku attack klikk
 tidus attack klikk
 
 # Chain encounter
-encounter
+encounter underwater_ruins
 tidus attack piranha
 tidus attack piranha_2
 # tidus attack piranha_3
 # tidus attack piranha_3
 
-encounter
+encounter piranhas
 # rikku grenade piranha_3
 # rikku grenade piranha_3
 rikku attack piranha_3
@@ -119,7 +122,7 @@ tidus attack piranha_3
 rikku attack piranha_3
 tidus attack piranha_3
 
-encounter
+encounter tros
 rikku grenade tros
 tidus attack tros
 tidus stand_by
@@ -132,13 +135,13 @@ rikku grenade tros
 
 # -- Besaid --
 # Lagoon encounters
-encounter
+encounter besaid_lagoon
 tidus attack piranha
 wakka attack piranha
 # tidus escape
 # wakka escape
 
-encounter
+encounter besaid_lagoon
 tidus attack piranha
 wakka attack piranha
 # tidus escape
@@ -148,16 +151,16 @@ wakka attack piranha
 weapon tidus 4 strength_+5%
 
 # Besaid tutorial fights
-encounter
+encounter wakka_tutorial
 tidus attack dingo
 wakka attack condor
 
-encounter
+encounter elements_tutorial
 # Tidus' crits are disabled
 tidus attacknocrit water_flan
 lulu thunder water_flan
 
-encounter
+encounter kimahri
 # tidus potion tidus
 tidus attack ???
 tidus attack ???
@@ -166,7 +169,7 @@ tidus attack ???
 tidus attack ???
 tidus attack ???
 
-encounter
+encounter garuda_1
 valefor thunder garuda_3
 valefor thunder garuda_3
 valefor thunder garuda_3
@@ -174,18 +177,20 @@ valefor thunder garuda_3
 valefor thunder garuda_3
 valefor thunder garuda_3
 
-encounter
+encounter garuda_2
 tidus escape
 yuna escape
 lulu escape
 
-encounter
+encounter besaid_forced_encounter
 tidus attack dingo_2
 wakka attack condor_2
 lulu thunder water_flan_2
 
+# encounter besaid_road
+
 # -- S.S. Liki --
-encounter
+encounter sin_fin
 lulu thunder sin
 kimahri lancet_hp sin
 kimahri lancet_mp sin
@@ -194,7 +199,7 @@ kimahri lancet_mp sin
 lulu thunder sin
 valefor energy_blast sin
 
-encounter
+encounter echuilles
 tidus spiral_cut sinspawn_echuilles
 tidus spiral_cut sinspawn_echuilles 2.5
 wakka dark_attack sinspawn_echuilles
@@ -216,161 +221,161 @@ tidus attack sinspawn_echuilles
 wakka attack sinspawn_echuilles
 
 # -- Kilika --
-encounter
+encounter lancet_tutorial
 kimahri lancet_hp ragora_2
 kimahri lancet_mp ragora_2
 kimahri attack ragora_2
 lulu fire ragora_2
 
 # Ochu Grind
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
-encounter
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
+encounter lord_ochu
 
 stat valefor strength 22
 stat valefor magic 30
 
-encounter
-encounter
+encounter kilika_woods
+encounter kilika_woods
 
-encounter
+encounter geneaux
 valefor fire geneaux's_tentacle
 valefor fire geneaux's_tentacle
 valefor fire sinspawn_geneaux
@@ -385,23 +390,25 @@ weapon valefor 4 aeon_ribbon
 valefor fire sinspawn_geneaux
 
 # Kilika Out encounters
-encounter
-encounter
-encounter
+encounter kilika_woods
+encounter kilika_woods
+encounter kilika_woods
+
+# encounter lord_ochu
 
 # Tidus equips Stunning Steel
 weapon tidus 1 slowtouch
 
 # -- Luca --
-encounter
+encounter machina_1
 lulu thunder worker
 lulu thunder worker
 
-encounter
+encounter machina_2
 lulu thunder worker
 lulu thunder worker
 
-encounter
+encounter machina_3
 tidus attack worker
 kimahri attack worker
 lulu thunder worker
@@ -419,7 +426,7 @@ tidus attack worker
 kimahri attack worker
 tidus attack worker
 
-encounter
+encounter oblitzerator
 lulu thunder crane
 lulu thunder crane
 lulu thunder crane
@@ -430,7 +437,7 @@ lulu thunder oblitzerator
 # If Tidus equips Lightning Steel
 # weapon tidus 1 lightningstrike
 
-encounter
+encounter sahagin_chiefs
 tidus attack sahagin_chief
 wakka attack sahagin_chief
 
@@ -482,10 +489,10 @@ wakka attack sahagin_chief
 tidus attack sahagin_chief
 wakka attack sahagin_chief
 
-encounter
+encounter vouivre
 auron attack vouivre_2
 
-encounter
+encounter garuda
 tidus attack garuda_2
 wakka dark_attack garuda_2
 
@@ -497,16 +504,28 @@ auron attack garuda_2
 auron attack garuda_2
 
 # -- Mi'ihen --
-encounter
+encounter pierce_tutorial
 # Tidus' crits are disabled
 tidus attacknocrit raldo
 auron attack raldo
 
-encounter
+encounter miihen_screen_1
 kimahri lancet_hp bomb
 kimahri lancet_mp bomb
 
-encounter
+encounter miihen_screen_1
+encounter miihen_screen_1
+
+encounter miihen_screen_2_3
+encounter miihen_screen_2_3
+encounter miihen_screen_2_3
+encounter miihen_screen_2_3
+encounter miihen_screen_2_3
+encounter miihen_screen_2_3
+
+# encounter simulation_miihen
+
+encounter chocobo_eater
 tidus spiral_cut chocobo_eater
 tidus spiral_cut chocobo_eater 2.5
 tidus attack tidus
@@ -514,12 +533,27 @@ wakka attack tidus
 auron attack tidus
 
 # -- Old Road --
-encounter
+encounter old_road
+encounter old_road
+encounter old_road
+encounter old_road
+
+# encounter simulation_old_road
+
+encounter clasko_skip_screen
+encounter clasko_skip_screen
 
 # -- MRR --
-encounter
+encounter mrr_valley
+encounter mrr_valley
+encounter mrr_valley
+encounter mrr_valley
+encounter mrr_valley
+encounter mrr_valley
 
-encounter
+encounter mrr_precipice
+
+encounter sinspawn_gui_1
 auron power_break sinspawn_gui
 kimahri self-destruct sinspawn_gui
 valefor energy_blast sinspawn_gui
@@ -536,7 +570,7 @@ valefor energy_blast sinspawn_gui
 valefor energy_blast arm
 valefor energy_blast arm
 
-encounter
+encounter sinspawn_gui_2
 # Gui 2 has 1 magic defense
 # Target is Head as a workaround
 seymour thundara head
@@ -546,13 +580,29 @@ seymour thundara head
 seymour thundara head
 seymour thundara head
 
+auron attack auron
+yuna attack yuna
+
 # -- Djose --
-encounter
+encounter djose_highroad_front_half
 kimahri lancet_hp basilisk
 kimahri lancet_mp basilisk
 
+encounter djose_highroad_front_half
+
+encounter djose_highroad_back_half
+encounter djose_highroad_back_half
+encounter djose_highroad_back_half
+
 # -- Moonflow --
-encounter
+encounter moonflow_south
+encounter moonflow_south
+encounter moonflow_south
+encounter moonflow_south
+encounter moonflow_south
+encounter moonflow_south
+encounter moonflow_south
+encounter moonflow_south
 
 weapon tidus 1 slowtouch
 # weapon tidus 1 lightningstrike
@@ -561,7 +611,7 @@ weapon tidus 1 slowtouch
 weapon wakka 2 strength_+5% strength_+3%
 # weapon wakka 1 lightningstrike
 
-encounter
+encounter extractor
 wakka attack extractor
 wakka attack extractor
 wakka attack extractor
@@ -578,22 +628,48 @@ tidus attack extractor
 tidus spiral_cut extractor
 tidus spiral_cut extractor 2.5
 
-
 # Mix tutorial
-encounter
+encounter rikku_tutorial
 rikku ultra_potion rikku
 
+encounter moonflow_north
+encounter moonflow_north
+
+# encounter simulation_guadosalam
+
 # -- Thunder Plains --
-encounter
+encounter thunder_plains_south
+encounter thunder_plains_south
+encounter thunder_plains_south
+
+encounter thunder_plains_south_1_stone
+encounter thunder_plains_south_1_stone
+encounter thunder_plains_south_1_stone
+encounter thunder_plains_south_1_stone
 
 # Travel Agency
-encounter
+encounter simulation_thunder_plains
+
+encounter thunder_plains_north_1_stone
+encounter thunder_plains_north_1_stone
+encounter thunder_plains_north_1_stone
+encounter thunder_plains_north_1_stone
+encounter thunder_plains_north_1_stone
+encounter thunder_plains_north_1_stone
+encounter thunder_plains_north_1_stone
 
 # -- Macalania Woods --
-encounter
+encounter macalania_woods
+encounter macalania_woods
+encounter macalania_woods
+encounter macalania_woods
+encounter macalania_woods
+encounter macalania_woods
+encounter macalania_woods
+encounter macalania_woods
 
 # Spherimorph (the mix damages 9 times)
-encounter
+encounter spherimorph
 # tidus spiral_cut spherimorph
 # tidus spiral_cut spherimorph 2.5
 
@@ -608,10 +684,10 @@ rikku lightning_bolt spherimorph
 rikku lightning_bolt spherimorph
 rikku lightning_bolt spherimorph
 
-encounter
+encounter lake_macalania
 
 # Crawler
-encounter
+encounter crawler
 rikku lightning_marble crawler
 rikku lightning_marble negator
 
@@ -639,9 +715,11 @@ rikku lightning_bolt crawler
 # tidus equips brotherhood
 weapon tidus 4 strength_+10% strength_+5% waterstrike
 
+# encounter crevasse
+
 # -- Macalania Temple --
 # Seymour
-encounter
+encounter seymour
 tidus spiral_cut seymour
 tidus spiral_cut seymour 2.5
 rikku lightning_marble seymour
@@ -660,13 +738,17 @@ tidus attack seymour
 # Tidus unequips Brotherhood
 weapon tidus 1 first_strike
 
+# encounter guado_encounter
+
 # -- Crevasse --
 # Guado Guardian #2 is in Macalania
 # and in the Wendigo fights
-encounter
+encounter crevasse
+encounter crevasse
+encounter crevasse
 
 # Wendigo
-encounter
+encounter wendigo
 rikku chaos_grenade guado_guardian_2
 rikku chaos_grenade wendigo
 rikku chaos_grenade guado_guardian_2
@@ -677,15 +759,31 @@ shiva blizzara wendigo
 # shiva blizzara wendigo
 
 # -- Bikanel --
-encounter
-encounter
-encounter
+encounter zu
+
+encounter sanubia_desert_east
+encounter sanubia_desert_east
+
+encounter machina_steal_tutorial
+
+encounter sanubia_desert_east
+
+encounter sanubia_desert_central
+encounter sanubia_desert_central
+encounter sanubia_desert_central
+
+encounter sanubia_desert_ruins
+
+encounter sanubia_desert_west
+encounter sanubia_desert_west
+
+# encounter sandragora
 
 # -- Home --
 # Guado Guardian #3 is in Home
 # and Airship encounters
 
-encounter
+encounter guado_+_3_bomb
 rikku silence_grenade guado_guardian_3
 rikku silence_grenade bomb_2
 rikku silence_grenade bomb_2
@@ -706,18 +804,20 @@ rikku grenade bomb_2
 rikku grenade bomb_2
 rikku grenade bomb_2
 
-encounter
+encounter guado_+_2_dual_horn
 kimahri lancet_hp dual_horn_2
 kimahri lancet_mp dual_horn_2
 
-encounter
+encounter home
+
+encounter guado_+_2_chimera
 kimahri lancet_hp chimera_2
 kimahri lancet_mp chimera_2
 
 # -- Airship --
-# encounter
+# encounter airship
 
-encounter
+encounter evrae
 tidus haste tidus
 rikku miracle_drink tidus
 
@@ -735,13 +835,13 @@ tidus attack evrae
 
 # -- Bevelle --
 # Fight 1
-encounter
+encounter 
 tidus attack warrior_monk
 tidus attack warrior_monk_2
 tidus attack warrior_monk
 
 # Fight 2
-encounter
+encounter 
 tidus attack ykt-63
 tidus attack ykt-63
 # rikku sleeping_powder ykt-63
@@ -751,13 +851,13 @@ kimahri silence_grenade warrior_monk_2
 kimahri silence_grenade warrior_monk_2
 
 # Fight 3
-encounter
+encounter 
 tidus attack warrior_monk
 tidus attack warrior_monk_2
 tidus attack warrior_monk
 
 # Fight 4
-encounter
+encounter 
 tidus attack ykt-63
 tidus attack ykt-63
 # rikku sleeping_powder ykt-63
@@ -767,7 +867,7 @@ kimahri silence_grenade warrior_monk_2
 kimahri silence_grenade warrior_monk_2
 
 # Fight 5
-encounter
+encounter 
 # using 2 bomb cores
 tidus attack warrior_monk
 tidus attack warrior_monk
@@ -793,25 +893,24 @@ kimahri bomb_core yat-99
 # kimahri sleeping_powder warrior_monk
 # kimahri sleeping_powder yat-99
 
-
 # -- Via Purifico --
 
 stat ixion strength 53
 stat bahamut strength 70
 
-encounter
+encounter 
 ixion attack maze_larva
-encounter
+encounter 
 ixion attack maze_larva
 
 # Isaaru fights
-encounter
+encounter 
 bahamut attack ifrit_2
 
-encounter
+encounter 
 bahamut attack valefor
 
-encounter
+encounter 
 # ixion thunder bahamut
 ixion attack bahamut
 ixion attack bahamut
@@ -820,11 +919,11 @@ ixion attack bahamut
 ixion attack bahamut
 
 # -- Underwater --
-encounter
+encounter 
 # tidus attack sahagin_3
 # tidus attack phlegyas
 
-encounter
+encounter 
 tidus elixir_hp evrae_altana
 tidus elixir_mp evrae_altana
 tidus elixir_hp evrae_altana
@@ -841,11 +940,11 @@ stat bahamut strength 106
 # stat ixion strength 76
 # stat bahamut strength 105
 
-encounter
+encounter 
 # tidus attack ykt-63
 # yuna attack ykt-63
 
-encounter
+encounter 
 tidus attack seymour_natus
 bahamut attack seymour_natus
 
@@ -856,19 +955,19 @@ stat ixion strength 81
 stat bahamut strength 112
 stat yuna strength 53
 
-encounter
+encounter 
 
-encounter
+encounter 
 bahamut attack defender_x
 bahamut attack defender_x
 
 # -- Sunken Cave --
-encounter
+encounter 
 ixion attack ghost
 ixion attack ghost
 
 # -- Gagazet --
-encounter
+encounter 
 kimahri water_gem yenke_ronso
 kimahri water_gem yenke_ronso
 kimahri water_gem yenke_ronso
@@ -892,7 +991,7 @@ stat yuna strength 55
 # stat bahamut strength 133
 # stat yuna strength 64
 
-encounter
+encounter 
 tidus haste yuna
 yuna attack seymour_flux
 rikku silence_grenade seymour_flux
@@ -906,7 +1005,7 @@ tidus attack seymour_flux
 yuna attack seymour_flux
 yuna attack seymour_flux
 
-encounter
+encounter 
 tidus armor_break sanctuary_keeper
 bahamut attack sanctuary_keeper
 
@@ -914,7 +1013,7 @@ bahamut attack sanctuary_keeper
 # stat bahamut luck +4
 # stat yuna luck +4
 
-encounter
+encounter 
 bahamut attack spectral_keeper
 bahamut attack spectral_keeper
 
@@ -923,40 +1022,40 @@ stat ixion strength 103
 stat bahamut strength 145
 stat yuna strength 70
 
-encounter
+encounter 
 bahamut attack yunalesca
 bahamut attack yunalesca
 bahamut attack yunalesca
 
-encounter
+encounter 
 bahamut impulse left_fin
 bahamut impulse left_fin
 
-encounter
+encounter 
 bahamut impulse right_fin
 bahamut impulse right_fin
 
 # Sin Core
-encounter
+encounter 
 # bahamut attack sinspawn_genais
 bahamut impulse sin_2
 
 # Overdrive Sin
-encounter
+encounter 
 bahamut impulse sin_3
 bahamut attack sin_3
 # bahamut attack sin_3
 
-encounter
+encounter 
 tidus armor_break seymour_omnis
 bahamut attack seymour_omnis
 
 # -- Nucleus --
-# encounter
-# encounter
+# encounter 
+# encounter 
 
 # Braska's Final Aeon
-encounter
+encounter 
 rikku armor_break braska's_final_aeon
 # rikku chaos_grenade braska's_final_aeon
 # rikku chaos_grenade yu_pagoda
@@ -973,27 +1072,27 @@ stat ixion luck 1
 stat shiva luck 1
 stat bahamut luck 1
 
-encounter
+encounter 
 yuna attack valefor_c
 # yuna quick_hit valefor_c
 # yuna spare_change valefor_c
 
-encounter
+encounter 
 yuna attack ifrit_c
 # yuna quick_hit ifrit_c
 # yuna spare_change ifrit_c
 
-encounter
+encounter 
 yuna attack ixion_c
 # yuna quick_hit ixion_c
 # yuna spare_change ixion_c
 
-encounter
+encounter 
 yuna attack shiva_c
 # yuna quick_hit shiva_c
 # yuna spare_change shiva_c
 
-encounter
+encounter 
 yuna attack bahamut_c
 # yuna quick_hit bahamut_c
 # yuna spare_change bahamut_c

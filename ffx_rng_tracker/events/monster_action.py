@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from ..data.actions import Action
 from ..data.characters import CharacterState
@@ -14,14 +14,6 @@ from .main import Event
 class MonsterAction(Event):
     monster: MonsterState
     action: Action
-    targets: list[CharacterState] | list[MonsterState] = field(
-        init=False, repr=False)
-    hits: list[bool] = field(init=False, repr=False)
-    statuses: list[dict[Status, bool]] = field(init=False, repr=False)
-    damages: list[int] = field(init=False, repr=False)
-    damage_rngs: list[int] = field(init=False, repr=False)
-    crits: list[bool] = field(init=False, repr=False)
-    ctb: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.gamestate.process_start_of_turn(self.monster)
@@ -188,8 +180,11 @@ class MonsterAction(Event):
                 # check if "% 101" is correct
                 shatter_rng = self._advance_rng(index) % 101
                 if self.action.shatter_chance > shatter_rng:
+                    target.statuses.pop(Status.PETRIFY)
                     target.statuses[Status.DEATH] = 254
+                    statuses_applied[Status.DEATH] = True
                     target.statuses[Status.EJECT] = 254
+                    statuses_applied[Status.EJECT] = True
             statuses.append(statuses_applied)
         return statuses
 
@@ -205,8 +200,10 @@ class MonsterAction(Event):
                     continue
                 if target.statuses[status] >= 255:
                     continue
-                target.statuses.pop(status)
-                statuses_removed.append(status)
+                removed_status = target.statuses.pop(status)
+                if removed_status is Status.DEATH:
+                    target.ctb = target.base_ctb * 3
+                statuses_removed.append(removed_status)
             statuses.append(statuses_removed)
         return statuses
 
@@ -240,7 +237,8 @@ class MonsterAction(Event):
                     possible_targets = [MonsterState(MONSTERS['dummy'])]
             case TargetType.HIGHEST_HP_CHARACTER:
                 if len(possible_targets) > 1:
-                    possible_targets.sort(key=lambda c: c.current_hp, reverse=True)
+                    possible_targets.sort(
+                        key=lambda c: c.current_hp, reverse=True)
                     possible_targets = [possible_targets[0]] * 2
             case TargetType.LOWEST_HP_CHARACTER:
                 if len(possible_targets) > 1:
@@ -250,10 +248,16 @@ class MonsterAction(Event):
                 possible_targets.sort(
                     key=lambda c: tuple(Character).index(c.character))
                 return possible_targets * self.action.hits
-            case Character() if target in [c.character for c in possible_targets]:
-                possible_targets = [self.gamestate.characters[target]]
-            case MonsterSlot() if len(self.gamestate.monster_party) > target:
-                possible_targets = [self.gamestate.monster_party[target]]
+            case Character():
+                if target in [c.character for c in possible_targets]:
+                    possible_targets = [self.gamestate.characters[target]]
+                else:
+                    possible_targets = [MonsterState(MONSTERS['dummy'])]
+            case MonsterSlot():
+                if len(self.gamestate.monster_party) > target:
+                    possible_targets = [self.gamestate.monster_party[target]]
+                else:
+                    possible_targets = [MonsterState(MONSTERS['dummy'])]
             case TargetType.LAST_ACTOR:
                 possible_targets = [self.gamestate.last_actor]
             case _:

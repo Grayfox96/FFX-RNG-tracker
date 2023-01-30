@@ -6,17 +6,67 @@ from ..configs import Configs
 from ..utils import add_bytes, open_cp1252, stringify
 from .actions import MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
-from .constants import (ICV_BASE, Buff, Character, Element, ElementalAffinity,
-                        EquipmentSlots, EquipmentType, GameVersion,
-                        MonsterSlot, Rarity, Stat, Status)
+from .constants import (ELEMENT_BITMASKS, ICV_BASE, Autoability, Buff,
+                        Character, Element, ElementalAffinity, EquipmentSlots,
+                        EquipmentType, GameVersion, KillType, MonsterSlot,
+                        Rarity, Stat, Status)
 from .file_functions import get_resource_path
 from .items import ITEMS, ItemDrop
 from .text_characters import TEXT_CHARACTERS
 
 
 @dataclass
+class ItemDropInfo:
+    drop_chance: int
+    items: dict[tuple[KillType, Rarity], ItemDrop | None] = field(
+        default_factory=dict)
+
+    def __post_init__(self) -> None:
+        self.items[KillType.NORMAL, Rarity.COMMON] = None
+        self.items[KillType.NORMAL, Rarity.RARE] = None
+        self.items[KillType.OVERKILL, Rarity.COMMON] = None
+        self.items[KillType.OVERKILL, Rarity.RARE] = None
+
+
+@dataclass
+class ItemStealInfo:
+    base_chance: int
+    items: dict[Rarity, ItemDrop | None] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        self.items[Rarity.COMMON] = None
+        self.items[Rarity.RARE] = None
+
+
+@dataclass
+class ItemBribeInfo:
+    max_cost: int
+    item: ItemDrop | None = None
+
+
+@dataclass
+class EquipmentDropInfo:
+    drop_chance: int
+    bonus_critical_chance: int
+    base_weapon_damage: int
+    slots_modifier: int
+    slots_range: list[int]
+    max_ability_rolls_modifier: int
+    max_ability_rolls_range: list[int]
+    added_to_inventory: bool
+    ability_lists: dict[tuple[Character, EquipmentType], list[Autoability | None]] = field(
+        default_factory=dict)
+
+    def __post_init__(self) -> None:
+        for c in tuple(Character)[:7]:
+            for t in EquipmentType:
+                self.ability_lists[c, t] = [None for _ in range(8)]
+
+
+@dataclass
 class Monster:
     name: str
+    overkill_threshold: int
     stats: dict[Stat, int]
     elemental_affinities: dict[Element, ElementalAffinity]
     status_resistances: dict[Status, int]
@@ -26,12 +76,12 @@ class Monster:
     undead: bool
     auto_statuses: set[Status]
     gil: int
-    ap: dict[str, int]
-    item_1: dict[str, int | dict[Rarity, ItemDrop | None]]
-    item_2: dict[str, int | dict[Rarity, ItemDrop | None]]
-    steal: dict[str | Rarity, int | ItemDrop | None]
-    bribe: dict[str, int | ItemDrop | None]
-    equipment: dict[str, int | list | dict[Character, list[int]]]
+    ap: dict[KillType, int]
+    item_1: ItemDropInfo
+    item_2: ItemDropInfo
+    steal: ItemStealInfo
+    bribe: ItemBribeInfo
+    equipment: EquipmentDropInfo
     actions: dict[str, Action]
     zones: list[str] = field(default_factory=list)
 
@@ -131,7 +181,7 @@ class MonsterState:
 
 
 def _get_prize_structs(file_path: str) -> dict[str, list[int]]:
-    """Retrieves the prize structs for enemies."""
+    """Retrieves the prize structs for monsters."""
     absolute_file_path = get_resource_path(file_path)
     with open_cp1252(absolute_file_path) as file_object:
         file_reader = csv.reader(file_object)
@@ -182,7 +232,7 @@ def _patch_prize_structs_for_hd(prize_structs: dict[str, list[int]],
                 prize_structs[monster_name][address] = abilities[slot]
 
     # in the HD version equipment droprates were modified
-    # from 8/255 to 12/255 for these enemies
+    # from 8/255 to 12/255 for these monsters
     monster_names = (
         'condor', 'dingo', 'water_flan', 'condor_2', 'dingo_2',
         'water_flan_2', 'dinonix', 'killer_bee', 'yellow_element',
@@ -203,7 +253,7 @@ def _patch_prize_structs_for_hd(prize_structs: dict[str, list[int]],
     for monster_name in monster_names:
         prize_structs[monster_name][139] = 12
 
-    # all the enemies that have ability arrays modified in the HD version
+    # all the monsters that have ability arrays modified in the HD version
     # besaid
     patch_abilities('dingo', (38, 42, 34, 30, 124, 124, 124))
     patch_abilities('condor', (0, 0, 0, 0, 126, 126, 126))
@@ -320,57 +370,21 @@ def get_raw_data_string(prize_struct: list[str]) -> str:
 def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     """Get a Monster from his prize struct."""
 
-    def get_elements() -> dict[Element, ElementalAffinity]:
-        elements = {
-            Element.FIRE: 0b00001,
-            Element.ICE: 0b00010,
-            Element.THUNDER: 0b00100,
-            Element.WATER: 0b01000,
-            Element.HOLY: 0b10000,
-        }
-        affinities = {}
-        for element, value in elements.items():
-            if prize_struct[43] & value:
-                affinities[element] = ElementalAffinity.ABSORBS
-            elif prize_struct[44] & value:
-                affinities[element] = ElementalAffinity.IMMUNE
-            elif prize_struct[45] & value:
-                affinities[element] = ElementalAffinity.RESISTS
-            elif prize_struct[46] & value:
-                affinities[element] = ElementalAffinity.WEAK
-            else:
-                affinities[element] = ElementalAffinity.NEUTRAL
-        return affinities
-
-    def get_abilities(address: int) -> dict[str, list[str | None]]:
-        abilities: dict[EquipmentType, list[str | None]] = {}
-        equipment_types = (EquipmentType.WEAPON, 0), (EquipmentType.ARMOR, 16)
-        for equipment_type, offset in equipment_types:
-            abilities[equipment_type] = []
-            for i in range(address + offset, address + 16 + offset, 2):
-                if prize_struct[i + 1] == 128:
-                    ability_name = AUTOABILITIES[prize_struct[i]]
-                else:
-                    ability_name = None
-                abilities[equipment_type].append(ability_name)
-        return abilities
-
     monster_name = ''
     for character_id in prize_struct[408:430]:
         if character_id == 0:
             break
         monster_name += TEXT_CHARACTERS[character_id]
-    for i in range(16):
-        if monster_name.endswith(f'{i}'):
+    for ability_offset in range(16):
+        if monster_name.endswith(f'{ability_offset}'):
             continue
-        if monster_id.endswith(f'_{i}'):
-            monster_name += f'#{i}'
+        if monster_id.endswith(f'_{ability_offset}'):
+            monster_name += f'#{ability_offset}'
             break
 
     stats = {
         Stat.HP: add_bytes(*prize_struct[20:24]),
         Stat.MP: add_bytes(*prize_struct[24:28]),
-        'overkill_threshold': add_bytes(*prize_struct[28:32]),
         Stat.STRENGTH: prize_struct[32],
         Stat.DEFENSE: prize_struct[33],
         Stat.MAGIC: prize_struct[34],
@@ -383,65 +397,63 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
 
     gil = add_bytes(*prize_struct[128:130])
     ap = {
-        'normal': add_bytes(*prize_struct[130:132]),
-        'overkill': add_bytes(*prize_struct[132:134])
+        KillType.NORMAL: add_bytes(*prize_struct[130:132]),
+        KillType.OVERKILL: add_bytes(*prize_struct[132:134]),
     }
-    item_1 = {
-        'drop_chance': prize_struct[136],
-        'normal': {Rarity.COMMON: None, Rarity.RARE: None},
-        'overkill': {Rarity.COMMON: None, Rarity.RARE: None},
-    }
+    item_1 = ItemDropInfo(drop_chance=prize_struct[136])
     if prize_struct[141] == 32:
-        item_1['normal'][Rarity.COMMON] = ItemDrop(
+        item_1.items[KillType.NORMAL, Rarity.COMMON] = ItemDrop(
             ITEMS[prize_struct[140]], prize_struct[148], False)
     if prize_struct[143] == 32:
-        item_1['normal'][Rarity.RARE] = ItemDrop(
+        item_1.items[KillType.NORMAL, Rarity.RARE] = ItemDrop(
             ITEMS[prize_struct[142]], prize_struct[149], True)
     if prize_struct[153] == 32:
-        item_1['overkill'][Rarity.COMMON] = ItemDrop(
+        item_1.items[KillType.OVERKILL, Rarity.COMMON] = ItemDrop(
             ITEMS[prize_struct[152]], prize_struct[160], False)
     if prize_struct[155] == 32:
-        item_1['overkill'][Rarity.RARE] = ItemDrop(
+        item_1.items[KillType.OVERKILL, Rarity.RARE] = ItemDrop(
             ITEMS[prize_struct[154]], prize_struct[161], True)
 
-    item_2 = {
-        'drop_chance': prize_struct[137],
-        'normal': {Rarity.COMMON: None, Rarity.RARE: None},
-        'overkill': {Rarity.COMMON: None, Rarity.RARE: None},
-    }
+    item_2 = ItemDropInfo(drop_chance=prize_struct[137])
     if prize_struct[145] == 32:
-        item_2['normal'][Rarity.COMMON] = ItemDrop(
+        item_2.items[KillType.NORMAL, Rarity.COMMON] = ItemDrop(
             ITEMS[prize_struct[144]], prize_struct[150], False)
     if prize_struct[147] == 32:
-        item_2['normal'][Rarity.RARE] = ItemDrop(
+        item_2.items[KillType.NORMAL, Rarity.RARE] = ItemDrop(
             ITEMS[prize_struct[146]], prize_struct[151], True)
     if prize_struct[157] == 32:
-        item_2['overkill'][Rarity.COMMON] = ItemDrop(
+        item_2.items[KillType.OVERKILL, Rarity.COMMON] = ItemDrop(
             ITEMS[prize_struct[156]], prize_struct[162], False)
     if prize_struct[159] == 32:
-        item_2['overkill'][Rarity.RARE] = ItemDrop(
+        item_2.items[KillType.OVERKILL, Rarity.RARE] = ItemDrop(
             ITEMS[prize_struct[158]], prize_struct[163], True)
 
-    steal = {
-        'base_chance': prize_struct[138],
-        Rarity.COMMON: None,
-        Rarity.RARE: None,
-    }
+    steal = ItemStealInfo(base_chance=prize_struct[138])
     if prize_struct[165] == 32:
-        steal[Rarity.COMMON] = ItemDrop(
+        steal.items[Rarity.COMMON] = ItemDrop(
             ITEMS[prize_struct[164]], prize_struct[168], False)
     if prize_struct[167] == 32:
-        steal[Rarity.RARE] = ItemDrop(
+        steal.items[Rarity.RARE] = ItemDrop(
             ITEMS[prize_struct[166]], prize_struct[169], True)
-    bribe = {
-        'cost': stats[Stat.HP] * 25,
-        'item': None,
-    }
+    bribe = ItemBribeInfo(max_cost=stats[Stat.HP] * 25)
     if prize_struct[171] == 32:
-        bribe['item'] = ItemDrop(
+        bribe.item = ItemDrop(
             ITEMS[prize_struct[170]], prize_struct[172], False)
 
-    elemental_affinities = get_elements()
+    elemental_affinities: dict[Element, ElementalAffinity] = {}
+    for element, bitmask in ELEMENT_BITMASKS.items():
+        if prize_struct[43] & bitmask:
+            elemental_affinities[element] = ElementalAffinity.ABSORBS
+        elif prize_struct[44] & bitmask:
+            elemental_affinities[element] = ElementalAffinity.IMMUNE
+        elif prize_struct[45] & bitmask:
+            elemental_affinities[element] = ElementalAffinity.RESISTS
+        elif prize_struct[46] & bitmask:
+            elemental_affinities[element] = ElementalAffinity.WEAK
+        else:
+            elemental_affinities[element] = ElementalAffinity.NEUTRAL
+
+    overkill_threshold = add_bytes(*prize_struct[28:32])
 
     status_resistances = {
         Status.DEATH: prize_struct[47],
@@ -472,7 +484,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     }
     poison_tick_damage = stats[Stat.HP] * prize_struct[42] // 100
     undead = prize_struct[72] == 2
-    auto_statuses = set()
+    auto_statuses: set[Status] = set()
     if prize_struct[74] & 0b00100000:
         auto_statuses.add(Status.REFLECT)
     if prize_struct[75] & 0b00000010:
@@ -486,32 +498,34 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     if prize_struct[75] & 0b00000100:
         auto_statuses.add(Status.REGEN)
 
-    equipment = {
-        'drop_chance': prize_struct[139],
-        'bonus_critical_chance': prize_struct[175],
-        'base_weapon_damage': prize_struct[176],
-        'slots_modifier': prize_struct[173],
-        'slots_range': [],
-        'max_ability_rolls_modifier': prize_struct[177],
-        'max_ability_rolls_range': [],
-        'added_to_inventory': bool(prize_struct[174]),
-    }
+    equipment = EquipmentDropInfo(
+        drop_chance=prize_struct[139],
+        bonus_critical_chance=prize_struct[175],
+        base_weapon_damage=prize_struct[176],
+        slots_modifier=prize_struct[173],
+        slots_range=[],
+        max_ability_rolls_modifier=prize_struct[177],
+        max_ability_rolls_range=[],
+        added_to_inventory=bool(prize_struct[174]),
+    )
 
-    for i in range(8):
-        slots_mod = equipment['slots_modifier'] + i - 4
-        slots = ((slots_mod + ((slots_mod >> 31) & 3)) >> 2)
+    for ability_offset in range(8):
+        slots = int((equipment.slots_modifier + ability_offset - 4) / 4)
         if slots < EquipmentSlots.MIN:
             slots = EquipmentSlots.MIN.value
         elif slots > EquipmentSlots.MAX:
             slots = EquipmentSlots.MAX.value
-        equipment['slots_range'].append(slots)
-        ab_mod = equipment['max_ability_rolls_modifier'] + i - 4
-        ab_rolls = (ab_mod + ((ab_mod >> 31) & 7)) >> 3
-        equipment['max_ability_rolls_range'].append(ab_rolls)
+        equipment.slots_range.append(slots)
+        ab_rolls = int((equipment.max_ability_rolls_modifier + ability_offset - 4) / 8)
+        equipment.max_ability_rolls_range.append(ab_rolls)
 
-    equipment['ability_arrays'] = {}
-    for c, i in zip(Character, range(178, 371, 32)):
-        equipment['ability_arrays'][c] = get_abilities(i)
+    for c, base_address in zip(Character, range(178, 371, 32)):
+        for t, type_offset in zip(EquipmentType, (0, 16)):
+            for ability_offset in range(8):
+                address = base_address + (ability_offset * 2) + type_offset
+                if prize_struct[address + 1] == 128:
+                    autoability = AUTOABILITIES[prize_struct[address]]
+                    equipment.ability_lists[c, t][ability_offset] = autoability
 
     armored = bool(prize_struct[40] & 0b00000001)
     zanmato_level = prize_struct[402]
@@ -520,6 +534,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         actions.update(MONSTER_ACTIONS['generic_actions'])
     monster = Monster(
         name=monster_name,
+        overkill_threshold=overkill_threshold,
         stats=stats,
         elemental_affinities=elemental_affinities,
         status_resistances=status_resistances,
@@ -541,7 +556,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
 
 
 PRIZE_STRUCTS = _get_prize_structs('data/ffx_mon_data.csv')
-if Configs.game_version is GameVersion.HD:
+if Configs.game_version in (GameVersion.HD, GameVersion.PS2INT):
     PRIZE_STRUCTS = _patch_prize_structs_for_hd(PRIZE_STRUCTS)
 
 MONSTERS = {k: _get_monster_data(k, v) for k, v in PRIZE_STRUCTS.items()}

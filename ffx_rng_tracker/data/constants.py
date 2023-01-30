@@ -112,6 +112,11 @@ class Character(StringEnum):
     UNKNOWN = 'Unknown'
 
 
+class KillType(StringEnum):
+    NORMAL = 'Normal'
+    OVERKILL = 'Overkill'
+
+
 class Rarity(StringEnum):
     COMMON = 'Common'
     RARE = 'Rare'
@@ -147,7 +152,7 @@ class TargetType(StringEnum):
     SINGLE_MONSTER = 'Single monster'
     RANDOM_MONSTER = 'Random monster'
     ALL_MONSTERS = 'All monsters'
-    LAST_ACTOR = 'Last character'
+    LAST_ACTOR = 'Last actor'
     HIGHEST_HP_CHARACTER = 'Highest HP character'
     LOWEST_HP_CHARACTER = 'Lowest HP character'
 
@@ -440,6 +445,7 @@ class Autoability(StringEnum):
 
 class GameVersion(StringEnum):
     PS2NA = 'PS2 NA'
+    PS2INT = 'PS2 INT'
     HD = 'HD'
 
 
@@ -510,18 +516,22 @@ ICV_VARIANCE = (
 # Yojimbo-related constants
 BASE_COMPATIBILITY = {
     GameVersion.PS2NA: 50,
+    GameVersion.PS2INT: 128,
     GameVersion.HD: 128,
 }
 COMPATIBILITY_MODIFIER = {
     GameVersion.PS2NA: 30,
+    GameVersion.PS2INT: 10,
     GameVersion.HD: 10,
 }
 OVERDRIVE_MOTIVATION = {
     GameVersion.PS2NA: 2,
+    GameVersion.PS2INT: 20,
     GameVersion.HD: 20,
 }
 GIL_MOTIVATION_MODIFIER = {
     GameVersion.PS2NA: 2,
+    GameVersion.PS2INT: 4,
     GameVersion.HD: 4,
 }
 
@@ -531,6 +541,13 @@ ELEMENTAL_AFFINITY_MODIFIERS = {
     ElementalAffinity.RESISTS: 0.5,
     ElementalAffinity.WEAK: 1.5,
     ElementalAffinity.NEUTRAL: 1.0,
+}
+ELEMENT_BITMASKS = {
+    Element.FIRE: 0b00001,
+    Element.ICE: 0b00010,
+    Element.THUNDER: 0b00100,
+    Element.WATER: 0b01000,
+    Element.HOLY: 0b10000,
 }
 
 EQUIPMENT_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 5)

@@ -1,6 +1,7 @@
 import csv
-from itertools import islice
 import os
+from itertools import islice
+from logging import getLogger
 from typing import Iterable
 
 from ..configs import Configs
@@ -15,8 +16,22 @@ def get_seed(damage_values: Iterable[int]) -> int:
     if len(damage_values) < damage_values_needed:
         raise SeedNotFoundError(
             f'Need at least {damage_values_needed} damage values')
-    damage_values = damage_values[:damage_values_needed]
 
+    logger = getLogger(__name__)
+    if not os.path.exists(SEEDS_DIRECTORY_PATH):
+        logger.warning('Seeds files directory not found.')
+        os.mkdir(SEEDS_DIRECTORY_PATH)
+        logger.info(f'Created seeds file directory "{SEEDS_DIRECTORY_PATH}".')
+
+    seeds_file_path = SEEDS_FILE_PATHS[Configs.game_version]
+
+    if not os.path.exists(seeds_file_path):
+        logger.warning('Seeds file not found.')
+        make_seeds_file(
+            seeds_file_path, FRAMES_FROM_BOOT[Configs.game_version])
+        logger.info('Done creating seeds file.')
+
+    damage_values = damage_values[:damage_values_needed]
     indexes = []
     for i, damage_value in enumerate(damage_values):
         if i in (0, 2, 4) or i >= 6:
@@ -38,18 +53,16 @@ def get_seed(damage_values: Iterable[int]) -> int:
 
     damage_indexes_as_string = ''.join([f'{n:02}' for n in indexes])
 
-    if Configs.game_version is GameVersion.HD:
-        absolute_file_path = _SEEDS_FILE_PATH
-    else:
-        absolute_file_path = _PS2_SEEDS_FILE_PATH
-    with open_cp1252(absolute_file_path) as file_object:
+    with open_cp1252(seeds_file_path) as file_object:
         seeds = csv.reader(file_object)
         for line in seeds:
             if line[0].startswith(damage_indexes_as_string):
                 break
         else:
+            logger.warning(f'Failed to find seed from DVs "{damage_values}".')
             raise SeedNotFoundError('Seed not found')
         seed = int(line[1])
+    logger.info(f'Found seed {seed} from DVs "{damage_values}"')
     return seed
 
 
@@ -61,18 +74,16 @@ def datetime_to_seed(datetime: int, frames: int) -> int:
 
 
 def make_seeds_file(file_path: str, frames: int) -> None:
-    print('Calculating damage rolls for every possible seed'
-          f' up to frame {frames}.')
+    logger = getLogger(__name__)
+    logger.info(f'Calculating seeds up to frame {frames}.')
     if os.path.exists(file_path):
-        print(f'File {file_path} already exists!')
+        logger.warning(f'Seeds file named "{file_path}" already exists.')
         return
     tidus_damage_rolls = _DAMAGE_VALUES['tidus']
     lines = []
     seeds = set()
     tracker = FFXRNGTracker(0)
     for frame in range(frames):
-        if len(seeds) & 256 == 0:
-            print(f'\r{frame}/{frames}', end='')
         for date_time in range(256):
             seed = datetime_to_seed(date_time, frame)
             tracker.seed = seed
@@ -105,11 +116,10 @@ def make_seeds_file(file_path: str, frames: int) -> None:
             lines.append(
                 ''.join([f'{n:02}' for n in indexes]) + ',' + str(seed))
             seeds.add(seed)
-    print(f'\r{frames}/{frames}')
     data = '\n'.join(lines)
     with open_cp1252(file_path, 'w') as file:
         file.write(data)
-    print('Done!')
+    logger.info(f'Done calculating seeds up to frame {frames}.')
 
 
 _DAMAGE_VALUES: dict[str, tuple[int]] = {
@@ -126,28 +136,17 @@ _DAMAGE_VALUES: dict[str, tuple[int]] = {
 }
 FRAMES_FROM_BOOT = {
     GameVersion.PS2NA: 60 * 30 * Configs.ps2_seeds_minutes,
+    GameVersion.PS2INT: 60 * 30 * Configs.ps2_seeds_minutes,
     GameVersion.HD: 1,
 }
 DAMAGE_VALUES_NEEDED = {
     GameVersion.PS2NA: 8,
-    GameVersion.HD: 6,
+    GameVersion.PS2INT: 8,
+    GameVersion.HD: 3,
 }
-
-_SEEDS_DIRECTORY_PATH = 'ffx_rng_tracker_seeds'
-try:
-    os.mkdir(_SEEDS_DIRECTORY_PATH)
-except FileExistsError:
-    pass
-
-_SEEDS_FILE_PATH = _SEEDS_DIRECTORY_PATH + '/seeds.csv'
-_PS2_SEEDS_FILE_PATH = _SEEDS_DIRECTORY_PATH + '/ps2_seeds.csv'
-
-if not os.path.exists(_SEEDS_FILE_PATH):
-    print('Seeds file not found.')
-    make_seeds_file(_SEEDS_FILE_PATH, FRAMES_FROM_BOOT[GameVersion.HD])
-
-if Configs.game_version is not GameVersion.HD:
-    if not os.path.exists(_PS2_SEEDS_FILE_PATH):
-        print('Seeds file for ps2 not found.')
-        make_seeds_file(
-            _PS2_SEEDS_FILE_PATH, FRAMES_FROM_BOOT[GameVersion.PS2NA])
+SEEDS_DIRECTORY_PATH = 'ffx_rng_tracker_seeds'
+SEEDS_FILE_PATHS = {
+    GameVersion.PS2NA: SEEDS_DIRECTORY_PATH + '/ps2_seeds.csv',
+    GameVersion.PS2INT: SEEDS_DIRECTORY_PATH + '/ps2_seeds.csv',
+    GameVersion.HD: SEEDS_DIRECTORY_PATH + '/seeds.csv',
+}

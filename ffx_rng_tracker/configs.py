@@ -2,6 +2,7 @@ import configparser
 import os
 import shutil
 from dataclasses import dataclass
+from logging import getLogger
 
 from .data.constants import GameVersion, SpeedrunCategory
 from .data.file_functions import get_resource_path
@@ -131,7 +132,7 @@ class Configs:
         ui_widgets = (
             'Seed info', 'Drops', 'Encounters', 'Steps', 'Encounters Table',
             'Encounters Planner', 'Actions', 'Monster Targeting', 'Status',
-            'Yojimbo', 'Monster Data', 'Seedfinder', 'Configs',
+            'Yojimbo', 'Monster Data', 'Seedfinder', 'Configs/Log',
         )
         for section in ui_widgets:
             shown = cls.getboolean(section, 'shown', True)
@@ -153,11 +154,11 @@ class Configs:
     @classmethod
     def init_configs(cls) -> None:
         if not os.path.exists(cls._configs_file):
-            shutil.copyfile(
-                get_resource_path(cls._default_configs_file),
-                cls._configs_file)
+            logger = getLogger(__name__)
+            logger.warning('Configs file not found.')
+            default_configs_file = get_resource_path(cls._default_configs_file)
+            shutil.copyfile(default_configs_file, cls._configs_file)
+            logger.info(
+                f'Copied default configs file to "{cls._configs_file}"')
         Configs.read(cls._configs_file)
         Configs.load_configs()
-
-
-Configs.init_configs()

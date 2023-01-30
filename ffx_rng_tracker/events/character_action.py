@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from ..data.actions import Action
 from ..data.autoabilities import (DEFENSE_BONUSES, ELEMENTAL_STRIKES,
@@ -20,34 +20,8 @@ class CharacterAction(Event):
     action: Action
     target: CharacterState | MonsterState
     time_remaining: int = 0
-    hit: bool = field(init=False, repr=False)
-    statuses: dict[Status, bool] = field(init=False, repr=False)
-    damage: int = field(init=False, repr=False)
-    damage_rng: int = field(init=False, repr=False)
-    crit: bool = field(init=False, repr=False)
-    ctb: int = field(init=False, repr=False)
-    _old_character_statuses: set[Status] = field(
-        default_factory=set, init=False, repr=False)
-    _old_target_statuses: set[Status] = field(
-        default_factory=set, init=False, repr=False)
-    _old_character_hp: int = field(init=False, repr=False)
-    _old_target_hp: int = field(init=False, repr=False)
-    _old_character_mp: int = field(init=False, repr=False)
-    _old_target_mp: int = field(init=False, repr=False)
-    _old_character_ctb: int = field(init=False, repr=False)
-    _old_target_ctb: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-        self._old_character_statuses = self.character.statuses.copy()
-        self._old_target_statuses = self.target.statuses
-        self._old_character_buffs = self.character.buffs.copy()
-        self._old_target_buffs = self.target.buffs.copy()
-        self._old_character_hp = self.character.current_hp
-        self._old_target_hp = self.target.current_hp
-        self._old_character_mp = self.character.current_mp
-        self._old_target_mp = self.target.current_mp
-        self._old_user_ctb = self.character.ctb
-        self._old_target_ctb = self.target.ctb
         self.gamestate.process_start_of_turn(self.character)
         self.hit = self._get_hit()
         self.statuses = self._get_statuses()
@@ -108,11 +82,10 @@ class CharacterAction(Event):
         hit_chance = hit_chance // 2
         hit_chance_index = hit_chance // 0x80000000
         hit_chance_index += hit_chance - target_evasion + 10
-        if hit_chance_index < 0:
-            hit_chance_index = 0
-        elif hit_chance_index > 8:
-            hit_chance_index = 8
+        hit_chance_index = min(max(0, hit_chance_index), 8)
         base_hit_chance = HIT_CHANCE_TABLE[hit_chance_index]
+        # TODO
+        # add a "affected_by_dark" property to Action
         if Status.DARK in self.character.statuses:
             base_hit_chance = base_hit_chance * 0x66666667 // 0xffffffff
             base_hit_chance = base_hit_chance // 4
@@ -220,10 +193,11 @@ class CharacterAction(Event):
             # advance for shatter chance
             self._advance_rng(index)
             # TODO
-            # only if the target is a monster
-            # otherwise ???
-            # for characters every action shatters
+            # if the target is a monster every action shatters
+            # if the target is a character?
             self.target.statuses[Status.DEATH] = 254
+            self.target.statuses.pop(Status.PETRIFY)
+            statuses_applied[Status.DEATH] = True
         return statuses_applied
 
     def _remove_statuses(self) -> list[Status]:
@@ -233,8 +207,10 @@ class CharacterAction(Event):
                 continue
             if self.target.statuses[status] >= 255:
                 continue
-            self.target.statuses.pop(status)
-            removed_statuses.append(status)
+            removed_status = self.target.statuses.pop(status)
+            if removed_status is Status.DEATH:
+                self.target.ctb = self.target.base_ctb * 3
+            removed_statuses.append(removed_status)
         return removed_statuses
 
     def _get_buffs(self) -> dict[Buff, int]:
@@ -247,7 +223,6 @@ class CharacterAction(Event):
         return buffs
 
     def _get_ctb(self) -> int:
-        self._old_character_ctb = self.character.ctb
         rank = self.action.rank
         ctb = self.character.base_ctb * rank
         if Status.HASTE in self.character.statuses:
@@ -256,17 +231,6 @@ class CharacterAction(Event):
             ctb = ctb * 2
         self.character.ctb += ctb
         return ctb
-
-    def rollback(self) -> None:
-        self.character.current_hp = self._old_character_hp
-        self.target.current_hp = self._old_target_hp
-        self.character.current_mp = self._old_character_mp
-        self.target.current_mp = self._old_target_mp
-        self.character.ctb = self._old_character_ctb
-        self.target.ctb = self._old_target_ctb
-        self.character.statuses = self._old_character_statuses
-        self.target.statuses = self._old_target_statuses
-        return super().rollback()
 
 
 def get_damage(

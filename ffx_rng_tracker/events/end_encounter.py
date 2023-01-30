@@ -1,36 +1,25 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from ..data.constants import Buff, Character, Status
-from ..data.monsters import MonsterState
+from ..data.constants import Character
 from ..ui_functions import ctb_sorter
 from .main import Event
 
 
 @dataclass
 class EndEncounter(Event):
-    _statuses: dict[Character, set[Status]] = field(
-        default_factory=dict, init=False, repr=False)
-    _hps: dict[Character, int] = field(
-        default_factory=dict, init=False, repr=False)
-    _old_monster_party: list[MonsterState] = field(
-        default_factory=list, init=False, repr=False)
-    _buffs: dict[Character, dict[Buff, int]] = field(
-        default_factory=dict, init=False, repr=False)
-    _old_characters_ctbs: dict[Character, int] = field(
-        default_factory=dict, init=False, repr=False)
-    _old_monsters_ctbs: list[int] = field(
-        default_factory=list, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.ctbs_string = self._get_ctbs_string()
-        self._cleanup()
+        self.hps = self._get_hps()
+        self.monsters_hps = self._get_monsters_hps()
+        self.gamestate.process_end_of_encounter()
 
     def __str__(self) -> str:
-        hps = ' '.join([f'{c[:2]:2}[{hp}]' for c, hp in self._hps.items()])
+        hps = ' '.join([f'{c[:2]:2}[{hp}]' for c, hp in self.hps.items()])
         if not hps:
             hps = 'Characters at full HP'
-        monsters_hps = ' '.join([f'{m.monster}[{m.current_hp}]'
-                                 for m in self._old_monster_party])
+        monsters_hps = ' '.join([f'{m}[{hp}]'
+                                 for m, hp in self.monsters_hps.items()])
         if not monsters_hps:
             monsters_hps = 'Monsters at full HP'
         string = (f'CTBs: {self.ctbs_string} | '
@@ -49,32 +38,15 @@ class EndEncounter(Event):
                 monsters.append(m)
         return ctb_sorter(characters, monsters)
 
-    def _cleanup(self) -> None:
+    def _get_hps(self) -> dict[Character, int]:
+        hps = {}
         for character, state in self.gamestate.characters.items():
             if state.current_hp < state.max_hp:
-                self._hps[character] = state.current_hp
-            if Status.DEATH in state.statuses:
-                state.current_hp = 1
-            if character in self.gamestate.party:
-                self._old_characters_ctbs[character] = state.ctb
-            state.ctb = 0
-            self._statuses[character] = state.statuses.copy()
-            state.statuses.clear()
-            self._buffs[character] = state.buffs.copy()
-            for buff in state.buffs:
-                state.buffs[buff] = 0
-        for m in self.gamestate.monster_party:
-            self._old_monsters_ctbs.append(m.ctb)
-        self._old_monster_party = self.gamestate.monster_party
-        self.gamestate.monster_party = []
+                hps[character] = state.current_hp
+        return hps
 
-    def rollback(self) -> None:
-        for character, statuses in self._statuses.items():
-            self.gamestate.characters[character].statuses = statuses
-        for character, hp in self._hps.items():
-            self.gamestate.characters[character].current_hp = hp
-        for character, buffs in self._buffs.items():
-            self.gamestate.characters[character].buffs = buffs.copy()
-        for character, ctb in self._old_characters_ctbs.items():
-            self.gamestate.characters[character].ctb = ctb
-        return super().rollback()
+    def _get_monsters_hps(self) -> dict[str, int]:
+        monsters_hps = {}
+        for monster in self.gamestate.monster_party:
+            monsters_hps[str(monster)] = monster.current_hp
+        return monsters_hps

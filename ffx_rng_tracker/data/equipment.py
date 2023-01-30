@@ -62,7 +62,7 @@ class EquipmentDrop:
 
     def __str__(self) -> str:
         string = str(self.equipment)
-        if self.monster.equipment['drop_chance'] == 255:
+        if self.monster.equipment.drop_chance == 255:
             string += ' (guaranteed)'
         if self.killer_is_owner:
             string += ' (for killer)'
@@ -97,9 +97,9 @@ def get_weapon_name(owner: Character,
     the abilities and the number of slots.
     """
     if owner is Character.SEYMOUR:
-        return "Seymour Staff"
+        return 'Seymour Staff'
     elif owner in tuple(Character)[8:]:
-        return f"{owner}'s weapon"
+        return f'{owner}\'s weapon'
     # get number of certain ability types in the equipment
     elemental_strikes = len([a for a in ELEMENTAL_STRIKES if a in abilities])
     status_strikes = len([a for a in STATUS_STRIKES if a in abilities])
@@ -262,9 +262,9 @@ def get_armor_name(owner: Character,
     the abilities and the number of slots.
     """
     if owner is Character.SEYMOUR:
-        return "Seymour Armor"
+        return 'Seymour Armor'
     elif owner in tuple(Character)[8:]:
-        return f"{owner}'s armor"
+        return f'{owner}\'s armor'
     # get number of certain ability types in the equipment
     elemental_eaters = len([a for a in ELEMENTAL_EATERS if a in abilities])
     elemental_proofs = len([a for a in ELEMENTAL_PROOFS if a in abilities])

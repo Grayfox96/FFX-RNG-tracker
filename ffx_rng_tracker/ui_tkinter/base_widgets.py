@@ -1,8 +1,8 @@
 import tkinter as tk
+from logging import getLogger
 from tkinter import messagebox, simpledialog, ttk
 
 from ..configs import Configs
-from ..data.constants import GameVersion
 from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 
@@ -136,9 +136,11 @@ class DamageValuesDialogue(simpledialog.Dialog):
 
     def body(self, parent: tk.Tk) -> tk.Entry:
         self.parent = parent
-        text = 'Damage values (Auron1 Tidus1 A2 T2 A3 T3)'
-        if Configs.game_version is not GameVersion.HD:
-            text = text[:-1] + ' A4 A5)'
+        text = 'Damage values (Auron1 Tidus1 A2)'
+        if DAMAGE_VALUES_NEEDED[Configs.game_version] == 3:
+            text = 'Damage values (Auron1 Tidus Auron2)'
+        else:
+            text = 'Damage values (Auron1 Tidus1 A2 T2 A3 T3 A4 A5)'
         tk.Label(parent, text=text).pack()
         self.entry = tk.Entry(parent, width=25)
         self.entry.pack(fill='x')
@@ -161,7 +163,6 @@ class DamageValuesDialogue(simpledialog.Dialog):
             error = str(error).split(':', 1)[1]
             self.show_warning(f'{error} is not a valid damage value.')
             return
-        damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
         match seed_info:
             case []:
                 return
@@ -170,10 +171,6 @@ class DamageValuesDialogue(simpledialog.Dialog):
                     self.show_warning(
                         'Seed must be an integer between 0 and 4294967295')
                     return
-            case _ if len(seed_info) < damage_values_needed:
-                self.show_warning(
-                    f'Need at least {damage_values_needed} damage values.')
-                return
             case _:
                 try:
                     seed = get_seed(seed_info)
@@ -182,6 +179,7 @@ class DamageValuesDialogue(simpledialog.Dialog):
                     self.show_warning(error)
                     return
 
+        getLogger(__name__).info(f'Opened with seed {seed}.')
         self.seed = seed
         self.destroy()
 

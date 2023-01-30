@@ -4,89 +4,87 @@
 # party [party members initials]
 # summon [aeon name]
 # (equip) [equip_type] [character] [slots] (abilities)
-# (action) [character name] [action] (target)
+# (action) [character name] [action] (target) (time)
 # (monsteraction) [monster slot/name] [action_name]
 # heal (character) (amount)
 # endencounter
+# status [character]
+# spawn [monster_name] [slot] (forced ctb)
 # stat [character] [stat] [(+/-)amount]
+# stat [monster slot] [stat] [(+/-)amount]
 # stats:
 #     hp, mp, strength, defense, magic,
 #     magic_defense, agility, luck,
-#     evasion, accuracy
+#     evasion, accuracy, ctb
 
 party tyakwlr
 # -- Zanarkand --
-encounter
-auron attack sinscale_6
-tidus attack sinscale_6
-auron attack sinscale_6
-tidus attack sinscale_6
-auron attack sinscale_6
-tidus attack sinscale_6
+encounter sinscales
+auron attack m1
+tidus attack m2
+auron attack m3
+tidus attack m4
+auron attack m5
+tidus attack m6
 
-encounter
+encounter ammes
 # auron od, ignore first set of rolls
 # second set is actual rolls
-auron dragon_fang sinspawn_ammes
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
 
-auron dragon_fang sinspawn_ammes 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
+auron dragon_fang m1 2.0
+auron dragon_fang m2 2.0
+auron dragon_fang m3 2.0
+auron dragon_fang m4 2.0
+auron dragon_fang m5 2.0
+auron dragon_fang m6 2.0
 
-tidus attack sinspawn_ammes
-# Demi 1
+tidus ice_gem m1
+tidus ice_gem m1
+tidus ice_gem m1
+tidus ice_gem m1
+tidus ice_gem m1
+tidus ice_gem m1
 
-tidus fire_gem sinspawn_ammes
-
-encounter
+encounter tanker
 auron attack auron
-tidus fire_gem tanker
+tidus ice_gem m1
+tidus ice_gem m1
+tidus ice_gem m1
+tidus ice_gem m1
+tidus ice_gem m1
+tidus ice_gem m1
 
 # -- Underwater Ruins --
-encounter
-tidus grenade sahagin_4
-tidus grenade sahagin_4
+encounter sahagins
+tidus grenade m1
+tidus grenade m2
+tidus grenade m3
 
-encounter
+encounter geosgaeno
 
-encounter
-tidus shining_gem klikk
+encounter klikk_1
+tidus shining_gem m1
 
-encounter
-rikku shining_gem klikk
+encounter klikk_2
+rikku shining_gem m1
 
-encounter
-rikku grenade piranha_3
-rikku grenade piranha_3
+encounter piranhas
+rikku grenade m1
+rikku grenade m2
 
-encounter
-rikku shining_gem tros
+encounter tros
+rikku shining_gem m1
 
 # -- Besaid --
 
 # Tidus equips Brotherhood
 weapon tidus 4 strength_+5%
-
-# Besaid tutorial fights
-encounter
-tidus attack dingo
-wakka attack condor
-
-encounter
-# Tidus' crits are disabled
-tidus attacknocrit water_flan
-lulu thunder water_flan
-
-encounter
-tidus shining_gem ???
 
 # Besaid grid
 stat wakka strength +166
@@ -100,274 +98,283 @@ stat ixion evasion +1
 stat shiva evasion +4
 stat bahamut evasion +1
 
-encounter
-wakka attack garuda_3
+# Besaid tutorial fights
+encounter wakka_tutorial
+tidus attack m1
+wakka attack m2
 
-encounter
+encounter elements_tutorial
+# Tidus' crits are disabled
+tidus attacknocrit m1
+lulu thunder m1
 
-encounter
+encounter kimahri
+tidus shining_gem m1
+
+encounter garuda_1
+wakka attack m1
+
+encounter garuda_2
+
+encounter besaid_forced_encounter
 
 # -- S.S. Liki --
-encounter
-wakka attack sin
+encounter sin_fin
+yuna shining_gem m4
 
-encounter
-wakka attack sinspawn_echuilles
+encounter echuilles
+wakka attack m1
 
 # -- Kilika --
-encounter
+encounter lancet_tutorial
 
-encounter
-wakka attack sinspawn_geneaux
+encounter geneaux
+wakka attack m1
 
 # Kilika Out encounters
-encounter
-wakka attack lord_ochu
+encounter lord_ochu
+wakka attack m1
 
 # -- Luca --
-encounter
-tidus grenade worker
-tidus grenade worker
+encounter machina_1
+tidus grenade m1
+tidus grenade m2
 
-encounter
-tidus grenade worker
-tidus grenade worker
+encounter machina_2
+tidus grenade m1
+tidus grenade m2
 
-encounter
-tidus grenade worker
-tidus grenade worker
+encounter machina_3
+tidus grenade m1
+tidus grenade m2
 
-kimahri grenade worker
-kimahri grenade worker
+kimahri grenade m1
+kimahri grenade m2
 
-lulu grenade worker
-lulu grenade worker
+lulu grenade m1
+lulu grenade m2
 
-encounter
-tidus dark_matter oblitzerator
+encounter oblitzerator
+tidus dark_matter m1
 
-encounter
-wakka grenade sahagin_chief
-wakka grenade sahagin_chief
-wakka grenade sahagin_chief
-tidus grenade sahagin_chief
-tidus grenade sahagin_chief
-tidus grenade sahagin_chief
-wakka grenade sahagin_chief
-wakka grenade sahagin_chief
-wakka grenade sahagin_chief
-wakka grenade sahagin_chief
-wakka grenade sahagin_chief
-wakka grenade sahagin_chief
-tidus grenade sahagin_chief
-tidus grenade sahagin_chief
-tidus grenade sahagin_chief
-tidus grenade sahagin_chief
-wakka attack sahagin_chief
+encounter sahagin_chiefs
+wakka grenade m1
+wakka grenade m2
+wakka grenade m3
 
-encounter
-auron attack vouivre_2
+tidus grenade m1
+tidus grenade m2
+tidus grenade m3
 
-encounter
-wakka attack garuda_2
+wakka grenade m1
+wakka grenade m2
+wakka grenade m3
+
+wakka grenade m1
+wakka grenade m2
+wakka grenade m3
+
+tidus grenade m1
+tidus grenade m2
+tidus grenade m3
+tidus grenade m4
+
+wakka attack m1
+
+encounter vouivre
+auron attack m1
+
+encounter garuda
+wakka attack m1
 
 # -- Mi'ihen --
-encounter
+encounter pierce_tutorial
 # Tidus' crits are disabled
-tidus attacknocrit raldo
-auron attack raldo
+tidus attacknocrit m1
+auron attack m1
 
-encounter
-wakka attack chocobo_eater
-yuna attack chocobo_eater
+encounter chocobo_eater
+wakka attack m1
+yuna attack m1
 
 # -- Mushroom Rock --
-encounter
-wakka dark_matter sinspawn_gui
-wakka dark_matter head
-wakka dark_matter arm
-wakka dark_matter arm
+encounter sinspawn_gui_1
+wakka dark_matter m1
+wakka dark_matter m2
+wakka dark_matter m3
+wakka dark_matter m4
 
-encounter
-seymour dark_matter sinspawn_gui
-seymour dark_matter head
-seymour dark_matter arm
-seymour dark_matter arm
+encounter sinspawn_gui_2
+seymour dark_matter m1
+seymour dark_matter m2
+seymour dark_matter m3
+seymour dark_matter m4
 
 # -- Moonflow --
-encounter
-wakka attack extractor
+encounter extractor
+wakka attack m1
 
 # Mix tutorial
-encounter
+encounter rikku_tutorial
 
+weapon tidus 1 first_strike
 weapon wakka 2 first_strike break_damage_limit 
+armor wakka 1 auto-haste
 
 # -- Macalania Woods --
-encounter
-wakka attack spherimorph
+encounter spherimorph
+wakka attack m1
 
 # Crawler
-encounter
-wakka attack crawler
+encounter crawler
+wakka attack m1
 
 # -- Macalania Temple --
 # Seymour
-encounter
-wakka shining_gem seymour
+encounter seymour
+wakka shining_gem m1
 
-wakka attack anima
+wakka attack m4
 
-wakka attack seymour
+wakka attack m1
 
 # -- Crevasse --
-# Guado encounter
-encounter
+# encounter guado_encounter
 
 # Wendigo
-encounter
-wakka attack wendigo
-wakka attack Guado_Guardian_2
-wakka attack Guado_Guardian_2
+encounter wendigo
+wakka attack m2
+wakka attack m1
+wakka attack m3
 
 # -- Bikanel --
-# Forced Zu
-encounter
+encounter zu
 
-# Machina Steal Tutorial
-encounter
+encounter machina_steal_tutorial
 
-encounter
-wakka attack sandragora
+encounter sandragora
+wakka attack m1
 
 # -- Home --
-encounter
-wakka dark_matter guado_guardian_3
-wakka dark_matter bomb_2
-wakka dark_matter bomb_2
-wakka dark_matter bomb_2
+encounter guado_+_3_bomb
+wakka dark_matter m1
+wakka dark_matter m2
+wakka dark_matter m3
+wakka dark_matter m4
 
-encounter
-# wakka dark_matter guado_guardian_3
-# wakka dark_matter dual_horn_2
-# wakka dark_matter dual_horn_2
-wakka attack guado_guardian_3
-wakka attack dual_horn_2
-wakka attack dual_horn_2
+encounter guado_+_2_dual_horn
+wakka attack m1
+wakka attack m2
+wakka attack m3
 
-encounter
-# wakka dark_matter guado_guardian_3
-# wakka dark_matter chimera_2
-# wakka dark_matter chimera_2
-wakka attack guado_guardian_3
-wakka attack chimera_2
-wakka attack chimera_2
+encounter guado_+_2_chimera
+wakka attack m1
+wakka attack m2
+wakka attack m3
 
 # -- Airship --
-encounter
-wakka attack evrae
+encounter evrae
+wakka attack m1
 
 # -- Bevelle --
 # Fight 1
-encounter
-wakka attack warrior_monk
-wakka attack warrior_monk_2
-wakka attack warrior_monk
+encounter bevelle_guards_1
+wakka attack m1
+wakka attack m2
+wakka attack m3
 
 # Fight 2
-encounter
-wakka attack ykt-63
-wakka attack warrior_monk_2
-wakka attack warrior_monk_2
+encounter bevelle_guards_2
+wakka attack m1
+wakka attack m2
+wakka attack m3
 
 # Fight 3
-encounter
-wakka attack warrior_monk
-wakka attack warrior_monk_2
-wakka attack warrior_monk
+encounter bevelle_guards_3
+wakka attack m1
+wakka attack m2
+wakka attack m3
 
 # Fight 4
-encounter
-wakka attack ykt-63
-wakka attack warrior_monk_2
-wakka attack warrior_monk_2
+encounter bevelle_guards_4
+wakka attack m1
+wakka attack m2
+wakka attack m3
 
 # Fight 5
-encounter
-wakka dark_matter warrior_monk
-wakka dark_matter warrior_monk
-wakka dark_matter yat-99
+encounter bevelle_guards_5
+wakka dark_matter m1
+wakka dark_matter m2
+wakka dark_matter m3
 
 # -- Via Purifico --
 # Isaaru fights
-encounter
-ixion attack ifrit_2
+encounter isaaru_grothia
+ixion attack m1
 
-encounter
-ixion attack valefor
-ixion attack valefor
+encounter isaaru_pterya
+ixion attack m1
+ixion attack m1
 
-encounter
-ixion attack bahamut
-ixion attack bahamut
-ixion attack bahamut
+encounter isaaru_spathi
+ixion attack m1
+ixion attack m1
+ixion attack m1
 
 # -- Underwater --
-encounter
-wakka attack evrae_altana
+encounter evrae_altana
+wakka attack m1
 
 # -- Highbridge --
-encounter
-wakka attack seymour_natus
+encounter seymour_natus
+wakka attack m1
 
 # -- Calm Lands --
-encounter
-wakka attack defender_x
-wakka attack defender_x
+encounter defender_x
+wakka attack m1
+wakka attack m1
 
 # -- Gagazet --
-encounter
-kimahri dark_matter yenke_ronso
-kimahri dark_matter biran_ronso
+encounter biran_&_yenke
+kimahri dark_matter m1
+kimahri dark_matter m2
 
-encounter
-wakka attack seymour_flux
+encounter seymour_flux
+wakka attack m1
 
-encounter
-wakka attack sanctuary_keeper
+encounter sanctuary_keeper
+wakka attack m1
 
-encounter
-wakka attack spectral_keeper
+encounter spectral_keeper
+wakka attack m1
 
-encounter
-wakka attack yunalesca
-tidus defend
-wakka attack yunalesca
-tidus defend
-wakka attack yunalesca
+encounter yunalesca
+wakka attack m1
+wakka attack m1
+wakka attack m1
 
-encounter
-wakka attack left_fin
-wakka attack left_fin
-wakka attack left_fin
+encounter left_fin
+wakka attack m1
+wakka attack m1
+wakka attack m1
 
-encounter
-wakka attack right_fin
-wakka attack right_fin
-wakka attack right_fin
+encounter right_fin
+wakka attack m1
+wakka attack m1
+wakka attack m1
 
 # Sin Core
-encounter
-wakka attack sin_2
+encounter sin_core
+wakka attack m2
 
 # Overdrive Sin
-encounter
-wakka armor_break sin_3
-wakka attack sin_3
+encounter overdrive_sin
+wakka armor_break m1
+wakka attack m1
 
-encounter
-wakka armor_break seymour_omnis
-wakka quick_hit seymour_omnis
+encounter seymour_omnis
+wakka armor_break m1
+wakka quick_hit_hd m1
 
 # -- Nucleus --
 # encounter
@@ -375,9 +382,9 @@ wakka quick_hit seymour_omnis
 
 # Braska's Final Aeon
 encounter
-wakka quick_hit braska's_final_aeon
-wakka quick_hit braska's_final_aeon
-wakka quick_hit braska's_final_aeon
+wakka quick_hit_hd braska's_final_aeon
+wakka quick_hit_hd braska's_final_aeon
+wakka quick_hit_hd braska's_final_aeon
 
 # Possessed Aeons' Luck is 1
 stat valefor luck 1

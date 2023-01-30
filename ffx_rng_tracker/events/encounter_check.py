@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from ..data.encounter_formations import Zone
 from .main import Event
@@ -8,8 +8,6 @@ from .main import Event
 class EncounterCheck(Event):
     zone: Zone
     max_distance: int
-    encounter: bool = field(init=False, repr=False)
-    distance: int = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.encounter, self.distance = self.check_encounter()
@@ -44,8 +42,6 @@ class EncounterCheck(Event):
 class EncounterChecks(Event):
     zone: Zone
     max_distance: int
-    checks: list[EncounterCheck] = field(
-        default_factory=list, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.checks = self._perform_checks()

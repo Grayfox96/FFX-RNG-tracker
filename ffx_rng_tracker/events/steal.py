@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from ..data.constants import Rarity
 from ..data.items import ItemDrop
@@ -10,7 +10,6 @@ from .main import Event
 class Steal(Event):
     monster: Monster
     successful_steals: int
-    item: ItemDrop | None = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.item = self._get_item()
@@ -27,13 +26,13 @@ class Steal(Event):
 
     def _get_item(self) -> ItemDrop | None:
         rng_steal = self._advance_rng(10) % 255
-        base_steal_chance = self.monster.steal['base_chance']
+        base_steal_chance = self.monster.steal.base_chance
         steal_chance = base_steal_chance // (2 ** self.successful_steals)
         if steal_chance > rng_steal:
             rng_rarity = self._advance_rng(11) & 255
             if rng_rarity < 32:
-                return self.monster.steal[Rarity.RARE]
+                return self.monster.steal.items[Rarity.RARE]
             else:
-                return self.monster.steal[Rarity.COMMON]
+                return self.monster.steal.items[Rarity.COMMON]
         else:
             return None

@@ -1,8 +1,8 @@
-from typing import Callable
+from typing import Callable, TypeVar
 
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.constants import (Autoability, Character, EquipmentType, Item,
-                              MonsterSlot, Stat, TargetType)
+                              MonsterSlot, Stat, StringEnum, TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
 from ..data.items import ITEM_PRICES
@@ -37,6 +37,40 @@ ParsingFunction = (Callable[[GameState, str], Event]
                    | Callable[..., Event]
                    )
 
+K = TypeVar('K')
+V = TypeVar('V')
+
+
+def parse_dict_key(key: K, dict: dict[K, V], error_name: str = 'key') -> V:
+    try:
+        return dict[key]
+    except KeyError:
+        raise EventParsingError(f'No {error_name} named "{key}"')
+
+
+S = TypeVar('S', bound=StringEnum)
+
+
+def parse_enum_member(member_name: str,
+                      enum: type[S],
+                      enum_name: str = 'member',
+                      ) -> S:
+    try:
+        return search_stringenum(enum, member_name)
+    except ValueError:
+        raise EventParsingError(f'No {enum_name} named "{member_name}"')
+
+
+def parse_monster_slot(gs: GameState, slot: str) -> MonsterState:
+    try:
+        index = int(slot[1:]) - 1
+    except ValueError:
+        raise EventParsingError('Monster slot must be in the form m#')
+    try:
+        return gs.monster_party[index]
+    except IndexError:
+        raise EventParsingError(f'No monster in slot {index + 1}')
+
 
 def parse_encounter(gs: GameState,
                     name: str = '',
@@ -66,14 +100,11 @@ def parse_steal(gs: GameState,
     usage = 'Usage: steal [monster_name] (successful steals)'
     if not monster_name:
         raise EventParsingError(usage)
-    try:
-        monster = MONSTERS[monster_name]
-    except KeyError:
-        raise EventParsingError(f'No monster named "{monster_name}"')
+    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
     try:
         successful_steals = int(successful_steals)
     except ValueError:
-        raise EventParsingError(usage)
+        raise EventParsingError('"successful steals" must be an integer')
     return Steal(gs, monster, successful_steals)
 
 
@@ -83,18 +114,12 @@ def parse_kill(gs: GameState,
                overkill: str = '',
                *_,
                ) -> Kill:
-    usage = 'Usage: (kill) [monster_name] [killer] (overkill/ok)'
+    usage = 'Usage: kill [monster_name] [killer] (overkill/ok)'
     if not monster_name or not killer_name:
         raise EventParsingError(usage)
-    try:
-        monster = MONSTERS[monster_name]
-    except KeyError as error:
-        raise EventParsingError(f'No monster named {error}')
+    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
+    killer = parse_enum_member(killer_name, Character, 'character')
     overkill = overkill in ('overkill', 'ok')
-    try:
-        killer = search_stringenum(Character, killer_name)
-    except ValueError:
-        raise EventParsingError(f'No character called {killer_name}')
     return Kill(gs, monster, killer, overkill)
 
 
@@ -106,14 +131,8 @@ def parse_bribe(gs: GameState,
     usage = 'Usage: bribe [monster_name] [user]'
     if not monster_name or not user_name:
         raise EventParsingError(usage)
-    try:
-        monster = MONSTERS[monster_name]
-    except KeyError as error:
-        raise EventParsingError(f'No monster named {error}')
-    try:
-        user = search_stringenum(Character, user_name)
-    except ValueError:
-        raise EventParsingError(f'No character called {user_name}')
+    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
+    user = parse_enum_member(user_name, Character, 'character')
     return Bribe(gs, monster, user)
 
 
@@ -139,10 +158,10 @@ def parse_roll(gs: GameState,
         times = int(times)
     except ValueError:
         raise EventParsingError(usage)
-    if times > 100000:
-        raise EventParsingError('Can\'t advance rng more than 100000 times.')
     if not (0 <= rng_index < 68):
         raise EventParsingError(f'Can\'t advance rng index {rng_index}')
+    if times > 100000:
+        raise EventParsingError('Can\'t advance rng more than 100000 times.')
     return AdvanceRNG(gs, rng_index, times)
 
 
@@ -197,50 +216,30 @@ def parse_action(gs: GameState,
     usage = 'Usage: [character] [action name] (target)'
     if not character_name or not action_name:
         raise EventParsingError(usage)
-
-    try:
-        character = search_stringenum(Character, character_name)
-    except ValueError:
-        raise EventParsingError(f'No character named {character_name}')
-
+    character = parse_enum_member(character_name, Character, 'character')
     character = gs.characters[character]
 
     if action_name == 'escape':
         return Escape(gs, character)
-    try:
-        action = ACTIONS[action_name]
-    except KeyError:
-        raise EventParsingError(f'No action named "{action_name}"')
+
+    action = parse_dict_key(action_name, ACTIONS, 'action')
 
     if action.target is TargetType.SELF:
         target = character
-    elif target_name.startswith('m') and target_name[1:].isdigit():
-        target_index = int(target_name[1:]) - 1
-        try:
-            target = gs.monster_party[target_index]
-        except IndexError:
-            raise EventParsingError(
-                f'Monster slot must be between 1 and {len(gs.monster_party)}')
+    elif target_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
+        target = parse_monster_slot(gs, target_name)
     elif target_name.endswith('_c'):
-        try:
-            target = search_stringenum(Character, target_name[:-2])
-        except ValueError:
-            raise EventParsingError(f'No target named {target_name}')
+        target = parse_enum_member(target_name[:-2], Character, 'character')
         target = gs.characters[target]
     elif target_name:
         try:
             target = MonsterState(MONSTERS[target_name])
         except KeyError:
-            try:
-                target = search_stringenum(Character, target_name)
-            except ValueError:
-                raise EventParsingError(f'No target named {target_name}')
+            target = parse_enum_member(target_name, Character, 'character')
             target = gs.characters[target]
     else:
-        target = None
-
-    if target is None:
         raise EventParsingError(f'Action "{action}" requires a target.')
+
     try:
         time_remaining = float(time_remaining)
     except ValueError:
@@ -259,21 +258,11 @@ def parse_stat_update(gs: GameState,
     if not target_name or not stat_name or not amount:
         raise EventParsingError(usage)
     if target_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
-        index = int(target_name[1]) - 1
-        try:
-            target = gs.monster_party[index]
-        except IndexError:
-            raise EventParsingError(f'No monster in slot {index + 1}')
+        target = parse_monster_slot(gs, target_name)
     else:
-        try:
-            target = search_stringenum(Character, target_name)
-        except ValueError:
-            raise EventParsingError(f'No character named {target_name}')
+        target = parse_enum_member(target_name, Character, 'character')
         target = gs.characters[target]
-    try:
-        stat = search_stringenum(Stat, stat_name)
-    except ValueError:
-        raise EventParsingError(f'No stat named {stat_name}')
+    stat = parse_enum_member(stat_name, Stat, 'stat')
     stat_value = target.stats[stat]
     try:
         if amount.startswith(('+', '-')):
@@ -281,7 +270,7 @@ def parse_stat_update(gs: GameState,
         else:
             stat_value = int(amount)
     except ValueError:
-        raise EventParsingError('Stat value should be an integer.')
+        raise EventParsingError('Stat value must be an integer.')
     return ChangeStat(gs, target, stat, stat_value)
 
 
@@ -294,19 +283,10 @@ def parse_yojimbo_action(gs: GameState,
     usage = 'Usage: [action] [monster] (overdrive)'
     if not action_name or not monster_name:
         raise EventParsingError(usage)
-    try:
-        attack = YOJIMBO_ACTIONS[action_name]
-    except KeyError as error:
-        raise EventParsingError(f'No action named {error}')
-
-    try:
-        monster = MONSTERS[monster_name]
-    except KeyError as error:
-        raise EventParsingError(f'No monster named {error}')
-
+    action = parse_dict_key(action_name, YOJIMBO_ACTIONS, 'Yojimbo action')
+    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
     overdrive = overdrive == 'overdrive'
-
-    return YojimboTurn(gs, attack, monster, overdrive)
+    return YojimboTurn(gs, action, monster, overdrive)
 
 
 def parse_compatibility_update(gs: GameState,
@@ -321,7 +301,6 @@ def parse_compatibility_update(gs: GameState,
             gs.compatibility = int(compatibility)
     except ValueError:
         raise EventParsingError(usage)
-
     return Comment(gs, f'Compatibility changed to {gs.compatibility}')
 
 
@@ -331,23 +310,14 @@ def parse_monster_action(gs: GameState,
                          *_,
                          ) -> MonsterAction:
     usage = 'Usage: monsteraction [monster slot/name] [action_name]'
+    if not monster_name:
+        raise EventParsingError(usage)
 
-    if monster_name.isdecimal():
-        slot = int(monster_name)
-        if not (1 <= slot <= 8):
-            raise EventParsingError('Slot must be between 1 and 8')
-        slot -= 1
-        try:
-            monster = gs.monster_party[slot]
-        except IndexError:
-            raise EventParsingError(
-                f'Slot must be between 1 and {len(gs.monster_party)}')
+    if monster_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
+        monster = parse_monster_slot(gs, monster_name)
     else:
-        try:
-            monster = MONSTERS[monster_name]
-        except KeyError:
-            raise EventParsingError(usage)
-        monster = MonsterState(monster)
+        monster = MonsterState(
+            parse_dict_key(monster_name, MONSTERS, 'monster'))
     try:
         action = monster.monster.actions[action_name]
     except KeyError:
@@ -366,14 +336,10 @@ def parse_equipment_change(gs: GameState,
     usage = 'Usage: equip [equip_type] [character] [slots] (abilities)'
     if not all((equipment_type_name, character_name, slots)):
         raise EventParsingError(usage)
-    try:
-        equipment_type = search_stringenum(EquipmentType, equipment_type_name)
-    except ValueError:
-        raise EventParsingError('Equipment type can be weapon or armor')
-    try:
-        character = search_stringenum(Character, character_name)
-    except ValueError:
-        raise EventParsingError(f'No character named {character_name}')
+    equipment_type = parse_enum_member(
+        equipment_type_name, EquipmentType, 'equipment type')
+
+    character = parse_enum_member(character_name, Character, 'character')
     try:
         slots = int(slots)
     except ValueError:
@@ -381,16 +347,14 @@ def parse_equipment_change(gs: GameState,
     if not (0 <= slots <= 4):
         raise EventParsingError('Slots must be between 0 and 4')
     abilities = []
-    for ability_name in ability_names:
+    for autoability_name in ability_names:
         if len(abilities) >= 4:
             break
-        try:
-            ability = search_stringenum(Autoability, ability_name)
-        except ValueError:
-            raise EventParsingError(f'No autoability called {ability_name}')
-        if ability in abilities:
+        autoability = parse_enum_member(
+            autoability_name, Autoability, 'autoability')
+        if autoability in abilities:
             continue
-        abilities.append(ability)
+        abilities.append(autoability)
     slots = max(slots, len(abilities))
     if character in (Character.VALEFOR, Character.SHIVA):
         base_weapon_damage = 14
@@ -417,11 +381,8 @@ def parse_heal(gs: GameState,
                *_) -> Heal:
     characters = []
     if character_name:
-        try:
-            character = search_stringenum(Character, character_name)
-        except ValueError:
-            raise EventParsingError(f'No character called {character_name}')
-        characters.append(character)
+        characters.append(
+            parse_enum_member(character_name, Character, 'character'))
     else:
         characters.extend(tuple(Character))
     try:
@@ -435,12 +396,12 @@ def parse_heal(gs: GameState,
 def parse_character_status(gs: GameState,
                            character_name: str = '',
                            *_) -> Comment:
-    try:
-        character = search_stringenum(Character, character_name)
-    except ValueError:
-        raise EventParsingError(f'No character named {character_name}')
-    state = gs.characters[character]
-    text = f'{character}: hp {state.current_hp}, statuses {state.statuses}'
+    usage = 'Usage: status [character]'
+    if not character_name:
+        raise EventParsingError(usage)
+    char = parse_enum_member(character_name, Character, 'character')
+    char = gs.characters[char]
+    text = f'{char}: hp {char.current_hp}, statuses {char.statuses}'
     return Comment(gs, text)
 
 
@@ -452,17 +413,14 @@ def parse_monster_spawn(gs: GameState,
     usage = 'spawn [monster_name] [slot] (forced ctb)'
     if not monster_name or not slot:
         raise EventParsingError(usage)
-    try:
-        monster = MONSTERS[monster_name]
-    except KeyError:
-        raise EventParsingError(f'No monster named "{monster_name}"')
+    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
     try:
         slot = int(slot)
     except ValueError:
         raise EventParsingError('Slot must be an integer')
-    if not (1 <= slot <= (len(gs.monster_party) + 1)):
-        raise EventParsingError(
-            f'Slot must be between 1 and {len(gs.monster_party) + 1}')
+    slot_limit = min(len(gs.monster_party) + 1, 8)
+    if not (1 <= slot <= slot_limit):
+        raise EventParsingError(f'Slot must be between 1 and {slot_limit}')
     slot = MonsterSlot(slot - 1)
     try:
         forced_ctb = int(forced_ctb)
@@ -479,14 +437,11 @@ def parse_encounter_checks(gs: GameState,
     if not zone_name or not steps:
         raise EventParsingError(usage)
 
-    try:
-        zone = ZONES[zone_name]
-    except KeyError:
-        raise EventParsingError(f'No zone names {zone_name}')
+    zone = parse_dict_key(zone_name, ZONES, 'zone')
     try:
         distance = int(steps) * 10
     except ValueError:
-        raise EventParsingError(usage)
+        raise EventParsingError('Step must be an integer')
 
     return EncounterChecks(gs, zone, distance)
 

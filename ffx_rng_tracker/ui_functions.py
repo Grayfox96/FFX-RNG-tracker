@@ -37,23 +37,26 @@ def get_equipment_types(seed: int, amount: int, columns: int = 2) -> str:
     return data
 
 
-def get_status_chance_string(seed: int, amount: int = 50) -> str:
+def get_status_chance_table(seed: int, amount: int) -> str:
     """Returns a table-formatted string of the status
-    chance rng rolls for party members and enemies.
+    chance rng rolls for party members and monsters.
     """
     rng_tracker = FFXRNGTracker(seed)
     digits = len(str(amount))
-    spacer = ('-' * (202 + digits)) + '\n'
-    data = spacer
-    data += (f'| Roll [{"#" * digits}]|      Tidus|       Yuna|      Auron'
-             '|    Kimahri|      Wakka|       Lulu|      Rikku|      Aeons'
-             '|    Enemy 1|    Enemy 2|    Enemy 3|    Enemy 4|    Enemy 5'
-             '|    Enemy 6|    Enemy 7|    Enemy 8|\n')
-    data += spacer
+    columns = (
+        f'Roll [{"#" * digits}]', 'Tidus', 'Yuna', 'Auron', 'Kimahri', 'Wakka',
+        'Lulu', 'Rikku', 'Aeons', 'Mon1', 'Mon2', 'Mon3', 'Mon4', 'Mon5',
+        'Mon6', 'Mon7', 'Mon8',
+        )
+    header = '| ' + '| '.join(columns) + '|'
+    spacer = '-' * len(header)
+    data = spacer + '\n'
+    data += header + '\n'
+    data += spacer + '\n'
     for i in range(amount):
         data += f'| Roll [{i + 1:>{digits}}]'
-        for j in range(52, 68):
-            data += f'| {rng_tracker.advance_rng(j) % 101:>10}'
+        for j, title in zip(range(52, 68), columns[1:]):
+            data += f'| {rng_tracker.advance_rng(j) % 101:>{len(title)}}'
         data += '|\n'
     data += spacer
     return data
@@ -87,7 +90,8 @@ def ctb_sorter(characters: list[CharacterState],
         string = f'M{m.slot + 1}[{m.ctb}]'
         ctbs.append((sort_key, string))
 
-    # sorting by icv, then by party, then by agility and finally by index
+    # sorting by icv, then by party, then by agility and index (for characters)
+    # or index and agility (for monsters)
     ctbs.sort(key=lambda v: v[0])
     ctbs = [v[1] for v in ctbs]
     return ' '.join(ctbs)

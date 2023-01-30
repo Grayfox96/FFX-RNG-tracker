@@ -14,10 +14,8 @@ class SeedFinder(ActionsTracker):
     damage_values_widget: InputWidget
 
     def get_default_input_data(self) -> str:
-        input_data = ('encounter\n'
-                      'auron attack sinscale_6\ntidus attack sinscale_6\n'
-                      'auron attack sinscale_6\ntidus attack sinscale_6\n'
-                      'auron attack sinscale_6\ntidus attack sinscale_6\n'
+        input_data = ('encounter\nauron attack sinscale_6\n'
+                      'tidus attack sinscale_6\nauron attack sinscale_6'
                       )
         return input_data
 

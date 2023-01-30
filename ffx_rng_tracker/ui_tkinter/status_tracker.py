@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from ..ui_functions import get_status_chance_string
+from ..ui_functions import get_status_chance_table
 from .output_widget import TkOutputWidget
 
 
@@ -18,4 +18,4 @@ class TkStatusTracker(tk.Frame):
 
         self.output_widget = TkStatusTrackerOutputWidget(self, wrap='none')
         self.output_widget.pack(expand=True, fill='both')
-        self.output_widget.print_output(get_status_chance_string(seed, 100))
+        self.output_widget.print_output(get_status_chance_table(seed, 100))

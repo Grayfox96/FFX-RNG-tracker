@@ -24,7 +24,8 @@
             "name": "Does Nothing",
             "target": "Self",
             "can_miss": false,
-            "does_damage": false
+            "does_damage": false,
+            "shatter_chance": 0
         },
         "attack": {
             "name": "Attack",
@@ -109,7 +110,8 @@
             "name": "Does Nothing",
             "target": "Self",
             "can_miss": false,
-            "does_damage": false
+            "does_damage": false,
+            "shatter_chance": 0
         }
     },
     "bunyip": {
@@ -971,7 +973,8 @@
             "name": "Does Nothing",
             "target": "Self",
             "can_miss": false,
-            "does_damage": false
+            "does_damage": false,
+            "shatter_chance": 0
         }
     },
     "geneaux's_tentacle": {
@@ -988,6 +991,12 @@
             "can_crit": false,
             "base_damage": 16,
             "shatter_chance": 0
+        },
+        "youre_next": {
+            "name": "You're Next",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false
         },
         "fists_of_fury": {
             "name": "Fists of Fury",
@@ -1061,7 +1070,7 @@
         },
         "blind_ball": {
             "name": "Blind Ball",
-            "target": "Last character",
+            "target": "Last actor",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 10,
@@ -1073,7 +1082,7 @@
         },
         "mute_ball": {
             "name": "Mute Ball",
-            "target": "Last character",
+            "target": "Last actor",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 7,
@@ -1085,7 +1094,7 @@
         },
         "doze_ball": {
             "name": "Doze Ball",
-            "target": "Last character",
+            "target": "Last actor",
             "can_miss": false,
             "can_crit": false,
             "base_damage": 7,
@@ -1094,6 +1103,13 @@
             },
             "shatter_chance": 0,
             "rank": 0
+        },
+        "does_nothing": {
+            "name": "Does Nothing",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "shatter_chance": 0
         }
     },
     "extractor": {
@@ -1256,7 +1272,7 @@
         },
         "fire_counter": {
             "name": "Fire (Counter)",
-            "target": "Last character",
+            "target": "Last actor",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -1266,7 +1282,7 @@
         },
         "blizzard_counter": {
             "name": "Blizzard (Counter)",
-            "target": "Last character",
+            "target": "Last actor",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -1276,7 +1292,7 @@
         },
         "thunder_counter": {
             "name": "Thunder (Counter)",
-            "target": "Last character",
+            "target": "Last actor",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -1286,7 +1302,7 @@
         },
         "water_counter": {
             "name": "Water (Counter)",
-            "target": "Last character",
+            "target": "Last actor",
             "can_miss": false,
             "can_crit": false,
             "damage_type": "Magic",
@@ -1362,7 +1378,7 @@
         },
         "assault": {
             "name": "Assault",
-            "target": "Last character",
+            "target": "Last actor",
             "accuracy": 120,
             "can_crit": false,
             "base_damage": 32,
@@ -1454,6 +1470,77 @@
     "sin_3": {
     },
     "guado_guardian": {
+        "blizzard": {
+            "name": "Blizzard",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Ice"
+        },
+        "thunder": {
+            "name": "Thunder",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Magic",
+            "base_damage": 12,
+            "element": "Thunder"
+        },
+        "shremedy": {
+            "name": "Shremedy",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Confuse": [50, 254]
+            },
+            "shatter_chance": 0
+        },
+        "hi-potion_seymour": {
+            "name": "Hi-Potion Seymour",
+            "target": 1,
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Fixed",
+            "base_damage": -1000,
+            "shatter_chance": 0
+        },
+        "auto_potion": {
+            "name": "Auto Potion",
+            "target": "Self",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Fixed",
+            "base_damage": -1000,
+            "shatter_chance": 0,
+            "rank": 0
+        },
+        "remedy_seymour": {
+            "name": "Remedy Seymour",
+            "target": 1,
+            "can_miss": false,
+            "does_damage": false,
+            "dispels": [
+                "Petrify",
+                "Poison",
+                "Confuse",
+                "Berserk",
+                "Sleep",
+                "Silence",
+                "Dark",
+                "Slow"
+            ],
+            "shatter_chance": 0
+        },
+        "protect": {
+            "name": "Protect",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "statuses": {
+                "Protect": [254, 254]
+            },
+            "shatter_chance": 0
+        }
     },
     "seymour_flux": {
     },
@@ -1482,6 +1569,13 @@
             "target": "Self",
             "can_miss": false,
             "does_damage": false
+        },
+        "does_nothing": {
+            "name": "Does Nothing",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "shatter_chance": 0
         }
     },
     "sinscale_7": {
@@ -1580,7 +1674,7 @@
         },
         "counter": {
             "name": "Counter",
-            "target": "Last character",
+            "target": "Last actor",
             "can_crit": false,
             "base_damage": 16,
             "shatter_chance": 0,
@@ -1858,6 +1952,54 @@
     "???_2": {
     },
     "wendigo": {
+        "attack_low_hp": {
+            "name": "Attack (Low HP)",
+            "base_damage": 16
+        },
+        "forced_attack": {
+            "name": "Forced Attack",
+            "base_damage": 16
+        },
+        "attack_high_hp": {
+            "name": "Attack (High HP)",
+            "accuracy": 120,
+            "base_damage": 16
+        },
+        "counter": {
+            "name": "Counter",
+            "target": "Last actor",
+            "can_miss": false,
+            "base_damage": 20
+        },
+        "attack_low_hp_char": {
+            "name": "Attack (Lowest HP Character)",
+            "target": "Lowest HP character",
+            "can_miss": false,
+            "can_crit": false,
+            "base_damage": 24,
+            "shatter_chance": 50
+        },
+        "counter_stance": {
+            "name": "Counter Stance",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "shatter_chance": 0
+        },
+        "cancel_counter": {
+            "name": "Cancel Counter",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "shatter_chance": 0
+        },
+        "does_nothing": {
+            "name": "Does Nothing",
+            "target": "Self",
+            "can_miss": false,
+            "does_damage": false,
+            "shatter_chance": 0
+        }
     },
     "guado_guardian_2": {
         "thundara": {
@@ -1875,6 +2017,25 @@
             "damage_type": "Magic",
             "base_damage": 24,
             "element": "Ice"
+        },
+        "auto_potion": {
+            "name": "Auto Potion",
+            "target": "Self",
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Fixed",
+            "base_damage": -1000,
+            "shatter_chance": 0,
+            "rank": 0
+        },
+        "auto_potion_wendigo": {
+            "name": "Auto Potion Wendigo",
+            "target": 1,
+            "can_miss": false,
+            "can_crit": false,
+            "damage_type": "Fixed",
+            "base_damage": -1000,
+            "shatter_chance": 0
         },
         "berserk_wendigo": {
             "name": "Berserk Wendigo",
@@ -1907,6 +2068,17 @@
             },
             "shatter_chance": 0,
             "rank": 0
+        },
+        "eye_drops_wendigo": {
+            "name": "Eye Drops Wendigo",
+            "target": 1,
+            "can_miss": false,
+            "does_damage": false,
+            "dispels": [
+                "Dark"
+            ],
+            "shatter_chance": 0,
+            "rank": 2
         }
     },
     "funguar": {

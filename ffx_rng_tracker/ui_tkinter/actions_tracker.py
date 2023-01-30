@@ -13,7 +13,7 @@ class TkActionsOutputWidget(TkOutputWidget):
             'encounter': 'Encounter',
             'preemptive': 'Preemptive',
             'ambush': 'Ambush',
-            'crit': 'Crit',
+            'crit': r'\(Crit\)',
             'stat update': '^.*changed to.+$',
             'status miss': r'\[[^\]]* Fail\]'
         }

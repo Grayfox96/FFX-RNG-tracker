@@ -101,6 +101,24 @@ class GameState:
             if Status.REGEN in actor.statuses:
                 actor.current_hp += (ctb_ticks * actor.max_hp // 256) + 100
 
+    def process_start_of_encounter(self) -> None:
+        # TODO
+        # this makes endencounter optional for most situations
+        # calling the end method twice causes no problems for now but
+        # calling start and end separately might become mandatory at
+        # some point
+        self.process_end_of_encounter()
+
+    def process_end_of_encounter(self) -> None:
+        for state in self.characters.values():
+            if Status.DEATH in state.statuses:
+                state.current_hp = 1
+            state.ctb = 0
+            state.statuses.clear()
+            for buff in state.buffs:
+                state.buffs[buff] = 0
+        self.monster_party.clear()
+
     def add_to_inventory(self, item: Item, quantity: int) -> None:
         empty_slot = None
         for slot in self.inventory:

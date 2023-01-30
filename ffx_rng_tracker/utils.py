@@ -1,4 +1,5 @@
 import colorsys
+from dataclasses import asdict, is_dataclass
 from functools import cache, partial
 from typing import Any, TypeVar, overload
 
@@ -15,12 +16,16 @@ def treeview(obj, indentation: int = 0) -> str:
         case dict():
             for key, value in obj.items():
                 string += ' ' * 4 * indentation
+                if isinstance(key, tuple):
+                    key = ', '.join(key)
                 string += f'{key}: '
                 if isinstance(value, dict):
                     string += '\n'
                 string += treeview(value, indentation + 1)
-        case list() | tuple():
+        case list() | tuple() | set():
             string += f'{", ".join([str(a) for a in obj])}\n'
+        case dataclass if is_dataclass(dataclass):
+            string += '\n' + treeview(asdict(dataclass), indentation)
         case _:
             string += f'{obj}\n'
     return string
