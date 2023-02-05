@@ -160,5 +160,5 @@ class Configs:
             shutil.copyfile(default_configs_file, cls._configs_file)
             logger.info(
                 f'Copied default configs file to "{cls._configs_file}"')
-        Configs.read(cls._configs_file)
-        Configs.load_configs()
+        cls.read(cls._configs_file)
+        cls.load_configs()

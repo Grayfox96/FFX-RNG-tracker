@@ -71,6 +71,7 @@ class Monster:
     elemental_affinities: dict[Element, ElementalAffinity]
     status_resistances: dict[Status, int]
     poison_tick_damage: int
+    doom_turns: int
     zanmato_level: int
     armored: bool
     undead: bool
@@ -483,6 +484,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         Status.SLOW: prize_struct[71],
     }
     poison_tick_damage = stats[Stat.HP] * prize_struct[42] // 100
+    doom_turns = prize_struct[119]
     undead = prize_struct[72] == 2
     auto_statuses: set[Status] = set()
     if prize_struct[74] & 0b00100000:
@@ -509,14 +511,14 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         added_to_inventory=bool(prize_struct[174]),
     )
 
-    for ability_offset in range(8):
-        slots = int((equipment.slots_modifier + ability_offset - 4) / 4)
+    for rng_roll in range(8):
+        slots = int((equipment.slots_modifier + rng_roll - 4) / 4)
         if slots < EquipmentSlots.MIN:
             slots = EquipmentSlots.MIN.value
         elif slots > EquipmentSlots.MAX:
             slots = EquipmentSlots.MAX.value
         equipment.slots_range.append(slots)
-        ab_rolls = int((equipment.max_ability_rolls_modifier + ability_offset - 4) / 8)
+        ab_rolls = int((equipment.max_ability_rolls_modifier + rng_roll - 4) / 8)
         equipment.max_ability_rolls_range.append(ab_rolls)
 
     for c, base_address in zip(Character, range(178, 371, 32)):
@@ -539,6 +541,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
         elemental_affinities=elemental_affinities,
         status_resistances=status_resistances,
         poison_tick_damage=poison_tick_damage,
+        doom_turns=doom_turns,
         zanmato_level=zanmato_level,
         armored=armored,
         undead=undead,

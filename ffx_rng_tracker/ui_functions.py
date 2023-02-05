@@ -65,7 +65,7 @@ def get_status_chance_table(seed: int, amount: int) -> str:
 def format_monster_data(monster: Monster) -> str:
     data = treeview(vars(monster))
     data = data.split('\n')
-    wrap = 54
+    wrap = 55
     string = ''
     for one, two in zip_longest(data[:wrap], data[wrap:], fillvalue=' '):
         if two:

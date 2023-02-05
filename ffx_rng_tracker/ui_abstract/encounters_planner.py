@@ -13,10 +13,21 @@ class EncountersPlanner(EncountersTracker):
     def edit_output(self, output: str) -> str:
         output = output.replace('Simulation: ', 'Simulation')
         output = output.replace('Boss: ', 'Boss')
+        # TODO
+        # find a way to find conflicting monster names
+        # instead of hardcoding them
+        conflicting_monster_names = (
+            'Chimera Brain', 'Master Coeurl', 'Master Tonberry',
+            'Great Malboro', 'Behemoth King', 'Gemini#3',
+            )
+        for name in conflicting_monster_names:
+            output = output.replace(name, name.upper())
 
         monsters_tally = {}
         for monster in MONSTERS.values():
             name = monster.name
+            if name in conflicting_monster_names:
+                name = name.upper()
             index = 0
             while True:
                 try:
@@ -38,15 +49,14 @@ class EncountersPlanner(EncountersTracker):
         captured_monsters = [re.escape(m)
                              for m, t in monsters_tally.items()
                              if t >= 10]
-        pattern = '(?i)' + '|'.join(captured_monsters)
+        pattern = '|'.join(captured_monsters)
         self.output_widget.regex_patterns['captured monster'] = pattern
 
         important_monsters = self.search_bar.get_input()
         for symbol in (',', '-', '/', '\\', '.'):
             important_monsters = important_monsters.replace(symbol, ' ')
         important_monsters = important_monsters.split()
-        pattern = '(?i)' + '|'.join(
-            [re.escape(m.strip()) for m in important_monsters])
+        pattern = '|'.join([re.escape(m.strip()) for m in important_monsters])
         self.output_widget.regex_patterns['important monster'] = pattern
 
         return super().edit_output(output)
