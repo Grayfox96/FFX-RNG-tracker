@@ -1,7 +1,6 @@
 from itertools import chain
 
 from .configs import Configs
-from .data.autoabilities import AUTO_STATUSES, ELEMENTAL_SOSES, STATUS_SOSES
 from .data.characters import CHARACTERS_DEFAULTS, CharacterState
 from .data.constants import BASE_COMPATIBILITY, Character, Item, Status
 from .data.equipment import Equipment
@@ -32,38 +31,34 @@ class GameState:
             characters[character] = CharacterState(defaults)
         return characters
 
-    def normalize_ctbs(self) -> int:
-        ctbs = []
+    def get_min_ctb(self) -> int:
+        ctbs = set()
         for c, cs in self.characters.items():
             if c not in self.party or cs.dead or cs.inactive:
                 cs.ctb = 0
             else:
-                ctbs.append(cs.ctb)
+                ctbs.add(cs.ctb)
         for m in self.monster_party:
             if m.dead:
                 m.ctb = 0
             else:
-                ctbs.append(m.ctb)
+                ctbs.add(m.ctb)
         if not ctbs:
-            return
-        min_ctb = min(ctbs)
-        for c in self.characters.values():
-            c.ctb -= min_ctb
-        for m in self.monster_party:
-            m.ctb -= min_ctb
-        return min_ctb
+            # TODO
+            # should this raise an error?
+            return 0
+        return min(ctbs)
+
+    def normalize_ctbs(self, min_ctb: int) -> None:
+        for actor in chain(self.characters.values(), self.monster_party):
+            actor.ctb -= min_ctb
 
     def setup_autostatuses(self) -> None:
         for character in self.characters.values():
-            for autoability in character.autoabilities:
-                if autoability in AUTO_STATUSES:
-                    status = AUTO_STATUSES[autoability]
-                elif autoability in ELEMENTAL_SOSES and character.in_crit:
-                    status = ELEMENTAL_SOSES[autoability]
-                elif autoability in STATUS_SOSES and character.in_crit:
-                    status = STATUS_SOSES[autoability]
-                else:
-                    continue
+            auto_statuses = set(character.auto_statuses)
+            if character.in_crit:
+                auto_statuses.update(character.sos_auto_statuses)
+            for status in auto_statuses:
                 if status not in character.statuses:
                     character.statuses[status] = 255
         for monster in self.monster_party:
@@ -72,13 +67,15 @@ class GameState:
                     monster.statuses[status] = 255
 
     def process_start_of_turn(self,
-                              actor: CharacterState | MonsterState) -> None:
+                              actor: CharacterState | MonsterState,
+                              ) -> None:
         for status in TEMPORARY_STATUSES:
             actor.statuses.pop(status, None)
         self.setup_autostatuses()
 
     def process_end_of_turn(self,
-                            actor: CharacterState | MonsterState) -> None:
+                            actor: CharacterState | MonsterState,
+                            ) -> None:
         self.last_actor = actor
         statuses = actor.statuses.copy()
         for status, stacks in statuses.items():
@@ -95,11 +92,12 @@ class GameState:
                 actor.statuses.pop(status, None)
             else:
                 actor.statuses[status] = stacks
-        ctb_ticks = self.normalize_ctbs()
         actors = chain(self.characters.values(), self.monster_party)
-        for actor in actors:
-            if Status.REGEN in actor.statuses:
-                actor.current_hp += (ctb_ticks * actor.max_hp // 256) + 100
+        ctb_ticks = self.get_min_ctb()
+        self.normalize_ctbs(ctb_ticks)
+        actors_with_regen = [a for a in actors if Status.REGEN in a.statuses]
+        for actor in actors_with_regen:
+            actor.current_hp += (ctb_ticks * actor.max_hp // 256) + 100
 
     def process_start_of_encounter(self) -> None:
         # TODO

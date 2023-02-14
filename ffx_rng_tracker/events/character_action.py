@@ -1,10 +1,8 @@
 from dataclasses import dataclass
 
 from ..data.actions import Action
-from ..data.autoabilities import (DEFENSE_BONUSES, ELEMENTAL_STRIKES,
-                                  MAGIC_BONUSES, MAGIC_DEF_BONUSES,
-                                  STATUS_STRIKES, STATUS_TOUCHES,
-                                  STRENGTH_BONUSES)
+from ..data.autoabilities import (DEFENSE_BONUSES, MAGIC_BONUSES,
+                                  MAGIC_DEF_BONUSES, STRENGTH_BONUSES)
 from ..data.characters import CharacterState
 from ..data.constants import (ELEMENTAL_AFFINITY_MODIFIERS, HIT_CHANCE_TABLE,
                               Autoability, Buff, DamageType, Element,
@@ -143,13 +141,7 @@ class CharacterAction(Event):
         statuses_applied: dict[Status, bool] = {}
         statuses = self.action.statuses.copy()
         if self.action.uses_weapon:
-            for ability in self.character.autoabilities:
-                if ability in STATUS_TOUCHES:
-                    application = STATUS_TOUCHES[ability]
-                elif ability in STATUS_STRIKES:
-                    application = STATUS_STRIKES[ability]
-                else:
-                    continue
+            for application in self.character.status_strikes:
                 if application.status in statuses:
                     if application.chance > statuses[application.status].chance:
                         statuses[application.status] = application
@@ -245,13 +237,11 @@ def get_damage(
     target_is_character = isinstance(target, CharacterState)
     variance = damage_rng + 0xf0
     damage_type = action.damage_type
-    elements: list[Element] = []
+    elements: set[Element] = set()
     if action.element:
-        elements.append(action.element)
+        elements.add(action.element)
     if action.uses_weapon and user_is_character:
-        for ability in user.autoabilities:
-            if ability in ELEMENTAL_STRIKES:
-                elements.append(ELEMENTAL_STRIKES[ability])
+        elements.update(user.equipment_elements)
     if elements:
         element_mods = [-1.0]
         # check if all the elements are covered by a nul-status

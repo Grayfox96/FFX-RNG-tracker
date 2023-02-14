@@ -3,14 +3,18 @@ from copy import deepcopy
 from dataclasses import dataclass
 
 from ..utils import open_cp1252
-from .autoabilities import (AEON_RIBBON_IMMUNITIES, ELEMENTAL_EATERS,
-                            ELEMENTAL_PROOFS, ELEMENTAL_WARDS, HP_BONUSES,
-                            MP_BONUSES, RIBBON_IMMUNITIES, STATUS_PROOFS,
+from .autoabilities import (AEON_RIBBON_IMMUNITIES, AUTO_STATUSES,
+                            ELEMENTAL_EATERS, ELEMENTAL_PROOFS,
+                            ELEMENTAL_SOS_AUTO_STATUSES, ELEMENTAL_STRIKES,
+                            ELEMENTAL_WARDS, HP_BONUSES, MP_BONUSES,
+                            RIBBON_IMMUNITIES, SOS_AUTO_STATUSES,
+                            STATUS_PROOFS, STATUS_STRIKES, STATUS_TOUCHES,
                             STATUS_WARDS)
 from .constants import (ICV_BASE, Autoability, Buff, Character, Element,
                         ElementalAffinity, EquipmentType, Stat, Status)
 from .equipment import Equipment
 from .file_functions import get_resource_path
+from .statuses import StatusApplication
 
 
 @dataclass(frozen=True)
@@ -59,7 +63,7 @@ class CharacterState:
 
     def set_stat(self, stat: Stat | Buff, value: int) -> None:
         match stat:
-            case Stat.HP | Stat.CTB:
+            case Stat.HP:
                 max_value = 99999
             case Stat.MP:
                 max_value = 9999
@@ -79,7 +83,7 @@ class CharacterState:
 
     @property
     def max_hp(self) -> int:
-        if Autoability.BREAK_HP_LIMIT in self.autoabilities:
+        if self.break_hp_limit:
             max_value = 99999
         else:
             max_value = 9999
@@ -101,7 +105,7 @@ class CharacterState:
 
     @property
     def max_mp(self) -> int:
-        if Autoability.BREAK_MP_LIMIT in self.autoabilities:
+        if self.break_mp_limit:
             max_value = 9999
         else:
             max_value = 999
@@ -125,11 +129,11 @@ class CharacterState:
 
     @property
     def ctb(self) -> int:
-        return self.stats[Stat.CTB]
+        return self._ctb
 
     @ctb.setter
     def ctb(self, value) -> None:
-        self.set_stat(Stat.CTB, value)
+        self._ctb = max(0, value)
 
     @property
     def in_crit(self) -> bool:
@@ -169,21 +173,24 @@ class CharacterState:
 
     @property
     def autoabilities(self) -> list[Autoability]:
-        abilities = []
-        abilities.extend(self.weapon.abilities)
-        abilities.extend(self.armor.abilities)
-        # remove duplicate abilities and keep order
-        abilities = list(dict.fromkeys(abilities))
-        return abilities
+        return self.weapon.abilities + self.armor.abilities
 
     def _update_abilities_effects(self) -> None:
+        autoabilities = self.autoabilities
         self._hp_multiplier = 100
         self._mp_multiplier = 100
         self.elemental_affinities = dict.fromkeys(
             Element, ElementalAffinity.NEUTRAL)
         self.status_resistances = dict.fromkeys(Status, 0)
         self.status_resistances[Status.THREATEN] = 255
-        for ability in self.autoabilities:
+        self.equipment_elements: list[Element] = []
+        self.status_strikes: list[StatusApplication] = []
+        self.auto_statuses: list[Status] = []
+        self.sos_auto_statuses: list[Status] = []
+        self.first_strike = Autoability.FIRST_STRIKE in autoabilities
+        self.break_hp_limit = Autoability.BREAK_HP_LIMIT in autoabilities
+        self.break_mp_limit = Autoability.BREAK_MP_LIMIT in autoabilities
+        for ability in autoabilities:
             if ability is Autoability.RIBBON:
                 for status in RIBBON_IMMUNITIES:
                     self.status_resistances[status] = 255
@@ -210,10 +217,20 @@ class CharacterState:
                 self._hp_multiplier += HP_BONUSES[ability]
             elif ability in MP_BONUSES:
                 self._mp_multiplier += MP_BONUSES[ability]
+            elif ability in ELEMENTAL_STRIKES:
+                self.equipment_elements.append(ELEMENTAL_STRIKES[ability])
+            elif ability in STATUS_TOUCHES:
+                self.status_strikes.append(STATUS_TOUCHES[ability])
+            elif ability in STATUS_STRIKES:
+                self.status_strikes.append(STATUS_STRIKES[ability])
+            elif ability in AUTO_STATUSES:
+                self.auto_statuses.append(AUTO_STATUSES[ability])
+            elif ability in SOS_AUTO_STATUSES or ability in ELEMENTAL_SOS_AUTO_STATUSES:
+                self.sos_auto_statuses.append(ability)
 
     def reset(self) -> None:
         self.stats = self.defaults.stats.copy()
-        self.stats[Stat.CTB] = 0
+        self.ctb = 0
         self.buffs: dict[Buff, int] = dict.fromkeys(Buff, 0)
         self._current_hp = self.stats[Stat.HP]
         self._current_mp = self.stats[Stat.MP]

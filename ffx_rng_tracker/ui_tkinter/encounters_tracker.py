@@ -134,7 +134,6 @@ class TkEncountersOutputWidget(TkOutputWidget):
         important_monsters = '(?i)' + '|'.join(
             [re.escape(m) for m in Configs.important_monsters])
         patterns = {
-            'wrap margin': '^.+$',
             'preemptive': 'Preemptive',
             'ambush': 'Ambush',
             'important monster': important_monsters,

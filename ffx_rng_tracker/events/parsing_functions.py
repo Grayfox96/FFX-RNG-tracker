@@ -263,7 +263,10 @@ def parse_stat_update(gs: GameState,
         target = parse_enum_member(target_name, Character, 'character')
         target = gs.characters[target]
     stat = parse_enum_member(stat_name, Stat, 'stat')
-    stat_value = target.stats[stat]
+    if stat is Stat.CTB:
+        stat_value = target.ctb
+    else:
+        stat_value = target.stats[stat]
     try:
         if amount.startswith(('+', '-')):
             stat_value += int(amount)
@@ -432,7 +435,7 @@ def parse_monster_spawn(gs: GameState,
 def parse_encounter_checks(gs: GameState,
                            zone_name: str = '',
                            steps: str = '',
-                           *_) -> Comment:
+                           *_) -> EncounterChecks:
     usage = 'walk [zone] [steps]'
     if not zone_name or not steps:
         raise EventParsingError(usage)

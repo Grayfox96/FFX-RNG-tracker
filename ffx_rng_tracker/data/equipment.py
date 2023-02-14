@@ -3,10 +3,10 @@ from dataclasses import dataclass
 
 from ..utils import open_cp1252
 from .autoabilities import (AUTO_STATUSES, DEFENSE_BONUSES, ELEMENTAL_EATERS,
-                            ELEMENTAL_PROOFS, ELEMENTAL_SOSES,
+                            ELEMENTAL_PROOFS, ELEMENTAL_SOS_AUTO_STATUSES,
                             ELEMENTAL_STRIKES, GIL_VALUES, HP_BONUSES,
                             MAGIC_BONUSES, MAGIC_DEF_BONUSES, MP_BONUSES,
-                            STATUS_PROOFS, STATUS_SOSES, STATUS_STRIKES,
+                            SOS_AUTO_STATUSES, STATUS_PROOFS, STATUS_STRIKES,
                             STATUS_TOUCHES, STRENGTH_BONUSES, Autoability)
 from .constants import (EQUIPMENT_EMPTY_SLOTS_GIL_MODIFIERS,
                         EQUIPMENT_SLOTS_GIL_MODIFIERS, Character,
@@ -75,7 +75,7 @@ def _get_equipment_names(file_path: str,
     absolute_file_path = get_resource_path(file_path)
     with open_cp1252(absolute_file_path) as file_object:
         data: dict[str, list[dict[str, str]]] = json.load(file_object)
-    equipment_names = {}
+    equipment_names: dict[EquipmentType, list] = {}
     for equipment_type, names_dicts in data.items():
         equipment_names[EquipmentType(equipment_type)] = []
         for names_dict in names_dicts:
@@ -101,13 +101,24 @@ def get_weapon_name(owner: Character,
     elif owner in tuple(Character)[8:]:
         return f'{owner}\'s weapon'
     # get number of certain ability types in the equipment
-    elemental_strikes = len([a for a in ELEMENTAL_STRIKES if a in abilities])
-    status_strikes = len([a for a in STATUS_STRIKES if a in abilities])
-    status_touches = len([a for a in STATUS_TOUCHES if a in abilities])
+    elemental_strikes = 0
+    status_strikes = 0
+    status_touches = 0
+    strength_bonuses = 0
+    magic_bonuses = 0
+    for ability in abilities:
+        if ability in ELEMENTAL_STRIKES:
+            elemental_strikes += 1
+        elif ability in STATUS_STRIKES:
+            status_strikes += 1
+        elif ability in STATUS_TOUCHES:
+            status_touches += 1
+        elif ability in STRENGTH_BONUSES:
+            strength_bonuses += 1
+        elif ability in MAGIC_BONUSES:
+            magic_bonuses += 1
     counter = (Autoability.COUNTERATTACK in abilities
                or Autoability.EVADE_AND_COUNTER in abilities)
-    strength_bonuses = len([a for a in STRENGTH_BONUSES if a in abilities])
-    magic_bonuses = len([a for a in MAGIC_BONUSES if a in abilities])
 
     # check conditions for names in order of priority
     if Autoability.CAPTURE in abilities:
@@ -266,16 +277,37 @@ def get_armor_name(owner: Character,
     elif owner in tuple(Character)[8:]:
         return f'{owner}\'s armor'
     # get number of certain ability types in the equipment
-    elemental_eaters = len([a for a in ELEMENTAL_EATERS if a in abilities])
-    elemental_proofs = len([a for a in ELEMENTAL_PROOFS if a in abilities])
-    status_proofs = len([a for a in STATUS_PROOFS if a in abilities])
-    defense_bonuses = len([a for a in DEFENSE_BONUSES if a in abilities])
-    magic_def_bonuses = len([a for a in MAGIC_DEF_BONUSES if a in abilities])
-    hp_bonuses = len([a for a in HP_BONUSES if a in abilities])
-    mp_bonuses = len([a for a in MP_BONUSES if a in abilities])
-    auto_statuses = len([a for a in AUTO_STATUSES if a in abilities])
-    elemental_soses = len([a for a in ELEMENTAL_SOSES if a in abilities])
-    status_soses = len([a for a in STATUS_SOSES if a in abilities])
+    elemental_eaters = 0
+    elemental_proofs = 0
+    status_proofs = 0
+    defense_bonuses = 0
+    magic_def_bonuses = 0
+    hp_bonuses = 0
+    mp_bonuses = 0
+    auto_statuses = 0
+    elemental_sos_auto_statuses = 0
+    status_soses = 0
+    for ability in abilities:
+        if ability in ELEMENTAL_EATERS:
+            elemental_eaters += 1
+        elif ability in ELEMENTAL_PROOFS:
+            elemental_proofs += 1
+        elif ability in STATUS_PROOFS:
+            status_proofs += 1
+        elif ability in DEFENSE_BONUSES:
+            defense_bonuses += 1
+        elif ability in MAGIC_DEF_BONUSES:
+            magic_def_bonuses += 1
+        elif ability in HP_BONUSES:
+            hp_bonuses += 1
+        elif ability in MP_BONUSES:
+            mp_bonuses += 1
+        elif ability in AUTO_STATUSES:
+            auto_statuses += 1
+        elif ability in ELEMENTAL_SOS_AUTO_STATUSES:
+            elemental_sos_auto_statuses += 1
+        elif ability in SOS_AUTO_STATUSES:
+            status_soses += 1
 
     if (Autoability.BREAK_HP_LIMIT in abilities
             and Autoability.BREAK_MP_LIMIT in abilities):
@@ -331,7 +363,7 @@ def get_armor_name(owner: Character,
         index = 21
     elif Autoability.AUTO_MED in abilities:
         index = 22
-    elif elemental_soses == 4:
+    elif elemental_sos_auto_statuses == 4:
         index = 23
     elif status_soses == 4:
         index = 24
@@ -347,7 +379,7 @@ def get_armor_name(owner: Character,
         index = 29
     elif auto_statuses == 2:
         index = 30
-    elif elemental_soses == 2:
+    elif elemental_sos_auto_statuses == 2:
         index = 31
     elif (Autoability.AUTO_REGEN in abilities
             or Autoability.SOS_REGEN in abilities):

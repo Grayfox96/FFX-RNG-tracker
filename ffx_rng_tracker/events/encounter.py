@@ -23,7 +23,7 @@ class Encounter(Event):
         self.party_icvs = self._get_party_icvs()
         self.monsters_icvs = self._get_monsters_icvs()
         self.icvs_string = self._get_icvs_string()
-        self.gamestate.normalize_ctbs()
+        self.gamestate.normalize_ctbs(self.gamestate.get_min_ctb())
 
     def __str__(self) -> str:
         name = FORMATIONS[self.name].name
@@ -97,7 +97,7 @@ class Encounter(Event):
                 state.ctb = base - variance
         for character in icvs:
             state = self.gamestate.characters[character]
-            if Autoability.FIRST_STRIKE in state.autoabilities:
+            if state.first_strike:
                 icvs[character] = 0
                 state.ctb = 0
             elif Status.HASTE in state.statuses:

@@ -134,13 +134,13 @@ AUTO_STATUSES = {
     Autoability.AUTO_REGEN: Status.REGEN,
     Autoability.AUTO_REFLECT: Status.REFLECT,
 }
-ELEMENTAL_SOSES = {
+ELEMENTAL_SOS_AUTO_STATUSES = {
     Autoability.SOS_NULTIDE: Status.NULTIDE,
     Autoability.SOS_NULFROST: Status.NULFROST,
     Autoability.SOS_NULSHOCK: Status.NULSHOCK,
     Autoability.SOS_NULBLAZE: Status.NULBLAZE,
 }
-STATUS_SOSES = {
+SOS_AUTO_STATUSES = {
     Autoability.SOS_SHELL: Status.SHELL,
     Autoability.SOS_PROTECT: Status.PROTECT,
     Autoability.SOS_HASTE: Status.HASTE,

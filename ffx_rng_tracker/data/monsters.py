@@ -103,7 +103,7 @@ class MonsterState:
 
     def set_stat(self, stat: Stat, value: int) -> None:
         match stat:
-            case Stat.HP | Stat.CTB:
+            case Stat.HP:
                 max_value = 99999
             case Stat.MP:
                 max_value = 9999
@@ -155,11 +155,11 @@ class MonsterState:
 
     @property
     def ctb(self) -> int:
-        return self.stats[Stat.CTB]
+        return self._ctb
 
     @ctb.setter
     def ctb(self, value) -> None:
-        self.set_stat(Stat.CTB, value)
+        self._ctb = max(0, value)
 
     @property
     def dead(self) -> bool:
@@ -171,7 +171,7 @@ class MonsterState:
 
     def reset(self) -> None:
         self.stats = self.monster.stats.copy()
-        self.stats[Stat.CTB] = 0
+        self.ctb = 0
         self.buffs: dict[Buff, int] = {b: 0 for b in Buff}
         self.armored = self.monster.armored
         self._current_hp = self.stats[Stat.HP]

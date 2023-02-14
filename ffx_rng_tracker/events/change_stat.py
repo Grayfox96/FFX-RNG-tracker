@@ -13,9 +13,12 @@ class ChangeStat(Event):
     stat_value: int
 
     def __post_init__(self) -> None:
-        self.stat_value = self._set_stat()
         if self.stat is Stat.CTB:
-            self.gamestate.normalize_ctbs()
+            self.target.ctb = self.stat_value
+            self.stat_value = self.target.ctb
+            self.gamestate.normalize_ctbs(self.gamestate.get_min_ctb())
+            return
+        self.stat_value = self._set_stat()
 
     def __str__(self) -> str:
         return (f'{self.target}\'s {self.stat} '
