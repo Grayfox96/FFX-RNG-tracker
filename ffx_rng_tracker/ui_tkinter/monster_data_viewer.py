@@ -29,7 +29,7 @@ class TkMonsterSelectionWidget(tk.Listbox):
         self._monster_names = data
         self._listvar.set(data)
 
-    def register_callback(self, callback_func: Callable) -> None:
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
         self.bind('<<ListboxSelect>>', callback_func)
 
 

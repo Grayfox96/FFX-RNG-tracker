@@ -27,6 +27,7 @@ class TrackerUI(ABC):
             self.parser.register_parsing_function(name, function)
         self.input_widget.set_input(self.get_default_input_data())
         self.input_widget.register_callback(self.callback)
+        self.callback()
 
     def get_default_input_data(self) -> str:
         """Returns the default input data."""

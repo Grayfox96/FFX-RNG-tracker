@@ -10,5 +10,5 @@ class InputWidget(Protocol):
     def set_input(self, text: str) -> None:
         """Setup the input widget contents."""
 
-    def register_callback(self, callback_func: Callable) -> None:
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
         """Register the function called as a callback."""

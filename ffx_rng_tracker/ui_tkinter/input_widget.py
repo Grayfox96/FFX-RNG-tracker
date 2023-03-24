@@ -15,20 +15,20 @@ class TkInputWidget(ScrollableText):
         kwargs.setdefault('maxundo', -1)
         super().__init__(parent, *args, **kwargs)
 
-        self.focused = tk.BooleanVar(value=False)
-        self.bind('<FocusIn>', lambda _: self.focused.set(True))
-        self.bind('<FocusOut>', lambda _: self.focused.set(False))
-
     def get_input(self) -> str:
         return self.get('1.0', 'end')
 
     def set_input(self, text: str) -> None:
         self.set(text)
 
-    def register_callback(self, callback_func: Callable) -> None:
-        callback_func()
-        delay = 1000 - (990 * self.focused.get())
-        self.after(delay, self.register_callback, callback_func)
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
+        def callback_func_after(_: tk.Event):
+            while scheduled_callbacks:
+                self.after_cancel(scheduled_callbacks.pop(0))
+            scheduled_callbacks.append(self.after(100, callback_func))
+
+        scheduled_callbacks: list[str] = []
+        self.bind('<KeyRelease>', callback_func_after)
 
 
 class TkSearchBarWidget(tk.Entry):
@@ -40,5 +40,5 @@ class TkSearchBarWidget(tk.Entry):
         self.delete('1', 'end')
         self.insert('1', text)
 
-    def register_callback(self, callback_func: Callable) -> None:
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
         self.bind('<KeyRelease>', callback_func)

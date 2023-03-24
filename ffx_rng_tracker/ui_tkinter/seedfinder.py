@@ -15,7 +15,7 @@ class TkDamageValuesWidget(tk.StringVar):
     def set_input(self, text: str) -> None:
         self.set(text)
 
-    def register_callback(self, callback_func: Callable) -> None:
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
         raise NotImplementedError()
 
 
