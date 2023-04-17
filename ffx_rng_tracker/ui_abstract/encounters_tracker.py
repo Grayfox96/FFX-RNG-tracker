@@ -1,4 +1,5 @@
 from ..events.parsing_functions import (ParsingFunction, parse_encounter,
+                                        parse_encounter_count_change,
                                         parse_equipment_change, parse_roll)
 from .base_tracker import TrackerUI
 
@@ -16,6 +17,7 @@ class EncountersTracker(TrackerUI):
             'advance': parse_roll,
             'encounter': parse_encounter,
             'equip': parse_equipment_change,
+            'encounters_count': parse_encounter_count_change,
         }
         return parsing_functions
 

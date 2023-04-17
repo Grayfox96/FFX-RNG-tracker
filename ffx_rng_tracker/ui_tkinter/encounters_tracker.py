@@ -339,19 +339,18 @@ class TkEncountersTableInputWidget(tk.Frame):
         if initiative_equip:
             input_data.append('equip weapon tidus 1 initiative')
 
-        for _ in range(int(self.forced_encounters.get())):
-            input_data.append('encounter dummy')
+        forced_encounters = int(self.forced_encounters.get())
+        input_data.append(f'roll rng1 {forced_encounters}')
+        input_data.append(f'encounters_count total +{forced_encounters}')
 
-        for _ in range(int(self.random_encounters.get())):
-            input_data.append('encounter besaid_lagoon')
+        random_encounters = int(self.random_encounters.get())
+        input_data.append(f'roll rng1 {random_encounters * 2}')
+        input_data.append(f'encounters_count random +{random_encounters}')
 
-        for _ in range(int(self.simulated_encounters.get())):
-            input_data.append('encounter simulation')
+        simulated_encounters = int(self.simulated_encounters.get())
+        input_data.append(f'roll rng1 {simulated_encounters}')
 
-        zones = []
-        for zone_name, active in self.zones.items():
-            if active.get():
-                zones.append(zone_name)
+        zones = [zone for zone, active in self.zones.items() if active.get()]
         if zones:
             for _ in range(int(self.shown_encounters.get())):
                 input_data.append(f'encounter multizone {" ".join(zones)}')

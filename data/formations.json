@@ -699,7 +699,6 @@
                 {"monsters": ["gold_element", "buer", "melusine"], "forced_condition": ""},
                 {"monsters": ["larva", "aerouge", "aerouge"], "forced_condition": ""},
                 {"monsters": ["gold_element", "buer", "aerouge"], "forced_condition": ""},
-                {"monsters": ["qactuar", "qactuar"], "forced_condition": ""},
                 {"monsters": ["qactuar", "qactuar", "qactuar"], "forced_condition": ""}
             ],
             "danger_value": 35
@@ -735,7 +734,6 @@
                 {"monsters": ["larva", "larva"], "forced_condition": ""},
                 {"monsters": ["melusine", "kusariqqu", "aerouge"], "forced_condition": ""},
                 {"monsters": ["gold_element", "buer", "kusariqqu"], "forced_condition": ""},
-                {"monsters": ["qactuar"], "forced_condition": ""},
                 {"monsters": ["qactuar", "qactuar"], "forced_condition": ""}
             ],
             "danger_value": 30
@@ -1174,6 +1172,86 @@
                 {"monsters": ["great_malboro"], "forced_condition": ""},
                 {"monsters": ["barbatos"], "forced_condition": ""},
                 {"monsters": ["wraith"], "forced_condition": ""}
+            ],
+            "danger_value": 30
+        },
+        "thunder_plains_south_glitched_1_2_stones": {
+            "name": "Thunder Plains (South) (Glitched 1-2 stones)",
+            "encounters": [
+                {"monsters": ["larva", "gold_element"], "forced_condition": ""},
+                {"monsters": ["melusine", "kusariqqu", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "melusine"], "forced_condition": ""},
+                {"monsters": ["larva", "aerouge", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "aerouge"], "forced_condition": ""},
+                {"monsters": ["qactuar"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar"], "forced_condition": ""}
+            ],
+            "danger_value": 35
+        },
+        "thunder_plains_south_glitched_2_3_stones": {
+            "name": "Thunder Plains (South) (Glitched 2-3 stones)",
+            "encounters": [
+                {"monsters": ["larva", "gold_element"], "forced_condition": ""},
+                {"monsters": ["melusine", "kusariqqu", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "melusine"], "forced_condition": ""},
+                {"monsters": ["larva", "aerouge", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "aerouge"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar", "qactuar"], "forced_condition": ""}
+            ],
+            "danger_value": 35
+        },
+        "thunder_plains_south_glitched_1_2_3_stones": {
+            "name": "Thunder Plains (South) (Glitched 1-2-3 stones)",
+            "encounters": [
+                {"monsters": ["larva", "gold_element"], "forced_condition": ""},
+                {"monsters": ["melusine", "kusariqqu", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "melusine"], "forced_condition": ""},
+                {"monsters": ["larva", "aerouge", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "aerouge"], "forced_condition": ""},
+                {"monsters": ["qactuar"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar", "qactuar"], "forced_condition": ""}
+            ],
+            "danger_value": 35
+        },
+        "thunder_plains_north_glitched_1_2_stones": {
+            "name": "Thunder Plains (North) (Glitched 1-2 stones)",
+            "encounters": [
+                {"monsters": ["iron_giant"], "forced_condition": ""},
+                {"monsters": ["iron_giant", "buer", "buer"], "forced_condition": ""},
+                {"monsters": ["larva", "larva"], "forced_condition": ""},
+                {"monsters": ["melusine", "kusariqqu", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "kusariqqu"], "forced_condition": ""},
+                {"monsters": ["qactuar"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar"], "forced_condition": ""}
+            ],
+            "danger_value": 30
+        },
+        "thunder_plains_north_glitched_2_3_stones": {
+            "name": "Thunder Plains (North) (Glitched 2-3 stones)",
+            "encounters": [
+                {"monsters": ["iron_giant"], "forced_condition": ""},
+                {"monsters": ["iron_giant", "buer", "buer"], "forced_condition": ""},
+                {"monsters": ["larva", "larva"], "forced_condition": ""},
+                {"monsters": ["melusine", "kusariqqu", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "kusariqqu"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar", "qactuar"], "forced_condition": ""}
+            ],
+            "danger_value": 30
+        },
+        "thunder_plains_north_glitched_1_2_3_stones": {
+            "name": "Thunder Plains (North) (Glitched 1-2-3 stones)",
+            "encounters": [
+                {"monsters": ["iron_giant"], "forced_condition": ""},
+                {"monsters": ["iron_giant", "buer", "buer"], "forced_condition": ""},
+                {"monsters": ["larva", "larva"], "forced_condition": ""},
+                {"monsters": ["melusine", "kusariqqu", "aerouge"], "forced_condition": ""},
+                {"monsters": ["gold_element", "buer", "kusariqqu"], "forced_condition": ""},
+                {"monsters": ["qactuar"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar"], "forced_condition": ""},
+                {"monsters": ["qactuar", "qactuar", "qactuar"], "forced_condition": ""}
             ],
             "danger_value": 30
         }

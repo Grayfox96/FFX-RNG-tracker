@@ -92,6 +92,45 @@ def parse_encounter(gs: GameState,
     return encounter_type(gs, name)
 
 
+def parse_encounter_count_change(gs: GameState,
+                                 name: str = '',
+                                 amount: str = '',
+                                 *_,
+                                 ) -> Comment:
+    usage = 'Usage: encounter_count [total/random/zone name] [(+/-) amount]'
+    if not name:
+        raise EventParsingError(usage)
+    try:
+        count = int(amount)
+    except ValueError:
+        raise EventParsingError('Amount must be an integer.')
+
+    if name == 'total':
+        if amount.startswith(('+', '-')):
+            gs.encounters_count += count
+            count = gs.encounters_count
+        else:
+            gs.encounters_count = count
+        count_name = 'Total'
+    elif name == 'random':
+        if amount.startswith(('+', '-')):
+            gs.random_encounters_count += count
+            count = gs.random_encounters_count
+        else:
+            gs.random_encounters_count = count
+        count_name = 'Random'
+    elif name in ZONES:
+        if amount.startswith(('+', '-')):
+            gs.zone_encounters_counts[name] += count
+            count = gs.zone_encounters_counts[name]
+        else:
+            gs.zone_encounters_counts[name] = count
+        count_name = ZONES[name].name
+    else:
+        raise EventParsingError(usage)
+    return Comment(gs, f'{count_name} encounters count set to {count}')
+
+
 def parse_steal(gs: GameState,
                 monster_name: str = '',
                 successful_steals: str = '0',
