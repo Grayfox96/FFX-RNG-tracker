@@ -101,7 +101,7 @@ class MonsterState:
     def __post_init__(self) -> None:
         self.reset()
 
-    def set_stat(self, stat: Stat, value: int) -> None:
+    def set_stat(self, stat: Stat | Buff, value: int) -> None:
         match stat:
             case Stat.HP:
                 max_value = 99999
@@ -558,7 +558,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     return monster
 
 
-PRIZE_STRUCTS = _get_prize_structs('data/ffx_mon_data.csv')
+PRIZE_STRUCTS = _get_prize_structs('ffx_mon_data.csv')
 if Configs.game_version in (GameVersion.HD, GameVersion.PS2INT):
     PRIZE_STRUCTS = _patch_prize_structs_for_hd(PRIZE_STRUCTS)
 

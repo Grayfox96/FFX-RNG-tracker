@@ -2,8 +2,9 @@ import sys
 import tkinter as tk
 from tkinter import ttk
 
+from .. import __version__
 from ..configs import Configs
-from ..data.file_functions import get_resource_path, get_version
+from ..data.file_functions import get_resource_path
 from ..logger import log_exceptions, log_tkinter_error
 from .actions_tracker import TkActionsTracker
 from .base_widgets import DamageValuesDialogue
@@ -70,13 +71,16 @@ def main(widget: type[tk.Widget],
     root.report_callback_exception = log_tkinter_error
     root.withdraw()
     root.protocol('WM_DELETE_WINDOW', root.quit)
-    title += ' v' + '.'.join(map(str, get_version()))
-    title += f' {Configs.game_version} {Configs.speedrun_category}'
+    title += (f' v{__version__} {Configs.game_version} '
+              f'{Configs.speedrun_category}')
     root.title(title)
     root.geometry(size)
 
     if Configs.use_theme:
-        theme_path = get_resource_path(AZURE_THEME_PATH)
+        theme_path = get_resource_path(
+            relative_path=AZURE_THEME_PATH,
+            file_directory=AZURE_THEME_DIRECTORY
+            )
         root.tk.call('source', theme_path)
         if Configs.use_dark_mode:
             root.tk.call('set_theme', 'dark')
@@ -102,4 +106,5 @@ def main(widget: type[tk.Widget],
     root.mainloop()
 
 
-AZURE_THEME_PATH = 'ui_tkinter/azure_theme/azure.tcl'
+AZURE_THEME_DIRECTORY = 'azure_theme'
+AZURE_THEME_PATH = 'azure.tcl'

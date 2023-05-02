@@ -56,4 +56,4 @@ def _get_item_prices(file_path: str) -> dict[Item, int]:
 
 
 ITEMS = tuple(i for i in Item)
-ITEM_PRICES = _get_item_prices('data/items.csv')
+ITEM_PRICES = _get_item_prices('items.csv')

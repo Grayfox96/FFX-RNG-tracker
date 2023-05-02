@@ -27,7 +27,7 @@ def get_notes(file_name: str, seed: int | None = None) -> str:
         logger.warning(f'Default notes file "{file_name}" for category '
                        f'"{category_dir}" not found.')
         shutil.copyfile(
-            get_resource_path(f'data/notes/{category_dir}/{file_name}'),
+            get_resource_path(f'notes/{category_dir}/{file_name}'),
             default_file_path,
             )
         logger.info(f'Copied default notes file to "{default_file_path}".')

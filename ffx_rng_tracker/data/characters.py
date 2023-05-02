@@ -276,4 +276,4 @@ def _get_characters(file_path: str) -> dict[Character, DefaultCharacterState]:
     return characters
 
 
-CHARACTERS_DEFAULTS = _get_characters('data/characters.json')
+CHARACTERS_DEFAULTS = _get_characters('characters.json')

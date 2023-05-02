@@ -39,7 +39,7 @@ class Configs:
     ui_widgets: dict[str, UIWidgetConfigs] = {}
     _parser = configparser.ConfigParser()
     _configs_file = 'ffx_rng_tracker_configs.ini'
-    _default_configs_file = 'data/default_configs.ini'
+    _default_configs_file = 'default_configs.ini'
 
     @classmethod
     def getboolean(cls, section: str, option: str, fallback: bool) -> bool:
