@@ -171,7 +171,7 @@ class Bribe(Kill):
         super().__post_init__()
 
     def _get_item_1(self) -> ItemDrop | None:
-        return self.monster.bribe['item']
+        return self.monster.bribe.item
 
     def _get_item_2(self) -> None:
         return

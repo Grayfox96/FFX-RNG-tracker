@@ -1,6 +1,7 @@
 import csv
 from dataclasses import dataclass, field
 from itertools import count
+from math import sqrt
 
 from ..configs import Configs
 from ..utils import add_bytes, open_cp1252, stringify
@@ -40,8 +41,23 @@ class ItemStealInfo:
 
 @dataclass
 class ItemBribeInfo:
-    max_cost: int
+    monster_hp: int
     item: ItemDrop | None = None
+
+    @property
+    def max_cost(self) -> int:
+        return self.monster_hp * 25
+
+    def get_chance(self, gil: int) -> float:
+        chance = ((gil * 64 // (5 * self.monster_hp)) - 64) / 256
+        return max(0.0, chance)
+
+    def expected_items_range(self, gil: int) -> tuple[float, float]:
+        item_quantity_base = sqrt(self.get_chance(gil))
+        item_quantity = item_quantity_base * self.item.quantity
+        item_quantity_min = item_quantity * 80 / 100
+        item_quantity_max = item_quantity * 120 / 100
+        return item_quantity_min, item_quantity_max
 
 
 @dataclass
@@ -436,7 +452,7 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     if prize_struct[167] == 32:
         steal.items[Rarity.RARE] = ItemDrop(
             ITEMS[prize_struct[166]], prize_struct[169], True)
-    bribe = ItemBribeInfo(max_cost=stats[Stat.HP] * 25)
+    bribe = ItemBribeInfo(monster_hp=stats[Stat.HP])
     if prize_struct[171] == 32:
         bribe.item = ItemDrop(
             ITEMS[prize_struct[170]], prize_struct[172], False)
