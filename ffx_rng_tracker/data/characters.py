@@ -276,4 +276,18 @@ def _get_characters(file_path: str) -> dict[Character, DefaultCharacterState]:
     return characters
 
 
+def calculate_power_base(stats: dict[Stat, int]) -> int:
+    power_base = ((min(stats[Stat.HP], 9999) // 100)
+                  + (min(stats[Stat.MP], 999) // 10)
+                  + stats[Stat.STRENGTH]
+                  + stats[Stat.DEFENSE]
+                  + stats[Stat.MAGIC]
+                  + stats[Stat.MAGIC_DEFENSE]
+                  + stats[Stat.AGILITY]
+                  + stats[Stat.EVASION]
+                  + stats[Stat.ACCURACY]
+                  )
+    return power_base
+
+
 CHARACTERS_DEFAULTS = _get_characters('characters.json')

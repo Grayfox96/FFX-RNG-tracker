@@ -422,9 +422,11 @@ valefor energy_ray funguar
 valefor energy_ray red_element
 
 # First grid
-stat wakka strength +2
+stat yuna mp +20
+stat yuna magic +7
+stat yuna magic_defense +3
 stat kimahri hp +600
-stat valefor magic 28
+stat wakka strength +2
 
 # OD recharge encounter
 encounter mrr_valley
@@ -448,7 +450,6 @@ encounter mrr_precipice
 # Second grid
 stat yuna magic +3
 stat yuna agility +3
-stat valefor magic 31
 
 weapon auron 2 piercing initiative
 
@@ -477,6 +478,7 @@ seymour thundara head
 seymour thundara head
 
 # Djose grid
+stat tidus hp +200
 stat tidus strength +1
 stat tidus agility +2
 stat wakka strength +2
@@ -585,10 +587,11 @@ rikku lightning_bolt spherimorph
 rikku lightning_bolt spherimorph
 
 # Post-Spherimorph grid
-stat rikku agility +3
+stat yuna hp +400
 stat yuna strength +8
 stat yuna agility +2
-stat kimahri agility +2
+stat rikku agility +3
+stat kimahri agility +3
 
 encounter lake_macalania
 
@@ -612,6 +615,7 @@ rikku lightning_bolt crawler
 rikku lightning_bolt crawler
 
 # Post-Crawler grid
+stat tidus hp +600
 stat tidus strength +20
 stat tidus agility +4
 
@@ -653,8 +657,8 @@ encounter crevasse
 
 encounter crevasse
 
-# Pre-Wendigo grid 
-stat tidus hp +400
+# Pre-Wendigo grid
+stat tidus hp +200
 stat tidus strength +4
 stat tidus agility +2
 # Extra Strength node
@@ -691,7 +695,10 @@ tidus attack guado_guardian_2
 encounter zu
 tidus attack zu_2
 
-# Tidus unequips Brotherhood
+# Bikanel grid
+stat tidus strength +4
+
+# Tidus equips Sonic Steel
 weapon tidus 1 first_strike
 
 encounter sanubia_desert_east
@@ -821,8 +828,12 @@ kimahri bomb_core yat-99
 # kimahri sleeping_powder yat-99
 
 # -- Via Purifico --
-stat ixion strength 53
-stat bahamut strength 70
+stat yuna hp +400
+stat yuna mp +20
+stat yuna strength +16
+stat yuna defense +3
+stat yuna magic +6
+stat yuna agility +3
 
 encounter via_purifico_corridor
 ixion attack maze_larva
@@ -859,12 +870,10 @@ tidus elixir_mp evrae_altana
 # tidus phoenix_down evrae_altana
 
 # -- Highbridge --
-# Pre-Natus grid
-stat ixion strength 77
-stat bahamut strength 106
-# Without safety Defense
-# stat ixion strength 76
-# stat bahamut strength 105
+stat yuna hp +200
+stat yuna strength +20
+stat yuna defense +3
+stat yuna agility +2
 
 encounter highbridge
 # tidus attack ykt-63
@@ -876,9 +885,7 @@ bahamut attack seymour_natus
 
 # -- Calm Lands --
 # Pre-Defender X grid
-stat ixion strength 81
-stat bahamut strength 112
-stat yuna strength 53
+stat yuna strength +4
 
 encounter calm_lands_south_before_defender_x
 encounter calm_lands_south_before_defender_x
@@ -919,17 +926,22 @@ kimahri water_gem biran_ronso
 
 # Post-Ronso grid
 # With 4 Return Spheres
-stat ixion strength 85
-stat bahamut strength 118
-stat yuna strength 55
-
-# With 2/2 Spheres
-# stat ixion strength 95
-# stat bahamut strength 133
-# stat yuna strength 64
-
+stat yuna strength +2
+stat yuna magic +3
+stat yuna agility +4
 weapon yuna 1 first_strike
 weapon auron 1 first_strike
+
+# With 2/2 Spheres
+# stat yuna strength +11
+# stat yuna agility +8
+# weapon yuna 1 first_strike
+# weapon auron 1 first_strike
+
+# With 4 Friend Spheres
+# stat yuna strength +17
+# stat yuna agility +12
+# stat yuna magic_defense +2
 
 # encounter gagazet_mountain
 
@@ -959,18 +971,31 @@ bahamut attack sanctuary_keeper
 
 # encounter zanarkand_dome
 
-# Luck grid
-# stat bahamut luck +4
+# Zanarkand grid
+# With 4 Return Spheres
+stat yuna strength +11
+stat yuna agility +8
+stat yuna luck +4
+
+# With 2/2 Spheres
+# stat yuna strength +6
+# stat yuna agility +7
+# stat yuna magic +3
 # stat yuna luck +4
+
+# With 4 Friend Spheres
+# stat yuna luck +4
+# weapon yuna 1 first_strike
+# weapon auron 1 first_strike
 
 encounter spectral_keeper
 bahamut attack spectral_keeper
 bahamut attack spectral_keeper
 
 # Pre-Yunalesca grid
-stat ixion strength 103
-stat bahamut strength 145
-stat yuna strength 70
+# With 4 Return Spheres
+stat yuna strength +4
+stat yuna agility +3
 
 encounter yunalesca
 bahamut attack yunalesca
@@ -1008,6 +1033,13 @@ bahamut attack seymour_omnis
 # encounter
 # encounter
 
+# BFA grid
+# With 4 Return Spheres or 2/2
+stat yuna agility +11
+
+# With 4 Friend Spheres
+# stat yuna agility +15
+
 # Braska's Final Aeon
 encounter
 rikku armor_break braska's_final_aeon
@@ -1020,33 +1052,33 @@ bahamut attack braska's_final_aeon
 bahamut attack braska's_final_aeon
 
 # Possessed Aeons' Luck is 1
-stat valefor luck 1
-stat ifrit luck 1
-stat ixion luck 1
-stat shiva luck 1
-stat bahamut luck 1
 
 encounter
+stat valefor luck 1
 yuna attack valefor_c
 # yuna quick_hit valefor_c
 # yuna spare_change valefor_c
 
 encounter
+stat ifrit luck 1
 yuna attack ifrit_c
 # yuna quick_hit ifrit_c
 # yuna spare_change ifrit_c
 
 encounter
+stat ixion luck 1
 yuna attack ixion_c
 # yuna quick_hit ixion_c
 # yuna spare_change ixion_c
 
 encounter
+stat shiva luck 1
 yuna attack shiva_c
 # yuna quick_hit shiva_c
 # yuna spare_change shiva_c
 
 encounter
+stat bahamut luck 1
 yuna attack bahamut_c
 # yuna quick_hit bahamut_c
 # yuna spare_change bahamut_c

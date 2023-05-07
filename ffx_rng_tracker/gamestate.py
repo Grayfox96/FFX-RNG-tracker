@@ -1,8 +1,11 @@
 from itertools import chain
 
 from .configs import Configs
-from .data.characters import CHARACTERS_DEFAULTS, CharacterState
-from .data.constants import BASE_COMPATIBILITY, Character, Item, Status
+from .data.characters import (CHARACTERS_DEFAULTS, CharacterState,
+                              calculate_power_base)
+from .data.constants import (AEONS_STATS_CONSTANTS, BASE_COMPATIBILITY,
+                             ENCOUNTERS_YUNA_STATS, Character, Item, Stat,
+                             Status)
 from .data.equipment import Equipment
 from .data.items import InventorySlot
 from .data.monsters import MonsterState
@@ -66,6 +69,36 @@ class GameState:
                 if status not in monster.statuses:
                     monster.statuses[status] = 255
 
+    def calculate_aeon_stats(self) -> None:
+        yuna_stats = self.characters[Character.YUNA].stats.copy()
+        yuna_stats[Stat.HP] = min(yuna_stats[Stat.HP], 9999)
+        yuna_stats[Stat.MP] = min(yuna_stats[Stat.MP], 999)
+        enc_tier = min(max(0, (self.encounters_count - 30) // 30), 19)
+
+        check = tuple([enc_tier] + [v for v in yuna_stats.values()])
+        if self.calculate_aeon_stats_cache == check:
+            return
+        self.calculate_aeon_stats_cache = check
+
+        power_base = calculate_power_base(yuna_stats)
+
+        enc_stats = {stat: ENCOUNTERS_YUNA_STATS[stat][enc_tier]
+                     for stat in yuna_stats}
+        enc_power_base = calculate_power_base(enc_stats)
+
+        # TODO
+        # add bonus aeon stats to gamestate
+        bonus_stats: dict[Stat, int] = {}
+
+        for aeon, stats_constants in AEONS_STATS_CONSTANTS.items():
+            aeon = self.characters[aeon]
+            aeon.set_stat(Stat.LUCK, yuna_stats[Stat.LUCK])
+            for stat, (x, y) in stats_constants.items():
+                value = (yuna_stats[stat] * x // 100) + int(power_base * y)
+                enc_value = (enc_stats[stat] * x // 100) + int(enc_power_base * y)
+                value = max(value, enc_value) + bonus_stats.get(stat, 0)
+                aeon.set_stat(stat, value)
+
     def process_start_of_turn(self,
                               actor: CharacterState | MonsterState,
                               ) -> None:
@@ -107,6 +140,8 @@ class GameState:
         # some point
         self.process_end_of_encounter()
 
+        self.calculate_aeon_stats()
+
     def process_end_of_encounter(self) -> None:
         for state in self.characters.values():
             if Status.DEATH in state.statuses:
@@ -145,6 +180,8 @@ class GameState:
         self.zone_encounters_counts.clear()
         for character in self.characters.values():
             character.reset()
+        self.calculate_aeon_stats_cache = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        self.calculate_aeon_stats()
 
     @property
     def gil(self) -> int:

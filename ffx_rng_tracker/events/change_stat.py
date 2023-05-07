@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from ..data.characters import CharacterState
-from ..data.constants import Stat
+from ..data.constants import Character, Stat
 from ..data.monsters import MonsterState
 from .main import Event
 
@@ -13,12 +13,10 @@ class ChangeStat(Event):
     stat_value: int
 
     def __post_init__(self) -> None:
-        if self.stat is Stat.CTB:
-            self.target.ctb = self.stat_value
-            self.stat_value = self.target.ctb
-            self.gamestate.normalize_ctbs(self.gamestate.get_min_ctb())
-            return
         self.stat_value = self._set_stat()
+        if (isinstance(self.target, CharacterState)
+                and self.target.character == Character.YUNA):
+            self.gamestate.calculate_aeon_stats()
 
     def __str__(self) -> str:
         return (f'{self.target}\'s {self.stat} '

@@ -179,7 +179,6 @@ class Stat(StringEnum):
     LUCK = 'Luck'
     EVASION = 'Evasion'
     ACCURACY = 'Accuracy'
-    CTB = 'CTB'
 
 
 class Buff(StringEnum):
@@ -552,3 +551,78 @@ ELEMENT_BITMASKS = {
 
 EQUIPMENT_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 5)
 EQUIPMENT_EMPTY_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 400)
+
+AEONS_STATS_CONSTANTS = {
+    Character.VALEFOR: {
+        Stat.HP: (20, 6), Stat.MP: (4, 2/10), Stat.STRENGTH: (60, 1/7),
+        Stat.DEFENSE: (50, 1/5), Stat.MAGIC: (100, 1/70),
+        Stat.MAGIC_DEFENSE: (100, 1/30), Stat.AGILITY: (50, 1/20),
+        Stat.EVASION: (50, 1/24), Stat.ACCURACY: (200, 1/20)
+        },
+    Character.IFRIT: {
+        Stat.HP: (70, 5), Stat.MP: (3, 2/10), Stat.STRENGTH: (80, 1/7),
+        Stat.DEFENSE: (170, 1/5), Stat.MAGIC: (90, 1/33),
+        Stat.MAGIC_DEFENSE: (90, 1/34), Stat.AGILITY: (40, 1/20),
+        Stat.EVASION: (30, 1/70), Stat.ACCURACY: (200, 1/20)
+        },
+    Character.IXION: {
+        Stat.HP: (55, 6), Stat.MP: (5, 2/10), Stat.STRENGTH: (100, 1/7),
+        Stat.DEFENSE: (100, 1/5), Stat.MAGIC: (90, 1/38),
+        Stat.MAGIC_DEFENSE: (130, 1/30), Stat.AGILITY: (30, 1/20),
+        Stat.EVASION: (30, 1/47), Stat.ACCURACY: (250, 1/20)
+        },
+    Character.SHIVA: {
+        Stat.HP: (40, 6), Stat.MP: (7, 2/10), Stat.STRENGTH: (120, 1/8),
+        Stat.DEFENSE: (40, 1/7), Stat.MAGIC: (100, 1/28),
+        Stat.MAGIC_DEFENSE: (100, 1/25), Stat.AGILITY: (100, 1/23),
+        Stat.EVASION: (100, 1/44), Stat.ACCURACY: (200, 1/20)
+        },
+    Character.BAHAMUT: {
+        Stat.HP: (100, 7), Stat.MP: (5, 3/10), Stat.STRENGTH: (160, 1/7),
+        Stat.DEFENSE: (200, 1/6), Stat.MAGIC: (90, 1/250),
+        Stat.MAGIC_DEFENSE: (100, 1/12), Stat.AGILITY: (50, 1/20),
+        Stat.EVASION: (50, 1/20), Stat.ACCURACY: (200, 1/20)
+        },
+    Character.ANIMA: {
+        Stat.HP: (120, 8), Stat.MP: (4, 4/10), Stat.STRENGTH: (330, 1/6),
+        Stat.DEFENSE: (100, 1/5), Stat.MAGIC: (70, 1/12),
+        Stat.MAGIC_DEFENSE: (100, 1/30), Stat.AGILITY: (40, 1/20),
+        Stat.EVASION: (50, 1/20), Stat.ACCURACY: (200, 1/20)
+        },
+    Character.YOJIMBO: {
+        Stat.HP: (18, 9), Stat.MP: (0, 0/10), Stat.STRENGTH: (240, 1/6),
+        Stat.DEFENSE: (250, 1/8), Stat.MAGIC: (60, 1/23),
+        Stat.MAGIC_DEFENSE: (100, 1/30), Stat.AGILITY: (40, 1/20),
+        Stat.EVASION: (180, 1/20), Stat.ACCURACY: (300, 1/10)
+        },
+    Character.CINDY: {
+        Stat.HP: (240, 10), Stat.MP: (18,  3/10), Stat.STRENGTH: (230,  1/6),
+        Stat.DEFENSE: (300,  1/6), Stat.MAGIC: (100,  1/60),
+        Stat.MAGIC_DEFENSE: (100,  1/12), Stat.AGILITY: (50,  1/20),
+        Stat.EVASION: (50,  1/20), Stat.ACCURACY: (200,  1/20)
+        },
+    Character.SANDY: {
+        Stat.HP: (200, 8), Stat.MP: (5, 3/10), Stat.STRENGTH: (550, 1/7),
+        Stat.DEFENSE: (180, 1/6), Stat.MAGIC: (110, 1/40),
+        Stat.MAGIC_DEFENSE: (100, 1/12), Stat.AGILITY: (50, 1/20),
+        Stat.EVASION: (40, 1/20), Stat.ACCURACY: (270, 1/20)
+        },
+    Character.MINDY: {
+        Stat.HP: (150, 5), Stat.MP: (20, 4/10), Stat.STRENGTH: (160, 1/7),
+        Stat.DEFENSE: (140, 1/6), Stat.MAGIC: (130, 1/40),
+        Stat.MAGIC_DEFENSE: (100, 1/12), Stat.AGILITY: (70, 1/20),
+        Stat.EVASION: (60, 1/20), Stat.ACCURACY: (240, 1/20)
+        },
+}
+ENCOUNTERS_YUNA_STATS = {
+    Stat.HP: [475, 475, 675, 875, 875, 1075, 1075, 1075, 1275, 1475, 1475, 1475, 1675, 1875, 1875, 1875, 2075, 2075, 2275, 2275],
+    Stat.MP: [84, 104, 104, 104, 124, 144, 144, 164, 184, 184, 204, 204, 224, 224, 244, 244, 264, 264, 304, 304],
+    Stat.STRENGTH: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+    Stat.DEFENSE: [5, 5, 7, 7, 7, 7, 7, 7, 7, 11, 11, 11, 11, 11, 11, 15, 15, 15, 15, 15],
+    Stat.MAGIC: [20, 23, 26, 26, 29, 29, 32, 36, 40, 40, 44, 44, 48, 48, 52, 52, 56, 56, 60, 60],
+    Stat.MAGIC_DEFENSE: [20, 23, 23, 26, 29, 32, 36, 36, 36, 40, 40, 44, 48, 48, 52, 52, 52, 56, 56, 60],
+    Stat.AGILITY: [10, 10, 13, 13, 13, 16, 16, 20, 20, 24, 24, 28, 28, 32, 32, 36, 36, 36, 40, 40],
+    Stat.LUCK: [17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17],
+    Stat.EVASION: [30, 32, 32, 32, 32, 36, 36, 36, 40, 40, 44, 44, 44, 48, 48, 52, 52, 56, 56, 60],
+    Stat.ACCURACY: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+}

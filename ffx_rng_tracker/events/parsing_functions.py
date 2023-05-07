@@ -292,7 +292,7 @@ def parse_stat_update(gs: GameState,
                       stat_name: str = '',
                       amount: str = '',
                       *_,
-                      ) -> ChangeStat:
+                      ) -> ChangeStat | Comment:
     usage = 'Usage: stat [character] [stat] [(+/-) amount]'
     if not target_name or not stat_name or not amount:
         raise EventParsingError(usage)
@@ -301,11 +301,18 @@ def parse_stat_update(gs: GameState,
     else:
         target = parse_enum_member(target_name, Character, 'character')
         target = gs.characters[target]
+    if stat_name == 'ctb':
+        try:
+            if amount.startswith(('+', '-')):
+                target.ctb += int(amount)
+            else:
+                target.ctb = int(amount)
+        except ValueError:
+            raise EventParsingError('Stat value must be an integer.')
+        gs.normalize_ctbs(gs.get_min_ctb())
+        return Comment(gs, f'{target}\'s CTB changed to {target.ctb}')
     stat = parse_enum_member(stat_name, Stat, 'stat')
-    if stat is Stat.CTB:
-        stat_value = target.ctb
-    else:
-        stat_value = target.stats[stat]
+    stat_value = target.stats[stat]
     try:
         if amount.startswith(('+', '-')):
             stat_value += int(amount)

@@ -91,12 +91,6 @@ stat wakka strength +166
 stat wakka agility +12
 stat yuna strength +44
 stat yuna agility +4
-stat valefor evasion +2
-stat ifrit evasion +1
-stat ixion strength 72
-stat ixion evasion +1
-stat shiva evasion +4
-stat bahamut evasion +1
 
 # Besaid tutorial fights
 encounter wakka_tutorial
@@ -218,7 +212,7 @@ wakka attack m1
 encounter rikku_tutorial
 
 weapon tidus 1 first_strike
-weapon wakka 2 first_strike break_damage_limit 
+weapon wakka 2 first_strike break_damage_limit
 armor wakka 1 auto-haste
 
 # -- Macalania Woods --
@@ -387,28 +381,28 @@ wakka quick_hit_hd braska's_final_aeon
 wakka quick_hit_hd braska's_final_aeon
 
 # Possessed Aeons' Luck is 1
-stat valefor luck 1
-stat ifrit luck 1
-stat ixion luck 1
-stat shiva luck 1
-stat bahamut luck 1
 
 encounter
+stat valefor luck 1
 # wakka attack valefor_c
 wakka shining_gem valefor_c
 
 encounter
+stat ifrit luck 1
 # wakka attack ifrit_c
 wakka shining_gem ifrit_c
 
 encounter
+stat ixion luck 1
 # wakka attack ixion_c
 wakka shining_gem ixion_c
 
 encounter
+stat shiva luck 1
 # wakka attack shiva_c
 wakka shining_gem shiva_c
 
 encounter
+stat bahamut luck 1
 # wakka attack bahamut_c
 wakka shining_gem bahamut_c

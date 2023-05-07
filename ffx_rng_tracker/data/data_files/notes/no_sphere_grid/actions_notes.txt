@@ -369,9 +369,6 @@ encounter lord_ochu
 encounter lord_ochu
 encounter lord_ochu
 
-stat valefor strength 22
-stat valefor magic 30
-
 encounter kilika_woods
 encounter kilika_woods
 
@@ -835,13 +832,13 @@ tidus attack evrae
 
 # -- Bevelle --
 # Fight 1
-encounter 
+encounter
 tidus attack warrior_monk
 tidus attack warrior_monk_2
 tidus attack warrior_monk
 
 # Fight 2
-encounter 
+encounter
 tidus attack ykt-63
 tidus attack ykt-63
 # rikku sleeping_powder ykt-63
@@ -851,13 +848,13 @@ kimahri silence_grenade warrior_monk_2
 kimahri silence_grenade warrior_monk_2
 
 # Fight 3
-encounter 
+encounter
 tidus attack warrior_monk
 tidus attack warrior_monk_2
 tidus attack warrior_monk
 
 # Fight 4
-encounter 
+encounter
 tidus attack ykt-63
 tidus attack ykt-63
 # rikku sleeping_powder ykt-63
@@ -867,7 +864,7 @@ kimahri silence_grenade warrior_monk_2
 kimahri silence_grenade warrior_monk_2
 
 # Fight 5
-encounter 
+encounter
 # using 2 bomb cores
 tidus attack warrior_monk
 tidus attack warrior_monk
@@ -895,22 +892,20 @@ kimahri bomb_core yat-99
 
 # -- Via Purifico --
 
-stat ixion strength 53
-stat bahamut strength 70
-
-encounter 
+encounter
 ixion attack maze_larva
-encounter 
+
+encounter
 ixion attack maze_larva
 
 # Isaaru fights
-encounter 
+encounter
 bahamut attack ifrit_2
 
-encounter 
+encounter
 bahamut attack valefor
 
-encounter 
+encounter
 # ixion thunder bahamut
 ixion attack bahamut
 ixion attack bahamut
@@ -919,11 +914,11 @@ ixion attack bahamut
 ixion attack bahamut
 
 # -- Underwater --
-encounter 
+encounter
 # tidus attack sahagin_3
 # tidus attack phlegyas
 
-encounter 
+encounter
 tidus elixir_hp evrae_altana
 tidus elixir_mp evrae_altana
 tidus elixir_hp evrae_altana
@@ -933,41 +928,28 @@ tidus elixir_mp evrae_altana
 
 # -- Highbridge --
 
-# Pre-Natus grid
-stat ixion strength 77
-stat bahamut strength 106
-# Without safety Defense
-# stat ixion strength 76
-# stat bahamut strength 105
-
-encounter 
+encounter
 # tidus attack ykt-63
 # yuna attack ykt-63
 
-encounter 
+encounter
 tidus attack seymour_natus
 bahamut attack seymour_natus
 
 # -- Calm Lands --
+encounter
 
-# Pre-Defender X grid
-stat ixion strength 81
-stat bahamut strength 112
-stat yuna strength 53
-
-encounter 
-
-encounter 
+encounter
 bahamut attack defender_x
 bahamut attack defender_x
 
 # -- Sunken Cave --
-encounter 
+encounter
 ixion attack ghost
 ixion attack ghost
 
 # -- Gagazet --
-encounter 
+encounter
 kimahri water_gem yenke_ronso
 kimahri water_gem yenke_ronso
 kimahri water_gem yenke_ronso
@@ -980,18 +962,7 @@ kimahri water_gem biran_ronso
 kimahri water_gem biran_ronso
 kimahri water_gem biran_ronso
 
-# Post-Ronso grid
-# With 4 Return Spheres
-stat ixion strength 85
-stat bahamut strength 118
-stat yuna strength 55
-
-# With 2/2 Spheres
-# stat ixion strength 95
-# stat bahamut strength 133
-# stat yuna strength 64
-
-encounter 
+encounter
 tidus haste yuna
 yuna attack seymour_flux
 rikku silence_grenade seymour_flux
@@ -1005,57 +976,48 @@ tidus attack seymour_flux
 yuna attack seymour_flux
 yuna attack seymour_flux
 
-encounter 
+encounter
 tidus armor_break sanctuary_keeper
 bahamut attack sanctuary_keeper
 
-# Luck grid
-# stat bahamut luck +4
-# stat yuna luck +4
-
-encounter 
+encounter
 bahamut attack spectral_keeper
 bahamut attack spectral_keeper
 
-# Pre-Yunalesca grid
-stat ixion strength 103
-stat bahamut strength 145
-stat yuna strength 70
-
-encounter 
+encounter
 bahamut attack yunalesca
 bahamut attack yunalesca
 bahamut attack yunalesca
 
-encounter 
+encounter
 bahamut impulse left_fin
 bahamut impulse left_fin
 
-encounter 
+encounter
 bahamut impulse right_fin
 bahamut impulse right_fin
 
 # Sin Core
-encounter 
+encounter
 # bahamut attack sinspawn_genais
 bahamut impulse sin_2
 
 # Overdrive Sin
-encounter 
+encounter
 bahamut impulse sin_3
 bahamut attack sin_3
 # bahamut attack sin_3
 
-encounter 
+encounter
 tidus armor_break seymour_omnis
 bahamut attack seymour_omnis
 
 # -- Nucleus --
-# encounter 
-# encounter 
+# encounter
+# encounter
 
 # Braska's Final Aeon
-encounter 
+encounter
 rikku armor_break braska's_final_aeon
 # rikku chaos_grenade braska's_final_aeon
 # rikku chaos_grenade yu_pagoda
@@ -1066,33 +1028,33 @@ bahamut attack braska's_final_aeon
 bahamut attack braska's_final_aeon
 
 # Possessed Aeons' Luck is 1
-stat valefor luck 1
-stat ifrit luck 1
-stat ixion luck 1
-stat shiva luck 1
-stat bahamut luck 1
 
-encounter 
+encounter
+stat valefor luck 1
 yuna attack valefor_c
 # yuna quick_hit valefor_c
 # yuna spare_change valefor_c
 
-encounter 
+encounter
+stat ifrit luck 1
 yuna attack ifrit_c
 # yuna quick_hit ifrit_c
 # yuna spare_change ifrit_c
 
-encounter 
+encounter
+stat ixion luck 1
 yuna attack ixion_c
 # yuna quick_hit ixion_c
 # yuna spare_change ixion_c
 
-encounter 
+encounter
+stat shiva luck 1
 yuna attack shiva_c
 # yuna quick_hit shiva_c
 # yuna spare_change shiva_c
 
-encounter 
+encounter
+stat bahamut luck 1
 yuna attack bahamut_c
 # yuna quick_hit bahamut_c
 # yuna spare_change bahamut_c
