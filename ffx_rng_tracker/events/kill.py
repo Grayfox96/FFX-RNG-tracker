@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from ..data.constants import (Character, EquipmentSlots, EquipmentType,
                               KillType, Rarity)
@@ -12,6 +12,7 @@ from .main import Event
 class Kill(Event):
     monster: Monster
     killer: Character
+    ap_credited_characters: list[Character] = field(default_factory=list)
     overkill: bool = False
 
     def __post_init__(self) -> None:
@@ -28,6 +29,15 @@ class Kill(Event):
         if self.equipment:
             self.gamestate.equipment_inventory.append(self.equipment.equipment)
         self.equipment_index = self._get_equipment_index()
+        self._give_ap()
+
+    def _give_ap(self):
+        if self.overkill:
+            ap = self.monster.ap[KillType.OVERKILL]
+        else:
+            ap = self.monster.ap[KillType.NORMAL]
+        for character in self.ap_credited_characters:
+            self.gamestate.characters[character].ap += ap
 
     def __str__(self) -> str:
         string = f'{self.monster} drops: '

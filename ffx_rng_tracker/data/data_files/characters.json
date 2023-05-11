@@ -2,6 +2,7 @@
     "Tidus": {
         "character": "Tidus",
         "index": 0,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 520,
             "MP": 12,
@@ -29,6 +30,7 @@
     "Yuna": {
         "character": "Yuna",
         "index": 1,
+        "starting_s_lv": 2,
         "stats": {
             "HP": 475,
             "MP": 84,
@@ -56,6 +58,7 @@
     "Auron": {
         "character": "Auron",
         "index": 2,
+        "starting_s_lv": 12,
         "stats": {
             "HP": 1030,
             "MP": 33,
@@ -85,6 +88,7 @@
     "Kimahri": {
         "character": "Kimahri",
         "index": 3,
+        "starting_s_lv": 6,
         "stats": {
             "HP": 644,
             "MP": 78,
@@ -115,6 +119,7 @@
     "Wakka": {
         "character": "Wakka",
         "index": 4,
+        "starting_s_lv": 2,
         "stats": {
             "HP": 618,
             "MP": 10,
@@ -142,6 +147,7 @@
     "Lulu": {
         "character": "Lulu",
         "index": 5,
+        "starting_s_lv": 2,
         "stats": {
             "HP": 380,
             "MP": 92,
@@ -169,6 +175,7 @@
     "Rikku": {
         "character": "Rikku",
         "index": 6,
+        "starting_s_lv": 25,
         "stats": {
             "HP": 360,
             "MP": 85,
@@ -196,6 +203,7 @@
     "Seymour": {
         "character": "Seymour",
         "index": 7,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 1200,
             "MP": 999,
@@ -227,6 +235,7 @@
     "Valefor": {
         "character": "Valefor",
         "index": 8,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -260,6 +269,7 @@
     "Ifrit": {
         "character": "Ifrit",
         "index": 9,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -295,6 +305,7 @@
     "Ixion": {
         "character": "Ixion",
         "index": 10,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -330,6 +341,7 @@
     "Shiva": {
         "character": "Shiva",
         "index": 11,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -365,6 +377,7 @@
     "Bahamut": {
         "character": "Bahamut",
         "index": 12,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -400,6 +413,7 @@
     "Anima": {
         "character": "Anima",
         "index": 13,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -435,6 +449,7 @@
     "Yojimbo": {
         "character": "Yojimbo",
         "index": 14,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -469,6 +484,7 @@
     "Cindy": {
         "character": "Cindy",
         "index": 15,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -504,6 +520,7 @@
     "Sandy": {
         "character": "Sandy",
         "index": 16,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -539,6 +556,7 @@
     "Mindy": {
         "character": "Mindy",
         "index": 17,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 0,
             "MP": 0,
@@ -574,6 +592,7 @@
     "Unknown": {
         "character": "Unknown",
         "index": 18,
+        "starting_s_lv": 0,
         "stats": {
             "HP": 99999,
             "MP": 9999,

@@ -21,6 +21,7 @@ from .statuses import StatusApplication
 class DefaultCharacterState:
     character: Character
     index: int
+    starting_s_lv: int
     stats: dict[Stat, int]
     weapon: Equipment
     armor: Equipment
@@ -80,6 +81,18 @@ class CharacterState:
             self.current_hp = self.current_hp
         elif stat is Stat.MP:
             self.current_mp = self.current_mp
+
+    @property
+    def ap(self) -> int:
+        return self._ap
+
+    @ap.setter
+    def ap(self, value) -> None:
+        self._ap = max(0, value)
+
+    @property
+    def s_lv(self) -> int:
+        return total_ap_to_s_lv(self.ap, self.defaults.starting_s_lv)
 
     @property
     def max_hp(self) -> int:
@@ -229,6 +242,7 @@ class CharacterState:
                 self.sos_auto_statuses.append(ability)
 
     def reset(self) -> None:
+        self.ap = 0
         self.stats = self.defaults.stats.copy()
         self.ctb = 0
         self.buffs: dict[Buff, int] = dict.fromkeys(Buff, 0)
@@ -268,12 +282,35 @@ def _get_characters(file_path: str) -> dict[Character, DefaultCharacterState]:
         characters[character] = DefaultCharacterState(
             character=character,
             index=character_data['index'],
+            starting_s_lv=character_data['starting_s_lv'],
             stats={Stat(k): v for k, v in character_data['stats'].items()},
             weapon=weapon,
             armor=armor,
         )
 
     return characters
+
+
+def s_lv_to_ap(s_lv: int) -> int:
+    """Returns the AP needed for a specific Sphere Level."""
+    ap = int(5 * (s_lv + 1)) + int((s_lv ** 3) / 50)
+    return min(ap, 22000)
+
+
+def total_ap_to_s_lv(ap_total: int, starting_s_lv: int = 0) -> int:
+    """Returns the Sphere Level reached with the given amount of AP."""
+    ap = 0
+    s_lv = 0
+    while True:
+        if ap_total < ap:
+            return s_lv - 1
+        ap += s_lv_to_ap(s_lv + starting_s_lv)
+        s_lv += 1
+
+
+def s_lv_to_total_ap(s_lv: int, starting_s_lv: int = 0) -> int:
+    """Returns the AP needed to reach a specific Sphere Level."""
+    return sum([s_lv_to_ap(i + starting_s_lv) for i in range(s_lv)])
 
 
 def calculate_power_base(stats: dict[Stat, int]) -> int:

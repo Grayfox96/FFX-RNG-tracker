@@ -1,6 +1,7 @@
 from typing import Callable, TypeVar
 
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
+from ..data.characters import s_lv_to_total_ap
 from ..data.constants import (Autoability, Character, EquipmentType, Item,
                               MonsterSlot, Stat, StringEnum, TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
@@ -70,6 +71,18 @@ def parse_monster_slot(gs: GameState, slot: str) -> MonsterState:
         return gs.monster_party[index]
     except IndexError:
         raise EventParsingError(f'No monster in slot {index + 1}')
+
+
+def parse_party_members_initials(party_members_initials: str,
+                                 ) -> list[Character]:
+    party_members = []
+    for letter in party_members_initials:
+        for character in tuple(Character)[:8]:
+            if letter == stringify(character)[0]:
+                party_members.append(character)
+                break
+    # remove duplicates and keep order
+    return list(dict.fromkeys(party_members))
 
 
 def parse_encounter(gs: GameState,
@@ -150,16 +163,19 @@ def parse_steal(gs: GameState,
 def parse_kill(gs: GameState,
                monster_name: str = '',
                killer_name: str = '',
+               ap_characters_string: str = '',
                overkill: str = '',
                *_,
                ) -> Kill:
-    usage = 'Usage: kill [monster_name] [killer] (overkill/ok)'
+    usage = ('Usage: kill [monster_name] [killer] (party members initials) '
+             '(overkill/ok)')
     if not monster_name or not killer_name:
         raise EventParsingError(usage)
     monster = parse_dict_key(monster_name, MONSTERS, 'monster')
     killer = parse_enum_member(killer_name, Character, 'character')
+    ap_characters = parse_party_members_initials(ap_characters_string)
     overkill = overkill in ('overkill', 'ok')
-    return Kill(gs, monster, killer, overkill)
+    return Kill(gs, monster, killer, ap_characters, overkill)
 
 
 def parse_bribe(gs: GameState,
@@ -211,15 +227,7 @@ def parse_party_change(gs: GameState,
     usage = 'Usage: party [party members initials]'
     if not party_formation_string:
         raise EventParsingError(usage)
-    party_formation = []
-    for letter in party_formation_string:
-        for character in tuple(Character)[:8]:
-            if letter == stringify(character)[0]:
-                party_formation.append(character)
-                break
-
-    # remove duplicates and keep order
-    party_formation = list(dict.fromkeys(party_formation))
+    party_formation = parse_party_members_initials(party_formation_string)
 
     if not party_formation:
         raise EventParsingError(usage)
@@ -440,6 +448,26 @@ def parse_heal(gs: GameState,
         amount = 99999
 
     return Heal(gs, characters, amount)
+
+
+def parse_character_ap(gs: GameState,
+                       character_name: str = '',
+                       *_) -> Comment:
+    usage = 'Usage: ap (character)'
+    if character_name:
+        characters = [parse_enum_member(character_name, Character, 'character')]
+    else:
+        characters = tuple(Character)[:7]
+    lines = []
+    for character in characters:
+        state = gs.characters[character]
+        next_s_lv_ap = (
+            s_lv_to_total_ap(state.s_lv + 1, state.defaults.starting_s_lv)
+            - state.ap
+            )
+        lines.append(f'{state.character}: {state.s_lv} S. Lv '
+                     f'({state.ap} AP Total, {next_s_lv_ap} for next level)')
+    return Comment(gs, '\n'.join(lines))
 
 
 def parse_character_status(gs: GameState,
