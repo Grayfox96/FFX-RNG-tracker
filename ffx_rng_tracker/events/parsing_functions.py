@@ -7,7 +7,7 @@ from ..data.constants import (Autoability, Character, EquipmentType, Item,
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
 from ..data.items import ITEM_PRICES
-from ..data.monsters import MONSTERS, MonsterState
+from ..data.monsters import MonsterState, get_monsters_dict
 from ..errors import EventParsingError
 from ..gamestate import GameState
 from ..ui_functions import get_inventory_table
@@ -152,7 +152,7 @@ def parse_steal(gs: GameState,
     usage = 'Usage: steal [monster_name] (successful steals)'
     if not monster_name:
         raise EventParsingError(usage)
-    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
+    monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     try:
         successful_steals = int(successful_steals)
     except ValueError:
@@ -171,7 +171,7 @@ def parse_kill(gs: GameState,
              '(overkill/ok)')
     if not monster_name or not killer_name:
         raise EventParsingError(usage)
-    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
+    monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     killer = parse_enum_member(killer_name, Character, 'character')
     ap_characters = parse_party_members_initials(ap_characters_string)
     overkill = overkill in ('overkill', 'ok')
@@ -186,7 +186,7 @@ def parse_bribe(gs: GameState,
     usage = 'Usage: bribe [monster_name] [user]'
     if not monster_name or not user_name:
         raise EventParsingError(usage)
-    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
+    monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     user = parse_enum_member(user_name, Character, 'character')
     return Bribe(gs, monster, user)
 
@@ -279,8 +279,9 @@ def parse_action(gs: GameState,
         target = parse_enum_member(target_name[:-2], Character, 'character')
         target = gs.characters[target]
     elif target_name:
+        monsters = get_monsters_dict()
         try:
-            target = MonsterState(MONSTERS[target_name])
+            target = MonsterState(monsters[target_name])
         except KeyError:
             target = parse_enum_member(target_name, Character, 'character')
             target = gs.characters[target]
@@ -341,7 +342,7 @@ def parse_yojimbo_action(gs: GameState,
     if not action_name or not monster_name:
         raise EventParsingError(usage)
     action = parse_dict_key(action_name, YOJIMBO_ACTIONS, 'Yojimbo action')
-    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
+    monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     overdrive = overdrive == 'overdrive'
     return YojimboTurn(gs, action, monster, overdrive)
 
@@ -374,7 +375,7 @@ def parse_monster_action(gs: GameState,
         monster = parse_monster_slot(gs, monster_name)
     else:
         monster = MonsterState(
-            parse_dict_key(monster_name, MONSTERS, 'monster'))
+            parse_dict_key(monster_name, get_monsters_dict(), 'monster'))
     try:
         action = monster.monster.actions[action_name]
     except KeyError:
@@ -490,7 +491,7 @@ def parse_monster_spawn(gs: GameState,
     usage = 'spawn [monster_name] [slot] (forced ctb)'
     if not monster_name or not slot:
         raise EventParsingError(usage)
-    monster = parse_dict_key(monster_name, MONSTERS, 'monster')
+    monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     try:
         slot = int(slot)
     except ValueError:

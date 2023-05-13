@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from ..data.monsters import MONSTERS
+from ..data.monsters import get_monsters_dict
 from ..ui_functions import format_monster_data
 from .input_widget import InputWidget
 from .output_widget import OutputWidget
@@ -16,8 +16,9 @@ class MonsterDataViewer:
     monster_data: dict[str, str] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
+        monsters = get_monsters_dict()
         self.monster_data = {k: format_monster_data(v)
-                             for k, v in MONSTERS.items()}
+                             for k, v in monsters.items()}
 
     def callback(self, *_, **__) -> None:
         monster_name = self.monster_selection_widget.get_input()

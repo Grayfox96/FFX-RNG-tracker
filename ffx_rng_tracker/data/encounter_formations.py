@@ -4,16 +4,21 @@ from dataclasses import dataclass
 from ..utils import open_cp1252, search_stringenum
 from .constants import EncounterCondition
 from .file_functions import get_resource_path
-from .monsters import MONSTERS, Monster
+from .monsters import Monster, get_monsters_dict
 
 
 @dataclass
 class Formation:
-    monsters: list[Monster]
+    monsters_names: list[str]
     forced_condition: EncounterCondition | None
 
     def __str__(self) -> str:
         return ', '.join([str(m) for m in self.monsters])
+
+    @property
+    def monsters(self) -> list[Monster]:
+        monsters = get_monsters_dict()
+        return [monsters[m] for m in self.monsters_names]
 
 
 @dataclass
@@ -67,7 +72,7 @@ def _get_formations(file_path: str) -> Formations:
     bosses: dict[str, Boss] = {}
     for boss, data in formations['bosses'].items():
         formation = Formation(
-            [MONSTERS[m] for m in data['formation']],
+            data['formation'],
             _get_condition(data['forced_condition']),
             )
         bosses[boss] = Boss(
@@ -78,7 +83,7 @@ def _get_formations(file_path: str) -> Formations:
     simulations: dict[str, Simulation] = {}
     for simulation, data in formations['simulation'].items():
         monsters = Formation(
-            [MONSTERS[m] for m in data['monsters']],
+            data['monsters'],
             EncounterCondition.NORMAL,
             )
         simulations[simulation] = Simulation(
@@ -91,7 +96,7 @@ def _get_formations(file_path: str) -> Formations:
         encounters = []
         for encounter in data['encounters']:
             formation = Formation(
-                [MONSTERS[m] for m in encounter['monsters']],
+                encounter['monsters'],
                 _get_condition(encounter['forced_condition'])
                 )
             encounters.append(formation)

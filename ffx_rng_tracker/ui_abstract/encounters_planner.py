@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass
 
-from ..data.monsters import MONSTERS
+from ..data.monsters import get_monsters_dict
 from .encounters_tracker import EncountersTracker
 from .input_widget import InputWidget
 
@@ -24,7 +24,7 @@ class EncountersPlanner(EncountersTracker):
             output = output.replace(name, name.upper())
 
         monsters_tally = {}
-        for monster in MONSTERS.values():
+        for monster in get_monsters_dict().values():
             name = monster.name
             if name in conflicting_monster_names:
                 name = name.upper()

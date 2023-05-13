@@ -1,4 +1,5 @@
 import csv
+from copy import deepcopy
 from dataclasses import dataclass, field
 from itertools import count
 from math import sqrt
@@ -246,7 +247,9 @@ def _patch_prize_structs_for_hd(prize_structs: dict[str, list[int]],
             for slot in range(7):
                 slot_offset = (slot + 1) * 2
                 address = base_address + offset + slot_offset
-                prize_structs[monster_name][address] = abilities[slot]
+                patched_prize_structs[monster_name][address] = abilities[slot]
+
+    patched_prize_structs = deepcopy(prize_structs)
 
     # in the HD version equipment droprates were modified
     # from 8/255 to 12/255 for these monsters
@@ -268,7 +271,7 @@ def _patch_prize_structs_for_hd(prize_structs: dict[str, list[int]],
         'skoll', 'dark_element', 'imp', 'nidhogg', 'yowie',
     )
     for monster_name in monster_names:
-        prize_structs[monster_name][139] = 12
+        patched_prize_structs[monster_name][139] = 12
 
     # all the monsters that have ability arrays modified in the HD version
     # besaid
@@ -365,7 +368,7 @@ def _patch_prize_structs_for_hd(prize_structs: dict[str, list[int]],
     patch_abilities('nidhogg', (38, 42, 34, 30, 124, 124, 124))
     patch_abilities('valaha', (67, 67, 67, 30, 30, 127, 127))
     patch_abilities('yowie', (38, 42, 38, 30, 126, 126, 126))
-    return prize_structs
+    return patched_prize_structs
 
 
 def get_raw_data_string(prize_struct: list[str]) -> str:
@@ -574,8 +577,14 @@ def _get_monster_data(monster_id: str, prize_struct: list[int]) -> Monster:
     return monster
 
 
-PRIZE_STRUCTS = _get_prize_structs('ffx_mon_data.csv')
-if Configs.game_version in (GameVersion.HD, GameVersion.PS2INT):
-    PRIZE_STRUCTS = _patch_prize_structs_for_hd(PRIZE_STRUCTS)
+def get_monsters_dict() -> dict[str, Monster]:
+    if Configs.game_version in (GameVersion.HD, GameVersion.PS2INT):
+        return MONSTERS_HD
+    return MONSTERS
 
+
+PRIZE_STRUCTS = _get_prize_structs('ffx_mon_data.csv')
 MONSTERS = {k: _get_monster_data(k, v) for k, v in PRIZE_STRUCTS.items()}
+
+PRIZE_STRUCTS_HD = _patch_prize_structs_for_hd(PRIZE_STRUCTS)
+MONSTERS_HD = {k: _get_monster_data(k, v) for k, v in PRIZE_STRUCTS_HD.items()}

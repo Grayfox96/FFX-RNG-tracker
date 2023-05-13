@@ -4,7 +4,7 @@ from ..data.actions import Action
 from ..data.characters import CharacterState
 from ..data.constants import (Buff, Character, DamageType, MonsterSlot, Stat,
                               Status, TargetType)
-from ..data.monsters import MONSTERS, MonsterState
+from ..data.monsters import MonsterState, get_monsters_dict
 from ..data.statuses import NO_RNG_STATUSES
 from .character_action import get_damage
 from .main import Event
@@ -234,7 +234,8 @@ class MonsterAction(Event):
                 if self.gamestate.monster_party:
                     possible_targets = self.gamestate.monster_party
                 else:
-                    possible_targets = [MonsterState(MONSTERS['dummy'])]
+                    monsters = get_monsters_dict()
+                    possible_targets = [MonsterState(monsters['dummy'])]
             case TargetType.HIGHEST_HP_CHARACTER:
                 if len(possible_targets) > 1:
                     possible_targets.sort(
@@ -252,12 +253,14 @@ class MonsterAction(Event):
                 if target in [c.character for c in possible_targets]:
                     possible_targets = [self.gamestate.characters[target]]
                 else:
-                    possible_targets = [MonsterState(MONSTERS['dummy'])]
+                    monsters = get_monsters_dict()
+                    possible_targets = [MonsterState(monsters['dummy'])]
             case MonsterSlot():
                 if len(self.gamestate.monster_party) > target:
                     possible_targets = [self.gamestate.monster_party[target]]
                 else:
-                    possible_targets = [MonsterState(MONSTERS['dummy'])]
+                    monsters = get_monsters_dict()
+                    possible_targets = [MonsterState(monsters['dummy'])]
             case TargetType.LAST_ACTOR:
                 possible_targets = [self.gamestate.last_actor]
             case _:
