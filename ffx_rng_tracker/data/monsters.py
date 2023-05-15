@@ -583,7 +583,7 @@ def get_monsters_dict() -> dict[str, Monster]:
     return MONSTERS
 
 
-PRIZE_STRUCTS = _get_prize_structs('ffx_mon_data.csv')
+PRIZE_STRUCTS = _get_prize_structs('data_files/ffx_mon_data.csv')
 MONSTERS = {k: _get_monster_data(k, v) for k, v in PRIZE_STRUCTS.items()}
 
 PRIZE_STRUCTS_HD = _patch_prize_structs_for_hd(PRIZE_STRUCTS)

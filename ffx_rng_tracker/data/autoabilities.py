@@ -19,7 +19,7 @@ def _get_autoabilities_gil_values(file_path: str) -> dict[Autoability, int]:
     return autoabilities
 
 
-GIL_VALUES = _get_autoabilities_gil_values('autoabilities.csv')
+GIL_VALUES = _get_autoabilities_gil_values('data_files/autoabilities.csv')
 AUTOABILITIES = [a for a in Autoability]
 ELEMENTAL_STRIKES = {
     Autoability.FIRESTRIKE: Element.FIRE,

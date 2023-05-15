@@ -2,8 +2,9 @@ from typing import Callable, TypeVar
 
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.characters import s_lv_to_total_ap
-from ..data.constants import (Autoability, Character, EquipmentType, Item,
-                              MonsterSlot, Stat, StringEnum, TargetType)
+from ..data.constants import (SHORT_STATS_NAMES, Autoability, Character,
+                              EquipmentType, Item, MonsterSlot, Stat,
+                              StringEnum, TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
 from ..data.items import ITEM_PRICES
@@ -302,14 +303,19 @@ def parse_stat_update(gs: GameState,
                       amount: str = '',
                       *_,
                       ) -> ChangeStat | Comment:
-    usage = 'Usage: stat [character] [stat] [(+/-) amount]'
-    if not target_name or not stat_name or not amount:
+    usage = 'Usage: stat [character/monster slot] [stat] [(+/-) amount]'
+    if not target_name:
         raise EventParsingError(usage)
     if target_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
         target = parse_monster_slot(gs, target_name)
     else:
-        target = parse_enum_member(target_name, Character, 'character')
+        target = parse_enum_member(
+            target_name, Character, 'character or monster slot')
         target = gs.characters[target]
+    if not stat_name and not amount:
+        text = f'{target} Stats: ' + ' / '.join(
+            [f'{SHORT_STATS_NAMES[s]} {v}' for s, v in target.stats.items()])
+        return Comment(gs, text)
     if stat_name == 'ctb':
         try:
             if amount.startswith(('+', '-')):

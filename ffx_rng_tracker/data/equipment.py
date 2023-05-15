@@ -521,4 +521,4 @@ def get_armor_name(owner: Character,
     return EQUIPMENT_NAMES[EquipmentType.ARMOR][index][owner]
 
 
-EQUIPMENT_NAMES = _get_equipment_names('equipment_names.json')
+EQUIPMENT_NAMES = _get_equipment_names('data_files/equipment_names.json')

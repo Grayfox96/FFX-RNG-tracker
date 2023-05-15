@@ -156,7 +156,8 @@ class Configs:
         if not os.path.exists(cls._configs_file):
             logger = getLogger(__name__)
             logger.warning('Configs file not found.')
-            default_configs_file = get_resource_path(cls._default_configs_file)
+            default_configs_file = get_resource_path(
+                'data_files/{cls._default_configs_file}')
             shutil.copyfile(default_configs_file, cls._configs_file)
             logger.info(
                 f'Copied default configs file to "{cls._configs_file}"')

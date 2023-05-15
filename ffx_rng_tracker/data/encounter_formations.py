@@ -113,5 +113,5 @@ def _get_formations(file_path: str) -> Formations:
     return bosses, simulations, zones
 
 
-BOSSES, SIMULATIONS, ZONES = _get_formations('formations.json')
+BOSSES, SIMULATIONS, ZONES = _get_formations('data_files/formations.json')
 FORMATIONS = BOSSES | SIMULATIONS | ZONES

@@ -626,3 +626,16 @@ ENCOUNTERS_YUNA_STATS = {
     Stat.EVASION: [30, 32, 32, 32, 32, 36, 36, 36, 40, 40, 44, 44, 44, 48, 48, 52, 52, 56, 56, 60],
     Stat.ACCURACY: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
 }
+
+SHORT_STATS_NAMES = {
+    Stat.HP: 'HP',
+    Stat.MP: 'MP',
+    Stat.STRENGTH: 'STR',
+    Stat.DEFENSE: 'DEF',
+    Stat.MAGIC: 'MAG',
+    Stat.MAGIC_DEFENSE: 'MDF',
+    Stat.AGILITY: 'AGI',
+    Stat.LUCK: 'LCK',
+    Stat.EVASION: 'EVA',
+    Stat.ACCURACY: 'ACC',
+}

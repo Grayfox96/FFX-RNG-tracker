@@ -40,7 +40,7 @@ def _get_shops_equipment(file_path: str) -> tuple[Equipment]:
 
 
 def _get_equipment_shops(file_path: str) -> dict[str, tuple[Equipment]]:
-    equipments = list(_get_shops_equipment('ffx_shop_arms.csv'))
+    equipments = list(_get_shops_equipment('data_files/ffx_shop_arms.csv'))
     absolute_file_path = get_resource_path(file_path)
     shops = {}
     with open_cp1252(absolute_file_path) as file_object:
@@ -51,4 +51,4 @@ def _get_equipment_shops(file_path: str) -> dict[str, tuple[Equipment]]:
     return shops
 
 
-EQUIPMENT_SHOPS = _get_equipment_shops('equipment_shops.csv')
+EQUIPMENT_SHOPS = _get_equipment_shops('data_files/equipment_shops.csv')

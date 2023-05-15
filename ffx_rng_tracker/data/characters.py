@@ -327,4 +327,4 @@ def calculate_power_base(stats: dict[Stat, int]) -> int:
     return power_base
 
 
-CHARACTERS_DEFAULTS = _get_characters('characters.json')
+CHARACTERS_DEFAULTS = _get_characters('data_files/characters.json')

@@ -17,4 +17,4 @@ def get_text_characters(file_path: str) -> dict[int, str]:
     return text_characters
 
 
-TEXT_CHARACTERS = get_text_characters('text_characters.csv')
+TEXT_CHARACTERS = get_text_characters('data_files/text_characters.csv')

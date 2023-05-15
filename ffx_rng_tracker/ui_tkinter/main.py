@@ -1,3 +1,4 @@
+import os
 import sys
 import tkinter as tk
 from tkinter import ttk
@@ -106,5 +107,5 @@ def main(widget: type[tk.Widget],
     root.mainloop()
 
 
-AZURE_THEME_DIRECTORY = 'azure_theme'
-AZURE_THEME_PATH = 'azure.tcl'
+AZURE_THEME_DIRECTORY = os.path.dirname(__file__)
+AZURE_THEME_PATH = 'azure_theme/azure.tcl'

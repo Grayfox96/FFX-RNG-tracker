@@ -110,8 +110,8 @@ def _get_monster_actions(file_path: str) -> dict[str, dict[str, Action]]:
     return monster_actions
 
 
-ACTIONS = _get_actions('actions.json')
-MONSTER_ACTIONS = _get_monster_actions('monster_actions.json')
+ACTIONS = _get_actions('data_files/actions.json')
+MONSTER_ACTIONS = _get_monster_actions('data_files/monster_actions.json')
 
 YOJIMBO_ACTIONS = {
     'daigoro': YojimboAction('Daigoro', -1, 0),
