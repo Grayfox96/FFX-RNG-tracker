@@ -30,7 +30,7 @@ class Configs:
     seed: int | None = None
     game_version: GameVersion = GameVersion.HD
     ps2_seeds_minutes: int = 3
-    speedrun_category: SpeedrunCategory = SpeedrunCategory.ANYPERCENT
+    speedrun_category: SpeedrunCategory | str = SpeedrunCategory.ANYPERCENT
     use_dark_mode: bool = False
     font_size: int = 9
     use_theme: bool = True
@@ -77,10 +77,15 @@ class Configs:
         except ValueError:
             cls.game_version = GameVersion.HD
         cls.ps2_seeds_minutes = cls.getint(section, 'ps2 seeds minutes', 3)
+        speedrun_category = cls.get(section, 'category', 'AnyPercent')
         try:
-            cls.speedrun_category = SpeedrunCategory(
-                cls.get(section, 'category', 'AnyPercent'))
+            speedrun_category = SpeedrunCategory(speedrun_category)
         except ValueError:
+            speedrun_category = ''.join(x for x in speedrun_category
+                                        if x.isalnum() or x in '._-')
+        if speedrun_category:
+            cls.speedrun_category = speedrun_category
+        else:
             cls.speedrun_category = SpeedrunCategory.ANYPERCENT
 
         section = 'UI'

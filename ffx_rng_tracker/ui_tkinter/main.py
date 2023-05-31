@@ -73,7 +73,7 @@ def main(widget: type[tk.Widget],
     root.withdraw()
     root.protocol('WM_DELETE_WINDOW', root.quit)
     title += (f' v{__version__} {Configs.game_version} '
-              f'{Configs.speedrun_category}')
+              f'Category: {Configs.speedrun_category}')
     root.title(title)
     root.geometry(size)
 
