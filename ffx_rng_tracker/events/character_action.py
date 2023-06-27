@@ -247,7 +247,7 @@ def get_damage(
         # check if all the elements are covered by a nul-status
         nul_statuses = set()
         for element in elements:
-            status = NUL_STATUSES[element]
+            status = NUL_STATUSES.get(element, None)
             if status in target.statuses:
                 nul_statuses.add(status)
         # if they are, target is immune and decrease

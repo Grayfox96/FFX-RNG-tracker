@@ -130,7 +130,7 @@ class GameState:
         self.normalize_ctbs(ctb_ticks)
         actors_with_regen = [a for a in actors if Status.REGEN in a.statuses]
         for actor in actors_with_regen:
-            actor.current_hp += (ctb_ticks * actor.max_hp // 256) + 100
+            actor.current_hp += (ctb_ticks * (actor.max_hp // 256)) + 100
 
     def process_start_of_encounter(self) -> None:
         # TODO
