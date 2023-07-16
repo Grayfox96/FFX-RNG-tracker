@@ -28,32 +28,30 @@ auron attack sinscale_6
 tidus attack sinscale_6
 
 encounter ammes
-# auron od, ignore first set of rolls
-# second set is actual rolls
-auron dragon_fang sinspawn_ammes
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-
-auron dragon_fang sinspawn_ammes 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-
-tidus attack sinspawn_ammes
 # Demi 1
+# auron od, ignore this set of rolls
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
 
-# tidus od, ignore first roll
-# second line is actual roll
-tidus spiral_cut sinspawn_ammes
-tidus spiral_cut sinspawn_ammes 2.5
-auron attack sinspawn_ammes
-# Demi 2
+# this set is actual rolls
+auron dragon_fang sinspawn_ammes 3.0
+auron dragon_fang sinscale_6 3.0
+auron dragon_fang sinscale_6 3.0
+auron dragon_fang sinscale_6 3.0
+auron dragon_fang sinscale_6 3.0
+auron dragon_fang sinscale_6 3.0
+
 tidus attack sinspawn_ammes
+# Demi 2
+
+# tidus od, ignore this roll
+tidus spiral_cut ???
+# this is the actual roll
+tidus spiral_cut sinspawn_ammes 2.5
 auron attack sinspawn_ammes
 # Demi 3
 tidus attack sinspawn_ammes
@@ -62,6 +60,9 @@ auron attack sinspawn_ammes
 tidus attack sinspawn_ammes
 auron attack sinspawn_ammes
 # Demi 5
+tidus attack sinspawn_ammes
+auron attack sinspawn_ammes
+# Demi 6
 # tidus attack sinspawn_ammes
 # auron attack sinspawn_ammes
 
@@ -94,10 +95,9 @@ tidus attack klikk
 encounter klikk_2
 rikku grenade klikk
 tidus attack klikk
-
-# rikku potion tidus
+rikku steal klikk
 tidus attack klikk
-rikku attack klikk
+rikku steal klikk
 tidus attack klikk
 rikku attack klikk
 rikku attack klikk
@@ -197,12 +197,10 @@ lulu thunder water_flan_2
 # -- S.S. Liki --
 encounter sin_fin
 lulu thunder sin
-kimahri lancet_hp sin
-kimahri lancet_mp sin
-kimahri lancet_hp sin
-kimahri lancet_mp sin
-lulu thunder sin
-valefor energy_blast sin
+valefor energy_ray sin
+valefor thunder sin
+valefor thunder sin
+valefor thunder sin
 
 encounter echuilles
 tidus cheer tidus
@@ -220,7 +218,7 @@ tidus attack sinspawn_echuilles
 tidus attack sinspawn_echuilles
 wakka attack sinspawn_echuilles
 
-tidus spiral_cut sinspawn_echuilles
+tidus spiral_cut ???
 tidus spiral_cut sinspawn_echuilles 2.5
 
 # -- Kilika --
@@ -246,37 +244,33 @@ weapon wakka 2 icestrike sensor
 
 encounter kilika_woods
 tidus attack dinonix
-valefor thunder killer_bee
-valefor water yellow_element
-# valefor fire ragora
+wakka attack killer_bee
+lulu water yellow_element
 
 encounter kilika_woods
 tidus attack dinonix
 wakka attack killer_bee
+lulu water yellow_element
 
 encounter geneaux
-tidus attack sinspawn_geneaux
-valefor energy_blast sinspawn_geneaux
-valefor energy_blast geneaux's_tentacle
-valefor energy_blast geneaux's_tentacle
-# Geneaux loses the armored status when
-# he removes the shell
-# weapon valefor 1 piercing
-# valefor sonic_wings sinspawn_geneaux
-# weapon valefor 4 aeon_ribbon
+valefor energy_ray sinspawn_geneaux
+valefor energy_ray geneaux's_tentacle
+valefor energy_ray geneaux's_tentacle
 valefor fire sinspawn_geneaux
 valefor fire sinspawn_geneaux
 valefor fire sinspawn_geneaux
-valefor fire sinspawn_geneaux
+valefor energy_ray sinspawn_geneaux
 
 # Kilika Out encounters
 encounter kilika_woods
 tidus attack dinonix
 wakka attack killer_bee
+lulu water yellow_element
 
 encounter kilika_woods
 tidus attack dinonix
 wakka attack killer_bee
+lulu water yellow_element
 
 # encounter lord_ochu
 
@@ -322,10 +316,6 @@ lulu thunder oblitzerator
 
 # Haste grid
 stat tidus strength +1
-# If Tidus equips Lightning Steel
-# weapon tidus 1 lightningstrike
-# If Wakka equips Thunder Ball
-# weapon wakka 1 lightningstrike
 
 encounter sahagin_chiefs
 tidus haste tidus
@@ -385,9 +375,6 @@ tidus attacknocrit raldo
 auron attack raldo
 
 encounter miihen_screen_1
-kimahri lancet_hp bomb
-kimahri lancet_mp bomb
-
 encounter miihen_screen_1
 encounter miihen_screen_1
 
@@ -414,74 +401,11 @@ encounter old_road
 encounter clasko_skip_screen
 encounter clasko_skip_screen
 
-# -- MRR --
-# Energy Ray encounter
-encounter mrr_valley
-valefor energy_ray raptor
-valefor energy_ray funguar
-valefor energy_ray red_element
-
-# First grid
-stat yuna mp +20
-stat yuna magic +7
-stat yuna magic_defense +3
-stat kimahri hp +600
-stat wakka strength +2
-
-# OD recharge encounter
-encounter mrr_valley
-wakka attack gandarewa
-# kimahri attack lamashtu
-valefor fire funguar
-valefor blizzard red_element
-
-# additional kills
-encounter mrr_valley
-wakka attack gandarewa
-# wakka attack raptor
-# auron attack lamashtu
-
-encounter mrr_valley
-encounter mrr_valley
-encounter mrr_valley
-
-encounter mrr_precipice
-
-# Second grid
-stat yuna magic +3
-stat yuna agility +3
-
-weapon auron 2 piercing initiative
-
-encounter sinspawn_gui_1
-auron power_break sinspawn_gui
-weapon wakka 1
-kimahri self-destruct sinspawn_gui
-valefor energy_blast sinspawn_gui
-valefor energy_blast head
-valefor energy_blast arm
-valefor energy_blast arm
-# OD recharge
-valefor energy_blast sinspawn_gui
-# If Arms respawn
-# valefor energy_blast arm
-# valefor energy_blast arm
-
-encounter sinspawn_gui_2
-# Gui 2 has 1 magic defense
-# Target is Head as a workaround
-seymour thundara head
-seymour thundara head
-seymour thundara head
-seymour thundara head
-seymour thundara head
-seymour thundara head
-
-# Djose grid
-stat tidus hp +200
-stat tidus strength +1
-stat tidus agility +2
-stat wakka strength +2
+encounter clasko_skip_screen
+encounter clasko_skip_screen
+encounter clasko_skip_screen
+encounter clasko_skip_screen
+encounter clasko_skip_screen
 
 # -- Djose --
 encounter djose_highroad_front_half
@@ -494,6 +418,8 @@ encounter djose_highroad_back_half
 encounter djose_highroad_back_half
 encounter djose_highroad_back_half
 
+# simulation simulation_djose
+
 # -- Moonflow --
 encounter moonflow_south
 encounter moonflow_south
@@ -504,21 +430,42 @@ encounter moonflow_south
 encounter moonflow_south
 encounter moonflow_south
 
+# Tidus equips Stunning Steel
+weapon tidus 1 slowtouch
+# If Tidus equips Lightning Steel
+# weapon tidus 1 lightningstrike
+# If Wakka equips Thunder Ball
+# weapon wakka 1 lightningstrike
+
+stat wakka strength +2
+
 encounter extractor
 tidus haste tidus
+wakka attack extractor
+tidus attack extractor
+
 tidus haste wakka
-tidus cheer tidus
-tidus cheer wakka
-# tidus potion tidus
 # wakka potion wakka
 wakka attack extractor
+
+tidus cheer tidus
+tidus cheer wakka
+tidus cheer tidus
+tidus cheer wakka
+wakka attack extractor
+tidus cheer tidus
+tidus cheer wakka
+tidus cheer tidus
+tidus cheer wakka
+wakka attack extractor
+
 wakka attack extractor
 wakka attack extractor
 wakka attack extractor
 wakka attack extractor
-wakka element_reels_thunder extractor
-wakka element_reels_thunder extractor 16.0
 wakka attack extractor
+# wakka element_reels_thunder ???
+# wakka element_reels_thunder extractor 16.0
 
 tidus attack extractor
 tidus attack extractor
@@ -531,7 +478,17 @@ encounter rikku_tutorial
 rikku ultra_potion rikku
 # rikku frag_grenade bunyip
 
+# Moonflow grid
+stat tidus hp +200
+stat tidus strength +1
+stat tidus agility +2
+
 encounter moonflow_north
+# rikku grenade ???_2
+# rikku grenade bunyip_2
+# rikku grenade bite_bug
+# rikku grenade bite_bug
+
 encounter moonflow_north
 
 # encounter simulation_guadosalam
@@ -587,10 +544,8 @@ rikku lightning_bolt spherimorph
 rikku lightning_bolt spherimorph
 
 # Post-Spherimorph grid
-stat yuna hp +400
-stat yuna strength +8
-stat yuna agility +2
 stat rikku agility +3
+stat kimahri hp +600
 stat kimahri agility +3
 
 encounter lake_macalania
@@ -603,7 +558,7 @@ rikku lightning_marble crawler
 kimahri lightning_marble crawler
 lulu phoenix_down rikku
 rikku lightning_marble crawler
-lulu phoenix_down rikku
+yuna phoenix_down rikku
 rikku lightning_bolt crawler
 rikku lightning_bolt crawler
 rikku lightning_bolt crawler
@@ -618,70 +573,57 @@ rikku lightning_bolt crawler
 stat tidus hp +600
 stat tidus strength +20
 stat tidus agility +4
+# Tidus equips Brotherhood
+weapon tidus 4 strength_+10% strength_+5% waterstrike
 
 # -- Macalania Temple --
 # Seymour
 encounter seymour
-# tidus equips brotherhood
-weapon tidus 4 strength_+10% strength_+5% waterstrike
 tidus haste tidus
+kimahri stone_breath guado_guardian
+kimahri stone_breath seymour
+kimahri stone_breath guado_guardian
 # Talk talks to Seymour
 stat tidus strength +10
-tidus spiral_cut seymour
-tidus spiral_cut seymour 2.5
+tidus attack seymour
 
 tidus attack anima
 tidus attack anima
 tidus attack anima
 tidus attack anima
-
-tidus attack seymour
-tidus attack seymour
-stat tidus strength -10
 
 # Tidus unequips Brotherhood
 weapon tidus 1 first_strike
-
-# encounter guado_encounter
-
-# -- Crevasse --
-# Guado Guardian #2 is in Macalania
-# and in the Wendigo fights
-encounter crevasse
-# tidus attack snow_flan
-# tidus attack guado_guardian_2
-# rikku silence_grenade snow_flan
-# rikku silence_grenade snow_wolf
-# rikku silence_grenade mafdet
-# rikku silence_grenade evil_eye
-
-encounter crevasse
+tidus attack seymour
+tidus attack seymour
+stat tidus strength -10
 
 # Pre-Wendigo grid
 stat tidus hp +200
 stat tidus strength +4
 stat tidus agility +2
-# Extra Strength node
-# stat tidus strength +4
+
+# -- Crevasse --
+# encounter guado_encounter
+encounter crevasse
+encounter crevasse
 
 # Wendigo
 encounter wendigo
 tidus haste tidus
 # Tidus equips Brotherhood
 weapon tidus 4 strength_+10% strength_+5% waterstrike
-tidus attack Guado_Guardian_2
+tidus attack guado_guardian_2
 # auron power_break wendigo
 # rikku lightning_marble wendigo
-tidus attack wendigo
-tidus attack wendigo
+tidus spiral_cut ???
+tidus spiral_cut wendigo 2.5
 tidus attack wendigo
 tidus attack wendigo
 tidus attack wendigo
 tidus attack wendigo
 
 # yuna phoenix_down rikku
-# yuna phoenix_down rikku
-# rikku phoenix_down yuna
 # rikku phoenix_down yuna
 # tidus mega_phoenix yuna
 # tidus mega_phoenix rikku
@@ -721,16 +663,12 @@ encounter sanubia_desert_ruins
 encounter sanubia_desert_west
 
 encounter sandragora
-tidus haste auron
-auron shooting_star sandragora
-auron shooting_star sandragora 2.0
+auron shooting_star ???
+auron shooting_star sandragora 3.0
 
 encounter sanubia_desert_west
 
 # -- Home --
-# Guado Guardian #3 is in Home
-# and Airship encounters
-
 encounter guado_+_3_bomb
 tidus haste tidus
 tidus attack guado_guardian_3
@@ -811,29 +749,29 @@ kimahri bomb_core yat-99
 # using throwables
 # tidus haste rikku
 # rikku sleeping_powder warrior_monk
-# rikku sleeping_powder warrior_monk
 # rikku sleeping_powder yat-99
 # rikku sleeping_powder warrior_monk
 # rikku sleeping_powder warrior_monk
 # rikku sleeping_powder yat-99
+# rikku sleeping_powder warrior_monk
 # tidus attack yat-99
 
 # using 1 bomb core and 2 throwables
-# kimahri sleeping_powder warrior_monk
-# kimahri sleeping_powder warrior_monk
-# kimahri sleeping_powder yat-99
+# rikku sleeping_powder warrior_monk
+# rikku sleeping_powder yat-99
+# rikku sleeping_powder warrior_monk
 # rikku bomb_core yat-99
-# kimahri sleeping_powder warrior_monk
-# kimahri sleeping_powder warrior_monk
-# kimahri sleeping_powder yat-99
+# rikku sleeping_powder warrior_monk
+# rikku sleeping_powder yat-99
+# rikku sleeping_powder warrior_monk
 
 # -- Via Purifico --
-stat yuna hp +400
-stat yuna mp +20
-stat yuna strength +16
+stat yuna hp +600
+stat yuna mp +40
+stat yuna strength +28
 stat yuna defense +3
-stat yuna magic +6
-stat yuna agility +3
+stat yuna magic +13
+stat yuna agility +10
 
 encounter via_purifico_corridor
 ixion attack maze_larva
@@ -849,8 +787,6 @@ encounter isaaru_pterya
 bahamut attack valefor
 
 encounter isaaru_spathi
-# ixion thunder bahamut
-ixion attack bahamut
 ixion attack bahamut
 ixion attack bahamut
 ixion attack bahamut
@@ -871,13 +807,15 @@ tidus elixir_mp evrae_altana
 
 # -- Highbridge --
 stat yuna hp +200
-stat yuna strength +20
-stat yuna defense +3
+stat yuna strength +16
+stat yuna defense +6
 stat yuna agility +2
 
 encounter highbridge
-# tidus attack ykt-63
-# yuna attack ykt-63
+tidus attack ykt-63
+yuna attack ykt-63
+
+encounter highbridge
 
 encounter seymour_natus
 tidus attack seymour_natus
@@ -926,22 +864,19 @@ kimahri water_gem biran_ronso
 
 # Post-Ronso grid
 # With 4 Return Spheres
-stat yuna strength +2
-stat yuna magic +3
-stat yuna agility +4
+stat yuna strength +4
+stat yuna agility +2
 weapon yuna 1 first_strike
 weapon auron 1 first_strike
 
 # With 2/2 Spheres
-# stat yuna strength +11
-# stat yuna agility +8
+# stat yuna strength +15
+# stat yuna agility +10
 # weapon yuna 1 first_strike
-# weapon auron 1 first_strike
 
 # With 4 Friend Spheres
-# stat yuna strength +17
-# stat yuna agility +12
-# stat yuna magic_defense +2
+# stat yuna strength +19
+# stat yuna agility +14
 
 # encounter gagazet_mountain
 
@@ -978,9 +913,9 @@ stat yuna agility +8
 stat yuna luck +4
 
 # With 2/2 Spheres
-# stat yuna strength +6
-# stat yuna agility +7
-# stat yuna magic +3
+# stat yuna mp +20
+# stat yuna strength +2
+# stat yuna agility +4
 # stat yuna luck +4
 
 # With 4 Friend Spheres
@@ -994,8 +929,9 @@ bahamut attack spectral_keeper
 
 # Pre-Yunalesca grid
 # With 4 Return Spheres
-stat yuna strength +4
-stat yuna agility +3
+stat yuna mp +20
+stat yuna strength +2
+stat yuna agility +4
 
 encounter yunalesca
 bahamut attack yunalesca
@@ -1034,11 +970,8 @@ bahamut attack seymour_omnis
 # encounter
 
 # BFA grid
-# With 4 Return Spheres or 2/2
 stat yuna agility +11
-
-# With 4 Friend Spheres
-# stat yuna agility +15
+# weapon auron 1 first_strike
 
 # Braska's Final Aeon
 encounter

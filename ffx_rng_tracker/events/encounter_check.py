@@ -11,6 +11,10 @@ class EncounterCheck(Event):
 
     def __post_init__(self) -> None:
         self.encounter, self.distance = self.check_encounter()
+        if self.encounter:
+            self.gamestate.live_distance = 0
+        else:
+            self.gamestate.live_distance = self.distance
 
     def __str__(self) -> str:
         string = f'{self.zone}: '
@@ -21,27 +25,26 @@ class EncounterCheck(Event):
         return string
 
     def check_encounter(self) -> tuple[bool, int]:
-        steps = self.max_distance // 10
-        live_steps = max(steps - self.zone.grace_period, 0)
-        if live_steps == 0:
+        max_steps = (self.gamestate.live_distance + self.max_distance) // 10
+        starting_steps = self.gamestate.live_distance // 10
+        max_steps -= self.zone.grace_period
+        starting_steps = max(0, starting_steps - self.zone.grace_period)
+        if max_steps <= 0:
             return False, self.max_distance
-        for steps in range(1, live_steps + 1):
+        for steps in range(starting_steps + 1, max_steps + 1):
             rng_roll = self._advance_rng(0) & 255
             counter = steps * 256 // self.zone.threat_modifier
             if rng_roll < counter:
-                encounter = True
-                distance = (self.zone.grace_period + steps) * 10
-                break
-        else:
-            encounter = False
-            distance = self.max_distance
-        return encounter, distance
+                distance = (self.zone.grace_period + steps) * 10 - self.gamestate.live_distance
+                return True, distance
+        return False, self.max_distance
 
 
 @dataclass
 class EncounterChecks(Event):
     zone: Zone
     max_distance: int
+    continue_previous_zone: bool
 
     def __post_init__(self) -> None:
         self.checks = self._perform_checks()
@@ -70,6 +73,8 @@ class EncounterChecks(Event):
     def _perform_checks(self) -> list[EncounterCheck]:
         distance = self.max_distance
         checks = []
+        if not self.continue_previous_zone:
+            self.gamestate.live_distance = 0
         while distance > 0:
             check = EncounterCheck(self.gamestate, self.zone, distance)
             checks.append(check)

@@ -144,33 +144,18 @@ garuda_2 auron
 # Mi'ihen Highroad
 # Piercing tutorial
 raldo_2 auron
+# death
 
+# Chocobo Eater
 # death
 
 # Old Road
 # death
 
-# Mushroom Rock Road
+# Clasko Skip Screen
 # death
 
-# Gui 1 (drops are disabled)
-roll rng10 12
-
-# If the arms respawn
-roll rng10 6
-
-# If Valefor dies
-# death valefor
-
-# Gui 2
-# Head always dies
-roll rng10 3
-
-# death yuna
-# death auron
-sinspawn_gui seymour
-
-# Moonflow
+# Djose and Moonflow
 # death
 
 extractor wakka
@@ -192,6 +177,7 @@ steal ???_3
 
 # Thunder Plains
 # steal melusine
+steal gold_element
 steal larva
 steal larva
 steal qactuar
@@ -221,13 +207,21 @@ death rikku
 death tidus
 crawler rikku
 
+steal snow_wolf
+death lulu
+death rikku
+
+steal snow_wolf
+death lulu
+death rikku
+
 # Seymour 1
-guado_guardian kimahri
-guado_guardian kimahri
+guado_guardian valefor
+guado_guardian valefor
 steal anima
-death ???
 anima shiva
-seymour shiva
+death shiva
+seymour rikku
 
 # steal ice_flan
 
@@ -246,7 +240,11 @@ death rikku
 # Wendigo
 guado_guardian_2 rikku
 guado_guardian_2 rikku
-wendigo shiva
+death rikku
+death tidus
+death yuna
+# death rikku
+wendigo rikku
 
 # Bikanel Desert
 party takwlr
@@ -259,8 +257,6 @@ steal sand_worm
 
 # Home
 # Fight 1
-steal bomb_2
-steal bomb_2
 steal bomb_2
 guado_guardian_3 rikku
 bomb_2 rikku
@@ -369,9 +365,9 @@ death rikku
 
 party tyakwlr
 death valefor
+# death shiva
 # death rikku
 # death kimahri
-# death shiva
 seymour_natus shiva
 
 # Calm Lands

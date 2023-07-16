@@ -516,6 +516,7 @@ def parse_monster_spawn(gs: GameState,
 def parse_encounter_checks(gs: GameState,
                            zone_name: str = '',
                            steps: str = '',
+                           continue_zone: str = '',
                            *_) -> EncounterChecks:
     usage = 'walk [zone] [steps]'
     if not zone_name or not steps:
@@ -526,8 +527,8 @@ def parse_encounter_checks(gs: GameState,
         distance = int(steps) * 10
     except ValueError:
         raise EventParsingError('Step must be an integer')
-
-    return EncounterChecks(gs, zone, distance)
+    continue_previous_zone = continue_zone == 'true'
+    return EncounterChecks(gs, zone, distance, continue_previous_zone)
 
 
 def parse_inventory_command(gs: GameState,

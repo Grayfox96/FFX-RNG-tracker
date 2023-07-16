@@ -21,7 +21,7 @@ sin_fin,false,,1,1,1
 echuilles,false,,1,1,1
 lancet_tutorial,false,,1,1,1
 lord_ochu,false,Lord Ochu (Way In),0,0,1
-kilika_woods,false,Kilika Woods (Way In),0,3,6
+kilika_woods,false,Kilika Woods (Way In),0,2,6
 geneaux,false,,1,1,1
 lord_ochu,false,Lord Ochu (Way Out),0,0,1
 kilika_woods,false,Kilika Woods (Way Out),0,3,6
@@ -39,21 +39,20 @@ simulation_miihen,false,Simulation (Mi'ihen),0,0,1
 chocobo_eater,false,,1,1,1
 old_road,false,Old Road,0,4,8
 simulation_old_road,false,Simulation (Old Road),0,0,1
-clasko_skip_screen,false,Clasko Skip Screen,0,2,3
-mrr_valley,false,MRR - Valley,0,6,10
-mrr_precipice,false,MRR - Precipice,0,1,3
-sinspawn_gui_1,false,,1,1,1
-sinspawn_gui_2,false,,1,1,1
-djose_highroad_front_half,true,Djose Highroad (Front Half),0,2,4
-djose_highroad_back_half,true,Djose Highroad (Back Half),0,3,5
-moonflow_south,true,Moonflow (South),0,8,10
+clasko_skip_screen,false,Clasko Skip Screen,0,6,8
+djose_highroad_front_half,false,Djose Highroad (Front Half),0,2,4
+djose_highroad_back_half,false,Djose Highroad (Back Half),0,3,5
+simulation_djose,false,Simulation (Djose),0,0,1
+moonflow_south,false,Moonflow (South),0,8,10
 extractor,false,,1,1,1
 rikku_tutorial,false,,1,1,1
-moonflow_north,true,Moonflow (North),0,2,10
-simulation_guadosalam,true,Simulation (Guadosalam),0,0,1
-thunder_plains_south,true,Thunder Plains (South),0,7,10
+moonflow_north,false,Moonflow (North),0,2,4
+simulation_guadosalam,false,Simulation (Guadosalam),0,0,1
+thunder_plains_south,true,Thunder Plains (South),0,3,10
+thunder_plains_south_1_stone,true,Thunder Plains (South) (1 Stone),0,4,10
 simulation_thunder_plains,true,Simulation (Thunder Plains),0,0,1
-thunder_plains_north,true,Thunder Plains (North),0,7,10
+thunder_plains_north,true,Thunder Plains (North),0,0,10
+thunder_plains_north_1_stone,true,Thunder Plains (North) (1 Stone),0,7,10
 macalania_woods,false,Macalania Woods,0,8,12
 spherimorph,false,,1,1,1
 lake_macalania,false,Lake Macalania,0,1,2
@@ -63,19 +62,19 @@ guado_encounter,false,Guado Encounter,0,0,2
 crevasse,false,Crevasse,0,2,5
 wendigo,false,,1,1,1
 zu,false,,1,1,1
-sanubia_desert_east,true,Bikanel (Pre Machina),0,3,5
+sanubia_desert_east,false,Bikanel (Pre Machina),0,3,5
 machina_steal_tutorial,false,,1,1,1
-sanubia_desert_east,true,Bikanel (Post Machina),0,1,5
-sanubia_desert_central,true,Bikanel (Central),0,3,5
-sanubia_desert_ruins,true,Bikanel (Ruins),0,0,5
-sanubia_desert_west,true,Bikanel (Pre Sandragora),0,1,2
-sandragora,true,Sandragora (TP Spheres),0,1,2
-sanubia_desert_west,true,Bikanel (Post Sandragora),0,0,2
-sandragora,true,Sandragora (Skippable),0,0,5
-guado_+_3_bomb,true,,1,1,1
-guado_+_2_dual_horn,true,,1,1,1
-home,true,Home,0,0,2
-guado_+_2_chimera,true,,1,1,1
+sanubia_desert_east,false,Bikanel (Post Machina),0,1,5
+sanubia_desert_central,false,Bikanel (Central),0,2,5
+sanubia_desert_ruins,false,Bikanel (Ruins),0,1,5
+sanubia_desert_west,false,Bikanel (Pre Sandragora),0,1,2
+sandragora,false,Sandragora (TP Spheres),0,1,2
+sanubia_desert_west,false,Bikanel (Post Sandragora),0,0,2
+sandragora,false,Sandragora (Skippable),0,0,5
+guado_+_3_bomb,false,,1,1,1
+guado_+_2_dual_horn,false,,1,1,1
+home,false,Home,0,0,2
+guado_+_2_chimera,false,,1,1,1
 airship,false,Airship,0,0,1
 evrae,false,,1,1,1
 bevelle_guards_1,false,,1,1,1
@@ -83,26 +82,26 @@ bevelle_guards_2,false,,1,1,1
 bevelle_guards_3,false,,1,1,1
 bevelle_guards_4,false,,1,1,1
 bevelle_guards_5,false,,1,1,1
-via_purifico_maze,true,Via Purifico (Maze),0,0,2
-via_purifico_corridor,true,Via Purifico (Corridor),0,2,4
+via_purifico_maze,false,Via Purifico (Maze),0,0,2
+via_purifico_corridor,false,Via Purifico (Corridor),0,2,4
 isaaru_grothia,false,,1,1,1
 isaaru_pterya,false,,1,1,1
 isaaru_spathi,false,,1,1,1
 via_purifico_underwater,false,Via Purifico (Underwater),0,1,3
 evrae_altana,false,,1,1,1
-highbridge,true,Highbridge,0,3,5
+highbridge,false,Highbridge,0,3,5
 seymour_natus,false,,1,1,1
-calm_lands_south_before_defender_x,true,Calm Lands (South),0,6,10
-calm_lands_central_north_east,true,Calm Lands (Central-North-East),0,4,10
-defender_x,true,,1,1,1
+calm_lands_south_before_defender_x,false,Calm Lands (South),0,6,10
+calm_lands_central_north_east,false,Calm Lands (Central-North-East),0,4,10
+defender_x,false,,1,1,1
 biran_&_yenke,false,Biran & Yenke (pre Cave),0,0,1
-calm_lands_gorge,true,Calm Lands (Gorge),0,0,10
-cave_white_zone cave_green_zone,true,Cave (White zone/Green zone),0,20,50
+calm_lands_gorge,false,Calm Lands (Gorge),0,0,10
+cave_white_zone cave_green_zone,false,Cave (White zone/Green zone),0,20,50
 biran_&_yenke,false,Biran & Yenke,0,1,1
 gagazet_mountain,false,Gagazet (Outside),0,0,10
-seymour_flux,true,,1,1,1
+seymour_flux,false,,1,1,1
 gagazet_cave gagazet_underwater,false,Gagazet (Inside),0,0,20
-sanctuary_keeper,true,,1,1,1
+sanctuary_keeper,false,,1,1,1
 zanarkand_overpass,false,Zanarkand (Overpass),0,0,10
 zanarkand_dome,false,Zanarkand (Dome),0,0,10
 spectral_keeper,false,,1,1,1

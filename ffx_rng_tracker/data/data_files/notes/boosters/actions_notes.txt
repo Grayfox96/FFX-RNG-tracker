@@ -191,19 +191,6 @@ encounter chocobo_eater
 wakka attack m1
 yuna attack m1
 
-# -- Mushroom Rock --
-encounter sinspawn_gui_1
-wakka dark_matter m1
-wakka dark_matter m2
-wakka dark_matter m3
-wakka dark_matter m4
-
-encounter sinspawn_gui_2
-seymour dark_matter m1
-seymour dark_matter m2
-seymour dark_matter m3
-seymour dark_matter m4
-
 # -- Moonflow --
 encounter extractor
 wakka attack m1

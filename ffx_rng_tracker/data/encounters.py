@@ -15,6 +15,16 @@ class EncounterData:
     max: int
 
 
+@dataclass
+class StepsData:
+    name: str
+    label: str
+    min: int
+    default: int
+    max: int
+    continue_previous_zone: bool
+
+
 def get_encounter_notes(file_path: str, seed: int) -> list[EncounterData]:
     encounters_notes = get_notes(file_path, seed)
     encounters = {}
@@ -59,7 +69,7 @@ def get_encounter_notes(file_path: str, seed: int) -> list[EncounterData]:
     return list(encounters.values())
 
 
-def get_steps_notes(file_path: str, seed: int) -> list[EncounterData]:
+def get_steps_notes(file_path: str, seed: int) -> list[StepsData]:
     steps_notes = get_notes(file_path, seed)
     steps = {}
     csv_reader = csv.reader(steps_notes.splitlines())
@@ -91,12 +101,16 @@ def get_steps_notes(file_path: str, seed: int) -> list[EncounterData]:
             maximum = max(default, int(line[4]))
         except (ValueError, IndexError):
             maximum = max(default, 1)
-        steps[label] = EncounterData(
+        try:
+            continue_previous_zone = line[5].lower() == 'true'
+        except IndexError:
+            continue_previous_zone = False
+        steps[label] = StepsData(
             name=name,
-            initiative=False,
             label=label,
             min=minimum,
             default=default,
             max=maximum,
+            continue_previous_zone=continue_previous_zone,
         )
     return list(steps.values())

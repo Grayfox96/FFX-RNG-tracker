@@ -22,7 +22,6 @@ class GameState:
         self._rng_tracker = FFXRNGTracker(seed)
         self.characters = self._get_characters()
         self.zone_encounters_counts: dict[str, int] = {}
-        self._compatibility = BASE_COMPATIBILITY[Configs.game_version]
         self.reset()
 
     def __repr__(self) -> str:
@@ -178,10 +177,15 @@ class GameState:
         self.encounters_count = 0
         self.random_encounters_count = 0
         self.zone_encounters_counts.clear()
+        self.live_distance = 0
         for character in self.characters.values():
             character.reset()
         self.calculate_aeon_stats_cache = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         self.calculate_aeon_stats()
+        for character in self.characters.values():
+            if character.index > 7:
+                character.current_hp = 99999
+                character.current_mp = 9999
 
     @property
     def gil(self) -> int:

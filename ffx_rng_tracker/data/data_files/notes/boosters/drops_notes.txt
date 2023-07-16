@@ -117,13 +117,7 @@ garuda_2 wakka
 # Piercing tutorial
 raldo_2 auron
 
-# Mushroom Rock Road
-# Gui 1 (drops are disabled)
-roll rng10 12
-
-# Gui 2
-sinspawn_gui seymour
-roll rng10 9
+chocobo_eater yuna
 
 # Moonflow
 extractor wakka

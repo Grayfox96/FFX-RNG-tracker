@@ -28,32 +28,30 @@ auron attack sinscale_6
 tidus attack sinscale_6
 
 encounter ammes
-# auron od, ignore first set of rolls
-# second set is actual rolls
-auron dragon_fang sinspawn_ammes
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-auron dragon_fang sinscale_6
-
-auron dragon_fang sinspawn_ammes 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-auron dragon_fang sinscale_6 2.0
-
-tidus attack sinspawn_ammes
 # Demi 1
+# auron od, ignore this set of rolls
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
+auron dragon_fang ???
 
-# tidus od, ignore first roll
-# second line is actual roll
-tidus spiral_cut sinspawn_ammes
-tidus spiral_cut sinspawn_ammes 2.5
-auron attack sinspawn_ammes
-# Demi 2
+# this set is actual rolls
+auron dragon_fang sinspawn_ammes 3.0
+auron dragon_fang sinscale_6 3.0
+auron dragon_fang sinscale_6 3.0
+auron dragon_fang sinscale_6 3.0
+auron dragon_fang sinscale_6 3.0
+auron dragon_fang sinscale_6 3.0
+
 tidus attack sinspawn_ammes
+# Demi 2
+
+# tidus od, ignore this roll
+tidus spiral_cut ???
+# this is the actual roll
+tidus spiral_cut sinspawn_ammes 2.5
 auron attack sinspawn_ammes
 # Demi 3
 tidus attack sinspawn_ammes
@@ -62,6 +60,9 @@ auron attack sinspawn_ammes
 tidus attack sinspawn_ammes
 auron attack sinspawn_ammes
 # Demi 5
+tidus attack sinspawn_ammes
+auron attack sinspawn_ammes
+# Demi 6
 # tidus attack sinspawn_ammes
 # auron attack sinspawn_ammes
 
@@ -94,10 +95,9 @@ tidus attack klikk
 encounter klikk_2
 rikku grenade klikk
 tidus attack klikk
-
-# rikku potion tidus
+rikku steal klikk
 tidus attack klikk
-rikku attack klikk
+rikku steal klikk
 tidus attack klikk
 rikku attack klikk
 rikku attack klikk
@@ -123,13 +123,15 @@ rikku attack piranha_3
 tidus attack piranha_3
 
 encounter tros
-rikku grenade tros
 tidus attack tros
+# tidus attack tros
 tidus stand_by
-rikku grenade tros
-rikku grenade tros
-rikku grenade tros
 # tidus stand_by
+
+rikku grenade tros
+rikku grenade tros
+rikku grenade tros
+rikku grenade tros
 rikku grenade tros
 rikku grenade tros
 
@@ -540,45 +542,12 @@ encounter old_road
 encounter clasko_skip_screen
 encounter clasko_skip_screen
 
-# -- MRR --
-encounter mrr_valley
-encounter mrr_valley
-encounter mrr_valley
-encounter mrr_valley
-encounter mrr_valley
-encounter mrr_valley
-
-encounter mrr_precipice
-
-encounter sinspawn_gui_1
-auron power_break sinspawn_gui
-kimahri self-destruct sinspawn_gui
-valefor energy_blast sinspawn_gui
-valefor energy_blast head
-valefor energy_blast arm
-valefor energy_blast arm
-
-# OD recharge
-valefor thunder sinspawn_gui
-valefor thunder sinspawn_gui
-valefor thunder sinspawn_gui
-
-valefor energy_blast sinspawn_gui
-valefor energy_blast arm
-valefor energy_blast arm
-
-encounter sinspawn_gui_2
-# Gui 2 has 1 magic defense
-# Target is Head as a workaround
-seymour thundara head
-seymour thundara head
-seymour thundara head
-seymour thundara head
-seymour thundara head
-seymour thundara head
-
-auron attack auron
-yuna attack yuna
+encounter clasko_skip_screen
+encounter clasko_skip_screen
+encounter clasko_skip_screen
+encounter clasko_skip_screen
+encounter clasko_skip_screen
+encounter clasko_skip_screen
 
 # -- Djose --
 encounter djose_highroad_front_half
@@ -694,10 +663,9 @@ rikku lightning_marble negator
 # auron phoenix_down rikku
 
 rikku lightning_marble crawler
-tidus phoenix_down rikku
+auron phoenix_down rikku
 rikku lightning_marble crawler
-tidus phoenix_down rikku
-
+# mana beam
 auron phoenix_down rikku
 rikku lightning_bolt crawler
 rikku lightning_bolt crawler
@@ -712,25 +680,29 @@ rikku lightning_bolt crawler
 # tidus equips brotherhood
 weapon tidus 4 strength_+10% strength_+5% waterstrike
 
-# encounter crevasse
+encounter crevasse
+encounter crevasse
+encounter crevasse
 
 # -- Macalania Temple --
 # Seymour
 encounter seymour
-tidus spiral_cut seymour
-tidus spiral_cut seymour 2.5
-rikku lightning_marble seymour
-kimahri self-destruct seymour
+rikku electro_marble seymour
+valefor energy_blast guado_guardian
+valefor energy_blast seymour
+valefor energy_blast guado_guardian
+
+kimahri self-destruct anima
+shiva diamond_dust anima
+
+shiva blizzara shiva
+shiva blizzara shiva
+shiva diamond_dust anima
 
 shiva blizzara anima
 shiva diamond_dust anima
-shiva blizzara shiva
-shiva blizzara anima
-shiva blizzara anima
-shiva blizzara anima
 
-shiva diamond_dust seymour
-tidus attack seymour
+rikku chaos_grenade seymour
 
 # Tidus unequips Brotherhood
 weapon tidus 1 first_strike
@@ -738,14 +710,13 @@ weapon tidus 1 first_strike
 # encounter guado_encounter
 
 # -- Crevasse --
-# Guado Guardian #2 is in Macalania
-# and in the Wendigo fights
 encounter crevasse
 encounter crevasse
 encounter crevasse
 
 # Wendigo
 encounter wendigo
+rikku lightning_marble wendigo
 rikku chaos_grenade guado_guardian_2
 rikku chaos_grenade wendigo
 rikku chaos_grenade guado_guardian_2
@@ -753,7 +724,14 @@ rikku chaos_grenade guado_guardian_2
 shiva diamond_dust wendigo
 shiva blizzara wendigo
 shiva blizzara wendigo
-# shiva blizzara wendigo
+shiva blizzara wendigo
+shiva blizzara wendigo
+
+tidus attack wendigo
+rikku attack wendigo
+yuna phoenix_down rikku
+yuna attack wendigo
+rikku cluster_bomb wendigo
 
 # -- Bikanel --
 encounter zu
@@ -805,7 +783,7 @@ encounter guado_+_2_dual_horn
 kimahri lancet_hp dual_horn_2
 kimahri lancet_mp dual_horn_2
 
-encounter home
+# encounter home
 
 encounter guado_+_2_chimera
 kimahri lancet_hp chimera_2
@@ -815,20 +793,7 @@ kimahri lancet_mp chimera_2
 # encounter airship
 
 encounter evrae
-tidus haste tidus
-rikku miracle_drink tidus
-
-# kimahri elixir_hp tidus
-# kimahri elixir_mp tidus
-# kimahri x-potion tidus
-
-tidus cheer tidus
-tidus attack evrae
-tidus attack evrae
-tidus cheer tidus
-tidus attack evrae
-tidus attack evrae
-tidus attack evrae
+# TODO
 
 # -- Bevelle --
 # Fight 1

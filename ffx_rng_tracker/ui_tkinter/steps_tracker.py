@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from ..data.encounter_formations import ZONES
-from ..data.encounters import get_steps_notes
+from ..data.encounters import StepsData, get_steps_notes
 from ..ui_abstract.steps_tracker import StepsTracker
 from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .encounters_tracker import (TkEncountersInputWidget,
@@ -13,14 +13,18 @@ class TkStepsInputWidget(TkEncountersInputWidget):
     def get_input(self) -> str:
         current_zone = self.current_zone.get()
         input_data = []
+        self.encounters: list[StepsData]
         for encounter in self.encounters:
             steps = self.sliders[encounter.label].get()
             if current_zone == encounter.label:
                 input_data.append('///')
             zone = ZONES[encounter.name]
-            input_data.append(f'# {encounter.label} '
-                              f'({zone.grace_period} steps in grace period)')
-            input_data.append(f'walk {encounter.name} {steps}')
+            comment = f'# {encounter.label} '
+            if encounter.continue_previous_zone:
+                comment += '(continues previous zone) '
+            comment += f'({zone.grace_period} steps in grace period)'
+            input_data.append(comment)
+            input_data.append(f'walk {encounter.name} {steps} {encounter.continue_previous_zone}')
         return '\n'.join(input_data)
 
 

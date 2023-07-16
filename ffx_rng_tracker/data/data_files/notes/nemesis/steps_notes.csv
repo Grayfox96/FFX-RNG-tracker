@@ -1,37 +1,39 @@
-#zone, label (optional),min,default,max
-underwater_ruins,Chain Screen, 0, 62, 1000
-besaid_lagoon,Besaid Lagoon, 0, 142, 1000
-besaid_road,Besaid Road, 0, 39, 1000
-kilika_woods,Kilika (Way In), 0, 140, 1000
-kilika_woods,Kilika (Way Out), 0, 163, 1000
-miihen_screen_1,Mi'ihen Screen 1, 0, 143, 1000
-miihen_screen_2_3,Mi'ihen Screen 2, 0, 101, 1000
-miihen_screen_2_3,Mi'ihen Screen 3, 0, 255, 1000
-old_road,Old Road Screen 1, 0, 121, 1000
-old_road,Old Road Screen 2, 0, 72, 1000
-clasko_skip_screen,Clasko Skip Screen, 0, 55, 1000
-mrr_valley,MRR - Valley, 0, 260, 1000
-mrr_precipice,MRR - Precipice, 0, 75, 1000
-djose_highroad_front_half,Djose Highroad, 0, 186, 1000
-djose_highroad_back_half,Djose Highroad (after Temple), 0, 26, 1000
-moonflow_south,Moonflow (South), 0, 318, 1000
-moonflow_north,Moonflow (North), 0, 86, 1000
-thunder_plains_south,Thunder Plains (South), 0, 221, 1000
-thunder_plains_north,Thunder Plains (North), 0, 217, 1000
-macalania_woods,Macalania Woods Screen 1, 0, 59, 1000
-macalania_woods,Macalania Woods Screen 2, 0, 150, 1000
-macalania_woods,Macalania Woods Screen 3, 0, 122, 1000
-lake_macalania,Macalania Agency Front, 0, 34, 1000
-crevasse,Crevasse, 0, 121, 1000
-sanubia_desert_east,Bikanel Pre machina, 0, 140, 1000
-sanubia_desert_east,Bikanel Post machina, 0, 91, 1000
-sanubia_desert_central,Bikanel Central and Ruins, 0, 210, 1000
-sanubia_desert_west,Bikanel Pre Sandragora, 0, 66, 1000
-sanubia_desert_west,Bikanel Post Sandragora, 0, 46, 1000
+#zone,label (optional),min,default,max,continue previous zone
+underwater_ruins,Chain Screen,0,62,1000
+besaid_lagoon,Besaid Lagoon,0,142,1000
+besaid_road,Besaid Road,0,39,1000
+kilika_woods,Kilika (Way In),0,140,1000
+kilika_woods,Kilika (Way Out),0,213,1000
+miihen_screen_1,Mi'ihen Screen 1,0,143,1000
+miihen_screen_2_3,Mi'ihen Screen 2,0,101,1000
+miihen_screen_2_3,Mi'ihen Screen 3,0,255,1000
+old_road,Old Road Screen 1,0,121,1000
+old_road,Old Road Screen 2,0,72,1000
+clasko_skip_screen,Clasko Skip Screen,0,55,1000
+clasko_skip_screen,CSS (Terra Skip),0,153,1000
+djose_highroad_front_half,Djose Highroad (Front Half),0,78,1000
+djose_highroad_back_half,Djose Highroad (Back Half),0,108,1000,true
+djose_highroad_back_half,Djose Highroad (after Temple),0,26,1000
+moonflow_south,Moonflow (South),0,312,1000
+moonflow_north,Moonflow (North),0,86,1000
+thunder_plains_south,Thunder Plains (South),0,232,1000
+thunder_plains_north,Thunder Plains (North),0,217,1000
+macalania_woods,Macalania Woods Screen 1,0,59,1000
+macalania_woods,Macalania Woods Screen 2,0,150,1000
+macalania_woods,Macalania Woods Screen 3,0,122,1000
+lake_macalania,Macalania Agency Front,0,46,1000
+crevasse,Crevasse,0,121,1000
+sanubia_desert_east,Bikanel Pre machina,0,140,1000
+sanubia_desert_east,Bikanel Post machina,0,91,1000
+sanubia_desert_central,Bikanel Central,0,158,1000
+sanubia_desert_ruins,Bikanel Ruins,0,52,1000,true
+sanubia_desert_west,Bikanel Pre Sandragora,0,66,1000
+sanubia_desert_west,Bikanel Post Sandragora,0,46,1000
 home,Home,0,16,1000
 airship,Airship 1,0,23,1000
-via_purifico_corridor,Via Purifico (Corridor), 0, 54, 1000
-via_purifico_underwater,Via Purifico (Underwater), 0, 64, 1000
-highbridge,Highbridge, 0, 103, 1000
-calm_lands_south_before_defender_x,Calm Lands (South), 0, 186, 1000
-calm_lands_central_north_east,Calm Lands (North-East), 0, 293, 1000
+via_purifico_maze,Via Purifico (Maze),0,57,1000
+via_purifico_corridor,Via Purifico (Corridor),0,44,1000,true
+via_purifico_underwater,Via Purifico (Underwater),0,64,1000
+highbridge,Highbridge,0,103,1000
+calm_lands_south_before_defender_x,Calm Lands (South),0,186,1000
+calm_lands_central_north_east,Calm Lands (North-East),0,293,1000

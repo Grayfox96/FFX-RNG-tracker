@@ -86,33 +86,32 @@ sin valefor
 sinspawn_echuilles tidus
 sinscale_3 tidus
 sinscale_3 tidus
-# sinscale_3 tidus
-# sinscale_3 tidus
+sinscale_3 tidus
+sinscale_3 tidus
 
 # Kilika
 # forced fight
 ragora_2 tidus
 
-# Valefor OD recharge
-dinonix tidus
-killer_bee valefor
-yellow_element valefor
-# ragora valefor
-
-# Additional kills
 dinonix tidus
 killer_bee wakka
+yellow_element lulu
+
+dinonix tidus
+killer_bee wakka
+yellow_element lulu
 
 geneaux's_tentacle valefor
 geneaux's_tentacle valefor
 sinspawn_geneaux valefor
 
-# Additional kills
 dinonix tidus
 killer_bee wakka
+yellow_element lulu
 
 dinonix tidus
 killer_bee wakka
+yellow_element lulu
 
 # Luca
 # Fight 1
@@ -161,50 +160,18 @@ garuda_2 auron
 # Mi'ihen Highroad
 # Piercing tutorial
 raldo_2 auron
+# death
 
+# Chocobo Eater
 # death
 
 # Old Road
 # death
 
-# Mushroom Rock Road
-# Valefor OD
-gandarewa valefor
-raptor valefor
-# lamashtu valefor
-# red_element valefor
-funguar valefor
+# Clasko Skip Screen
+# death
 
-# Valefor OD recharge
-# gandarewa wakka
-raptor wakka
-# gandarewa valefor
-# lamashtu valefor
-funguar valefor
-red_element valefor
-
-# additional kills
-# gandarewa wakka
-# raptor wakka
-
-# Gui 1 (drops are disabled)
-roll rng10 12
-
-# If the arms respawn
-# roll rng10 6
-
-# Gui 2
-# Head always dies
-roll rng10 3
-
-# If Seymour kills
-sinspawn_gui seymour
-
-# If Valefor kills with overdrive
-# roll rng10 6
-# sinspawn_gui valefor
-
-# Moonflow
+# Djose and Moonflow
 # death
 
 extractor wakka
@@ -215,6 +182,11 @@ party tyakwlr
 steal ???_3
 ???_3 rikku
 # bunyip rikku
+
+# ???_2 rikku
+# bunyip_2 rikku
+# bite_bug rikku
+# bite_bug rikku
 
 # Thunder Plains
 # buer rikku
@@ -234,7 +206,7 @@ spherimorph rikku
 # Lake Macalania
 negator rikku
 death rikku
-# death kimahri
+death kimahri
 death rikku
 # An additional negator dies
 # at the end of the fight
@@ -242,8 +214,8 @@ negator unknown
 crawler rikku
 
 # Seymour 1
-guado_guardian tidus
-guado_guardian tidus
+guado_guardian kimahri
+guado_guardian kimahri
 steal anima
 death ???
 steal anima 1
@@ -252,12 +224,6 @@ steal anima 1
 anima tidus
 death rikku
 seymour tidus
-
-# guado_guardian_2 rikku
-# snow_wolf rikku
-# mafdet rikku
-# evil_eye rikku
-# ice_flan rikku
 
 # Wendigo
 guado_guardian_2 tidus
@@ -383,7 +349,7 @@ evrae_altana tidus
 # Highbridge
 party tyawlr
 ykt-63 yuna
-ykt-63 yuna
+# ykt-63 yuna
 
 party tyakwlr
 seymour_natus bahamut
@@ -443,7 +409,7 @@ yenke_ronso kimahri
 biran_ronso kimahri
 
 # If Flux dies from poison
-# the killer is Seymour Flux
+# the killer is "unknown"
 seymour_flux yuna
 
 sanctuary_keeper bahamut
