@@ -301,26 +301,30 @@ class TkEncountersTableInputWidget(tk.Frame):
         self.initiative_equip.grid(row=1, column=0, sticky='w')
         self.initiative_equip.state(['selected'])
 
-        tk.Label(self, text='Random Encounters').grid(row=2, column=0)
+        tk.Label(self, text='Encounters to show').grid(row=2, column=0)
+        self.shown_encounters = BetterSpinbox(self, from_=0, to=2000)
+        self.shown_encounters.grid(row=2, column=1)
+        self.shown_encounters.set(20)
+
+        tk.Label(self, text='Start from').grid(row=3, column=0)
+        self.starting_encounter = BetterSpinbox(self, from_=-2000, to=2000)
+        self.starting_encounter.grid(row=3, column=1)
+
+        tk.Label(self, text='Random Encounters').grid(row=4, column=0)
         self.random_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.random_encounters.grid(row=2, column=1)
+        self.random_encounters.grid(row=4, column=1)
 
-        tk.Label(self, text='Bosses').grid(row=3, column=0)
+        tk.Label(self, text='Bosses').grid(row=5, column=0)
         self.forced_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.forced_encounters.grid(row=3, column=1)
+        self.forced_encounters.grid(row=5, column=1)
 
-        tk.Label(self, text='Simulated Encounters').grid(row=4, column=0)
+        tk.Label(self, text='Simulated Encounters').grid(row=6, column=0)
         self.simulated_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.simulated_encounters.grid(row=4, column=1)
+        self.simulated_encounters.grid(row=6, column=1)
 
         zones_frame = ScrollableFrame(self)
         zones_frame.grid(row=10, column=0, columnspan=2, sticky='nsew')
         self.rowconfigure(10, weight=1)
-
-        tk.Label(self, text='Encounters to show').grid(row=11, column=0)
-        self.shown_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.shown_encounters.grid(row=11, column=1)
-        self.shown_encounters.set(20)
 
         self.zones_buttons: dict[str, ttk.Checkbutton] = {}
         self.zones: dict[str, tk.BooleanVar] = {}
@@ -339,12 +343,16 @@ class TkEncountersTableInputWidget(tk.Frame):
         if initiative_equip:
             input_data.append('equip weapon tidus 1 initiative')
 
+        starting_encounter = int(self.starting_encounter.get())
+        input_data.append(f'encounters_count total {starting_encounter}')
+
         forced_encounters = int(self.forced_encounters.get())
         input_data.append(f'roll rng1 {forced_encounters}')
         input_data.append(f'encounters_count total +{forced_encounters}')
 
         random_encounters = int(self.random_encounters.get())
         input_data.append(f'roll rng1 {random_encounters * 2}')
+        input_data.append(f'encounters_count total +{random_encounters}')
         input_data.append(f'encounters_count random +{random_encounters}')
 
         simulated_encounters = int(self.simulated_encounters.get())
@@ -362,12 +370,13 @@ class TkEncountersTableInputWidget(tk.Frame):
     def register_callback(self, callback_func: Callable[[], None]) -> None:
         self.searchbar.register_callback(callback_func)
         self.initiative_equip.config(command=callback_func)
-        self.random_encounters.config(command=callback_func)
+        self.shown_encounters.config(command=callback_func)
+        self.starting_encounter.config(command=callback_func)
         self.forced_encounters.config(command=callback_func)
+        self.random_encounters.config(command=callback_func)
         self.simulated_encounters.config(command=callback_func)
         for button in self.zones_buttons.values():
             button.config(command=callback_func)
-        self.shown_encounters.config(command=callback_func)
 
 
 class TkEncountersTable(tk.Frame):

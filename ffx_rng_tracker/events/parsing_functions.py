@@ -111,7 +111,7 @@ def parse_encounter_count_change(gs: GameState,
                                  amount: str = '',
                                  *_,
                                  ) -> Comment:
-    usage = 'Usage: encounter_count [total/random/zone name] [(+/-) amount]'
+    usage = 'Usage: encounters_count [total/random/zone name] [(+/-) amount]'
     if not name:
         raise EventParsingError(usage)
     try:
