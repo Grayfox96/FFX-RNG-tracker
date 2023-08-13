@@ -3,7 +3,7 @@ from itertools import product
 
 from ..configs import Configs
 from ..data.seeds import (DAMAGE_VALUES_NEEDED, FRAMES_FROM_BOOT,
-                          datetime_to_seed)
+                          POSSIBLE_XORED_DATETIMES, datetime_to_seed)
 from ..events.character_action import CharacterAction
 from .actions_tracker import ActionsTracker
 from .input_widget import InputWidget
@@ -55,11 +55,14 @@ class SeedFinder(ActionsTracker):
         input_dvs = input_dvs[:len(indexes)]
 
         damage_values = []
-
+        date_times = POSSIBLE_XORED_DATETIMES[Configs.game_version]
         frames = FRAMES_FROM_BOOT[Configs.game_version]
-
-        for frame, dt in product(range(frames), range(256)):
+        already_tested_seeds = set()
+        for frame, dt in product(range(frames), date_times):
             seed = datetime_to_seed(dt, frame)
+            if seed in already_tested_seeds:
+                continue
+            already_tested_seeds.add(seed)
             self.parser.gamestate.seed = seed
             self.parser.gamestate.reset()
             events = self.parser.parse(input_text)

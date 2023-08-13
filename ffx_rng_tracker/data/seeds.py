@@ -27,8 +27,7 @@ def get_seed(damage_values: Iterable[int]) -> int:
 
     if not os.path.exists(seeds_file_path):
         logger.warning('Seeds file not found.')
-        make_seeds_file(
-            seeds_file_path, FRAMES_FROM_BOOT[Configs.game_version])
+        make_seeds_file(seeds_file_path)
         logger.info('Done creating seeds file.')
 
     damage_values = damage_values[:damage_values_needed]
@@ -73,22 +72,25 @@ def datetime_to_seed(datetime: int, frames: int) -> int:
     return ((seed >> 0x10) + (seed << 0x10)) & 0xffffffff
 
 
-def make_seeds_file(file_path: str, frames: int) -> None:
+def make_seeds_file(file_path: str) -> None:
     logger = getLogger(__name__)
-    logger.info(f'Calculating seeds up to frame {frames}.')
     if os.path.exists(file_path):
         logger.warning(f'Seeds file named "{file_path}" already exists.')
         return
+    frames = FRAMES_FROM_BOOT[Configs.game_version]
+    date_times = POSSIBLE_XORED_DATETIMES[Configs.game_version]
+    logger.info(f'Calculating seeds up to frame {frames} '
+                f'for game version {Configs.game_version}.')
     tidus_damage_rolls = _DAMAGE_VALUES['tidus']
     lines = []
     seeds = set()
     tracker = FFXRNGTracker(0)
     for frame in range(frames):
-        for date_time in range(256):
+        for date_time in date_times:
             seed = datetime_to_seed(date_time, frame)
-            tracker.seed = seed
             if seed in seeds:
                 continue
+            tracker.seed = seed
             tracker.rng_initial_values = tracker.get_rng_initial_values(23)
             auron_rolls = tuple(islice(tracker.get_rng_generator(22), 37))
             tidus_rolls = tuple(islice(tracker.get_rng_generator(20), 7))
@@ -135,9 +137,14 @@ _DAMAGE_VALUES: dict[str, tuple[int]] = {
     ),
 }
 FRAMES_FROM_BOOT = {
-    GameVersion.PS2NA: 60 * 30 * Configs.ps2_seeds_minutes,
-    GameVersion.PS2INT: 60 * 30 * Configs.ps2_seeds_minutes,
+    GameVersion.PS2NA: 60 * 60 * Configs.ps2_seeds_minutes,
+    GameVersion.PS2INT: 60 * 60 * Configs.ps2_seeds_minutes,
     GameVersion.HD: 1,
+}
+POSSIBLE_XORED_DATETIMES = {
+    GameVersion.PS2NA: [i for i in range(128)] + [i + 512 for i in range(128)],
+    GameVersion.PS2INT: [i for i in range(128)] + [i + 512 for i in range(128)],
+    GameVersion.HD: [i for i in range(256)],
 }
 DAMAGE_VALUES_NEEDED = {
     GameVersion.PS2NA: 8,
