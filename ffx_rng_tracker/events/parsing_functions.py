@@ -1,4 +1,4 @@
-from typing import Callable, TypeVar
+from typing import Callable
 
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.characters import s_lv_to_total_ap
@@ -39,24 +39,21 @@ ParsingFunction = (Callable[[GameState, str], Event]
                    | Callable[..., Event]
                    )
 
-K = TypeVar('K')
-V = TypeVar('V')
 
-
-def parse_dict_key(key: K, dict: dict[K, V], error_name: str = 'key') -> V:
+def parse_dict_key[K, V](key: K,
+                         dict: dict[K, V],
+                         error_name: str = 'key',
+                         ) -> V:
     try:
         return dict[key]
     except KeyError:
         raise EventParsingError(f'No {error_name} named "{key}"')
 
 
-S = TypeVar('S', bound=StringEnum)
-
-
-def parse_enum_member(member_name: str,
-                      enum: type[S],
-                      enum_name: str = 'member',
-                      ) -> S:
+def parse_enum_member[S: StringEnum](member_name: str,
+                                     enum: type[S],
+                                     enum_name: str = 'member',
+                                     ) -> S:
     try:
         return search_stringenum(enum, member_name)
     except ValueError:

@@ -72,7 +72,7 @@ def log_tkinter_error(error: Exception,
     """
     error_message = (f'Exception in Tkinter callback\n'
                      f'Traceback (most recent call last):\n'
-                     f'{"".join(format_tb(tb))}'
+                     f'{''.join(format_tb(tb))}'
                      f'{error.__name__}: {message}')
     logger = logging.getLogger(__name__)
     logger.error(error_message)

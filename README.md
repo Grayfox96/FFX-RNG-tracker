@@ -1,4 +1,6 @@
 # FFX RNG Tracker
+To install run `pip install .` while in the main directory.
+
 * ffx_rng_tracker_ui: main program.
 * monster_data_viewer: shows information about monsters retrieved from the game directly.
 * encounters_tracker: tracks rng related to encounter formations and preemptives/ambushes.

@@ -1,7 +1,7 @@
 import colorsys
 from dataclasses import is_dataclass
 from functools import cache, partial
-from typing import Any, TypeVar, overload
+from typing import Any, overload
 
 from .data.constants import StringEnum
 
@@ -23,7 +23,7 @@ def treeview(obj, indentation: int = 0) -> str:
                     string += '\n'
                 string += treeview(value, indentation + 1)
         case list() | tuple() | set():
-            string += f'{", ".join([str(a) for a in obj])}\n'
+            string += f'{', '.join([str(a) for a in obj])}\n'
         case dataclass if is_dataclass(dataclass):
             string += '\n' + treeview(vars(dataclass), indentation)
         case _:
@@ -88,11 +88,8 @@ def stringify(object: Any) -> str:
     return str(object).lower().replace(' ', '_')
 
 
-S = TypeVar('S', bound=StringEnum)
-
-
 @cache
-def search_stringenum(stringenum: type[S], string: str) -> S:
+def search_stringenum[S: StringEnum](stringenum: type[S], string: str) -> S:
     for instance in stringenum:
         if stringify(instance) == string:
             return instance

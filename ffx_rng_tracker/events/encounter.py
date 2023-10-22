@@ -198,7 +198,7 @@ class MultizoneRandomEncounter(Event):
             zones_names.append(zone_name)
             formation = f'[{enc.formation}]'
             formations.append(formation)
-        string += (f'{"/".join(zones_names)}: {"/".join(formations)} '
+        string += (f'{'/'.join(zones_names)}: {'/'.join(formations)} '
                    f'{enc.condition}')
         return string
 

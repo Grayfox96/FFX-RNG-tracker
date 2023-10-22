@@ -60,7 +60,7 @@ class EncounterChecks(Event):
                 encounters.append(f'{total_distance // 10}')
         if n_of_encs:
             string += (f' {n_of_encs} encounters'
-                       f' at steps {", ".join(encounters)}')
+                       f' at steps {', '.join(encounters)}')
         else:
             string += ' no encounters'
         if len(self.checks) == n_of_encs:

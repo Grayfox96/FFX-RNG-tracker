@@ -361,7 +361,7 @@ class TkEncountersTableInputWidget(tk.Frame):
         zones = [zone for zone, active in self.zones.items() if active.get()]
         if zones:
             for _ in range(int(self.shown_encounters.get())):
-                input_data.append(f'encounter multizone {" ".join(zones)}')
+                input_data.append(f'encounter multizone {' '.join(zones)}')
         return '\n'.join(input_data)
 
     def set_input(self, text: str) -> None:

@@ -30,7 +30,7 @@ class Equipment:
             abilities.append('-')
         string = (f'{self.name} '
                   f'({self.owner}) '
-                  f'[{", ".join(abilities)}]'
+                  f'[{', '.join(abilities)}]'
                   f'[{self.gil_value // 4} gil]')
         return string
 

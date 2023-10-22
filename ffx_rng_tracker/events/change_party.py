@@ -12,4 +12,4 @@ class ChangeParty(Event):
         self.gamestate.party = self.party
 
     def __str__(self) -> str:
-        return f'Party changed to: {", ".join(self.party)}'
+        return f'Party changed to: {', '.join(self.party)}'
