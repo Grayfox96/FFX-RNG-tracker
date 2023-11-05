@@ -1,5 +1,6 @@
 import tkinter as tk
 
+from ..events.parser import EventParser
 from ..ui_abstract.yojimbo_tracker import YojimboTracker
 from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .input_widget import TkInputWidget
@@ -20,7 +21,7 @@ class TkYojimboOutputWidget(TkOutputWidget):
 
 class TkYojimboTracker(tk.Frame):
 
-    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
+    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkInputWidget(self)
@@ -32,7 +33,7 @@ class TkYojimboTracker(tk.Frame):
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = YojimboTracker(
-            seed=seed,
+            parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
             warning_popup=TkWarningPopup(),

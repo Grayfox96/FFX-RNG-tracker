@@ -1,6 +1,7 @@
 import tkinter as tk
 from typing import Callable
 
+from ..events.parser import EventParser
 from ..ui_abstract.seedfinder import SeedFinder
 from .actions_tracker import TkActionsOutputWidget
 from .base_widgets import TkConfirmPopup, TkWarningPopup
@@ -22,7 +23,7 @@ class TkDamageValuesWidget(tk.StringVar):
 class TkSeedFinder(tk.Frame):
     """Widget used to find the starting seed."""
 
-    def __init__(self, parent, seed: int = 0, *args, **kwargs) -> None:
+    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         frame = tk.Frame(self)
@@ -44,7 +45,7 @@ class TkSeedFinder(tk.Frame):
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = SeedFinder(
-            seed=seed,
+            parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
             warning_popup=TkWarningPopup(),

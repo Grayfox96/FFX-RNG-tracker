@@ -8,8 +8,8 @@ from .parsing_functions import ParsingFunction
 class EventParser:
     """Helper class used to convert strings to events."""
 
-    def __init__(self, seed: int) -> None:
-        self.gamestate = GameState(seed)
+    def __init__(self, gamestate: GameState) -> None:
+        self.gamestate = gamestate
         self._parsing_functions: dict[str, ParsingFunction] = {}
 
     def register_parsing_function(self,

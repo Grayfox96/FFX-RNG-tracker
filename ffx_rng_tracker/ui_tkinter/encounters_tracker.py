@@ -6,6 +6,7 @@ from typing import Callable
 from ..configs import Configs
 from ..data.encounter_formations import ZONES
 from ..data.encounters import EncounterData, get_encounter_notes
+from ..events.parser import EventParser
 from ..ui_abstract.encounters_planner import EncountersPlanner
 from ..ui_abstract.encounters_table import EncountersTable
 from ..ui_abstract.encounters_tracker import EncountersTracker
@@ -148,11 +149,11 @@ class TkEncountersOutputWidget(TkOutputWidget):
 
 class TkEncountersTracker(tk.Frame):
 
-    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
+    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkEncountersInputWidget(self)
-        encounters = get_encounter_notes('encounters_notes.csv', seed)
+        encounters = get_encounter_notes('encounters_notes.csv', parser.gamestate.seed)
         input_widget.encounters = encounters
         for encounter in encounters:
             if encounter.min == encounter.max:
@@ -166,7 +167,7 @@ class TkEncountersTracker(tk.Frame):
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = EncountersTracker(
-            seed=seed,
+            parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
             warning_popup=TkWarningPopup(),
@@ -269,7 +270,7 @@ class TkEncountersPlannerInputWidget(tk.Frame):
 class TkEncountersPlanner(tk.Frame):
     """"""
 
-    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
+    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkEncountersPlannerInputWidget(self)
@@ -279,7 +280,7 @@ class TkEncountersPlanner(tk.Frame):
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = EncountersPlanner(
-            seed=seed,
+            parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
             warning_popup=TkWarningPopup(),
@@ -382,7 +383,7 @@ class TkEncountersTableInputWidget(tk.Frame):
 class TkEncountersTable(tk.Frame):
     """"""
 
-    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
+    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkEncountersTableInputWidget(self)
@@ -392,7 +393,7 @@ class TkEncountersTable(tk.Frame):
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = EncountersTable(
-            seed=seed,
+            parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
             warning_popup=TkWarningPopup(),

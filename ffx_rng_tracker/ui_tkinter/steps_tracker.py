@@ -2,6 +2,7 @@ import tkinter as tk
 
 from ..data.encounter_formations import ZONES
 from ..data.encounters import StepsData, get_steps_notes
+from ..events.parser import EventParser
 from ..ui_abstract.steps_tracker import StepsTracker
 from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .encounters_tracker import (TkEncountersInputWidget,
@@ -30,11 +31,11 @@ class TkStepsInputWidget(TkEncountersInputWidget):
 
 class TkStepsTracker(tk.Frame):
 
-    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
+    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkStepsInputWidget(self)
-        encounters = get_steps_notes('steps_notes.csv', seed)
+        encounters = get_steps_notes('steps_notes.csv', parser.gamestate.seed)
         input_widget.encounters = encounters
         for encounter in encounters:
             input_widget.add_slider(
@@ -46,7 +47,7 @@ class TkStepsTracker(tk.Frame):
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = StepsTracker(
-            seed=seed,
+            parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
             warning_popup=TkWarningPopup(),

@@ -18,14 +18,11 @@ class GameState:
     to properly instantiate events.
     """
 
-    def __init__(self, seed: int) -> None:
-        self._rng_tracker = FFXRNGTracker(seed)
+    def __init__(self, rng_tracker: FFXRNGTracker) -> None:
+        self._rng_tracker = rng_tracker
         self.characters = self._get_characters()
         self.zone_encounters_counts: dict[str, int] = {}
         self.reset()
-
-    def __repr__(self) -> str:
-        return f'{type(self).__name__}(seed=({self.seed}))'
 
     def _get_characters(self) -> dict[Character, CharacterState]:
         characters = {}

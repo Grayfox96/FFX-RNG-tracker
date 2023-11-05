@@ -6,7 +6,10 @@ from tkinter import ttk
 from .. import __version__
 from ..configs import Configs
 from ..data.file_functions import get_resource_path
+from ..events.parser import EventParser
+from ..gamestate import GameState
 from ..logger import log_exceptions, log_tkinter_error
+from ..tracker import FFXRNGTracker
 from .actions_tracker import TkActionsTracker
 from .base_widgets import DamageValuesDialogue
 from .configslog import TkConfigsLogViewer
@@ -32,14 +35,15 @@ class FFXRNGTrackerUI(ttk.Notebook):
             configs = Configs.ui_widgets.get(name)
             if configs is None or not configs.shown:
                 continue
+            parser = EventParser(GameState(FFXRNGTracker(seed)))
             if configs.windowed:
                 window = tk.Toplevel()
                 window.title(name)
                 window.geometry('1280x830')
                 window.protocol('WM_DELETE_WINDOW', lambda: None)
-                widget(window, seed).pack(expand=True, fill='both')
+                widget(window, parser).pack(expand=True, fill='both')
             else:
-                self.add(widget(self, seed), text=name)
+                self.add(widget(self, parser), text=name)
 
     def get_widgets(self) -> dict[str, type[tk.Widget]]:
         widgets = {
