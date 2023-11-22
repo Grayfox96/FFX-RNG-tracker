@@ -1930,7 +1930,7 @@
     "cactuar": {
     },
     "larva": {
-        "Thundara": {
+        "thundara": {
             "name": "Thundara",
             "can_miss": false,
             "can_crit": false,
@@ -2242,7 +2242,10 @@
         "attack_wakka": {
             "name": "Attack Wakka",
             "target": "Wakka",
-            "base_damage": 16
+            "base_damage": 16,
+            "statuses": {
+                "Dark": [10, 3]
+            }
         }
     },
     "ragora_2": {

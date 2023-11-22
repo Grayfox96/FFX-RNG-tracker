@@ -1,9 +1,14 @@
 # FFX RNG Tracker
-To install run `pip install .` while in the main directory.
+To use the program download it from the [releases page](https://github.com/Grayfox96/FFX-RNG-tracker/releases), unzip it and open `FFX RNG tracker vXX.XX.XX.exe`.
 
-* ffx_rng_tracker_ui: main program.
-* monster_data_viewer: shows information about monsters retrieved from the game directly.
-* encounters_tracker: tracks rng related to encounter formations and preemptives/ambushes.
+To install the `ffx_rng_tracker` library run `pip install .` while in the main directory (where `setup.cfg` is located).
+
+To build the .exe run `python ffx_rng_tracker_pyinstaller.py` (the latest pyinstaller version is required, install with `pip install pyinstaller`).
+
+GUI programs that implement the widgets:
+* ffx_rng_tracker_ui: main program, implements all widgets;
+* monster_data_viewer: shows information about monsters;
+* encounters_tracker: tracks RNG related to encounters;
 * seedfinder: used to find a seed given a series of action and the corresponding damage rolls.
 
 # Configs

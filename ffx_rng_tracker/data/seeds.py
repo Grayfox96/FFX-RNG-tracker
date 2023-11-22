@@ -77,7 +77,7 @@ def make_seeds_file(file_path: str) -> None:
     if os.path.exists(file_path):
         logger.warning(f'Seeds file named "{file_path}" already exists.')
         return
-    frames = FRAMES_FROM_BOOT[Configs.game_version]
+    frames = get_frames_from_boot()
     date_times = POSSIBLE_XORED_DATETIMES[Configs.game_version]
     logger.info(f'Calculating seeds up to frame {frames} '
                 f'for game version {Configs.game_version}.')
@@ -124,6 +124,16 @@ def make_seeds_file(file_path: str) -> None:
     logger.info(f'Done calculating seeds up to frame {frames}.')
 
 
+def get_frames_from_boot() -> int:
+    match Configs.game_version:
+        case GameVersion.PS2NA | GameVersion.PS2INT:
+            return 60 * 60 * Configs.ps2_seeds_minutes
+        case GameVersion.HD:
+            return 1
+        case _:
+            return 1
+
+
 _DAMAGE_VALUES: dict[str, tuple[int]] = {
     'auron': (
         260, 261, 262, 263, 264, 266, 267, 268, 269, 270, 271,
@@ -136,14 +146,9 @@ _DAMAGE_VALUES: dict[str, tuple[int]] = {
         137, 137, 138, 138, 139, 139, 140, 140, 141, 141,
     ),
 }
-FRAMES_FROM_BOOT = {
-    GameVersion.PS2NA: 60 * 60 * Configs.ps2_seeds_minutes,
-    GameVersion.PS2INT: 60 * 60 * Configs.ps2_seeds_minutes,
-    GameVersion.HD: 1,
-}
 POSSIBLE_XORED_DATETIMES = {
-    GameVersion.PS2NA: [i for i in range(128)] + [i + 512 for i in range(128)],
-    GameVersion.PS2INT: [i for i in range(128)] + [i + 512 for i in range(128)],
+    GameVersion.PS2NA: [i for i in range(128)],
+    GameVersion.PS2INT: [i for i in range(128)],
     GameVersion.HD: [i for i in range(256)],
 }
 DAMAGE_VALUES_NEEDED = {

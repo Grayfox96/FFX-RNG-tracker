@@ -75,12 +75,10 @@ class CharacterState:
                 max_value = 255
         value = min(max(0, value), max_value)
         self.stats[stat] = value
-        # update current hp/mp values so they dont exceed
-        # their respective max values
-        if stat is Stat.HP:
-            self.current_hp = self.current_hp
-        elif stat is Stat.MP:
-            self.current_mp = self.current_mp
+        if stat is Stat.HP and self.max_hp < self.current_hp:
+            self.current_hp = self.max_hp
+        elif stat is Stat.MP and self.max_hp < self.current_hp:
+            self.current_mp = self.max_mp
 
     @property
     def ap(self) -> int:

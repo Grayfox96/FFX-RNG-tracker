@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from ..utils import open_cp1252, search_stringenum
 from .constants import EncounterCondition
 from .file_functions import get_resource_path
-from .monsters import Monster, get_monsters_dict
+from .monsters import MONSTERS, MONSTERS_HD, Monster, get_monsters_dict
 
 
 @dataclass
@@ -106,7 +106,11 @@ def _get_formations(file_path: str) -> Formations:
             data['danger_value'],
         )
         for formation in zones[zone].formations:
-            for monster in formation.monsters:
+            for monster_name in formation.monsters_names:
+                monster = MONSTERS[monster_name]
+                if zones[zone].name not in monster.zones:
+                    monster.zones.append(zones[zone].name)
+                monster = MONSTERS_HD[monster_name]
                 if zones[zone].name not in monster.zones:
                     monster.zones.append(zones[zone].name)
 

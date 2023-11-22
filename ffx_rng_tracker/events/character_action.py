@@ -199,10 +199,10 @@ class CharacterAction(Event):
                 continue
             if self.target.statuses[status] >= 255:
                 continue
-            removed_status = self.target.statuses.pop(status)
-            if removed_status is Status.DEATH:
+            self.target.statuses.pop(status)
+            if status is Status.DEATH:
                 self.target.ctb = self.target.base_ctb * 3
-            removed_statuses.append(removed_status)
+            removed_statuses.append(status)
         return removed_statuses
 
     def _get_buffs(self) -> dict[Buff, int]:
@@ -292,12 +292,18 @@ def get_damage(
         damage = action.base_damage
         return damage
     elif damage_type is DamageType.PERCENTAGE_TOTAL:
-        hp = target.max_hp
-        damage = hp * action.base_damage // 16
+        if action.damages_mp:
+            pool = target.max_mp
+        else:
+            pool = target.max_hp
+        damage = pool * action.base_damage // 16
         return damage
     elif damage_type is DamageType.PERCENTAGE_CURRENT:
-        hp = target.current_hp
-        damage = hp * action.base_damage // 16
+        if action.damages_mp:
+            pool = target.current_mp
+        else:
+            pool = target.current_hp
+        damage = pool * action.base_damage // 16
         return damage
     elif damage_type == DamageType.HP:
         hp = user.max_hp

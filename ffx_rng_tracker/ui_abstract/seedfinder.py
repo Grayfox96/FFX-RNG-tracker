@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from itertools import product
 
 from ..configs import Configs
-from ..data.seeds import (DAMAGE_VALUES_NEEDED, FRAMES_FROM_BOOT,
-                          POSSIBLE_XORED_DATETIMES, datetime_to_seed)
+from ..data.seeds import (DAMAGE_VALUES_NEEDED, POSSIBLE_XORED_DATETIMES,
+                          datetime_to_seed, get_frames_from_boot)
 from ..events.character_action import CharacterAction
 from .actions_tracker import ActionsTracker
 from .input_widget import InputWidget
@@ -56,7 +56,7 @@ class SeedFinder(ActionsTracker):
 
         damage_values = []
         date_times = POSSIBLE_XORED_DATETIMES[Configs.game_version]
-        frames = FRAMES_FROM_BOOT[Configs.game_version]
+        frames = get_frames_from_boot()
         already_tested_seeds = set()
         for frame, dt in product(range(frames), date_times):
             seed = datetime_to_seed(dt, frame)
