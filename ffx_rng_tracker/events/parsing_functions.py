@@ -3,7 +3,7 @@ from typing import Callable
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.characters import s_lv_to_total_ap
 from ..data.constants import (SHORT_STATS_NAMES, Autoability, Character,
-                              EquipmentType, Item, MonsterSlot, Stat,
+                              EquipmentType, Item, KillType, MonsterSlot, Stat,
                               StringEnum, TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
@@ -172,21 +172,26 @@ def parse_kill(gs: GameState,
     monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     killer = parse_enum_member(killer_name, Character, 'character')
     ap_characters = parse_party_members_initials(ap_characters_string)
-    overkill = overkill in ('overkill', 'ok')
-    return Kill(gs, monster, killer, ap_characters, overkill)
+    if overkill in ('overkill', 'ok'):
+        kill_type = KillType.OVERKILL
+    else:
+        kill_type = KillType.NORMAL
+    return Kill(gs, monster, killer, ap_characters, kill_type)
 
 
 def parse_bribe(gs: GameState,
                 monster_name: str = '',
                 user_name: str = '',
+                ap_characters_string: str = '',
                 *_,
                 ) -> Bribe:
-    usage = 'Usage: bribe [monster_name] [user]'
+    usage = 'Usage: bribe [monster_name] [user] (party members initials)'
     if not monster_name or not user_name:
         raise EventParsingError(usage)
     monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     user = parse_enum_member(user_name, Character, 'character')
-    return Bribe(gs, monster, user)
+    ap_characters = parse_party_members_initials(ap_characters_string)
+    return Bribe(gs, monster, user, ap_characters)
 
 
 def parse_death(gs: GameState, character_name: str = 'unknown', *_) -> Death:

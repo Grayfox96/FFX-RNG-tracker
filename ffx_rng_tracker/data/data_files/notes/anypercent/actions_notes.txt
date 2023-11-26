@@ -319,39 +319,31 @@ stat tidus strength +1
 
 encounter sahagin_chiefs
 tidus haste tidus
-# tidus cheer tidus
-# tidus cheer wakka
 wakka attack sahagin_chief
-# tidus haste wakka
-
 tidus attack sahagin_chief
 tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-tidus attack sahagin_chief
-
 wakka attack sahagin_chief
+# 3 Sahagin Chiefs spawn
+tidus attack sahagin_chief
+tidus attack sahagin_chief
+# 2 Sahagin Chiefs spawn
 wakka attack sahagin_chief
+tidus attack sahagin_chief
+tidus attack sahagin_chief
+# 1 Sahagin Chief spawns
 wakka attack sahagin_chief
-wakka attack sahagin_chief
-wakka attack sahagin_chief
-wakka attack sahagin_chief
-wakka attack sahagin_chief
-wakka attack sahagin_chief
-wakka attack sahagin_chief
-wakka attack sahagin_chief
+tidus attack sahagin_chief
+# 3 Sahagin Chiefs spawn
+tidus attack sahagin_chief
+tidus attack sahagin_chief
+# 2 Sahagin Chiefs spawn, 4th one appears
+tidus attack sahagin_chief
+tidus attack sahagin_chief
+# 2 Sahagin Chiefs spawn
+tidus attack sahagin_chief
+tidus attack sahagin_chief
+tidus attack sahagin_chief
+tidus attack sahagin_chief
 
 encounter vouivre
 auron attack vouivre_2
@@ -545,8 +537,6 @@ rikku lightning_bolt spherimorph
 
 # Post-Spherimorph grid
 stat rikku agility +3
-stat kimahri hp +600
-stat kimahri agility +3
 
 encounter lake_macalania
 
@@ -573,6 +563,8 @@ rikku lightning_bolt crawler
 stat tidus hp +600
 stat tidus strength +20
 stat tidus agility +4
+stat kimahri hp +200
+stat kimahri agility +4
 # Tidus equips Brotherhood
 weapon tidus 4 strength_+10% strength_+5% waterstrike
 
@@ -970,7 +962,7 @@ bahamut attack seymour_omnis
 # encounter
 
 # BFA grid
-stat yuna agility +11
+stat yuna agility +10
 # weapon auron 1 first_strike
 
 # Braska's Final Aeon

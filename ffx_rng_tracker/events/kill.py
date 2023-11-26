@@ -13,7 +13,7 @@ class Kill(Event):
     monster: Monster
     killer: Character
     ap_credited_characters: list[Character] = field(default_factory=list)
-    overkill: bool = False
+    kill_type: KillType = KillType.NORMAL
 
     def __post_init__(self) -> None:
         self.item_1 = self._get_item_1()
@@ -25,17 +25,17 @@ class Kill(Event):
             self.gamestate.add_to_inventory(
                 self.item_2.item, self.item_2.quantity)
         self.gamestate.gil += self.monster.gil
+        rng_current_positions = self.gamestate._rng_tracker._rng_current_positions
+        self.ability_rolls = rng_current_positions[13]
         self.equipment = self._get_equipment()
+        self.ability_rolls = rng_current_positions[13] - self.ability_rolls
         if self.equipment:
             self.gamestate.equipment_inventory.append(self.equipment.equipment)
         self.equipment_index = self._get_equipment_index()
         self._give_ap()
 
     def _give_ap(self):
-        if self.overkill:
-            ap = self.monster.ap[KillType.OVERKILL]
-        else:
-            ap = self.monster.ap[KillType.NORMAL]
+        ap = self.monster.ap[self.kill_type]
         for character in self.ap_credited_characters:
             self.gamestate.characters[character].ap += ap
 
@@ -48,38 +48,38 @@ class Kill(Event):
             drops.append(str(self.item_2))
         if self.equipment:
             drops.append(f'Equipment #{self.equipment_index} '
-                         f'{str(self.equipment)}')
+                         f'{str(self.equipment)}'
+                         f'({self.ability_rolls} ability roll'
+                         f'{'s' * (self.ability_rolls != 1)})')
         if drops:
             string += ', '.join(drops)
         else:
             string += 'No drops'
+        if self.ap_credited_characters:
+            string += (f' | {self.monster.ap[self.kill_type]} AP to '
+                       f'{''.join(c[0] for c in self.ap_credited_characters)}'
+                       )
+        if self.kill_type is KillType.OVERKILL:
+            string += ' (Overkill)'
         return string
 
     def _get_item_1(self) -> ItemDrop | None:
         rng_drop = self._advance_rng(10) % 255
-        if self.overkill:
-            kill_type = KillType.OVERKILL
-        else:
-            kill_type = KillType.NORMAL
         if self.monster.item_1.drop_chance > rng_drop:
             rng_rarity = self._advance_rng(11) & 255
             if rng_rarity < 32:
-                return self.monster.item_1.items[kill_type, Rarity.RARE]
+                return self.monster.item_1.items[self.kill_type, Rarity.RARE]
             else:
-                return self.monster.item_1.items[kill_type, Rarity.COMMON]
+                return self.monster.item_1.items[self.kill_type, Rarity.COMMON]
 
     def _get_item_2(self) -> ItemDrop | None:
         rng_drop = self._advance_rng(10) % 255
-        if self.overkill:
-            kill_type = KillType.OVERKILL
-        else:
-            kill_type = KillType.NORMAL
         if self.monster.item_2.drop_chance > rng_drop:
             rng_rarity = self._advance_rng(11) & 255
             if rng_rarity < 32:
-                return self.monster.item_2.items[kill_type, Rarity.RARE]
+                return self.monster.item_2.items[self.kill_type, Rarity.RARE]
             else:
-                return self.monster.item_2.items[kill_type, Rarity.COMMON]
+                return self.monster.item_2.items[self.kill_type, Rarity.COMMON]
 
     def _get_equipment(self) -> EquipmentDrop | None:
         """Returns equipment obtained from killing a monster
@@ -177,7 +177,7 @@ class Kill(Event):
 class Bribe(Kill):
 
     def __post_init__(self) -> None:
-        self.overkill = False
+        self.kill_type = KillType.NORMAL
         super().__post_init__()
 
     def _get_item_1(self) -> ItemDrop | None:

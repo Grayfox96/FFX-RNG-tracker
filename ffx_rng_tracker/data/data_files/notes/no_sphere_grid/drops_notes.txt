@@ -3,7 +3,7 @@
 # (kill) [monster_name] [killer] (party members initials) (overkill/ok)
 # steal [monster_name] (successful steals)
 # death (character)
-# bribe [monster_name] [user]
+# bribe [monster_name] [user] (party members initials)
 # ap (character)
 # inventory show (equipment)
 # inventory [use/get/buy/sell] [item name] [quantity]

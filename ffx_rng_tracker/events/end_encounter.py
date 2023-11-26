@@ -22,9 +22,10 @@ class EndEncounter(Event):
                                  for m, hp in self.monsters_hps.items()])
         if not monsters_hps:
             monsters_hps = 'Monsters at full HP'
-        string = (f'CTBs: {self.ctbs_string} | '
-                  f'Characters HPs: {hps} | '
-                  f'Monsters HPs: {monsters_hps}')
+        string = (f'End: CTBs: {self.ctbs_string}\n'
+                  f'     Characters HPs: {hps}\n'
+                  f'     Monsters HPs: {monsters_hps}'
+                  )
         return string
 
     def _get_ctbs_string(self) -> str:
