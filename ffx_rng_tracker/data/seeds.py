@@ -1,5 +1,5 @@
-import csv
 import os
+import pprint
 from itertools import islice
 from logging import getLogger
 from typing import Iterable
@@ -10,12 +10,113 @@ from ..tracker import FFXRNGTracker
 from ..utils import open_cp1252
 from .constants import GameVersion
 
+type Node = dict[str, Node] | str
 
-def get_seed(damage_values: Iterable[int]) -> int:
-    damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
-    if len(damage_values) < damage_values_needed:
+
+def reduce(node: Node) -> Node:
+    """reduces branches with a single child to a leaf recursively"""
+    # if the node is a leaf return the node
+    if isinstance(node, str) or len(node) == 0:
+        return node
+    elif len(node) == 1:
+        _, v = next(iter(node.items()))
+        child = reduce(v)
+        # if it got reduced to a leaf return it
+        if isinstance(child, str):
+            return child
+        # otherwise return the node since it cant be reduced further
+        return node
+    # if there is more than one child then reduce all of them
+    new_childrens: dict[str, Node] = {}
+    for k, v in node.items():
+        if isinstance(v, str):
+            continue
+        new_childrens[k] = reduce(v)
+    node.update(new_childrens)
+    return node
+
+
+def damage_rolls_to_values(damage_rolls: Iterable[int]) -> list[int]:
+    """damage rolls 1/3/5 are used to get values from _TIDUS_DAMAGE_VALUES
+
+    drs 0/2/4/6/7 are used to get values from _AURON_DAMAGE_VALUES
+
+    returns a list of 0-8 damage values based
+    on the size of the damage_values iterable
+
+    raises ValueError if a damage roll is not in the range 0-63
+    """
+    damage_values = []
+    for i, damage_roll in enumerate(damage_rolls):
+        if i in (0, 2, 4) or i >= 6:
+            dvs = _AURON_DAMAGE_VALUES
+        else:
+            dvs = _TIDUS_DAMAGE_VALUES
+        if 0 <= damage_roll <= 31:
+            damage_values.append(dvs[damage_roll])
+        elif 32 <= damage_roll <= 63:
+            damage_values.append(dvs[damage_roll - 32] * 2)
+        else:
+            raise ValueError('Damage roll has to be an integer between 0'
+                             f' and 63, value given: {damage_roll}'
+                             )
+    return damage_values
+
+
+def damage_value_to_rolls(damage_values: Iterable[int]) -> list[int]:
+    """damage values 1/3/5 are searched in _TIDUS_DAMAGE_VALUES
+
+    dvs 0/2/4/6/7 are searched in _AURON_DAMAGE_VALUES
+
+    returns a list of 0-8 damage rolls based
+    on the size of the damage_values iterable
+
+    raises InvalidDamageValueError if one of the items
+    of damage_values is not valid
+    """
+    indexes = []
+    for i, damage_value in enumerate(damage_values):
+        if i in (0, 2, 4) or i >= 6:
+            dvs = _AURON_DAMAGE_VALUES
+            character = 'Auron'
+        else:
+            dvs = _TIDUS_DAMAGE_VALUES
+            character = 'Tidus'
+        try:
+            index = dvs.index(damage_value)
+        except ValueError:
+            # check if the damage value could be from a crit
+            if damage_value % 2 != 0:
+                raise InvalidDamageValueError(
+                    f'Invalid damage value for {character}: {damage_value}')
+            try:
+                index = dvs.index(damage_value // 2) + 32
+            except ValueError:
+                raise InvalidDamageValueError(
+                    f'Invalid damage value for {character}: {damage_value}')
+        indexes.append(index)
+    return indexes
+
+
+def get_seed(damage_values: Iterable[int],
+             continue_search: bool = False,
+             ) -> int:
+    """damage_values needs to have at least 3 or 8 items
+    depending on what Configs.game_version is set to
+
+    if continue_search is true when the seed is not found in the
+    seeds file search_seed is called with the same dvs
+
+    returns an integer between 0 and (2**32 - 1)
+
+    raises SeedNotFoundError if there are less than 3 or 8 items
+    in damage_values or if the seed is not found in the seeds
+    file or by search_seed
+    """
+    dvs_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
+    if len(damage_values) < dvs_needed:
         raise SeedNotFoundError(
-            f'Need at least {damage_values_needed} damage values')
+            f'Need at least {dvs_needed} damage values')
 
     logger = getLogger(__name__)
     if not os.path.exists(SEEDS_DIRECTORY_PATH):
@@ -27,42 +128,77 @@ def get_seed(damage_values: Iterable[int]) -> int:
 
     if not os.path.exists(seeds_file_path):
         logger.warning('Seeds file not found.')
-        make_seeds_file(seeds_file_path)
+        make_seeds_file(
+            seeds_file_path, POSSIBLE_XORED_DATETIMES[Configs.game_version],
+            FRAMES_FROM_BOOT[Configs.game_version]
+            )
         logger.info('Done creating seeds file.')
 
-    damage_values = damage_values[:damage_values_needed]
-    indexes = []
-    for i, damage_value in enumerate(damage_values):
-        if i in (0, 2, 4) or i >= 6:
-            character = 'auron'
-        else:
-            character = 'tidus'
-        try:
-            index = _DAMAGE_VALUES[character].index(damage_value)
-        except ValueError:
-            if damage_value % 2 != 0:
-                raise InvalidDamageValueError(
-                    f'Invalid damage value for {character}: {damage_value}')
-            try:
-                index = _DAMAGE_VALUES[character].index(damage_value // 2) + 32
-            except ValueError:
-                raise InvalidDamageValueError(
-                    f'Invalid damage value for {character}: {damage_value}')
-        indexes.append(index)
-
-    damage_indexes_as_string = ''.join([f'{n:02}' for n in indexes])
-
+    damage_values = damage_values[:dvs_needed]
+    damage_rolls = damage_value_to_rolls(damage_values)
     with open_cp1252(seeds_file_path) as file_object:
-        seeds = csv.reader(file_object)
-        for line in seeds:
-            if line[0].startswith(damage_indexes_as_string):
-                break
-        else:
-            logger.warning(f'Failed to find seed from DVs "{damage_values}".')
-            raise SeedNotFoundError('Seed not found')
-        seed = int(line[1])
-    logger.info(f'Found seed {seed} from DVs "{damage_values}"')
+        seeds = file_object.read().splitlines()
+    i = 0
+    needle = f'{damage_rolls[i]:02}'
+    for line in seeds:
+        if not line.startswith(needle):
+            continue
+        seed = int(line[-10:])
+        drs_check = get_damage_rolls(FFXRNGTracker(seed))[:dvs_needed]
+        if damage_rolls == drs_check:
+            logger.info(f'Found seed {seed} in seeds file'
+                        f' from DVs "{damage_values}"'
+                        )
+            break
+        i += 1
+        needle += f'{damage_rolls[i]:02}'
+    else:
+        logger.warning(
+            f'Failed to find seed in seeds file from DVs "{damage_values}".')
+        if Configs.game_version is GameVersion.HD or not continue_search:
+            raise SeedNotFoundError('Seed not found (seeds file exhausted)')
+        seed = search_seed(damage_rolls)
+        logger.info(f'Found seed {seed} from seed search'
+                    f' from DVs "{damage_values}"'
+                    )
     return seed
+
+
+def search_seed(damage_rolls: Iterable[int]) -> int:
+    """damage_rolls needs to have 8 items
+
+    returns an integer between 0 and (2**32 - 1)
+
+    raises SeedNotFoundError if Configs.game_version is set to HD,
+    if there are less than 8 items in damage_rolls or if the seed
+    is not found in the seed range
+    """
+    if Configs.game_version is GameVersion.HD:
+        raise SeedNotFoundError('No seeds available past frame 0 on HD port.')
+    dvs_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
+    if len(damage_rolls) < dvs_needed:
+        raise SeedNotFoundError(
+            f'Need at least {dvs_needed} damage values')
+    tracker = FFXRNGTracker(0)
+    starting_frame = FRAMES_FROM_BOOT[Configs.game_version]
+    ending_frame = starting_frame + (60 * 60 * 10)
+    date_times = POSSIBLE_XORED_DATETIMES[Configs.game_version]
+    logger = getLogger(__name__)
+    logger.info(f'Starting seed search in frames range'
+                f' {starting_frame}-{ending_frame}.')
+    seeds = set()
+    for frame in range(starting_frame, ending_frame):
+        if frame % 3600 == 0:
+            logger.debug(f'Checked up to frame {frame}.')
+        for date_time in date_times:
+            seed = datetime_to_seed(date_time, frame)
+            if seed in seeds:
+                continue
+            seeds.add(seed)
+            tracker.seed = seed
+            if damage_rolls == get_damage_rolls(tracker):
+                return seed
+    raise SeedNotFoundError(f'Seed not found (searched up to frame {frame})')
 
 
 def datetime_to_seed(datetime: int, frames: int) -> int:
@@ -72,79 +208,107 @@ def datetime_to_seed(datetime: int, frames: int) -> int:
     return ((seed >> 0x10) + (seed << 0x10)) & 0xffffffff
 
 
-def make_seeds_file(file_path: str) -> None:
+def get_damage_rolls(tracker: FFXRNGTracker) -> list[int]:
+    """uses the tracker to calculate the 8 damage rolls
+    used to retrieve a seed
+    """
+    tracker.rng_initial_values = tracker.get_rng_initial_values(23)
+    auron_rolls = tuple(islice(tracker.get_rng_generator(22), 37))
+    tidus_rolls = tuple(islice(tracker.get_rng_generator(20), 7))
+    indexes = []
+    # first encounter
+    # get 3 damage rolls from auron and tidus
+    for i in (1, 3, 5):
+        auron_damage_index = auron_rolls[i] & 31
+        # if auron crits the sinscale adds 32, otherwise 0
+        auron_damage_index += 32 * ((auron_rolls[i + 1] % 101) < 22)
+        indexes.append(auron_damage_index)
+        tidus_damage = _TIDUS_DAMAGE_VALUES[tidus_rolls[i] & 31]
+        tidus_damage_index = _TIDUS_DAMAGE_VALUES.index(
+                    tidus_damage)
+        # if tidus crits the sinscale adds 32, otherwise 0
+        tidus_damage_index += 32 * ((tidus_rolls[i + 1] % 101) < 23)
+        indexes.append(tidus_damage_index)
+        # second encounter after dragon fang
+        # get 2 damage rolls from auron
+    for i in (32, 34):
+        auron_damage_index = auron_rolls[i] & 31
+        # if auron crits ammes adds 32, otherwise 0
+        auron_damage_index += 32 * ((auron_rolls[i + 1] % 101) < 13)
+        indexes.append(auron_damage_index)
+    return indexes
+
+
+def make_seeds_file(file_path: str,
+                    date_times: list[int],
+                    ending_frame: int,
+                    starting_frame: int = 0,
+                    ) -> None:
+    """calculates damage rolls for every seed possible in a range given
+    a frames range and a list of datetimes and writes them to file_path
+
+    returns immediately if file_path already exists
+    """
     logger = getLogger(__name__)
     if os.path.exists(file_path):
         logger.warning(f'Seeds file named "{file_path}" already exists.')
         return
-    frames = get_frames_from_boot()
-    date_times = POSSIBLE_XORED_DATETIMES[Configs.game_version]
-    logger.info(f'Calculating seeds up to frame {frames} '
-                f'for game version {Configs.game_version}.')
-    tidus_damage_rolls = _DAMAGE_VALUES['tidus']
-    lines = []
+    logger.info(f'Calculating seeds in frame range'
+                f' {starting_frame}-{ending_frame}'
+                f' for game version {Configs.game_version}.')
     seeds = set()
     tracker = FFXRNGTracker(0)
-    for frame in range(frames):
+    root_node: Node = {}
+    for frame in range(starting_frame, ending_frame):
+        if frame % 3600 == 0 and frame != 0:
+            logger.debug(f'Calculated up to frame {frame}.')
         for date_time in date_times:
             seed = datetime_to_seed(date_time, frame)
             if seed in seeds:
                 continue
-            tracker.seed = seed
-            tracker.rng_initial_values = tracker.get_rng_initial_values(23)
-            auron_rolls = tuple(islice(tracker.get_rng_generator(22), 37))
-            tidus_rolls = tuple(islice(tracker.get_rng_generator(20), 7))
-            indexes = []
-            # first encounter
-            # get 3 damage rolls from auron and tidus
-            for i in (1, 3, 5):
-                auron_damage_index = auron_rolls[i] & 31
-                # if auron crits the sinscale adds 32, otherwise 0
-                auron_damage_index += 32 * ((auron_rolls[i + 1] % 101) < 22)
-                indexes.append(auron_damage_index)
-                tidus_damage = tidus_damage_rolls[tidus_rolls[i] & 31]
-                tidus_damage_index = tidus_damage_rolls.index(
-                    tidus_damage)
-                # if tidus crits the sinscale adds 32, otherwise 0
-                tidus_damage_index += 32 * ((tidus_rolls[i + 1] % 101) < 23)
-                indexes.append(tidus_damage_index)
-            # second encounter after dragon fang
-            # get 2 damage rolls from auron
-            for i in (32, 34):
-                auron_damage_index = auron_rolls[i] & 31
-                # if auron crits ammes adds 32, otherwise 0
-                auron_damage_index += 32 * ((auron_rolls[i + 1] % 101) < 13)
-                indexes.append(auron_damage_index)
-            lines.append(
-                ''.join([f'{n:02}' for n in indexes]) + ',' + str(seed))
             seeds.add(seed)
+            tracker.seed = seed
+            indexes = [f'{index:02}' for index in get_damage_rolls(tracker)]
+            node = root_node
+            for index in indexes[:-1]:
+                node = node.setdefault(index, {})
+            node[indexes[-1]] = f'{seed:010}'
+    data = (pprint.pformat(reduce(root_node), width=1)
+            .replace('}', '')
+            .replace(',', '')
+            .replace(':', '')
+            .replace('{', '')
+            .replace(' \'', '')
+            .replace('\'', '')
+            .replace('       ', '  ')
+            )
+    lines = data.splitlines()
+    for index, line in enumerate(lines):
+        count = line.count(' ')
+        if count == 0:
+            continue
+        lines[index] = lines[index - 1][:count] + line[count:]
     data = '\n'.join(lines)
     with open_cp1252(file_path, 'w') as file:
         file.write(data)
-    logger.info(f'Done calculating seeds up to frame {frames}.')
+    logger.info(f'Done calculating seeds in frame range'
+                f' {starting_frame}-{ending_frame}.')
 
 
-def get_frames_from_boot() -> int:
-    match Configs.game_version:
-        case GameVersion.PS2NA | GameVersion.PS2INT:
-            return 60 * 60 * Configs.ps2_seeds_minutes
-        case GameVersion.HD:
-            return 1
-        case _:
-            return 1
-
-
-_DAMAGE_VALUES: dict[str, tuple[int]] = {
-    'auron': (
-        260, 261, 262, 263, 264, 266, 267, 268, 269, 270, 271,
-        272, 273, 274, 275, 276, 278, 279, 280, 281, 282, 283,
-        284, 285, 286, 287, 288, 289, 291, 292, 293, 294,
-    ),
-    'tidus': (
-        125, 126, 126, 127, 127, 128, 128, 129, 129, 130, 130,
-        131, 131, 132, 132, 133, 134, 134, 135, 135, 136, 136,
-        137, 137, 138, 138, 139, 139, 140, 140, 141, 141,
-    ),
+_TIDUS_DAMAGE_VALUES = (
+    125, 126, 126, 127, 127, 128, 128, 129, 129, 130, 130,
+    131, 131, 132, 132, 133, 134, 134, 135, 135, 136, 136,
+    137, 137, 138, 138, 139, 139, 140, 140, 141, 141,
+    )
+_AURON_DAMAGE_VALUES = (
+    260, 261, 262, 263, 264, 266, 267, 268, 269, 270, 271,
+    272, 273, 274, 275, 276, 278, 279, 280, 281, 282, 283,
+    284, 285, 286, 287, 288, 289, 291, 292, 293, 294,
+    )
+FRAMES_FROM_BOOT = {
+    GameVersion.PS2NA: 60 * 60 * 10,
+    GameVersion.PS2INT: 60 * 60 * 10,
+    GameVersion.HD: 1,
 }
 POSSIBLE_XORED_DATETIMES = {
     GameVersion.PS2NA: [i for i in range(128)],
@@ -158,7 +322,7 @@ DAMAGE_VALUES_NEEDED = {
 }
 SEEDS_DIRECTORY_PATH = 'ffx_rng_tracker_seeds'
 SEEDS_FILE_PATHS = {
-    GameVersion.PS2NA: SEEDS_DIRECTORY_PATH + '/ps2_seeds.csv',
-    GameVersion.PS2INT: SEEDS_DIRECTORY_PATH + '/ps2_seeds.csv',
-    GameVersion.HD: SEEDS_DIRECTORY_PATH + '/seeds.csv',
+    GameVersion.PS2NA: SEEDS_DIRECTORY_PATH + '/ps2_seeds.dat',
+    GameVersion.PS2INT: SEEDS_DIRECTORY_PATH + '/ps2_seeds.dat',
+    GameVersion.HD: SEEDS_DIRECTORY_PATH + '/seeds.dat',
 }

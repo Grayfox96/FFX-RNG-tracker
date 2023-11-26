@@ -29,7 +29,7 @@ class Color:
 class Configs:
     seed: int | None = None
     game_version: GameVersion = GameVersion.HD
-    ps2_seeds_minutes: int = 3
+    continue_ps2_seed_search: bool = False
     speedrun_category: SpeedrunCategory | str = SpeedrunCategory.ANYPERCENT
     use_dark_mode: bool = False
     font_size: int = 9
@@ -76,7 +76,8 @@ class Configs:
                 cls.get(section, 'game version', 'HD'))
         except ValueError:
             cls.game_version = GameVersion.HD
-        cls.ps2_seeds_minutes = cls.getint(section, 'ps2 seeds minutes', 3)
+        cls.continue_ps2_seed_search = cls.getboolean(
+            section, 'continue ps2 seed search', False)
         speedrun_category = cls.get(section, 'category', 'AnyPercent')
         try:
             speedrun_category = SpeedrunCategory(speedrun_category)

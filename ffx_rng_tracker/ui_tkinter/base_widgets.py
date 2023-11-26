@@ -173,7 +173,8 @@ class DamageValuesDialogue(simpledialog.Dialog):
                     return
             case _:
                 try:
-                    seed = get_seed(seed_info)
+                    seed = get_seed(
+                        seed_info, Configs.continue_ps2_seed_search)
                 except (InvalidDamageValueError,
                         SeedNotFoundError) as error:
                     self.show_warning(error)
