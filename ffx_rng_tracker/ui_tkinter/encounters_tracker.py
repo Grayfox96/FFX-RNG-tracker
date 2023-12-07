@@ -153,7 +153,8 @@ class TkEncountersTracker(tk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkEncountersInputWidget(self)
-        encounters = get_encounter_notes('encounters_notes.csv', parser.gamestate.seed)
+        encounters = get_encounter_notes(
+            EncountersTracker.notes_file, parser.gamestate.seed)
         input_widget.encounters = encounters
         for encounter in encounters:
             if encounter.min == encounter.max:
@@ -165,6 +166,8 @@ class TkEncountersTracker(tk.Frame):
 
         output_widget = TkEncountersOutputWidget(self)
         output_widget.pack(expand=True, fill='both', side='right')
+        output_widget.bind(
+            '<Control-s>', lambda _: self.tracker.save_input_data())
 
         self.tracker = EncountersTracker(
             parser=parser,

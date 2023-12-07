@@ -1,3 +1,5 @@
+from ..data.encounters import get_encounter_notes
+from ..data.notes import save_notes
 from ..events.parsing_functions import (ParsingFunction, parse_encounter,
                                         parse_encounter_count_change,
                                         parse_equipment_change, parse_roll)
@@ -6,6 +8,7 @@ from .base_tracker import TrackerUI
 
 class EncountersTracker(TrackerUI):
     """Widget used to track encounters RNG."""
+    notes_file = 'encounters_notes.csv'
 
     def get_default_input_data(self) -> str:
         return ''
@@ -56,3 +59,47 @@ class EncountersTracker(TrackerUI):
         output = '\n'.join([line for line in output_lines if line])
 
         return output
+
+    def save_input_data(self) -> None:
+        seed = self.parser.gamestate.seed
+        encounter_notes = get_encounter_notes(self.notes_file, seed)
+        current_input_lines = self.input_widget.get_input().splitlines()
+        notes_lines = []
+        notes_lines.append('#name or zone,initiative (true or false),'
+                           'label (optional),min,default,max')
+        for enc in encounter_notes:
+            initiative = str(enc.initiative).lower()
+            if enc.min == enc.max:
+                notes_lines.append(f'{enc.name},{initiative},,'
+                                   f'{enc.min},{enc.default},{enc.max}')
+                continue
+            # find which line corresponds with the label
+            input_index = current_input_lines.index(f'#     {enc.label}:')
+            # if zone has a space it must be a multizone random encounter
+            if ' ' in enc.name:
+                multizone = 'multizone '
+            else:
+                multizone = ''
+            encounter_line = f'encounter {multizone}{enc.name}'
+            # start counting encounters from the line after the label
+            default = 0
+            for input_line in current_input_lines[input_index + 1:]:
+                if input_line != encounter_line:
+                    break
+                default += 1
+            notes_lines.append(f'{enc.name},{initiative},{enc.label},'
+                               f'{enc.min},{default},{enc.max}')
+        notes = '\n'.join(notes_lines)
+        try:
+            save_notes(self.notes_file, seed, notes)
+        except FileExistsError as error:
+            self.confirmation_popup.print_output(
+                f'Do you want to overwrite file {error.args[0]!r}?')
+            if self.confirmation_popup.confirmed:
+                save_notes(self.notes_file, seed, notes, force=True)
+                self.warning_popup.print_output(
+                    f'File "{seed}_{self.notes_file}" '
+                    'saved successfully!')
+        else:
+            self.warning_popup.print_output(
+                f'File "{seed}_{self.notes_file}" saved successfully!')

@@ -19,13 +19,13 @@ class TkStepsInputWidget(TkEncountersInputWidget):
             steps = self.sliders[encounter.label].get()
             if current_zone == encounter.label:
                 input_data.append('///')
-            zone = ZONES[encounter.name]
+            zone = ZONES[encounter.zone]
             comment = f'# {encounter.label} '
             if encounter.continue_previous_zone:
                 comment += '(continues previous zone) '
             comment += f'({zone.grace_period} steps in grace period)'
             input_data.append(comment)
-            input_data.append(f'walk {encounter.name} {steps} {encounter.continue_previous_zone}')
+            input_data.append(f'walk {encounter.zone} {steps} {encounter.continue_previous_zone}')
         return '\n'.join(input_data)
 
 
@@ -35,7 +35,8 @@ class TkStepsTracker(tk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         input_widget = TkStepsInputWidget(self)
-        encounters = get_steps_notes('steps_notes.csv', parser.gamestate.seed)
+        encounters = get_steps_notes(
+            StepsTracker.notes_file, parser.gamestate.seed)
         input_widget.encounters = encounters
         for encounter in encounters:
             input_widget.add_slider(
@@ -45,6 +46,8 @@ class TkStepsTracker(tk.Frame):
 
         output_widget = TkEncountersOutputWidget(self)
         output_widget.pack(expand=True, fill='both', side='right')
+        output_widget.bind(
+            '<Control-s>', lambda _: self.tracker.save_input_data())
 
         self.tracker = StepsTracker(
             parser=parser,

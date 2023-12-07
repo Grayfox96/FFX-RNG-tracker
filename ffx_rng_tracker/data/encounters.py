@@ -17,7 +17,7 @@ class EncounterData:
 
 @dataclass
 class StepsData:
-    name: str
+    zone: str
     label: str
     min: int
     default: int
@@ -29,15 +29,13 @@ def get_encounter_notes(file_path: str, seed: int) -> list[EncounterData]:
     encounters_notes = get_notes(file_path, seed)
     encounters = {}
     csv_reader = csv.reader(encounters_notes.splitlines())
-    for line in csv_reader:
-        if line[0].startswith('#'):
+    for fields in csv_reader:
+        while len(fields) < 6:
+            fields.append('')
+        name, initiative, label, minimum, default, maximum = fields
+        if not name or name.startswith('#'):
             continue
-        name = line[0]
-        initiative = line[1].lower() == 'true'
-        try:
-            label = line[2]
-        except IndexError:
-            label = name
+        initiative = initiative.lower() == 'true'
         if not label:
             label = name
         if label in encounters:
@@ -47,17 +45,20 @@ def get_encounter_notes(file_path: str, seed: int) -> list[EncounterData]:
                     label = new_label
                     break
         try:
-            minimum = max(int(line[3]), 0)
-        except (ValueError, IndexError):
+            minimum = int(minimum)
+        except ValueError:
             minimum = 1
+        minimum = max(0, minimum)
         try:
-            default = max(minimum, int(line[4]))
-        except (ValueError, IndexError):
-            default = max(minimum, 1)
+            default = int(default)
+        except ValueError:
+            default = 1
+        default = max(minimum, default)
         try:
-            maximum = max(default, int(line[5]))
-        except (ValueError, IndexError):
-            maximum = max(default, 1)
+            maximum = int(maximum)
+        except ValueError:
+            maximum = 1
+        maximum = max(default, maximum)
         encounters[label] = EncounterData(
             name=name,
             initiative=initiative,
@@ -73,16 +74,15 @@ def get_steps_notes(file_path: str, seed: int) -> list[StepsData]:
     steps_notes = get_notes(file_path, seed)
     steps = {}
     csv_reader = csv.reader(steps_notes.splitlines())
-    for line in csv_reader:
-        if line[0].startswith('#'):
+    # zone,label (optional),min,default,max,continue previous zone
+    for fields in csv_reader:
+        while len(fields) < 6:
+            fields.append('')
+        zone, label, minimum, default, maximum, continue_previous_zone = fields
+        if not zone or zone.startswith('#'):
             continue
-        name = line[0]
-        try:
-            label = line[1]
-        except IndexError:
-            label = name
         if not label:
-            label = name
+            label = zone
         if label in steps:
             for i in count(2):
                 new_label = f'{label} #{i}'
@@ -90,23 +90,23 @@ def get_steps_notes(file_path: str, seed: int) -> list[StepsData]:
                     label = new_label
                     break
         try:
-            minimum = max(int(line[2]), 0)
-        except (ValueError, IndexError):
+            minimum = int(minimum)
+        except ValueError:
             minimum = 0
+        minimum = max(0, minimum)
         try:
-            default = max(minimum, int(line[3]))
-        except (ValueError, IndexError):
-            default = max(minimum, 1)
+            default = int(default)
+        except ValueError:
+            default = 0
+        default = max(minimum, default)
         try:
-            maximum = max(default, int(line[4]))
-        except (ValueError, IndexError):
-            maximum = max(default, 1)
-        try:
-            continue_previous_zone = line[5].lower() == 'true'
-        except IndexError:
-            continue_previous_zone = False
+            maximum = int(maximum)
+        except ValueError:
+            maximum = 1000
+        maximum = max(default, maximum)
+        continue_previous_zone = continue_previous_zone.lower() == 'true'
         steps[label] = StepsData(
-            name=name,
+            zone=zone,
             label=label,
             min=minimum,
             default=default,
