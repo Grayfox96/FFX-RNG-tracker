@@ -3,347 +3,422 @@
         "dummy": {
             "name" : "Boss",
             "formation": [],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "dummy_preemptive": {
             "name" : "Boss",
             "formation": [],
-            "forced_condition": "preemptive"
+            "forced_condition": "preemptive",
+            "forced_party": ""
         },
         "dummy_ambush": {
             "name" : "Boss",
             "formation": [],
-            "forced_condition": "ambush"
+            "forced_condition": "ambush",
+            "forced_party": ""
         },
         "sinscales": {
             "name": "Sinscales",
             "formation": ["sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "ta"
         },
         "ammes": {
             "name": "Ammes",
             "formation": ["sinspawn_ammes", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "ta"
         },
         "tanker": {
             "name": "Tanker",
             "formation": ["tanker", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6", "sinscale_6"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "ta"
         },
         "sahagins": {
             "name": "Sahagins",
             "formation": ["sahagin_4", "sahagin_4", "sahagin_4"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": "t"
         },
         "geosgaeno": {
             "name": "Geosgaeno",
             "formation": ["geosgaeno"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": "t"
         },
         "klikk_1": {
             "name": "Klikk 1",
             "formation": ["klikk"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "t"
         },
         "klikk_2": {
             "name": "Klikk 2",
             "formation": ["klikk"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tr"
         },
         "piranhas": {
             "name": "Piranhas",
             "formation": ["piranha_3", "piranha_3"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": "tr"
         },
         "tros": {
             "name": "Tros",
             "formation": ["tros"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": "tr"
         },
         "wakka_tutorial": {
             "name": "Wakka tutorial",
             "formation": ["dingo_2", "condor_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tw"
         },
         "elements_tutorial": {
             "name": "Elements tutorial",
             "formation": ["water_flan_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "twl"
         },
         "kimahri": {
             "name": "Kimahri",
             "formation": ["???"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "t"
         },
         "garuda_1": {
             "name": "Garuda 1",
             "formation": ["garuda_3"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "twl"
         },
         "garuda_2": {
             "name": "Garuda 2",
             "formation": ["garuda_3"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "besaid_forced_encounter": {
             "name": "Besaid forced encounter",
             "formation": ["condor_2", "dingo_2", "water_flan_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "sin_fin": {
             "name": "Sin Fin",
             "formation": ["sinscale", "sinscale", "sinscale", "sin"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tyk"
         },
         "echuilles": {
             "name": "Echuilles",
             "formation": ["sinspawn_echuilles", "sinscale_3", "sinscale_3", "sinscale_3", "sinscale_3"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tw"
         },
         "lancet_tutorial": {
             "name": "Lancet tutorial",
             "formation": ["ragora_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tkl"
         },
         "lord_ochu": {
             "name": "Lord Ochu",
             "formation": ["lord_ochu"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "geneaux": {
             "name": "Geneaux",
             "formation": ["sinspawn_geneaux", "geneaux's_tentacle", "geneaux's_tentacle"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "machina_1": {
             "name": "Machina 1",
             "formation": ["worker", "worker"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tkl"
         },
         "machina_2": {
             "name": "Machina 2",
             "formation": ["worker", "worker"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tkl"
         },
         "machina_3": {
             "name": "Machina 3",
             "formation": ["worker", "worker"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tkl"
         },
         "oblitzerator": {
             "name": "Oblitzerator",
             "formation": ["oblitzerator", "crane"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tkl"
         },
         "sahagin_chiefs": {
             "name": "Sahagin Chiefs",
             "formation": ["sahagin_chief", "sahagin_chief", "sahagin_chief", "sahagin_chief"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tw"
         },
         "vouivre": {
             "name": "Vouivre",
             "formation": ["vouivre_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "a"
         },
         "garuda": {
             "name": "Garuda",
             "formation": ["garuda_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "taw"
         },
         "pierce_tutorial": {
             "name": "Pierce tutorial",
             "formation": ["raldo_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "taw"
         },
         "chocobo_eater": {
             "name": "Chocobo Eater",
             "formation": ["chocobo_eater"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "sinspawn_gui_1": {
             "name": "Sinspawn Gui 1",
             "formation": ["sinspawn_gui", "head", "arm", "arm"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "sinspawn_gui_2": {
             "name": "Sinspawn Gui 2",
             "formation": ["sinspawn_gui", "head", "arm", "arm"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "yas"
         },
         "extractor": {
             "name": "Extractor",
             "formation": ["extractor"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tw"
         },
         "rikku_tutorial": {
             "name": "Rikku tutorial",
             "formation": ["???_3", "bunyip_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "r"
         },
         "spherimorph": {
             "name": "Spherimorph",
             "formation": ["spherimorph"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "crawler": {
             "name": "Crawler",
             "formation": ["crawler", "negator"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "seymour": {
             "name": "Seymour",
             "formation": ["guado_guardian", "seymour", "guado_guardian", "anima"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tyk"
         },
         "guado_encounter": {
             "name": "Guado Encounter",
             "formation": ["guado_guardian_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "wendigo": {
             "name": "Wendigo",
             "formation": ["guado_guardian_2", "wendigo", "guado_guardian_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "zu": {
             "name": "Zu",
             "formation": ["zu_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "t"
         },
         "machina_steal_tutorial": {
             "name": "Machina Steal tutorial",
             "formation": ["mech_guard", "mech_guard"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": "tlr"
         },
         "sandragora": {
             "name": "Sandragora",
             "formation": ["sandragora"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": ""
         },
         "guado_+_3_bomb": {
             "name": "Guado + 3 Bomb",
             "formation": ["guado_guardian_3", "bomb_2", "bomb_2", "bomb_2"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": ""
         },
         "guado_+_2_dual_horn": {
             "name": "Guado + 2 Dual Horn",
             "formation": ["dual_horn_2", "dual_horn_2", "guado_guardian_3"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": ""
         },
         "guado_+_2_chimera": {
             "name": "Guado + 2 Chimera",
             "formation": ["chimera_2", "chimera_2", "guado_guardian_3"],
-            "forced_condition": ""
+            "forced_condition": "",
+            "forced_party": ""
         },
         "evrae": {
             "name": "Evrae",
             "formation": ["evrae"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "bevelle_guards_1": {
             "name": "Bevelle Guards 1",
             "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "bevelle_guards_2": {
             "name": "Bevelle Guards 2",
             "formation": ["ykt-63", "warrior_monk", "warrior_monk"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "bevelle_guards_3": {
             "name": "Bevelle Guards 3",
             "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "bevelle_guards_4": {
             "name": "Bevelle Guards 4",
             "formation": ["ykt-63", "warrior_monk", "warrior_monk"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "bevelle_guards_5": {
             "name": "Bevelle Guards 5",
             "formation": ["warrior_monk", "yat-99", "warrior_monk"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "isaaru_grothia": {
             "name": "Isaaru Grothia",
             "formation": ["ifrit_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "y"
         },
         "isaaru_pterya": {
             "name": "Isaaru Pterya",
             "formation": ["valefor"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "y"
         },
         "isaaru_spathi": {
             "name": "Isaaru Spathi",
             "formation": ["bahamut"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "y"
         },
         "evrae_altana": {
             "name": "Evrae Altana",
             "formation": ["evrae_altana"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "twr"
         },
         "seymour_natus": {
             "name": "Seymour Natus",
             "formation": ["seymour_natus", "mortibody"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "tyk"
         },
         "defender_x": {
             "name": "Defender X",
             "formation": ["defender_x"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "biran_&_yenke": {
             "name": "Biran & Yenke",
             "formation": ["biran_ronso", "yenke_ronso"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": "k"
         },
         "seymour_flux": {
             "name": "Seymour Flux",
             "formation": ["seymour_flux", "mortiorchis"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "sanctuary_keeper": {
             "name": "Sanctuary Keeper",
             "formation": ["sanctuary_keeper"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "spectral_keeper": {
             "name": "Spectral Keeper",
             "formation": ["spectral_keeper"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "yunalesca": {
             "name": "Yunalesca",
             "formation": ["yunalesca"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "left_fin": {
             "name": "Left Fin",
             "formation": ["left_fin"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "right_fin": {
             "name": "Right Fin",
             "formation": ["right_fin"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "sin_core": {
             "name": "Sin Core",
             "formation": ["sinspawn_genais", "sin_2"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "overdrive_sin": {
             "name": "Overdrive Sin",
             "formation": ["sin_3"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
         },
         "seymour_omnis": {
             "name": "Seymour Omnis",
             "formation": ["seymour_omnis", "mortiphasm", "mortiphasm", "mortiphasm", "mortiphasm"],
-            "forced_condition": "normal"
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "bfa": {
+            "name": "Braska's Final Aeon",
+            "formation": ["braska's_final_aeon", "yu_pagoda", "yu_pagoda"],
+            "forced_condition": "normal",
+            "forced_party": "tya"
         }
     },
     "simulation": {

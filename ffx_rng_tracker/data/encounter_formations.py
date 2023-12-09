@@ -1,8 +1,8 @@
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from ..utils import open_cp1252, search_stringenum
-from .constants import EncounterCondition
+from .constants import Character, EncounterCondition
 from .file_functions import get_resource_path
 from .monsters import MONSTERS, MONSTERS_HD, Monster, get_monsters_dict
 
@@ -39,6 +39,7 @@ class Zone:
 class Boss:
     name: str
     formation: Formation
+    forced_party: list[Character] = field(default_factory=list)
 
     def __str__(self) -> str:
         return self.name
@@ -75,9 +76,15 @@ def _get_formations(file_path: str) -> Formations:
             data['formation'],
             _get_condition(data['forced_condition']),
             )
+        forced_party = []
+        for initial in data['forced_party']:
+            for character in tuple(Character)[:7]:
+                if initial == character[0].lower():
+                    forced_party.append(character)
         bosses[boss] = Boss(
             data['name'],
             formation,
+            forced_party,
         )
 
     simulations: dict[str, Simulation] = {}

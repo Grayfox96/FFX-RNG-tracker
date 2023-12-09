@@ -16,6 +16,7 @@ class Encounter(Event):
     def __post_init__(self) -> None:
         self.gamestate.process_start_of_encounter()
         self.formation = self._get_formation()
+        self._update_party()
         self._update_current_monster_formation()
         self.condition = self._get_condition()
         self.index = self._get_index()
@@ -37,6 +38,13 @@ class Encounter(Event):
 
     def _get_formation(self) -> Formation:
         return BOSSES[self.name].formation
+
+    def _update_party(self) -> None:
+        if self.name not in BOSSES:
+            return
+        boss = BOSSES[self.name]
+        if boss.forced_party:
+            self.gamestate.party = boss.forced_party
 
     def _update_current_monster_formation(self) -> None:
         for monster, slot in zip(self.formation.monsters, MonsterSlot):
