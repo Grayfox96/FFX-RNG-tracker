@@ -494,7 +494,7 @@ def parse_character_status(gs: GameState,
 def parse_monster_spawn(gs: GameState,
                         monster_name: str = '',
                         slot: str = '',
-                        forced_ctb: str = '0',
+                        forced_ctb: str = '',
                         *_) -> Comment:
     usage = 'spawn [monster_name] [slot] (forced ctb)'
     if not monster_name or not slot:
@@ -511,7 +511,7 @@ def parse_monster_spawn(gs: GameState,
     try:
         forced_ctb = int(forced_ctb)
     except ValueError:
-        forced_ctb = 0
+        forced_ctb = None
     return MonsterSpawn(gs, monster, slot, forced_ctb)
 
 

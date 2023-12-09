@@ -3,6 +3,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 
 from ..utils import open_cp1252
+from .actions import ACTIONS
 from .autoabilities import (AEON_RIBBON_IMMUNITIES, AUTO_STATUSES,
                             ELEMENTAL_EATERS, ELEMENTAL_PROOFS,
                             ELEMENTAL_SOS_AUTO_STATUSES, ELEMENTAL_STRIKES,
@@ -249,6 +250,7 @@ class CharacterState:
         self.statuses: dict[Status, int] = {}
         self.weapon = deepcopy(self.defaults.weapon)
         self.armor = deepcopy(self.defaults.armor)
+        self.last_action = ACTIONS['does_nothing']
 
 
 def _get_characters(file_path: str) -> dict[Character, DefaultCharacterState]:

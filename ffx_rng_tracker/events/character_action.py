@@ -29,7 +29,7 @@ class CharacterAction(Event):
         self.crit = self._get_crit()
         self.damage = self._get_damage()
         self.ctb = self._get_ctb()
-        self.gamestate.process_end_of_turn(self.character)
+        self.gamestate.process_end_of_turn(self.character, self.action)
 
     def __str__(self) -> str:
         string = (f'{self.character} -> {self.action}'

@@ -1,6 +1,7 @@
 from itertools import chain
 
 from .configs import Configs
+from .data.actions import Action
 from .data.characters import (CHARACTERS_DEFAULTS, CharacterState,
                               calculate_power_base)
 from .data.constants import (AEONS_STATS_CONSTANTS, BASE_COMPATIBILITY,
@@ -32,16 +33,15 @@ class GameState:
 
     def get_min_ctb(self) -> int:
         ctbs = set()
-        for c, cs in self.characters.items():
-            if c not in self.party or cs.dead or cs.inactive:
-                cs.ctb = 0
-            else:
-                ctbs.add(cs.ctb)
-        for m in self.monster_party:
-            if m.dead:
-                m.ctb = 0
-            else:
-                ctbs.add(m.ctb)
+        for character in self.party:
+            characterstate = self.characters[character]
+            if characterstate.dead or characterstate.inactive:
+                continue
+            ctbs.add(characterstate.ctb)
+        for monsterstate in self.monster_party:
+            if monsterstate.dead:
+                continue
+            ctbs.add(monsterstate.ctb)
         if not ctbs:
             # TODO
             # should this raise an error?
@@ -49,6 +49,8 @@ class GameState:
         return min(ctbs)
 
     def normalize_ctbs(self, min_ctb: int) -> None:
+        if min_ctb == 0:
+            return
         for actor in chain(self.characters.values(), self.monster_party):
             actor.ctb -= min_ctb
 
@@ -104,8 +106,10 @@ class GameState:
 
     def process_end_of_turn(self,
                             actor: CharacterState | MonsterState,
+                            action: Action,
                             ) -> None:
         self.last_actor = actor
+        self.last_actor.last_action = action
         statuses = actor.statuses.copy()
         for status, stacks in statuses.items():
             if status is Status.POISON:

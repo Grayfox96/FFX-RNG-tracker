@@ -24,7 +24,7 @@ class MonsterAction(Event):
         self.damage_rngs, self.crits = self._get_damage_rngs()
         self.damages = self._get_damages()
         self.ctb = self._get_ctb()
-        self.gamestate.process_end_of_turn(self.monster)
+        self.gamestate.process_end_of_turn(self.monster, self.action)
 
     def __str__(self) -> str:
         actions = []

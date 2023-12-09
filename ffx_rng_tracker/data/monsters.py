@@ -6,7 +6,7 @@ from math import sqrt
 
 from ..configs import Configs
 from ..utils import add_bytes, open_cp1252, stringify
-from .actions import MONSTER_ACTIONS, Action
+from .actions import ACTIONS, MONSTER_ACTIONS, Action
 from .autoabilities import AUTOABILITIES
 from .constants import (ELEMENT_BITMASKS, ICV_BASE, Autoability, Buff,
                         Character, Element, ElementalAffinity, EquipmentSlots,
@@ -196,6 +196,7 @@ class MonsterState:
         self.statuses = {}
         self.elemental_affinities = self.monster.elemental_affinities.copy()
         self.status_resistances = self.monster.status_resistances.copy()
+        self.last_action = ACTIONS['does_nothing']
 
 
 def _get_prize_structs(file_path: str) -> dict[str, list[int]]:
