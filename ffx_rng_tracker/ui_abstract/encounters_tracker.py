@@ -13,15 +13,13 @@ class EncountersTracker(TrackerUI):
     def get_default_input_data(self) -> str:
         return ''
 
-    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
-        parsing_functions = {
-            'roll': parse_roll,
-            'waste': parse_roll,
-            'advance': parse_roll,
-            'encounter': parse_encounter,
-            'equip': parse_equipment_change,
-            'encounters_count': parse_encounter_count_change,
-        }
+    def get_parsing_functions(self) -> list[ParsingFunction]:
+        parsing_functions = [
+            parse_roll,
+            parse_encounter,
+            parse_equipment_change,
+            parse_encounter_count_change,
+        ]
         return parsing_functions
 
     def edit_input(self, input_text: str) -> str:

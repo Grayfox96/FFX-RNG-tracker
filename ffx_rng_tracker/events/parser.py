@@ -2,7 +2,7 @@ from ..errors import EventParsingError
 from ..gamestate import GameState
 from .comment import Comment
 from .main import Event
-from .parsing_functions import ParsingFunction
+from .parsing_functions import USAGE, ParsingFunction
 
 
 class EventParser:
@@ -13,10 +13,10 @@ class EventParser:
         self._parsing_functions: dict[str, ParsingFunction] = {}
 
     def register_parsing_function(self,
-                                  name: str,
+                                  command: str,
                                   func: ParsingFunction,
                                   ) -> None:
-        self._parsing_functions[name] = func
+        self._parsing_functions[command] = func
 
     def parse(self, text: str) -> list[Event]:
         """Parse through the input text and returns a list of events."""
@@ -40,4 +40,7 @@ class EventParser:
         try:
             return parsing_func(self.gamestate, *params)
         except EventParsingError as error:
+            if not str(error):
+                usage = USAGE.get(parsing_func, ['No usage found'])[0]
+                error = f'Usage: {usage}'
             return Comment(self.gamestate, f'# Error: {error}')

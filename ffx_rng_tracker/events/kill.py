@@ -30,7 +30,7 @@ class Kill(Event):
         self.equipment = self._get_equipment()
         self.ability_rolls = rng_current_positions[13] - self.ability_rolls
         if self.equipment:
-            self.gamestate.equipment_inventory.append(self.equipment.equipment)
+            self.gamestate.add_to_equipment_inventory(self.equipment.equipment)
         self.equipment_index = self._get_equipment_index()
         self._give_ap()
 

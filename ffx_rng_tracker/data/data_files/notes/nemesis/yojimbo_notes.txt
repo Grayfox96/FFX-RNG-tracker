@@ -1,13 +1,5 @@
-# Usage:
-# death
-# compatibility [(+/-)amount]
-# [action] [target] (overdrive)
-# actions:
-# daigoro, kozuka, wakizashi_st,
-# wakizashi_mt, zanmato,
-# dismiss, autodismiss,
-# first_turn_dismiss
-///
+/usage
+
 # Area Conquest
 zanmato stratoavis overdrive
 zanmato malboro_menace overdrive

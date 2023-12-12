@@ -18,27 +18,31 @@ class ActionsTracker(TrackerUI):
     """
     notes_file = 'actions_notes.txt'
 
-    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
-        """Returns a dictionary with strings as keys
-        and parsing functions as values.
-        """
-        parsing_functions = {
-            'roll': parse_roll,
-            'waste': parse_roll,
-            'advance': parse_roll,
-            'encounter': parse_encounter,
-            'stat': parse_stat_update,
-            'action': parse_action,
-            'monsteraction': parse_monster_action,
-            'party': parse_party_change,
-            'summon': parse_summon,
-            'equip': parse_equipment_change,
-            'endencounter': parse_end_encounter,
-            'heal': parse_heal,
-            'status': parse_character_status,
-            'spawn': parse_monster_spawn,
-        }
+    def get_parsing_functions(self) -> list[ParsingFunction]:
+        parsing_functions = [
+            parse_roll,
+            parse_encounter,
+            parse_party_change,
+            parse_summon,
+            parse_equipment_change,
+            parse_action,
+            parse_monster_action,
+            parse_heal,
+            parse_end_encounter,
+            parse_character_status,
+            parse_monster_spawn,
+            parse_stat_update,
+        ]
         return parsing_functions
+
+    def get_usage(self) -> str:
+        usage = super().get_usage()
+        usage += ('\n'
+                  '# Stats:\n'
+                  '#     hp, mp, strength, defense, magic,\n'
+                  '#     magic_defense, agility, luck,\n'
+                  '#     evasion, accuracy, ctb')
+        return usage
 
     def edit_input(self, input_text: str) -> str:
         character_names = [stringify(c) for c in Character]
@@ -66,6 +70,8 @@ class ActionsTracker(TrackerUI):
                     line = ' '.join(['monsteraction', monster, *params])
                 case [equip_type, *params] if equip_type in ('weapon', 'armor'):
                     line = ' '.join(['equip', equip_type, *params])
+                case ['/usage']:
+                    line = self.usage
                 case _:
                     continue
             input_lines[index] = line

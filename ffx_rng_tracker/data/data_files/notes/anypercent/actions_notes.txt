@@ -1,23 +1,5 @@
-# Usage:
-# encounter (preemp/ambush/simulated)
-# encounter [enc name]
-# party [party members initials]
-# summon [aeon name]
-# (equip) [equip_type] [character] [slots] (abilities)
-# (action) [character name] [action] (target) (time)
-# (monsteraction) [monster slot/name] [action_name]
-# heal (character) (amount)
-# endencounter
-# status [character]
-# spawn [monster_name] [slot] (forced ctb)
-# stat [character] [stat] [(+/-)amount]
-# stat [monster slot] [stat] [(+/-)amount]
-# stats:
-#     hp, mp, strength, defense, magic,
-#     magic_defense, agility, luck,
-#     evasion, accuracy, ctb
+/usage
 
-party tyakwlr
 # -- Zanarkand --
 encounter sinscales
 auron attack sinscale_6

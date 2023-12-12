@@ -8,9 +8,9 @@ from ..ui_abstract.encounters_tracker import EncountersTracker
 class StepsTracker(EncountersTracker):
     notes_file = 'steps_notes.csv'
 
-    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
+    def get_parsing_functions(self) -> list[ParsingFunction]:
         parsing_functions = super().get_parsing_functions()
-        parsing_functions['walk'] = parse_encounter_checks
+        parsing_functions.append(parse_encounter_checks)
         return parsing_functions
 
     def edit_output(self, output: str) -> str:

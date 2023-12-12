@@ -10,19 +10,17 @@ from .base_tracker import TrackerUI
 class DropsTracker(TrackerUI):
     notes_file = 'drops_notes.txt'
 
-    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
-        parsing_functions = {
-            'roll': parse_roll,
-            'waste': parse_roll,
-            'advance': parse_roll,
-            'steal': parse_steal,
-            'kill': parse_kill,
-            'death': parse_death,
-            'party': parse_party_change,
-            'bribe': parse_bribe,
-            'inventory': parse_inventory_command,
-            'ap': parse_character_ap,
-        }
+    def get_parsing_functions(self) -> list[ParsingFunction]:
+        parsing_functions = [
+            parse_roll,
+            parse_party_change,
+            parse_kill,
+            parse_bribe,
+            parse_steal,
+            parse_death,
+            parse_character_ap,
+            parse_inventory_command,
+        ]
         return parsing_functions
 
     def edit_input(self, input_text: str) -> str:
@@ -31,6 +29,8 @@ class DropsTracker(TrackerUI):
             match line.lower().split():
                 case [monster, *params] if monster in MONSTERS:
                     line = ' '.join(['kill', monster, *params])
+                case ['/usage']:
+                    line = self.usage
             input_lines[index] = line
         return '\n'.join(input_lines)
 

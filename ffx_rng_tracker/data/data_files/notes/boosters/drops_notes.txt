@@ -1,14 +1,4 @@
-# Usage:
-# party [party members initials]
-# (kill) [monster_name] [killer] (party members initials) (overkill/ok)
-# steal [monster_name] (successful steals)
-# death (character)
-# bribe [monster_name] [user] (party members initials)
-# ap (character)
-# inventory show (equipment)
-# inventory [use/get/buy/sell] [item name] [quantity]
-# inventory switch [slot 1] [slot 2]
-# inventory autosort
+/usage
 
 # Zanarkand
 party ta

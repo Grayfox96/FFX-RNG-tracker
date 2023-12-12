@@ -7,7 +7,7 @@ from ..data.constants import (SHORT_STATS_NAMES, Autoability, Character,
                               StringEnum, TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
-from ..data.items import ITEM_PRICES
+from ..data.items import ITEM_PRICES, ITEMS
 from ..data.monsters import MonsterState, get_monsters_dict
 from ..errors import EventParsingError
 from ..gamestate import GameState
@@ -83,6 +83,46 @@ def parse_party_members_initials(party_members_initials: str,
     return list(dict.fromkeys(party_members))
 
 
+def parse_equipment(equipment_type_name: str = '',
+                    character_name: str = '',
+                    slots: str = '',
+                    *ability_names: str,
+                    ) -> Equipment:
+    equipment_type = parse_enum_member(
+        equipment_type_name, EquipmentType, 'equipment type')
+
+    character = parse_enum_member(character_name, Character, 'character')
+    try:
+        slots = int(slots)
+    except ValueError:
+        raise EventParsingError('Slots must be between 0 and 4')
+    if not (0 <= slots <= 4):
+        raise EventParsingError('Slots must be between 0 and 4')
+    abilities = []
+    for autoability_name in ability_names:
+        if len(abilities) >= 4:
+            break
+        autoability = parse_enum_member(
+            autoability_name, Autoability, 'autoability')
+        if autoability in abilities:
+            continue
+        abilities.append(autoability)
+    slots = max(slots, len(abilities))
+    if character in (Character.VALEFOR, Character.SHIVA):
+        base_weapon_damage = 14
+    else:
+        base_weapon_damage = 16
+    equipment = Equipment(
+        owner=character,
+        type_=equipment_type,
+        slots=slots,
+        abilities=abilities,
+        base_weapon_damage=base_weapon_damage,
+        bonus_crit=3
+        )
+    return equipment
+
+
 def parse_encounter(gs: GameState,
                     name: str = '',
                     *zones: str,
@@ -94,6 +134,8 @@ def parse_encounter(gs: GameState,
     elif name in SIMULATIONS:
         encounter_type = SimulatedEncounter
     elif name == 'multizone':
+        if not zones:
+            raise EventParsingError
         for zone in zones:
             if zone not in ZONES:
                 raise EventParsingError(f'No zone named "{zone}"')
@@ -108,9 +150,8 @@ def parse_encounter_count_change(gs: GameState,
                                  amount: str = '',
                                  *_,
                                  ) -> Comment:
-    usage = 'Usage: encounters_count [total/random/zone name] [(+/-) amount]'
     if not name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     try:
         count = int(amount)
     except ValueError:
@@ -138,7 +179,7 @@ def parse_encounter_count_change(gs: GameState,
             gs.zone_encounters_counts[name] = count
         count_name = ZONES[name].name
     else:
-        raise EventParsingError(usage)
+        raise EventParsingError
     return Comment(gs, f'{count_name} encounters count set to {count}')
 
 
@@ -147,14 +188,16 @@ def parse_steal(gs: GameState,
                 successful_steals: str = '0',
                 *_,
                 ) -> Steal:
-    usage = 'Usage: steal [monster_name] (successful steals)'
     if not monster_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     try:
         successful_steals = int(successful_steals)
     except ValueError:
-        raise EventParsingError('"successful steals" must be an integer')
+        raise EventParsingError('successful steals must be an integer')
+    if successful_steals < 0:
+        raise EventParsingError(
+            'successful steals must be greater or equal to 0')
     return Steal(gs, monster, successful_steals)
 
 
@@ -165,10 +208,8 @@ def parse_kill(gs: GameState,
                overkill: str = '',
                *_,
                ) -> Kill:
-    usage = ('Usage: kill [monster_name] [killer] (party members initials) '
-             '(overkill/ok)')
     if not monster_name or not killer_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     killer = parse_enum_member(killer_name, Character, 'character')
     ap_characters = parse_party_members_initials(ap_characters_string)
@@ -185,9 +226,8 @@ def parse_bribe(gs: GameState,
                 ap_characters_string: str = '',
                 *_,
                 ) -> Bribe:
-    usage = 'Usage: bribe [monster_name] [user] (party members initials)'
     if not monster_name or not user_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     user = parse_enum_member(user_name, Character, 'character')
     ap_characters = parse_party_members_initials(ap_characters_string)
@@ -204,36 +244,41 @@ def parse_death(gs: GameState, character_name: str = 'unknown', *_) -> Death:
 
 def parse_roll(gs: GameState,
                rng_index: str = '',
-               times: str = '1',
+               amount: str = '1',
                *_,
                ) -> AdvanceRNG:
-    usage = 'Usage: waste/advance/roll [rng#] [amount]'
     try:
         if rng_index.startswith('rng'):
             rng_index = int(rng_index[3:])
         else:
             rng_index = int(rng_index)
-        times = int(times)
+        amount = int(amount)
     except ValueError:
-        raise EventParsingError(usage)
+        raise EventParsingError('rng needs to be an integer')
+    try:
+        amount = int(amount)
+    except ValueError:
+        raise EventParsingError('amount needs to be an integer')
+    if amount < 0:
+        raise EventParsingError('amount needs to be an greater or equal to 0')
     if not (0 <= rng_index < 68):
         raise EventParsingError(f'Can\'t advance rng index {rng_index}')
-    if times > 100000:
+    if amount > 100000:
         raise EventParsingError('Can\'t advance rng more than 100000 times.')
-    return AdvanceRNG(gs, rng_index, times)
+    return AdvanceRNG(gs, rng_index, amount)
 
 
 def parse_party_change(gs: GameState,
                        party_formation_string: str = '',
                        *_,
                        ) -> ChangeParty:
-    usage = 'Usage: party [party members initials]'
     if not party_formation_string:
-        raise EventParsingError(usage)
+        raise EventParsingError
     party_formation = parse_party_members_initials(party_formation_string)
 
     if not party_formation:
-        raise EventParsingError(usage)
+        raise EventParsingError(
+            f'no characters initials in "{party_formation_string}"')
     return ChangeParty(gs, party_formation)
 
 
@@ -241,9 +286,8 @@ def parse_summon(gs: GameState,
                  aeon_name: str = '',
                  *_,
                  ) -> ChangeParty:
-    usage = 'Usage: summon [aeon name]'
     if not aeon_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     if 'magus_sisters'.startswith(aeon_name):
         party_formation = [Character.CINDY, Character.SANDY, Character.MINDY]
     else:
@@ -252,7 +296,7 @@ def parse_summon(gs: GameState,
                 party_formation = [aeon]
                 break
         else:
-            raise EventParsingError(usage)
+            raise EventParsingError(f'No aeon named "{aeon_name}"')
     return ChangeParty(gs, party_formation)
 
 
@@ -263,9 +307,8 @@ def parse_action(gs: GameState,
                  time_remaining: str = '0',
                  *_,
                  ) -> CharacterAction | Escape:
-    usage = 'Usage: [character] [action name] (target)'
     if not character_name or not action_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     character = parse_enum_member(character_name, Character, 'character')
     character = gs.characters[character]
 
@@ -305,9 +348,8 @@ def parse_stat_update(gs: GameState,
                       amount: str = '',
                       *_,
                       ) -> ChangeStat | Comment:
-    usage = 'Usage: stat [character/monster slot] [stat] [(+/-) amount]'
     if not target_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     if target_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
         target = parse_monster_slot(gs, target_name)
     else:
@@ -325,7 +367,7 @@ def parse_stat_update(gs: GameState,
             else:
                 target.ctb = int(amount)
         except ValueError:
-            raise EventParsingError('Stat value must be an integer.')
+            raise EventParsingError('amount must be an integer.')
         gs.normalize_ctbs(gs.get_min_ctb())
         return Comment(gs, f'{target}\'s CTB changed to {target.ctb}')
     stat = parse_enum_member(stat_name, Stat, 'stat')
@@ -336,7 +378,7 @@ def parse_stat_update(gs: GameState,
         else:
             stat_value = int(amount)
     except ValueError:
-        raise EventParsingError('Stat value must be an integer.')
+        raise EventParsingError('amount must be an integer.')
     return ChangeStat(gs, target, stat, stat_value)
 
 
@@ -346,9 +388,8 @@ def parse_yojimbo_action(gs: GameState,
                          overdrive: str = '',
                          *_,
                          ) -> YojimboTurn:
-    usage = 'Usage: [action] [monster] (overdrive)'
     if not action_name or not monster_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     action = parse_dict_key(action_name, YOJIMBO_ACTIONS, 'Yojimbo action')
     monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     overdrive = overdrive == 'overdrive'
@@ -359,14 +400,13 @@ def parse_compatibility_update(gs: GameState,
                                compatibility: str = '',
                                *_,
                                ) -> Comment:
-    usage = 'Usage: compatibility [(+/-)amount]'
     try:
         if compatibility.startswith(('+', '-')):
             gs.compatibility += int(compatibility)
         else:
             gs.compatibility = int(compatibility)
     except ValueError:
-        raise EventParsingError(usage)
+        raise EventParsingError
     return Comment(gs, f'Compatibility changed to {gs.compatibility}')
 
 
@@ -375,9 +415,8 @@ def parse_monster_action(gs: GameState,
                          action_name: str = '',
                          *_,
                          ) -> MonsterAction:
-    usage = 'Usage: monsteraction [monster slot/name] [action_name]'
     if not monster_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
 
     if monster_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
         monster = parse_monster_slot(gs, monster_name)
@@ -399,41 +438,10 @@ def parse_equipment_change(gs: GameState,
                            slots: str = '',
                            *ability_names: str,
                            ) -> ChangeEquipment:
-    usage = 'Usage: equip [equip_type] [character] [slots] (abilities)'
     if not all((equipment_type_name, character_name, slots)):
-        raise EventParsingError(usage)
-    equipment_type = parse_enum_member(
-        equipment_type_name, EquipmentType, 'equipment type')
-
-    character = parse_enum_member(character_name, Character, 'character')
-    try:
-        slots = int(slots)
-    except ValueError:
-        raise EventParsingError('Slots must be between 0 and 4')
-    if not (0 <= slots <= 4):
-        raise EventParsingError('Slots must be between 0 and 4')
-    abilities = []
-    for autoability_name in ability_names:
-        if len(abilities) >= 4:
-            break
-        autoability = parse_enum_member(
-            autoability_name, Autoability, 'autoability')
-        if autoability in abilities:
-            continue
-        abilities.append(autoability)
-    slots = max(slots, len(abilities))
-    if character in (Character.VALEFOR, Character.SHIVA):
-        base_weapon_damage = 14
-    else:
-        base_weapon_damage = 16
-    equipment = Equipment(
-        owner=character,
-        type_=equipment_type,
-        slots=slots,
-        abilities=abilities,
-        base_weapon_damage=base_weapon_damage,
-        bonus_crit=3
-        )
+        raise EventParsingError
+    equipment = parse_equipment(
+        equipment_type_name, character_name, slots, *ability_names)
     return ChangeEquipment(gs, equipment)
 
 
@@ -445,12 +453,10 @@ def parse_heal(gs: GameState,
                character_name: str = '',
                amount: str = '99999',
                *_) -> Heal:
-    characters = []
     if character_name:
-        characters.append(
-            parse_enum_member(character_name, Character, 'character'))
+        characters = [parse_enum_member(character_name, Character, 'character')]
     else:
-        characters.extend(tuple(Character))
+        characters = list(Character)
     try:
         amount = int(amount)
     except ValueError:
@@ -461,30 +467,39 @@ def parse_heal(gs: GameState,
 
 def parse_character_ap(gs: GameState,
                        character_name: str = '',
+                       amount: str = '0',
                        *_) -> Comment:
-    usage = 'Usage: ap (character)'
     if character_name:
         characters = [parse_enum_member(character_name, Character, 'character')]
     else:
-        characters = tuple(Character)[:7]
+        characters = list(Character)[:7]
+    try:
+        amount = int(amount)
+    except ValueError:
+        amount = 0
     lines = []
     for character in characters:
         state = gs.characters[character]
+        if amount:
+            state.ap += amount
+            added_ap = f' (added {amount} AP)'
+        else:
+            added_ap = ''
         next_s_lv_ap = (
             s_lv_to_total_ap(state.s_lv + 1, state.defaults.starting_s_lv)
             - state.ap
             )
         lines.append(f'{state.character}: {state.s_lv} S. Lv '
-                     f'({state.ap} AP Total, {next_s_lv_ap} for next level)')
+                     f'({state.ap} AP Total, {next_s_lv_ap} for next level)'
+                     f'{added_ap}')
     return Comment(gs, '\n'.join(lines))
 
 
 def parse_character_status(gs: GameState,
                            character_name: str = '',
                            *_) -> Comment:
-    usage = 'Usage: status [character]'
     if not character_name:
-        raise EventParsingError(usage)
+        raise EventParsingError
     char = parse_enum_member(character_name, Character, 'character')
     char = gs.characters[char]
     text = f'{char}: hp {char.current_hp}, statuses {char.statuses}'
@@ -496,9 +511,8 @@ def parse_monster_spawn(gs: GameState,
                         slot: str = '',
                         forced_ctb: str = '',
                         *_) -> Comment:
-    usage = 'spawn [monster_name] [slot] (forced ctb)'
     if not monster_name or not slot:
-        raise EventParsingError(usage)
+        raise EventParsingError
     monster = parse_dict_key(monster_name, get_monsters_dict(), 'monster')
     try:
         slot = int(slot)
@@ -520,9 +534,8 @@ def parse_encounter_checks(gs: GameState,
                            steps: str = '',
                            continue_zone: str = '',
                            *_) -> EncounterChecks:
-    usage = 'walk [zone] [steps]'
     if not zone_name or not steps:
-        raise EventParsingError(usage)
+        raise EventParsingError
 
     zone = parse_dict_key(zone_name, ZONES, 'zone')
     try:
@@ -535,73 +548,221 @@ def parse_encounter_checks(gs: GameState,
 
 def parse_inventory_command(gs: GameState,
                             command: str = '',
-                            *params) -> Comment:
-    match command:
-        case 'show':
-            show_equipment = bool(params) and params[0] == 'equipment'
-            if show_equipment:
+                            *params: str,
+                            ) -> Comment:
+    match [command, *params]:
+        case ('show', *_):
+            if params and params[0] == 'equipment':
                 text = 'Equipment: '
-                text += '\n           '.join(
-                    [str(e) for e in gs.equipment_inventory])
-            else:
+                lines = [f'#{i} {e}'
+                         for i, e in enumerate(gs.equipment_inventory, 1)]
+                if not lines:
+                    lines.append('Empty')
+                text += '\n           '.join(lines)
+            elif params and params[0] == 'gil':
                 text = f'Gil: {gs.gil}\n'
-                text += get_inventory_table(gs.inventory)
-        case 'use' | 'get' | 'buy' | 'sell':
-            usage = f'Usage: inventory {command} [item name] [quantity]'
+            else:
+                text = get_inventory_table(gs.inventory)
+        case ('get' | 'use', 'gil', amount, *_):
             try:
-                item_name, quantity, *_ = params
-                item = search_stringenum(Item, item_name)
-                quantity = int(quantity)
+                gil = int(amount)
             except ValueError:
-                raise EventParsingError(usage)
-            if quantity < 1:
-                raise EventParsingError(
-                    f'Can\'t {command} a negative quantity of items')
-            if command == 'buy':
-                gil = ITEM_PRICES[item] * quantity
+                raise EventParsingError('Gil amount needs to be an integer')
+            if gil < 1:
+                raise EventParsingError('Gil amount needs to be more than 0')
+            if command == 'use':
                 if gil > gs.gil:
-                    raise EventParsingError('Not enough gil')
+                    raise EventParsingError(
+                        f'Not enough gil (need {gil - gs.gil} more)')
                 gs.gil -= gil
-                text = f'Bought {item} x{quantity} with {gil} gil'
-            elif command == 'sell':
+                text = f'Used {gil} Gil ({gs.gil} Gil total)'
+            else:
+                gs.gil += gil
+                text = f'Added {gil} Gil ({gs.gil} Gil total)'
+        case ('get' | 'use', 'gil', *_):
+            usage = f'Usage: inventory {command} gil [amount]'
+            raise EventParsingError(usage)
+        case ('get' | 'buy', 'equipment', equip_type, character, slots, *abilities):
+            equip = parse_equipment(equip_type, character, slots, *abilities)
+            if command == 'get':
+                text = f'Added {equip}'
+            else:
+                gil = equip.gil_value
+                if gil > gs.gil:
+                    raise EventParsingError(
+                        f'Not enough gil (need {gil - gs.gil} more)')
+                gs.gil -= gil
+                text = f'Bought {equip} for {gil} gil'
+            gs.add_to_equipment_inventory(equip)
+        case ('get' | 'buy', 'equipment', *_):
+            usage = (f'Usage: inventory {command} equipment [equip type] '
+                     '[character] [slots] (abilities)')
+            raise EventParsingError(usage)
+        case ('sell', 'equipment', equip_slot, *_) if equip_slot.isdecimal():
+            if not gs.equipment_inventory:
+                raise EventParsingError('Equipment inventory is empty')
+            equip_index = int(equip_slot) - 1
+            if not (0 <= equip_index < len(gs.equipment_inventory)):
+                raise EventParsingError('Equipment slot needs to be between 1'
+                                        f' and {len(gs.equipment_inventory)}')
+            equip = gs.equipment_inventory[equip_index]
+            if equip is None:
+                raise EventParsingError(f'Slot {equip_slot} is empty')
+            gs.gil += equip.sell_value
+            gs.equipment_inventory[equip_index] = None
+            gs.clean_equipment_inventory()
+            text = f'Sold {equip}'
+        case ('sell', 'equipment', equip_type, character, slots, *abilities):
+            equip = parse_equipment(equip_type, character, slots, *abilities)
+            gs.gil += equip.sell_value
+            text = f'Sold {equip}'
+        case ('sell', 'equipment', 'weapon' | 'armor', *_):
+            usage = ('Usage: inventory sell equipment [equip type] '
+                     '[character] [slots] (abilities)')
+            raise EventParsingError(usage)
+        case ('sell', 'equipment', *_):
+            usage = 'Usage: inventory sell equipment [equipment slot]'
+            raise EventParsingError(usage)
+        case ('get' | 'buy' | 'use' | 'sell', item_name, amount, *_):
+            item = parse_enum_member(item_name, Item, 'item')
+            try:
+                amount = int(amount)
+            except ValueError:
+                raise EventParsingError('Amount needs to be an integer')
+            if amount < 1:
+                raise EventParsingError('Amount needs to be more than 0')
+            if command == 'get':
+                text = f'Added {item} x{amount} to inventory'
+            elif command == 'buy':
+                gil = ITEM_PRICES[item] * amount
+                if gil > gs.gil:
+                    raise EventParsingError('Not enough gil '
+                                            f'(need {gil - gs.gil} more)')
+                gs.gil -= gil
+                text = f'Bought {item} x{amount} for {gil} gil'
+            else:
                 items = [s.item for s in gs.inventory]
                 if item not in items:
                     raise EventParsingError(f'{item} is not in the inventory')
                 slot = gs.inventory[items.index(item)]
-                if quantity > slot.quantity:
-                    raise EventParsingError(f'Not enough {item} to sell')
-                gil = max(1, (ITEM_PRICES[item] // 4)) * quantity
-                gs.gil += gil
-                text = f'Sold {item} x{quantity} for {gil} gil'
-                quantity = quantity * -1
-            elif command == 'use':
-                text = f'Used {item} x{quantity}'
-                quantity = quantity * -1
-            else:
-                text = f'Added {item} x{quantity} to inventory'
-            gs.add_to_inventory(item, quantity)
-        case 'switch':
-            usage = f'Usage: inventory {command} [slot 1] [slot 2]'
+                if amount > slot.quantity:
+                    raise EventParsingError(f'Not enough {item} to {command}')
+                if command == 'use':
+                    text = f'Used {item} x{amount}'
+                else:
+                    gil = max(1, (ITEM_PRICES[item] // 4)) * amount
+                    gs.gil += gil
+                    text = f'Sold {item} x{amount} for {gil} gil'
+                amount = amount * -1
+            gs.add_to_inventory(item, amount)
+        case ('get' | 'buy' | 'use' | 'sell', *_):
+            usage = f'Usage: inventory {command} [item] [amount]'
+            raise EventParsingError(usage)
+        case ('switch', slot_1_index, slot_2_index, *_):
             try:
-                slot_1_index, slot_2_index, *_ = params
-                slot_1_index = int(slot_1_index)
-                slot_2_index = int(slot_2_index)
+                slot_1_index = int(slot_1_index) - 1
+                slot_2_index = int(slot_2_index) - 1
             except ValueError:
-                raise EventParsingError(usage)
-            if max(slot_1_index, slot_2_index) > len(gs.inventory):
+                raise EventParsingError('Inventory slot needs to be an integer')
+            if (max(slot_1_index, slot_2_index) >= len(gs.inventory)
+                    or min(slot_1_index, slot_2_index) < 0):
                 raise EventParsingError('Inventory slot needs to be between'
                                         f' 1 and {len(gs.inventory)}')
             slot_1 = gs.inventory[slot_1_index]
             slot_2 = gs.inventory[slot_2_index]
             gs.inventory[slot_1_index] = slot_2
             gs.inventory[slot_2_index] = slot_1
-            text = (f'Switched {slot_1.item} (slot {slot_1_index})'
-                    f' for {slot_2.item} (slot {slot_2_index})')
-        case 'autosort':
-            items = list(Item) + [None]
+            text = (f'Switched {slot_1.item} (slot {slot_1_index + 1})'
+                    f' for {slot_2.item} (slot {slot_2_index + 1})')
+        case ('switch', *_):
+            usage = 'Usage: inventory switch [slot 1] [slot 2]'
+            raise EventParsingError(usage)
+        case ('autosort', *_):
+            # TODO
+            # autosort order is not by index
+            items = list(ITEMS) + [None]
             gs.inventory.sort(key=lambda s: items.index(s.item))
             text = 'Autosorted inventory'
         case _:
-            usage = 'Usage: inventory [use/get/buy/sell/switch/autosort]'
-            raise EventParsingError(usage)
+            raise EventParsingError
     return Comment(gs, text)
+
+
+USAGE: dict[ParsingFunction, list[str]] = {
+    parse_encounter: [
+        'encounter (preemp/ambush/simulated/name/zone)',
+        # 'encounter multizone [zones]',  # undocumented
+        ],
+    parse_encounter_count_change: [
+        'encounters_count [total/random/zone] [(+/-)amount]',
+        ],
+    parse_steal: [
+        'steal [monster_name] (successful steals)',
+        ],
+    parse_kill: [
+        'kill [monster_name] [killer] (characters initials) (overkill/ok)',
+    ],
+    parse_bribe: [
+        'bribe [monster_name] [user] (characters initials)',
+    ],
+    parse_death: [
+        'death (character)',
+    ],
+    parse_roll: [
+        'roll [rng#] [amount]',
+        'waste [rng#] [amount]',
+        'advance [rng#] [amount]',
+    ],
+    parse_party_change: [
+        'party [characters initials]',
+    ],
+    parse_summon: [
+        'summon [aeon name]',
+    ],
+    parse_action: [
+        'action [character] [action] (target) (time remaining)',
+    ],
+    parse_stat_update: [
+        'stat [character/monster slot] (stat) [(+/-)amount]',
+    ],
+    parse_yojimbo_action: [
+        'yojimboturn [action] [monster] (overdrive)',
+    ],
+    parse_compatibility_update: [
+        'compatibility ((+/-)amount)',
+    ],
+    parse_monster_action: [
+        'monsteraction [monster slot/name] [action]',
+    ],
+    parse_equipment_change: [
+        'equip [equip_type] [character] [slots] (abilities)',
+    ],
+    parse_end_encounter: [
+        'endencounter',
+    ],
+    parse_heal: [
+        'heal (character) (amount)',
+    ],
+    parse_character_ap: [
+        'ap (character) ((+/-)amount)',
+    ],
+    parse_character_status: [
+        'status [character]',
+    ],
+    parse_monster_spawn: [
+        'spawn [monster_name] [slot] (forced ctb)',
+    ],
+    parse_encounter_checks: [
+        'walk [zone] [steps]',
+    ],
+    parse_inventory_command: [
+        'inventory [show/get/buy/use/sell/switch/autosort] [...]',
+        'inventory show (equipment/gil)',
+        'inventory [get/buy/use/sell] [item] [amount]',
+        'inventory [get/use] gil [amount]',
+        'inventory [get/buy/sell] equipment [equip type] [character] [slots] (abilities)',
+        'inventory sell equipment [equipment slot]',
+        'inventory switch [slot 1] [slot 2]',
+        'inventory autosort',
+    ],
+}

@@ -10,16 +10,24 @@ class YojimboTracker(TrackerUI):
     """Widget used to track Yojimbo rng."""
     notes_file = 'yojimbo_notes.txt'
 
-    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
-        parsing_functions = {
-            'roll': parse_roll,
-            'waste': parse_roll,
-            'advance': parse_roll,
-            'death': parse_death,
-            'compatibility': parse_compatibility_update,
-            'yojimboturn': parse_yojimbo_action,
-        }
+    def get_parsing_functions(self) -> list[ParsingFunction]:
+        parsing_functions = [
+            parse_roll,
+            parse_death,
+            parse_compatibility_update,
+            parse_yojimbo_action,
+        ]
         return parsing_functions
+
+    def get_usage(self) -> str:
+        usage = super().get_usage()
+        usage += ('\n'
+                  '# Yojimbo actions:\n'
+                  '#     daigoro, kozuka, wakizashi_st,\n'
+                  '#     wakizashi_mt, zanmato,\n'
+                  '#     dismiss, autodismiss,\n'
+                  '#     first_turn_dismiss')
+        return usage
 
     def edit_input(self, input_text: str) -> str:
         input_lines = input_text.splitlines()
@@ -29,6 +37,8 @@ class YojimboTracker(TrackerUI):
                     line = 'death yojimbo'
                 case [action_name, *params] if action_name in YOJIMBO_ACTIONS:
                     line = ' '.join(['yojimboturn', action_name, *params])
+                case ['/usage']:
+                    line = self.usage
             input_lines[index] = line
         return '\n'.join(input_lines)
 

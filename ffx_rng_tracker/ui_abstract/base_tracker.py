@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from ..data.notes import get_notes, save_notes
 from ..events.main import Event
 from ..events.parser import EventParser
-from ..events.parsing_functions import ParsingFunction
+from ..events.parsing_functions import USAGE, ParsingFunction, parse_roll
 from .input_widget import InputWidget
 from .output_widget import ConfirmationPopup, OutputWidget
 
@@ -19,10 +19,14 @@ class TrackerUI(ABC):
     previous_input_text: str = field(default='', init=False, repr=False)
     previous_output_text: str = field(default='', init=False, repr=False)
     notes_file: str = field(default='', init=False, repr=False)
+    usage: str = field(default='', init=False, repr=False)
 
     def __post_init__(self) -> None:
-        for name, function in self.get_parsing_functions().items():
-            self.parser.register_parsing_function(name, function)
+        for function in self.get_parsing_functions():
+            for usage_string in USAGE[function]:
+                command = usage_string.split()[0]
+                self.parser.register_parsing_function(command, function)
+        self.usage = self.get_usage()
         self.input_widget.set_input(self.get_default_input_data())
         self.input_widget.register_callback(self.callback)
         self.callback()
@@ -32,10 +36,16 @@ class TrackerUI(ABC):
         return get_notes(self.notes_file, self.parser.gamestate.seed)
 
     @abstractmethod
-    def get_parsing_functions(self) -> dict[str, ParsingFunction]:
-        """Returns a dictionary with strings as keys
-        and parsing functions as values.
-        """
+    def get_parsing_functions(self) -> list[ParsingFunction]:
+        """Returns a list of parsing functions."""
+
+    def get_usage(self) -> str:
+        usage_lines = ['# Usage:']
+        for function in self.get_parsing_functions():
+            if function is parse_roll:
+                continue
+            usage_lines.extend(USAGE.get(function, []))
+        return '\n#     '.join(usage_lines)
 
     @abstractmethod
     def edit_input(self, input_text: str) -> str:

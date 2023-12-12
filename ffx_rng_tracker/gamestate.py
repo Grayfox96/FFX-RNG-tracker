@@ -163,12 +163,24 @@ class GameState:
         empty_slot.item = item
         empty_slot.quantity = quantity
 
+    def clean_equipment_inventory(self) -> None:
+        while self.equipment_inventory and self.equipment_inventory[-1] is None:
+            self.equipment_inventory.pop()
+
+    def add_to_equipment_inventory(self, equipment: Equipment) -> None:
+        self.clean_equipment_inventory()
+        if None in self.equipment_inventory:
+            index = self.equipment_inventory.index(None)
+            self.equipment_inventory[index] = equipment
+        else:
+            self.equipment_inventory.append(equipment)
+
     def reset(self) -> None:
         self._rng_tracker.reset()
         self.inventory = [InventorySlot() for _ in Item]
         self.inventory[0] = InventorySlot(Item.POTION, 10)
         self.inventory[1] = InventorySlot(Item.PHOENIX_DOWN, 3)
-        self.equipment_inventory: list[Equipment] = []
+        self.equipment_inventory: list[Equipment | None] = []
         self.gil = 300
         self.party = [Character.TIDUS, Character.AURON]
         self.monster_party: list[MonsterState] = []

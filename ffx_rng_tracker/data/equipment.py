@@ -31,7 +31,7 @@ class Equipment:
         string = (f'{self.name} '
                   f'({self.owner}) '
                   f'[{', '.join(abilities)}]'
-                  f'[{self.gil_value // 4} gil]')
+                  f'[{self.sell_value} gil]')
         return string
 
     @property
@@ -43,6 +43,10 @@ class Equipment:
                         * EQUIPMENT_SLOTS_GIL_MODIFIERS[self.slots]
                         * EQUIPMENT_EMPTY_SLOTS_GIL_MODIFIERS[empty_slots])
         return gil_value
+
+    @property
+    def sell_value(self) -> int:
+        return self.gil_value // 4
 
     @property
     def name(self) -> str:
