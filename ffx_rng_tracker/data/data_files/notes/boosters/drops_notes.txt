@@ -55,8 +55,8 @@ sinscale_3 tidus
 sinscale_3 tidus
 
 # Kilika
-geneaux's_tentacle wakka
-geneaux's_tentacle wakka
+geneauxs_tentacle wakka
+geneauxs_tentacle wakka
 sinspawn_geneaux wakka
 
 lord_ochu wakka

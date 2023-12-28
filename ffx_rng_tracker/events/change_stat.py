@@ -1,21 +1,20 @@
 from dataclasses import dataclass
 
-from ..data.characters import CharacterState
+from ..data.actor import Actor
 from ..data.constants import Character, Stat
-from ..data.monsters import MonsterState
 from .main import Event
 
 
 @dataclass
 class ChangeStat(Event):
-    target: CharacterState | MonsterState
+    target: Actor
     stat: Stat
     stat_value: int
 
     def __post_init__(self) -> None:
         self.stat_value = self._set_stat()
-        if (isinstance(self.target, CharacterState)
-                and self.target.character == Character.YUNA):
+        if (hasattr(self.target, 'character')
+                and self.target.character is Character.YUNA):
             self.gamestate.calculate_aeon_stats()
 
     def __str__(self) -> str:

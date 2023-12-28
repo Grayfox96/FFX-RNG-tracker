@@ -83,8 +83,8 @@ sinscale_3 tidus
 # forced fight
 ragora_2 lulu
 
-geneaux's_tentacle valefor
-geneaux's_tentacle valefor
+geneauxs_tentacle valefor
+geneauxs_tentacle valefor
 sinspawn_geneaux valefor
 
 # Luca

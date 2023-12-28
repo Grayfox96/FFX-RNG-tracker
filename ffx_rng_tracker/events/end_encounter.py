@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ..data.constants import Character
+from ..data.constants import Character, Status
 from ..ui_functions import ctb_sorter
 from .main import Event
 
@@ -15,7 +15,7 @@ class EndEncounter(Event):
         self.gamestate.process_end_of_encounter()
 
     def __str__(self) -> str:
-        hps = ' '.join([f'{c[:2]:2}[{hp}]' for c, hp in self.hps.items()])
+        hps = ' '.join([f'{c[:2]}[{hp}]' for c, hp in self.hps.items()])
         if not hps:
             hps = 'Characters at full HP'
         monsters_hps = ' '.join([f'{m}[{hp}]'
@@ -30,24 +30,27 @@ class EndEncounter(Event):
 
     def _get_ctbs_string(self) -> str:
         characters = []
-        for c, cs in self.gamestate.characters.items():
-            if c in self.gamestate.party and not cs.dead and not cs.inactive:
-                characters.append(cs)
+        for character, actor in self.gamestate.characters.items():
+            if (character in self.gamestate.party
+                    and Status.DEATH not in actor.statuses
+                    and Status.EJECT not in actor.statuses):
+                characters.append(actor)
         monsters = []
-        for m in self.gamestate.monster_party:
-            if not m.dead:
-                monsters.append(m)
+        for actor in self.gamestate.monster_party:
+            if (Status.DEATH not in actor.statuses
+                    and Status.EJECT not in actor.statuses):
+                monsters.append(actor)
         return ctb_sorter(characters, monsters)
 
     def _get_hps(self) -> dict[Character, int]:
         hps = {}
-        for character, state in self.gamestate.characters.items():
-            if state.current_hp < state.max_hp:
-                hps[character] = state.current_hp
+        for character, actor in self.gamestate.characters.items():
+            if actor.current_hp < actor.max_hp:
+                hps[character] = actor.current_hp
         return hps
 
     def _get_monsters_hps(self) -> dict[str, int]:
         monsters_hps = {}
-        for monster in self.gamestate.monster_party:
-            monsters_hps[str(monster)] = monster.current_hp
+        for actor in self.gamestate.monster_party:
+            monsters_hps[str(actor)] = actor.current_hp
         return monsters_hps

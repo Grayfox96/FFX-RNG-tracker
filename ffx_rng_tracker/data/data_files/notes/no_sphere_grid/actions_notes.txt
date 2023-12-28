@@ -11,42 +11,24 @@ tidus attack sinscale_6
 
 encounter ammes
 # Demi 1
-# auron od, ignore this set of rolls
-auron dragon_fang ???
-auron dragon_fang ???
-auron dragon_fang ???
-auron dragon_fang ???
-auron dragon_fang ???
-auron dragon_fang ???
-
-# this set is actual rolls
-auron dragon_fang sinspawn_ammes 3.0
-auron dragon_fang sinscale_6 3.0
-auron dragon_fang sinscale_6 3.0
-auron dragon_fang sinscale_6 3.0
-auron dragon_fang sinscale_6 3.0
-auron dragon_fang sinscale_6 3.0
-
-tidus attack sinspawn_ammes
+auron dragon_fang 3.0
+tidus attack m1
 # Demi 2
-
-# tidus od, ignore this roll
-tidus spiral_cut ???
-# this is the actual roll
-tidus spiral_cut sinspawn_ammes 2.5
-auron attack sinspawn_ammes
+tidus spiral_cut m1 2.5
+auron attack m1
 # Demi 3
-tidus attack sinspawn_ammes
-auron attack sinspawn_ammes
+tidus attack m1
+auron attack m1
 # Demi 4
-tidus attack sinspawn_ammes
-auron attack sinspawn_ammes
+tidus attack m1
+auron attack m1
 # Demi 5
-tidus attack sinspawn_ammes
-auron attack sinspawn_ammes
+tidus attack m1
+auron attack m1
 # Demi 6
-# tidus attack sinspawn_ammes
-# auron attack sinspawn_ammes
+# tidus attack m1
+# auron attack m1
+status m1
 
 encounter tanker
 auron attack auron
@@ -65,29 +47,34 @@ encounter geosgaeno
 # tidus attack geosgaeno
 
 encounter klikk_1
+stat m1 hp 750
 # tidus potion tidus
-tidus attack klikk
-tidus attack klikk
-tidus attack klikk
+tidus attack m1
+tidus attack m1
+tidus attack m1
 # tidus potion tidus
-tidus attack klikk
-tidus attack klikk
-tidus attack klikk
+tidus attack m1
+tidus attack m1
+tidus attack m1
+status m1
 
 encounter klikk_2
-rikku grenade klikk
-tidus attack klikk
-rikku steal klikk
-tidus attack klikk
-rikku steal klikk
-tidus attack klikk
-rikku attack klikk
-rikku attack klikk
-tidus attack klikk
-rikku attack klikk
-tidus attack klikk
-rikku attack klikk
-tidus attack klikk
+rikku grenade m1
+tidus attack m1
+rikku steal m1
+tidus attack m1
+rikku steal m1
+tidus attack m1
+rikku attack m1
+rikku attack m1
+tidus attack m1
+rikku attack m1
+tidus attack m1
+rikku attack m1
+tidus attack m1
+rikku attack m1
+tidus attack m1
+status m1
 
 # Chain encounter
 encounter underwater_ruins
@@ -105,17 +92,18 @@ rikku attack piranha_3
 tidus attack piranha_3
 
 encounter tros
-tidus attack tros
-# tidus attack tros
+tidus attack m1
+# tidus attack m1
 tidus stand_by
 # tidus stand_by
 
-rikku grenade tros
-rikku grenade tros
-rikku grenade tros
-rikku grenade tros
-rikku grenade tros
-rikku grenade tros
+rikku grenade m1
+rikku grenade m1
+rikku grenade m1
+rikku grenade m1
+rikku grenade m1
+rikku grenade m1
+status m1
 
 # -- Besaid --
 # Lagoon encounters
@@ -146,12 +134,13 @@ lulu thunder water_flan
 
 encounter kimahri
 # tidus potion tidus
-tidus attack ???
-tidus attack ???
-tidus attack ???
-tidus attack ???
-tidus attack ???
-tidus attack ???
+tidus attack m1
+tidus attack m1
+tidus attack m1
+tidus attack m1
+tidus attack m1
+tidus attack m1
+status m1
 
 encounter garuda_1
 valefor thunder garuda_3
@@ -175,200 +164,52 @@ lulu thunder water_flan_2
 
 # -- S.S. Liki --
 encounter sin_fin
-lulu thunder sin
-kimahri lancet_hp sin
-kimahri lancet_mp sin
-kimahri lancet_hp sin
-kimahri lancet_mp sin
-lulu thunder sin
-valefor energy_blast sin
+lulu thunder m4
+kimahri lancet m4
+kimahri lancet m4
+lulu thunder m4
+valefor energy_blast m4
+status m4
 
 encounter echuilles
-tidus spiral_cut sinspawn_echuilles
-tidus spiral_cut sinspawn_echuilles 2.5
-wakka dark_attack sinspawn_echuilles
-tidus attack sinspawn_echuilles
-wakka attack sinspawn_echuilles
-tidus attack sinspawn_echuilles
-wakka attack sinspawn_echuilles
+tidus spiral_cut m1 2.5
+wakka dark_attack m1
+tidus attack m1
+wakka attack m1
+tidus attack m1
+wakka attack m1
 # Echuilles uses Blender
-tidus attack sinspawn_echuilles
-wakka dark_attack sinspawn_echuilles
-tidus attack sinspawn_echuilles
-wakka attack sinspawn_echuilles
-tidus attack sinspawn_echuilles
-wakka attack sinspawn_echuilles
+tidus attack m1
+wakka dark_attack m1
+tidus attack m1
+wakka attack m1
+tidus attack m1
+wakka attack m1
 # Echuilles uses Blender
-tidus attack sinspawn_echuilles
-wakka attack sinspawn_echuilles
-tidus attack sinspawn_echuilles
-wakka attack sinspawn_echuilles
+tidus attack m1
+wakka attack m1
+status m1
 
 # -- Kilika --
 encounter lancet_tutorial
-kimahri lancet_hp ragora_2
-kimahri lancet_mp ragora_2
-kimahri attack ragora_2
-lulu fire ragora_2
+kimahri lancet m1
+kimahri attack m1
+# lulu thunder m1
+valefor fire m1
 
-# Ochu Grind
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
-encounter lord_ochu
+# encounter lord_ochu
 
 encounter kilika_woods
 encounter kilika_woods
 
 encounter geneaux
-valefor fire geneaux's_tentacle
-valefor fire geneaux's_tentacle
-valefor fire sinspawn_geneaux
-valefor fire sinspawn_geneaux
-valefor fire sinspawn_geneaux
-# Geneaux loses the armored status when
-# he removes the shell
-weapon valefor 1 piercing
-valefor sonic_wings sinspawn_geneaux
-weapon valefor 4 aeon_ribbon
-
-valefor fire sinspawn_geneaux
+# tidus attack m1
+valefor energy_blast
+valefor fire m1
+valefor fire m1
+valefor fire m1
+valefor fire m1
+status m1
 
 # Kilika Out encounters
 encounter kilika_woods
@@ -474,15 +315,17 @@ encounter vouivre
 auron attack vouivre_2
 
 encounter garuda
-tidus attack garuda_2
-wakka dark_attack garuda_2
+tidus attack m1
+wakka attack m1
+# wakka potion auron
+auron power_break m1
+auron attack m1
+auron attack m1
 
-auron attack garuda_2
-auron attack garuda_2
-auron attack garuda_2
-auron attack garuda_2
-auron attack garuda_2
-auron attack garuda_2
+auron attack m1
+auron attack m1
+auron attack m1
+status m1
 
 # -- Mi'ihen --
 encounter pierce_tutorial
@@ -491,8 +334,7 @@ tidus attacknocrit raldo
 auron attack raldo
 
 encounter miihen_screen_1
-kimahri lancet_hp bomb
-kimahri lancet_mp bomb
+kimahri lancet bomb
 
 encounter miihen_screen_1
 encounter miihen_screen_1
@@ -507,7 +349,6 @@ encounter miihen_screen_2_3
 # encounter simulation_miihen
 
 encounter chocobo_eater
-tidus spiral_cut chocobo_eater
 tidus spiral_cut chocobo_eater 2.5
 tidus attack tidus
 wakka attack tidus
@@ -529,12 +370,10 @@ encounter clasko_skip_screen
 encounter clasko_skip_screen
 encounter clasko_skip_screen
 encounter clasko_skip_screen
-encounter clasko_skip_screen
 
 # -- Djose --
 encounter djose_highroad_front_half
-kimahri lancet_hp basilisk
-kimahri lancet_mp basilisk
+kimahri lancet basilisk
 
 encounter djose_highroad_front_half
 
@@ -565,15 +404,13 @@ wakka attack extractor
 wakka attack extractor
 wakka attack extractor
 wakka attack extractor
-wakka element_reels_thunder extractor
-wakka element_reels_thunder extractor 16.0
+wakka thunder_shot 16.0
 
 tidus attack extractor
 tidus attack extractor
 tidus attack extractor
 tidus attack extractor
 tidus attack extractor
-tidus spiral_cut extractor
 tidus spiral_cut extractor 2.5
 
 # Mix tutorial
@@ -616,80 +453,76 @@ encounter macalania_woods
 encounter macalania_woods
 encounter macalania_woods
 
-# Spherimorph (the mix damages 9 times)
-encounter spherimorph
-# tidus spiral_cut spherimorph
-# tidus spiral_cut spherimorph 2.5
+weapon tidus 1 first_strike
 
-rikku grenade spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
-rikku lightning_bolt spherimorph
+# Spherimorph
+encounter spherimorph
+tidus spiral_cut spherimorph 2.5
+# rikku grenade monsters
+element m1 thunder weak
+rikku lightning_bolt
+status m1
 
 encounter lake_macalania
 
 # Crawler
 encounter crawler
-rikku lightning_marble crawler
-rikku lightning_marble negator
+rikku lunar_curtain auron
+rikku lightning_marble m2
 
 # If Negator doesn't die
-# kimahri lancet_hp negator
-# kimahri lancet_mp negator
+# kimahri lancet m2
 # auron phoenix_down rikku
 
-rikku lightning_marble crawler
+rikku lightning_marble m1
 auron phoenix_down rikku
-rikku lightning_marble crawler
-# mana beam
+rikku lightning_marble m1
+# tidus hi-potion auron
+
+# 1st Mana Beam
 auron phoenix_down rikku
-rikku lightning_bolt crawler
-rikku lightning_bolt crawler
-rikku lightning_bolt crawler
-rikku lightning_bolt crawler
-rikku lightning_bolt crawler
-rikku lightning_bolt crawler
-rikku lightning_bolt crawler
-rikku lightning_bolt crawler
-rikku lightning_bolt crawler
+auron phoenix_down tidus
+rikku lightning_bolt
+yuna phoenix_down rikku
+auron hi-potion auron
+
+# 2nd Mana Beam
+auron phoenix_down rikku
+rikku lightning_marble m1
 
 # tidus equips brotherhood
 weapon tidus 4 strength_+10% strength_+5% waterstrike
 
-encounter crevasse
-encounter crevasse
-encounter crevasse
-
 # -- Macalania Temple --
 # Seymour
 encounter seymour
-rikku electro_marble seymour
-valefor energy_blast guado_guardian
-valefor energy_blast seymour
-valefor energy_blast guado_guardian
+stat m4 hp 0
+rikku electro_marble m2
+valefor energy_blast
+stat m2 hp 0
 
-kimahri self-destruct anima
-shiva diamond_dust anima
+spawn anima 4
+m4 boost
+kimahri self-destruct m4
+shiva diamond_dust
 
-shiva blizzara shiva
-shiva blizzara shiva
-shiva diamond_dust anima
+shiva blizzara shiva_c
+shiva blizzara shiva_c
+shiva diamond_dust
+m4 does_nothing
+shiva blizzara m4
+m4 boost
+shiva diamond_dust
 
-shiva blizzara anima
-shiva diamond_dust anima
-
-rikku chaos_grenade seymour
+spawn seymour 2
+rikku chaos_grenade
 
 # Tidus unequips Brotherhood
 weapon tidus 1 first_strike
 
-# encounter guado_encounter
+# encounter guado_encounter_1
+# encounter guado_encounter_2
+# encounter guado_encounter_3
 
 # -- Crevasse --
 encounter crevasse
@@ -698,22 +531,22 @@ encounter crevasse
 
 # Wendigo
 encounter wendigo
-rikku lightning_marble wendigo
-rikku chaos_grenade guado_guardian_2
-rikku chaos_grenade wendigo
-rikku chaos_grenade guado_guardian_2
+rikku lightning_marble m2
+rikku chaos_grenade
 
-shiva diamond_dust wendigo
-shiva blizzara wendigo
-shiva blizzara wendigo
-shiva blizzara wendigo
-shiva blizzara wendigo
+shiva diamond_dust
+shiva blizzara m2
+shiva blizzara m2
+shiva blizzara m2
+shiva blizzara m2
 
-tidus attack wendigo
-rikku attack wendigo
+tidus spiral_cut m2 2.5
+tidus attack m2
+rikku attack m2
 yuna phoenix_down rikku
 yuna attack wendigo
-rikku cluster_bomb wendigo
+rikku cluster_bomb
+status m2
 
 # -- Bikanel --
 encounter zu
@@ -734,42 +567,139 @@ encounter sanubia_desert_ruins
 encounter sanubia_desert_west
 encounter sanubia_desert_west
 
-# encounter sandragora
+# Sandragora Grind
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
+encounter sandragora
 
 # -- Home --
 # Guado Guardian #3 is in Home
 # and Airship encounters
 
 encounter guado_+_3_bomb
-rikku silence_grenade guado_guardian_3
-rikku silence_grenade bomb_2
-rikku silence_grenade bomb_2
-rikku silence_grenade bomb_2
-rikku smoke_bomb guado_guardian_3
-rikku smoke_bomb bomb_2
-rikku smoke_bomb bomb_2
-rikku smoke_bomb bomb_2
-
-auron attack guado_guardian_3
-
-rikku grenade guado_guardian_3
-rikku grenade bomb_2
-rikku grenade bomb_2
-rikku grenade bomb_2
-rikku grenade guado_guardian_3
-rikku grenade bomb_2
-rikku grenade bomb_2
-rikku grenade bomb_2
+rikku silence_grenade monsters
+rikku smoke_bomb monsters
+# rikku petrify_grenade
+auron attack m1
+rikku grenade monsters
+rikku grenade monsters
 
 encounter guado_+_2_dual_horn
-kimahri lancet_hp dual_horn_2
-kimahri lancet_mp dual_horn_2
+kimahri lancet dual_horn_2
+kimahri stone_breath
 
 # encounter home
 
 encounter guado_+_2_chimera
-kimahri lancet_hp chimera_2
-kimahri lancet_mp chimera_2
+kimahri lancet chimera_2
+kimahri stone_breath
 
 # -- Airship --
 # encounter airship
@@ -866,10 +796,8 @@ encounter
 # tidus attack phlegyas
 
 encounter
-tidus elixir_hp evrae_altana
-tidus elixir_mp evrae_altana
-tidus elixir_hp evrae_altana
-tidus elixir_mp evrae_altana
+tidus elixir evrae_altana
+tidus elixir evrae_altana
 # tidus phoenix_down evrae_altana
 # tidus phoenix_down evrae_altana
 
@@ -912,10 +840,8 @@ kimahri water_gem biran_ronso
 encounter
 tidus haste yuna
 yuna attack seymour_flux
-rikku silence_grenade seymour_flux
-rikku silence_grenade mortiorchis
-# rikku chaos_grenade seymour_flux
-# rikku chaos_grenade mortiorchis
+rikku silence_grenade monsters
+# rikku chaos_grenade
 bahamut attack seymour_flux
 yuna attack seymour_flux
 yuna attack seymour_flux
@@ -965,14 +891,12 @@ bahamut attack seymour_omnis
 
 # Braska's Final Aeon
 encounter
-rikku armor_break braska's_final_aeon
-# rikku chaos_grenade braska's_final_aeon
-# rikku chaos_grenade yu_pagoda
-# rikku chaos_grenade yu_pagoda
-bahamut attack braska's_final_aeon
+rikku armor_break braskas_final_aeon
+# rikku chaos_grenade
+bahamut attack braskas_final_aeon
 
-bahamut attack braska's_final_aeon
-bahamut attack braska's_final_aeon
+bahamut attack braskas_final_aeon
+bahamut attack braskas_final_aeon
 
 # Possessed Aeons' Luck is 1
 

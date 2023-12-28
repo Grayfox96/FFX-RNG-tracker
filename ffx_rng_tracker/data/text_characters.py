@@ -17,4 +17,14 @@ def get_text_characters(file_path: str) -> dict[int, str]:
     return text_characters
 
 
+def bytes_to_string(data: list[int], offset: int) -> str:
+    string = ''
+    for i in range(offset, len(data)):
+        byte = data[i]
+        if byte == 0:
+            break
+        string += TEXT_CHARACTERS.get(byte, '')
+    return string
+
+
 TEXT_CHARACTERS = get_text_characters('data_files/text_characters.csv')

@@ -134,7 +134,7 @@
         },
         "geneaux": {
             "name": "Geneaux",
-            "formation": ["sinspawn_geneaux", "geneaux's_tentacle", "geneaux's_tentacle"],
+            "formation": ["sinspawn_geneaux", "geneauxs_tentacle", "geneauxs_tentacle"],
             "forced_condition": "normal",
             "forced_party": ""
         },
@@ -234,9 +234,21 @@
             "forced_condition": "normal",
             "forced_party": "tyk"
         },
-        "guado_encounter": {
+        "guado_encounter_1": {
             "name": "Guado Encounter",
-            "formation": ["guado_guardian_2"],
+            "formation": ["guado_guardian_2", "snow_wolf", "mafdet"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "guado_encounter_2": {
+            "name": "Guado Encounter",
+            "formation": ["guado_guardian_2", "evil_eye", "evil_eye"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "guado_encounter_3": {
+            "name": "Guado Encounter",
+            "formation": ["guado_guardian_2", "ice_flan", "mafdet"],
             "forced_condition": "normal",
             "forced_party": ""
         },
@@ -248,7 +260,7 @@
         },
         "zu": {
             "name": "Zu",
-            "formation": ["zu_2"],
+            "formation": ["zu_2", "???_3"],
             "forced_condition": "normal",
             "forced_party": "t"
         },
@@ -284,7 +296,7 @@
         },
         "evrae": {
             "name": "Evrae",
-            "formation": ["evrae"],
+            "formation": ["evrae", "cid"],
             "forced_condition": "normal",
             "forced_party": ""
         },
@@ -320,25 +332,37 @@
         },
         "isaaru_grothia": {
             "name": "Isaaru Grothia",
-            "formation": ["ifrit_2"],
+            "formation": ["isaaru", "ifrit_2"],
             "forced_condition": "normal",
             "forced_party": "y"
         },
         "isaaru_pterya": {
             "name": "Isaaru Pterya",
-            "formation": ["valefor"],
+            "formation": ["isaaru", "valefor"],
             "forced_condition": "normal",
             "forced_party": "y"
         },
         "isaaru_spathi": {
             "name": "Isaaru Spathi",
-            "formation": ["bahamut"],
+            "formation": ["isaaru", "bahamut"],
             "forced_condition": "normal",
             "forced_party": "y"
         },
         "evrae_altana": {
             "name": "Evrae Altana",
-            "formation": ["evrae_altana"],
+            "formation": ["evrae_altana", "gate_lock", "gate_lock_2"],
+            "forced_condition": "normal",
+            "forced_party": "twr"
+        },
+        "evrae_altana_2": {
+            "name": "Evrae Altana",
+            "formation": ["evrae_altana", "gate_lock", "gate_lock_2"],
+            "forced_condition": "normal",
+            "forced_party": "twr"
+        },
+        "evrae_altana_3": {
+            "name": "Evrae Altana",
+            "formation": ["evrae_altana", "dummy", "dummy", "dummy"],
             "forced_condition": "normal",
             "forced_party": "twr"
         },
@@ -386,13 +410,13 @@
         },
         "left_fin": {
             "name": "Left Fin",
-            "formation": ["left_fin"],
+            "formation": ["left_fin", "cid"],
             "forced_condition": "normal",
             "forced_party": ""
         },
         "right_fin": {
             "name": "Right Fin",
-            "formation": ["right_fin"],
+            "formation": ["right_fin", "cid"],
             "forced_condition": "normal",
             "forced_party": ""
         },
@@ -416,9 +440,63 @@
         },
         "bfa": {
             "name": "Braska's Final Aeon",
-            "formation": ["braska's_final_aeon", "yu_pagoda", "yu_pagoda"],
+            "formation": ["braskas_final_aeon", "yu_pagoda", "yu_pagoda_2"],
             "forced_condition": "normal",
             "forced_party": "tya"
+        },
+        "possessed_valefor": {
+            "name": "Possessed Valefor",
+            "formation": ["possessed_valefor", "yu_pagoda", "yu_pagoda_2", "nishida"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "possessed_ifrit": {
+            "name": "Possessed Ifrit",
+            "formation": ["possessed_ifrit", "yu_pagoda", "yu_pagoda_2", "nishida"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "possessed_ixion": {
+            "name": "Possessed Ixion",
+            "formation": ["possessed_ixion", "yu_pagoda", "yu_pagoda_2", "nishida"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "possessed_shiva": {
+            "name": "Possessed Shiva",
+            "formation": ["possessed_shiva", "yu_pagoda", "yu_pagoda_2", "nishida"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "possessed_bahamut": {
+            "name": "Possessed Bahamut",
+            "formation": ["possessed_bahamut", "yu_pagoda", "yu_pagoda_2", "nishida"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "possessed_anima": {
+            "name": "Possessed Anima",
+            "formation": ["possessed_anima", "yu_pagoda", "yu_pagoda_2", "nishida"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "possessed_yojimbo": {
+            "name": "Possessed Yojimbo",
+            "formation": ["possessed_yojimbo", "yu_pagoda", "yu_pagoda_2", "sinscale_4", "nishida"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "possessed_magus_sisters": {
+            "name": "Possessed Magus Sisters",
+            "formation": ["possessed_mindy", "possessed_sandy", "possessed_cindy", "yu_pagoda", "yu_pagoda_2", "nishida"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "yu_yevon": {
+            "name": "Yu Yevon",
+            "formation": ["yu_yevon", "yu_pagoda", "yu_pagoda_2"],
+            "forced_condition": "normal",
+            "forced_party": ""
         }
     },
     "simulation": {
@@ -514,9 +592,9 @@
         "miihen_screen_1": {
             "name": "Mi'ihen Screen 1",
             "encounters": [
-                {"monsters": ["mi'ihen_fang", "white_element", "floating_eye"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "white_element", "raldo"], "forced_condition": ""},
-                {"monsters": ["floating_eye", "mi'ihen_fang", "raldo"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "white_element", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "white_element", "raldo"], "forced_condition": ""},
+                {"monsters": ["floating_eye", "miihen_fang", "raldo"], "forced_condition": ""},
                 {"monsters": ["raldo", "white_element", "floating_eye"], "forced_condition": ""},
                 {"monsters": ["bomb"], "forced_condition": ""},
                 {"monsters": ["dual_horn"], "forced_condition": ""}
@@ -526,29 +604,29 @@
         "miihen_screen_1_ledge": {
             "name": "Mi'ihen Screen 1 (Ledge)",
             "encounters": [
-                {"monsters": ["mi'ihen_fang"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "mi'ihen_fang"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "dual_horn"], "forced_condition": ""}
+                {"monsters": ["miihen_fang"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "miihen_fang"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "dual_horn"], "forced_condition": ""}
             ],
             "danger_value": 50
         },
         "miihen_screen_2_3": {
             "name": "Miihen Screen 2-3",
             "encounters": [
-                {"monsters": ["white_element", "mi'ihen_fang", "floating_eye"], "forced_condition": ""},
-                {"monsters": ["white_element", "mi'ihen_fang", "floating_eye"], "forced_condition": ""},
-                {"monsters": ["white_element", "mi'ihen_fang", "floating_eye"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "white_element", "raldo"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "white_element", "raldo"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "white_element", "raldo"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "raldo", "floating_eye"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "raldo", "floating_eye"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "raldo", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["white_element", "miihen_fang", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["white_element", "miihen_fang", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["white_element", "miihen_fang", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "white_element", "raldo"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "white_element", "raldo"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "white_element", "raldo"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "raldo", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "raldo", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "raldo", "floating_eye"], "forced_condition": ""},
                 {"monsters": ["raldo", "white_element", "floating_eye"], "forced_condition": ""},
                 {"monsters": ["raldo", "white_element", "floating_eye"], "forced_condition": ""},
                 {"monsters": ["raldo", "white_element", "floating_eye"], "forced_condition": ""},
-                {"monsters": ["dual_horn", "mi'ihen_fang"], "forced_condition": ""},
-                {"monsters": ["dual_horn", "mi'ihen_fang"], "forced_condition": ""},
+                {"monsters": ["dual_horn", "miihen_fang"], "forced_condition": ""},
+                {"monsters": ["dual_horn", "miihen_fang"], "forced_condition": ""},
                 {"monsters": ["bomb", "bomb", "dual_horn"], "forced_condition": ""},
                 {"monsters": ["floating_eye", "bomb", "floating_eye"], "forced_condition": ""},
                 {"monsters": ["floating_eye", "bomb", "floating_eye"], "forced_condition": ""},
@@ -559,18 +637,18 @@
         "miihen_screen_2_3_ledge": {
             "name": "Mi'ihen Screen 2-3 (Ledge)",
             "encounters": [
-                {"monsters": ["mi'ihen_fang", "mi'ihen_fang"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "mi'ihen_fang", "mi'ihen_fang"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "dual_horn"], "forced_condition": ""}
+                {"monsters": ["miihen_fang", "miihen_fang"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "miihen_fang", "miihen_fang"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "dual_horn"], "forced_condition": ""}
             ],
             "danger_value": 40
         },
         "miihen_newroad": {
             "name": "Mi'ihen (Newroad)",
             "encounters": [
-                {"monsters": ["mi'ihen_fang", "white_element", "floating_eye"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "white_element", "raldo"], "forced_condition": ""},
-                {"monsters": ["mi'ihen_fang", "raldo", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "white_element", "floating_eye"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "white_element", "raldo"], "forced_condition": ""},
+                {"monsters": ["miihen_fang", "raldo", "floating_eye"], "forced_condition": ""},
                 {"monsters": ["raldo", "white_element", "floating_eye"], "forced_condition": ""},
                 {"monsters": ["dual_horn", "raldo"], "forced_condition": ""},
                 {"monsters": ["dual_horn", "raldo"], "forced_condition": ""},
@@ -1198,10 +1276,10 @@
                 {"monsters": ["zaurus", "???_2"], "forced_condition": ""},
                 {"monsters": ["zaurus", "???_2"], "forced_condition": ""},
                 {"monsters": ["zaurus", "???_2"], "forced_condition": ""},
-                {"monsters": ["zaurus", "mimic"], "forced_condition": ""},
-                {"monsters": ["zaurus", "mimic_2"], "forced_condition": ""},
-                {"monsters": ["zaurus", "mimic_3"], "forced_condition": ""},
-                {"monsters": ["zaurus", "mimic_4"], "forced_condition": ""},
+                {"monsters": ["zaurus", "???_2", "mimic"], "forced_condition": ""},
+                {"monsters": ["zaurus", "???_2", "mimic_2"], "forced_condition": ""},
+                {"monsters": ["zaurus", "???_2", "mimic_3"], "forced_condition": ""},
+                {"monsters": ["zaurus", "???_2", "mimic_4"], "forced_condition": ""},
                 {"monsters": ["puroboros", "puroboros", "puroboros"], "forced_condition": ""},
                 {"monsters": ["wraith"], "forced_condition": ""}
             ],

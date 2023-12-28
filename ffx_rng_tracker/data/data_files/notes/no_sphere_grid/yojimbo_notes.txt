@@ -26,5 +26,5 @@ zanmato sin_3 overdrive
 
 zanmato seymour_omnis overdrive
 
-zanmato braska's_final_aeon overdrive
-zanmato braska's_final_aeon overdrive
+zanmato braskas_final_aeon overdrive
+zanmato braskas_final_aeon overdrive

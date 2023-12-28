@@ -1,2564 +1,1821 @@
 {
-    "generic_actions": {
-        "#defaults": {
-            "name": "",
-            "target": "Single",
-            "can_miss": true,
-            "accuracy": 90,
-            "does_damage": true,
-            "hits": 1,
-            "uses_weapon": false,
-            "can_crit": true,
-            "bonus_crit": 0,
-            "damage_type": "Strength",
-            "base_damage": 0,
-            "element": null,
-            "statuses": {},
-            "dispels": [],
-            "shatter_chance": 10,
-            "drains": false,
-            "timer": 0,
-            "rank": 3
-        },
-        "does_nothing": {
-            "name": "Does Nothing",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        },
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        },
-        "nocrit": {
-            "name": "NoCrit",
-            "can_crit": false,
-            "base_damage": 16
-        },
-        "nomiss": {
-            "name": "NoMiss",
-            "can_miss": false,
-            "base_damage": 16
-        },
-        "nomissnocrit": {
-            "name": "NoMissNoCrit",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 16
-        },
-        "aoe": {
-            "name": "AOE",
-            "target": "All characters",
-            "base_damage": 16
-        },
-        "aoenocrit": {
-            "name": "AOENoCrit",
-            "target": "All characters",
-            "can_crit": false,
-            "base_damage": 16
-        },
-        "aoenomiss": {
-            "name": "AOENoMiss",
-            "target": "All characters",
-            "can_miss": false,
-            "base_damage": 16
-        },
-        "aoenomissnocrit": {
-            "name": "AOENoMissNoCrit",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 16
-        }
-    },
-    "monster_0": {
-    },
-    "raldo": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_auron": {
-            "name": "Attack Auron",
-            "target": "Auron",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        },
-        "does_nothing": {
-            "name": "Does Nothing",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "bunyip": {
-        "attack": {
-            "name": "Attack",
-            "target": "Single",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_auron": {
-            "name": "Attack Auron",
-            "target": "Auron",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "target": "Single",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "target": "Single",
-            "base_damage": 16
-        }
-    },
-    "murussu": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_auron": {
-            "name": "Attack Auron",
-            "target": "Auron",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "mafdet": {
-    },
-    "shred": {
-    },
-    "gandarewa": {
-        "thunder": {
-            "name": "Thunder",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Thunder"
-        }
-    },
-    "aerouge": {
-        "thundara": {
-            "name": "Thundara",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Thunder"
-        }
-    },
-    "imp": {
-    },
-    "dingo": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Sleep": [10, 3],
-                "Silence": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Sleep": [10, 3],
-                "Silence": [10, 3]
-            }
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        }
-    },
-    "mi'ihen_fang": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Sleep": [10, 3],
-                "Silence": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Sleep": [10, 3],
-                "Silence": [10, 3]
-            }
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "garm": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Sleep": [10, 3],
-                "Silence": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Sleep": [10, 3],
-                "Silence": [10, 3]
-            }
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "snow_wolf": {
-    },
-    "sand_wolf": {
-    },
-    "skoll": {
-    },
-    "bandersnatch": {
-    },
-    "water_flan": {
-        "water": {
-            "name": "Water",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Water"
-        }
-    },
-    "thunder_flan": {
-        "thunder": {
-            "name": "Thunder",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Thunder"
-        }
-    },
-    "snow_flan": {
-        "blizzard": {
-            "name": "Blizzard",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Ice"
-        }
-    },
-    "ice_flan": {
-        "blizzara": {
-            "name": "Blizzara",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Ice"
-        },
-        "blizzara_silence": {
-            "name": "Blizzara (Silence)",
-            "can_miss": false,
-            "does_damage": false
-        }
-    },
-    "flame_flan": {
-    },
-    "dark_flan": {
-    },
-    "dinonix": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Petrify": [10, 254],
-                "Silence": [10, 3]
-            },
-            "shatter_chance": 0,
-            "rank": 3
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "ipiria": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Petrify": [10, 254],
-                "Silence": [10, 3]
-            },
-            "shatter_chance": 0
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "raptor": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Petrify": [10, 254],
-                "Silence": [10, 3]
-            },
-            "shatter_chance": 0
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "melusine": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Petrify": [10, 254],
-                "Silence": [10, 3]
-            },
-            "shatter_chance": 0,
-            "rank": 3
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "iguion": {
-        "attack": {
-            "name": "Attack",
-            "accuracy": 120,
-            "base_damage": 16,
-            "statuses": {
-                "Petrify": [30, 254],
-                "Silence": [30, 3]
-            },
-            "shatter_chance": 0
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "accuracy": 120,
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "yowie": {
-    },
-    "condor": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        },
-        "attack_wakka": {
-            "name": "Attack Wakka",
-            "target": "Wakka",
-            "base_damage": 16
-        }
-    },
-    "simurgh": {
-        "attack": {
-            "name": "Attack",
-            "accuracy": 120,
-            "base_damage": 16,
-            "statuses": {
-                "Dark": [30, 3]
-            }
-        },
-        "attack_wakka": {
-            "name": "Attack Wakka",
-            "target": "Wakka",
-            "accuracy": 120,
-            "base_damage": 16,
-            "statuses": {
-                "Dark": [30, 3]
-            }
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "alcyone": {
-    },
-    "killer_bee": {
-        "poison_dart": {
-            "name" : "Poison Dart",
-            "accuracy": 100,
-            "base_damage": 16,
-            "statuses": {
-                "Poison": [40, 254]
-            }
-        }
-    },
-    "bite_bug": {
-        "poison_dart": {
-            "name" : "Poison Dart",
-            "accuracy": 100,
-            "base_damage": 16,
-            "statuses": {
-                "Poison": [40, 254]
-            }
-        }
-    },
-    "wasp": {
-        "poison_dart": {
-            "name" : "Poison Dart",
-            "accuracy": 100,
-            "base_damage": 16,
-            "statuses": {
-                "Poison": [40, 254]
-            }
-        }
-    },
-    "nebiros": {
-    },
-    "floating_eye": {
-        "gaze": {
-            "name": "Gaze",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "statuses": {
-                "Confuse": [10, 254]
-            },
-            "shatter_chance": 0
-        }
-    },
-    "buer": {
-        "gaze": {
-            "name": "Gaze",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "statuses": {
-                "Confuse": [10, 254]
-            },
-            "shatter_chance": 0
-        }
-    },
-    "evil_eye": {
-    },
-    "ahriman": {
-    },
-    "ragora": {
-        "seed_cannon": {
-            "name": "Seed Cannon",
-            "accuracy": 85,
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "grat": {
-    },
-    "sahagin": {
-    },
-    "sahagin_2": {
-    },
-    "sahagin_3": {
-    },
-    "garuda": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Dark": [10, 3]
-            }
-        },
-        "attack_wakka": {
-            "name": "Attack Wakka",
-            "target": "Wakka",
-            "base_damage": 16,
-            "statuses": {
-                "Dark": [10, 3]
-            }
-        },
-        "sonic_boom": {
-            "name": "Sonic Boom",
-            "target": "All characters",
-            "accuracy": 130,
-            "can_crit": false,
-            "base_damage": 8,
-            "shatter_chance": 0
-        }
-    },
-    "zu": {
-    },
-    "sand_worm": {
-    },
-    "land_worm": {
-    },
-    "defender": {
-    },
-    "defender_z": {
-    },
-    "ghost": {
-    },
-    "phlegyas": {
-    },
-    "achelous": {
-    },
-    "remora": {
-    },
-    "maelspike": {
-    },
-    "dual_horn": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        },
-        "gore": {
-            "name": "Gore",
-            "accuracy": 150,
-            "base_damage": 25,
-            "shatter_chance": 0
-        }
-    },
-    "valaha": {
-    },
-    "grendel": {
-    },
-    "octopus": {
-    },
-    "vouivre": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "breath": {
-            "name": "Breath",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 18,
-            "element": "Fire",
-            "shatter_chance": 0
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "lamashtu": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "breath": {
-            "name": "Breath",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 18,
-            "element": "Ice",
-            "shatter_chance": 0
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "kusariqqu": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Slow": [10, 3]
-            }
-        },
-        "breath": {
-            "name": "Breath",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 18,
-            "element": "Thunder",
-            "shatter_chance": 0
-        },
-        "attack_aeon": {
-            "name": "Attack (vs Aeons)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "mushussu": {
-    },
-    "nidhogg": {
-    },
-    "malboro": {
-    },
-    "great_malboro": {
-    },
-    "ogre": {
-    },
-    "bashura": {
-    },
-    "piranha": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        }
-    },
-    "piranha_2": {
-        "gnaw": {
-            "name": "GNAW",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "piranha_3": {
-        "gnaw": {
-            "name": "GNAW",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "splasher": {
-    },
-    "splasher_2": {
-    },
-    "splasher_3": {
-    },
-    "vepar": {
-    },
-    "vepar_2": {
-    },
-    "vepar_3": {
-    },
-    "yellow_element": {
-        "thunder": {
-            "name": "Thunder",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Thunder"
-        }
-    },
-    "white_element": {
-        "blizzard": {
-            "name": "Blizzard",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Ice"
-        }
-    },
-    "red_element": {
-        "fire": {
-            "name": "Fire",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Fire"
-        }
-    },
-    "gold_element": {
-        "thunder": {
-            "name": "Thunder",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Thunder"
-        },
-        "forced_attack": {
-            "name": "Thundara",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Thunder"
-        }
-    },
-    "blue_element": {
-        "watera": {
-            "name": "Watera",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Water"
-        }
-    },
-    "dark_element": {
-    },
-    "black_element": {
-    },
-    "epaaj": {
-    },
-    "behemoth": {
-    },
-    "behemoth_king": {
-    },
-    "chimera": {
-        "rush": {
-            "name": "RUSH",
-            "target": "Single",
-            "accuracy": 120,
-            "damage_type": "Percentage (Current)",
-            "base_damage": 4,
-            "shatter_chance": 0
-        },
-        "thundara": {
-            "name": "Thundara",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Thunder"
-        },
-        "megiddo_flame": {
-            "name": "Megiddo Flame",
-            "target": "Single",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 35,
-            "element": "Fire",
-            "shatter_chance": 0
-        },
-        "aqua_breath": {
-            "name": "Aqua Breath",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Special Magic",
-            "base_damage": 17,
-            "element": "Water",
-            "shatter_chance": 0
-        }
-    },
-    "chimera_brain": {
-    },
-    "coeurl": {
-    },
-    "master_coeurl": {
-    },
-    "mech_guard": {
-    },
-    "mech_scouter": {
-    },
-    "mech_scouter_2": {
-    },
-    "mech_leader": {
-    },
-    "demonolith": {
-    },
-    "mech_gunner": {
-    },
-    "mech_hunter": {
-    },
-    "mech_defender": {
-    },
-    "ultima_weapon": {
-    },
-    "omega_weapon": {
-    },
-    "tros": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "tentacles": {
-            "name": "Tentacles",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 24
-        },
-        "nautilus_charge": {
-            "name": "Nautilus Charge",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 48,
-            "shatter_chance": 0
-        },
-        "flank": {
-            "name": "Flank",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "sinspawn_geneaux": {
-        "sigh": {
-            "name": "Sigh",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "venom": {
-            "name": "Venom",
-            "target": "Highest HP character",
-            "can_miss": false,
-            "damage_type": "Magic",
-            "base_damage": 16,
-            "statuses": {
-                "Poison": [100, 254]
-            },
-            "shatter_chance": 0
-        },
-        "staccato": {
-            "name": "Staccato",
-            "target": "All characters",
-            "can_miss": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "water": {
-            "name": "Water",
-            "target": "Lowest HP character",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Water"
-        },
-        "does_nothing": {
-            "name": "Does Nothing",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "geneaux's_tentacle": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "chocobo_eater": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "youre_next": {
-            "name": "You're Next",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false
-        },
-        "fists_of_fury": {
-            "name": "Fists of Fury",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 32
-        },
-        "blizzard": {
-            "name": "Blizzard",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Ice"
-        },
-        "thwack": {
-            "name": "Thwack",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Percentage (Current)",
-            "base_damage": 3
-        }
-    },
-    "neslug": {
-    },
-    "mortiphasm": {
-    },
-    "sinscale": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "spines": {
-            "name": "Spines",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 40
-        },
-        "wings_flicker": {
-            "name": "Wings Flicker",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false
-        }
-    },
-    "sinscale_2": {
-    },
-    "geosgaeno": {
-        "half_hp": {
-            "name": "Half HP",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Percentage (Current)",
-            "base_damage": 8,
-            "shatter_chance": 0
-        }
-    },
-    "oblitzerator": {
-        "blitzball_rush": {
-            "name": "Blitzball Rush",
-            "target": "Random character",
-            "can_miss": false,
-            "hits": 10,
-            "can_crit": false,
-            "damage_type":"Special Strength",
-            "base_damage": 4,
-            "shatter_chance": 0
-        },
-        "blind_ball": {
-            "name": "Blind Ball",
-            "target": "Last actor",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 10,
-            "statuses": {
-                "Dark": [254, 1]
-            },
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "mute_ball": {
-            "name": "Mute Ball",
-            "target": "Last actor",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 7,
-            "statuses": {
-                "Silence": [254, 1]
-            },
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "doze_ball": {
-            "name": "Doze Ball",
-            "target": "Last actor",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 7,
-            "statuses": {
-                "Sleep": [254, 1]
-            },
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "does_nothing": {
-            "name": "Does Nothing",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "extractor": {
-        "aqua_shooter": {
-            "name": "Aqua Shooter",
-            "can_miss": false,
-            "damage_type": "Magic",
-            "base_damage": 16,
-            "element": "Water",
-            "shatter_chance": 0
-        },
-        "depth_charge": {
-            "name": "Depth Charge",
-            "target": "All characters",
-            "can_crit": false,
-            "damage_type": "Strength",
-            "base_damage": 16,
-            "statuses": {
-                "Dark": [50, 3]
-            },
-            "shatter_chance": 0
-        },
-        "rise": {
-            "name": "Rise",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        },
-        "dive": {
-            "name": "Dive",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        },
-        "aqua_shooter_fix": {
-            "name": "Wasting RNG4",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0,
-            "rank": 0
-        }
-    },
-    "???": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "jump": {
-            "name": "Jump",
-            "can_miss": false,
-            "damage_type":"Special Strength",
-            "base_damage": 32,
-            "shatter_chance": 50
-        }
-    },
-    "sin": {
-        "move": {
-            "name": "Move",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "sinspawn_echuilles": {
-        "drain_touch": {
-            "name": "Drain Touch",
-            "can_crit": false,
-            "base_damage": 16,
-            "drains": true,
-            "shatter_chance": 0
-        },
-        "blender": {
-            "name": "Blender",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 10,
-            "element": "Water",
-            "shatter_chance": 0
-            }
-    },
-    "sinscale_3": {
-        "attack": {
-            "name": "Attack",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "sinscale_4": {
-    },
-    "sinspawn_gui": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "demi": {
-            "name": "Demi",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Percentage (Current)",
-            "base_damage": 4
-        },
-        "thunder": {
-            "name": "Thunder",
-            "target": "Single",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Thunder",
-            "rank": 0
-        },
-        "venom": {
-            "name": "Venom",
-            "target": "Single",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "statuses": {
-                "Poison": [100, 254],
-                "Slow": [100, 0]
-            },
-            "shatter_chance": 0,
-            "rank": 0
-        }
-    },
-    "mortiphasm_2": {
-    },
-    "evrae": {
-    },
-    "evrae_altana": {
-    },
-    "spherimorph": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "press": {
-            "name": "Press",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Percentage (Current)",
-            "base_damage": 8,
-            "shatter_chance": 0
-        },
-        "fire_counter": {
-            "name": "Fire (Counter)",
-            "target": "Last actor",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Fire",
-            "rank": 0
-        },
-        "blizzard_counter": {
-            "name": "Blizzard (Counter)",
-            "target": "Last actor",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Ice",
-            "rank": 0
-        },
-        "thunder_counter": {
-            "name": "Thunder (Counter)",
-            "target": "Last actor",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Thunder",
-            "rank": 0
-        },
-        "water_counter": {
-            "name": "Water (Counter)",
-            "target": "Last actor",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Water",
-            "rank": 0
-        },
-        "fire_all": {
-            "name": "Fire (Counter) (All)",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 16,
-            "element": "Fire",
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "blizzard_all": {
-            "name": "Blizzard (Counter) (All)",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 16,
-            "element": "Ice",
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "thunder_all": {
-            "name": "Thunder (Counter) (All)",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 16,
-            "element": "Thunder",
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "water_all": {
-            "name": "Water (Counter) (All)",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 16,
-            "element": "Water",
-            "shatter_chance": 0,
-            "rank": 0
-        }
-    },
-    "crawler": {
-        "gatling_gun": {
-            "name": "Gatling Gun",
-            "target": "Random character",
-            "can_miss": true,
-            "accuracy": 100,
-            "does_damage": true,
-            "hits": 8,
-            "can_crit": false,
-            "base_damage": 4,
-            "shatter_chance": 0
-        },
-        "mana_beam": {
-            "name": "Mana Beam",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 36,
-            "shatter_chance": 0
-        },
-        "assault": {
-            "name": "Assault",
-            "target": "Last actor",
-            "accuracy": 120,
-            "can_crit": false,
-            "base_damage": 32,
-            "shatter_chance": 0,
-            "rank": 0
-        }
-    },
-    "negator": {
-    },
-    "seymour": {
-        "shell": {
-            "name": "Shell",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Shell": [254, 254]
-            },
-            "shatter_chance": 0
-        },
-        "blizzara": {
-            "name": "Blizzara",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Ice"
-        }
-    },
-    "anima": {
-        "pain": {
-            "name": "Pain",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Special Magic",
-            "base_damage": 28,
-            "statuses": {
-                "Death": [100, 254]
-            },
-            "shatter_chance": 0
-        },
-        "boost": {
-            "name": "Boost",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Boost": [254, 254]
-            }
-        }
-    },
-    "seymour_natus": {
-    },
-    "mortibody": {
-    },
-    "sanctuary_keeper": {
-    },
-    "spectral_keeper": {
-    },
-    "yunalesca": {
-    },
-    "seymour_omnis": {
-    },
-    "braska's_final_aeon": {
-    },
-    "crane": {
-        "use_crane": {
-            "name": "Use crane",
-            "target": 0,
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Percentage (Current)",
-            "base_damage": 15,
-            "shatter_chance": 0
-        }
-    },
-    "biran_ronso": {
-    },
-    "yenke_ronso": {
-    },
-    "left_fin": {
-    },
-    "right_fin": {
-    },
-    "sin_2": {
-    },
-    "sinspawn_genais": {
-    },
-    "sin_3": {
-    },
-    "guado_guardian": {
-        "blizzard": {
-            "name": "Blizzard",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Ice"
-        },
-        "thunder": {
-            "name": "Thunder",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Thunder"
-        },
-        "shremedy": {
-            "name": "Shremedy",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Confuse": [50, 254]
-            },
-            "shatter_chance": 0
-        },
-        "hi-potion_seymour": {
-            "name": "Hi-Potion Seymour",
-            "target": 1,
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Fixed",
-            "base_damage": -1000,
-            "shatter_chance": 0
-        },
-        "auto_potion": {
-            "name": "Auto Potion",
-            "target": "Self",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Fixed",
-            "base_damage": -1000,
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "remedy_seymour": {
-            "name": "Remedy Seymour",
-            "target": 1,
-            "can_miss": false,
-            "does_damage": false,
-            "dispels": [
-                "Petrify",
-                "Poison",
-                "Confuse",
-                "Berserk",
-                "Sleep",
-                "Silence",
-                "Dark",
-                "Slow"
-            ],
-            "shatter_chance": 0
-        },
-        "protect": {
-            "name": "Protect",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Protect": [254, 254]
-            },
-            "shatter_chance": 0
-        }
-    },
-    "seymour_flux": {
-    },
-    "mortiorchis": {
-    },
-    "kimahri_weapon": {
-    },
-    "sinscale_5": {
-    },
-    "circle": {
-    },
-    "sinscale_6": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16
-        },
-        "spines": {
-            "name": "Spines",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 40
-        },
-        "wings_flicker": {
-            "name": "Wings Flicker",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false
-        },
-        "does_nothing": {
-            "name": "Does Nothing",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "sinscale_7": {
-    },
-    "cid": {
-    },
-    "mortiphasm_3": {
-    },
-    "vouivre_2": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "worker": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "lord_ochu": {
-        "poison_claw": {
-            "name": "Poison Claw",
-            "base_damage": 16,
-            "statuses": {
-                "Poison": [100, 254]
-            },
-            "shatter_chance": 0
-        },
-        "water": {
-            "name": "Water",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Water"
-        },
-        "earthquake": {
-            "name": "Eartquake",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Special Magic",
-            "base_damage": 8,
-            "shatter_chance": 0
-        },
-        "earthquake_valefor": {
-            "name": "Eartquake (Valefor)",
-            "can_miss": true,
-            "accuracy": 0,
-            "can_crit": false,
-            "base_damage": 0,
-            "shatter_chance": 0
-        },
-        "falls_asleep": {
-            "name": "Falls Asleep",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Sleep": [254, 3],
-                "Regen": [254, 2]
-            },
-            "shatter_chance": 0
-        }
+    "m000": [],
+    "m001": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Auron"              },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m002": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Auron"              },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m003": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Auron"              },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m004": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Auron"              },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m005": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Auron"              },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m006": [
+        {"actions_file": 3, "action_id":  67, "name": "Thunder", "target": "Random Character"}
+    ],
+    "m007": [
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Random Character"        },
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Wakka"                   },
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Lowest Mag Def Character"}
+    ],
+    "m008": [
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": "Random Character"        },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": "Wakka"                   },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": "Lowest Mag Def Character"}
+    ],
+    "m009": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m010": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m011": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m012": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m013": [
+        {"actions_file": 4, "action_id": 158, "name": "Attack", "target": "Random Character"}
+    ],
+    "m014": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 159, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 159, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m015": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 159, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 159, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m016": [
+        {"actions_file": 3, "action_id":  68, "name": "Water", "target": "Random Character"}
+    ],
+    "m017": [
+        {"actions_file": 3, "action_id":  67, "name": "Thunder", "target": "Random Character"}
+    ],
+    "m018": [
+        {"actions_file": 3, "action_id":  65, "name": "Blizzard", "target": "Random Character"}
+    ],
+    "m019": [
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara", "target": "Random Character"}
+    ],
+    "m020": [
+        {"actions_file": 3, "action_id":  73, "name": "Firaga", "target": "Random Character"}
+    ],
+    "m021": [
+        {"actions_file": 3, "action_id":  77, "name": "Bio",        "target": "Random Character" },
+        {"actions_file": 3, "action_id":  78, "name": "Demi",       "target": "Characters' Party"},
+        {"actions_file": 3, "action_id":  80, "name": "Drain",      "target": "Random Character" },
+        {"actions_file": 3, "action_id":  81, "name": "Osmose",     "target": "Random Character" },
+        {"actions_file": 3, "action_id":  82, "name": "Flare",      "target": "Random Character" },
+        {"actions_file": 4, "action_id":  90, "name": "White Wind", "target": "Self"             }
+    ],
+    "m022": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 160, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m023": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 160, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m024": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 160, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m025": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 160, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m026": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 161, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m027": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 161, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m028": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Wakka"           }
+    ],
+    "m029": [
+        {"actions_file": 4, "action_id": 152, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 152, "name": "Attack", "target": "Wakka"           }
+    ],
+    "m030": [
+        {"actions_file": 4, "action_id": 152, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 152, "name": "Attack", "target": "Wakka"           }
+    ],
+    "m031": [
+        {"actions_file": 4, "action_id":  13, "name": "Poison Dart", "target": "Random Character"}
+    ],
+    "m032": [
+        {"actions_file": 4, "action_id":  13, "name": "Poison Dart", "target": "Random Character"}
+    ],
+    "m033": [
+        {"actions_file": 4, "action_id":  13, "name": "Poison Dart", "target": "Random Character"}
+    ],
+    "m034": [
+        {"actions_file": 4, "action_id":  13, "name": "Poison Dart", "target": "Random Character"}
+    ],
+    "m035": [
+        {"actions_file": 4, "action_id":  10, "name": "Gaze", "target": "Random Character"}
+    ],
+    "m036": [
+        {"actions_file": 4, "action_id":  10, "name": "Gaze", "target": "Random Character"}
+    ],
+    "m037": [
+        {"actions_file": 4, "action_id": 153, "name": "Gaze", "target": "Random Character"}
+    ],
+    "m038": [
+        {"actions_file": 4, "action_id":  11, "name": "Ultrasonics", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 153, "name": "Gaze",        "target": "Random Character" }
+    ],
+    "m039": [
+        {"actions_file": 4, "action_id":   3, "name": "Seed Cannon", "target": "Random Character"}
+    ],
+    "m040": [
+        {"actions_file": 4, "action_id":   3, "name": "Seed Cannon", "target": "Random Character"},
+        {"actions_file": 4, "action_id":   4, "name": "Seed Burst",  "target": "Random Character"}
+    ],
+    "m041": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m042": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m043": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",      "target": "Random Character"},
+        {"actions_file": 4, "action_id":  21, "name": "Water Spurt", "target": "Random Character"}
+    ],
+    "m044": [
+        {"actions_file": 4, "action_id":  12, "name": "Sonic Boom", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 151, "name": "Attack",     "target": "Random Character" },
+        {"actions_file": 4, "action_id": 151, "name": "Attack",     "target": "Wakka"            }
+    ],
+    "m045": [
+        {"actions_file": 4, "action_id":  22, "name": "Sonic Boom", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  25, "name": "Landing",    "target": "Counter Self"     },
+        {"actions_file": 4, "action_id":  26, "name": "Crawl",      "target": "Random Character" },
+        {"actions_file": 4, "action_id": 171, "name": "Charging",   "target": "Self"             },
+        {"actions_file": 4, "action_id": 223, "name": "Attack",     "target": "Random Character" }
+    ],
+    "m046": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",         "target": "Random Character" },
+        {"actions_file": 4, "action_id":   5, "name": "Swallow",        "target": "Random Character" },
+        {"actions_file": 4, "action_id":   6, "name": "Regurgitate",    "target": "Self"             },
+        {"actions_file": 4, "action_id":   7, "name": "Readying Quake", "target": "Self"             },
+        {"actions_file": 4, "action_id":   8, "name": "Earthquake",     "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 147, "name": "Earthquake",     "target": "Valefor"          }
+    ],
+    "m047": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",         "target": "Random Character" },
+        {"actions_file": 4, "action_id":   5, "name": "Swallow",        "target": "Random Character" },
+        {"actions_file": 4, "action_id":   6, "name": "Regurgitate",    "target": "Self"             },
+        {"actions_file": 4, "action_id":   7, "name": "Readying Quake", "target": "Self"             },
+        {"actions_file": 4, "action_id":   8, "name": "Earthquake",     "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 147, "name": "Earthquake",     "target": "Valefor"          }
+    ],
+    "m048": [
+        {"actions_file": 4, "action_id":  53, "name": "Haymaker", "target": "Lowest HP Character"},
+        {"actions_file": 4, "action_id":  53, "name": "Haymaker", "target": "Auron"              },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",   "target": "Random Character"   }
+    ],
+    "m049": [
+        {"actions_file": 4, "action_id":  52, "name": "Blast Punch", "target": "Random Character"   },
+        {"actions_file": 4, "action_id":  53, "name": "Haymaker",    "target": "Random Character"   },
+        {"actions_file": 4, "action_id":  53, "name": "Haymaker",    "target": "Lowest HP Character"},
+        {"actions_file": 4, "action_id":  53, "name": "Haymaker",    "target": "Auron"              },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",      "target": "Random Character"   }
+    ],
+    "m050": [
+        {"actions_file": 3, "action_id":  69, "name": "Fira",     "target": "Random Character"                     },
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara", "target": "Random Character"                     },
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Random Character"                     },
+        {"actions_file": 3, "action_id":  72, "name": "Watera",   "target": "Random Character"                     },
+        {"actions_file": 4, "action_id":  76, "name": "Doom",     "target": "Random Character Not Affected By Doom"}
+    ],
+    "m051": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",     "target": "Random Character" },
+        {"actions_file": 4, "action_id":  33, "name": "Sonic Wave", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 170, "name": "Charging",   "target": "Self"             }
+    ],
+    "m052": [
+        {"actions_file": 4, "action_id":  33, "name": "Sonic Wave", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",     "target": "Random Character" },
+        {"actions_file": 4, "action_id": 170, "name": "Charging",   "target": "Self"             }
+    ],
+    "m053": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",    "target": "Random Character" },
+        {"actions_file": 4, "action_id":  47, "name": "Maelstrom", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  48, "name": "Rush",      "target": "Random Character" }
+    ],
+    "m054": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",    "target": "Random Character" },
+        {"actions_file": 4, "action_id":  47, "name": "Maelstrom", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  48, "name": "Rush",      "target": "Random Character" }
+    ],
+    "m055": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id":  36, "name": "Gore",   "target": "Random Character"}
+    ],
+    "m056": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",     "target": "Random Character" },
+        {"actions_file": 4, "action_id":  36, "name": "Gore",       "target": "Random Character" },
+        {"actions_file": 4, "action_id":  69, "name": "Charging",   "target": "Self"             },
+        {"actions_file": 4, "action_id":  70, "name": "Flame Ball", "target": "Characters' Party"}
+    ],
+    "m057": [
+        {"actions_file": 4, "action_id":  36, "name": "Gore",       "target": "Random Character" },
+        {"actions_file": 4, "action_id":  69, "name": "Charging",   "target": "Self"             },
+        {"actions_file": 4, "action_id":  71, "name": "Flame Ball", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",     "target": "Random Character" }
+    ],
+    "m058": [
+        {"actions_file": 4, "action_id":  98, "name": "Attack",        "target": "Lowest HP Character"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",        "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 238, "name": "Attack (Slow)", "target": "Random Character"   }
+    ],
+    "m059": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id":  27, "name": "Breath",      "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m060": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id":  28, "name": "Breath",      "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m061": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id":  29, "name": "Breath",      "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 154, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m062": [
+        {"actions_file": 4, "action_id":  30, "name": "Breath",      "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 127, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 155, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 155, "name": "Attack",      "target": "Lowest HP Character"}
+    ],
+    "m063": [
+        {"actions_file": 4, "action_id":  30, "name": "Breath", "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 155, "name": "Attack", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 155, "name": "Attack", "target": "Yuna"               },
+        {"actions_file": 4, "action_id": 155, "name": "Attack", "target": "Lowest HP Character"}
+    ],
+    "m064": [
+        {"actions_file": 4, "action_id":  83, "name": "Bad Breath",    "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  84, "name": "Gastric Juice", "target": "Random Character" }
+    ],
+    "m065": [
+        {"actions_file": 4, "action_id":  83, "name": "Bad Breath",    "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  84, "name": "Gastric Juice", "target": "Random Character" },
+        {"actions_file": 4, "action_id":  86, "name": "Munch",         "target": "Random Character" },
+        {"actions_file": 4, "action_id":  86, "name": "Munch",         "target": "Counter"          },
+        {"actions_file": 4, "action_id":  87, "name": "Full-Auto",     "target": "Characters' Party"}
+    ],
+    "m066": [
+        {"actions_file": 4, "action_id":  59, "name": "Counterattack",  "target": "Self"               },
+        {"actions_file": 4, "action_id":  98, "name": "Counter",        "target": "Counter"            },
+        {"actions_file": 4, "action_id":  99, "name": "Cancel Counter", "target": "Self"               },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",         "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 128, "name": "Attack",         "target": "Lowest HP Character"}
+    ],
+    "m067": [
+        {"actions_file": 4, "action_id":  59, "name": "Counterattack",  "target": "Self"               },
+        {"actions_file": 4, "action_id":  60, "name": "Psych Up",       "target": "Self"               },
+        {"actions_file": 4, "action_id":  98, "name": "Counter",        "target": "Counter"            },
+        {"actions_file": 4, "action_id":  99, "name": "Cancel Counter", "target": "Self"               },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",         "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 128, "name": "Attack",         "target": "Lowest HP Character"}
+    ],
+    "m068": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m069": [
+        {"actions_file": 4, "action_id":  82, "name": "GNAW", "target": "Random Character"}
+    ],
+    "m070": [
+        {"actions_file": 4, "action_id":  82, "name": "GNAW", "target": "Random Character"}
+    ],
+    "m071": [
+        {"actions_file": 4, "action_id":   9, "name": "Self-Destruct", "target": "Counter"         },
+        {"actions_file": 4, "action_id": 167, "name": "Attack",        "target": "Random Character"}
+    ],
+    "m072": [
+        {"actions_file": 4, "action_id": 168, "name": "GNAW", "target": "Random Character"}
+    ],
+    "m073": [
+        {"actions_file": 4, "action_id": 168, "name": "GNAW", "target": "Random Character"}
+    ],
+    "m074": [
+        {"actions_file": 4, "action_id":   9, "name": "Self-Destruct", "target": "Counter"         },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",        "target": "Random Character"}
+    ],
+    "m075": [
+        {"actions_file": 4, "action_id": 168, "name": "GNAW", "target": "Random Character"}
+    ],
+    "m076": [
+        {"actions_file": 4, "action_id": 168, "name": "GNAW", "target": "Random Character"}
+    ],
+    "m077": [
+        {"actions_file": 3, "action_id":  67, "name": "Thunder", "target": "Random Character"}
+    ],
+    "m078": [
+        {"actions_file": 3, "action_id":  65, "name": "Blizzard", "target": "Random Character"}
+    ],
+    "m079": [
+        {"actions_file": 3, "action_id":  66, "name": "Fire", "target": "Random Character"}
+    ],
+    "m080": [
+        {"actions_file": 3, "action_id":  67, "name": "Thunder", "target": "Random Character"}
+    ],
+    "m081": [
+        {"actions_file": 3, "action_id":  72, "name": "Watera", "target": "Random Character"}
+    ],
+    "m082": [
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",  "target": "Self"            },
+        {"actions_file": 3, "action_id":  69, "name": "Fira",     "target": "Self"            },
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara", "target": "Self"            },
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Self"            },
+        {"actions_file": 3, "action_id":  72, "name": "Watera",   "target": "Self"            },
+        {"actions_file": 3, "action_id":  77, "name": "Bio",      "target": "Random Character"},
+        {"actions_file": 3, "action_id":  80, "name": "Drain",    "target": "Random Character"},
+        {"actions_file": 3, "action_id":  81, "name": "Osmose",   "target": "Random Character"}
+    ],
+    "m083": [
+        {"actions_file": 3, "action_id":  78, "name": "Demi",    "target": "Characters' Party"                       },
+        {"actions_file": 3, "action_id":  82, "name": "Flare",   "target": "Random Character"                        },
+        {"actions_file": 4, "action_id":  15, "name": "Berserk", "target": "Random Character Not Affected By Berserk"}
+    ],
+    "m084": [
+        {"actions_file": 4, "action_id":  80, "name": "Blades", "target": "Random Character"},
+        {"actions_file": 4, "action_id":  85, "name": "Attack", "target": "Random Character"}
+    ],
+    "m085": [
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 102, "name": "Heave",    "target": "Random Character"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",   "target": "Random Character"}
+    ],
+    "m086": [
+        {"actions_file": 3, "action_id":  71, "name": "Thundara",     "target": "Random Character" },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",     "target": "Random Character" },
+        {"actions_file": 3, "action_id":  82, "name": "Flare",        "target": "Random Character" },
+        {"actions_file": 4, "action_id":  91, "name": "Mighty Guard", "target": "Self"             },
+        {"actions_file": 4, "action_id": 102, "name": "Heave",        "target": "Random Character" },
+        {"actions_file": 4, "action_id": 105, "name": "Meteor",       "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 106, "name": "Tail",         "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",       "target": "Random Character" }
+    ],
+    "m087": [
+        {"actions_file": 3, "action_id":  71, "name": "Thundara",      "target": "Random Character" },
+        {"actions_file": 4, "action_id":  77, "name": "Aqua Breath",   "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  78, "name": "Megiddo Flame", "target": "Random Character" },
+        {"actions_file": 4, "action_id":  89, "name": "RUSH",          "target": "Random Character" }
+    ],
+    "m088": [
+        {"actions_file": 3, "action_id":  71, "name": "Thundara",      "target": "Random Character" },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",      "target": "Random Character" },
+        {"actions_file": 4, "action_id":  77, "name": "Aqua Breath",   "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  78, "name": "Megiddo Flame", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",        "target": "Random Character" }
+    ],
+    "m089": [
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara", "target": "Random Character"},
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Random Character"},
+        {"actions_file": 3, "action_id":  80, "name": "Drain",    "target": "Random Character"},
+        {"actions_file": 4, "action_id":  79, "name": "Silence",  "target": "Random Character"},
+        {"actions_file": 4, "action_id": 112, "name": "Blaster",  "target": "Random Character"}
+    ],
+    "m090": [
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga", "target": "Random Character"},
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": "Random Character"},
+        {"actions_file": 3, "action_id":  80, "name": "Drain",    "target": "Random Character"},
+        {"actions_file": 4, "action_id":  79, "name": "Silence",  "target": "Random Character"},
+        {"actions_file": 4, "action_id": 113, "name": "Blaster",  "target": "Random Character"},
+        {"actions_file": 6, "action_id": 114, "name": "Confuse",  "target": "Random Character"}
+    ],
+    "m091": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack", "target": "Random Character"}
+    ],
+    "m092": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack", "target": "Random Character"}
+    ],
+    "m093": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m094": [
+        {"actions_file": 4, "action_id":  41, "name": "Electrocute", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m095": [
+        {"actions_file": 4, "action_id":  37, "name": "Breath",          "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  68, "name": "Pharaoh's Curse", "target": "Counter"          },
+        {"actions_file": 4, "action_id":  98, "name": "Attack Aeon",     "target": "Random Character" },
+        {"actions_file": 4, "action_id": 114, "name": "Claw",            "target": "Random Character" }
+    ],
+    "m096": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack", "target": "Random Character"}
+    ],
+    "m097": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack", "target": "Random Character"}
+    ],
+    "m098": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack", "target": "Random Character"}
+    ],
+    "m099": [
+        {"actions_file": 3, "action_id":  63, "name": "Holy",            "target": "Random Character" },
+        {"actions_file": 4, "action_id":  34, "name": "Core Energy",     "target": "Random Character" },
+        {"actions_file": 4, "action_id":  35, "name": "Shimmering Rain", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 118, "name": "Die",             "target": "Self"             },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",          "target": "Random Character" },
+        {"actions_file": 6, "action_id":  79, "name": "Break",           "target": "Random Character" },
+        {"actions_file": 6, "action_id": 110, "name": "Silence",         "target": "Random Character" },
+        {"actions_file": 6, "action_id": 113, "name": "Sleep",           "target": "Random Character" },
+        {"actions_file": 6, "action_id": 114, "name": "Confuse",         "target": "Random Character" }
+    ],
+    "m100": [
+        {"actions_file": 3, "action_id":  78, "name": "Demi",            "target": "Characters' Party"},
+        {"actions_file": 3, "action_id":  83, "name": "Ultima",          "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  34, "name": "Core Energy",     "target": "Random Character" },
+        {"actions_file": 4, "action_id":  35, "name": "Shimmering Rain", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 103, "name": "Nova",            "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 126, "name": "Die",             "target": "Self"             },
+        {"actions_file": 4, "action_id": 271, "name": "Attack",          "target": "Random Character" },
+        {"actions_file": 6, "action_id":  79, "name": "Break",           "target": "Random Character" },
+        {"actions_file": 6, "action_id": 114, "name": "Confuse",         "target": "Random Character" }
+    ],
+    "m101": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack",          "target": "Random Character" },
+        {"actions_file": 6, "action_id":  22, "name": "Tentacles",       "target": "Random Character" },
+        {"actions_file": 6, "action_id":  32, "name": "Flank",           "target": "Self"             },
+        {"actions_file": 6, "action_id":  90, "name": "Nautilus Charge", "target": "Characters' Party"}
+    ],
+    "m102": [
+        {"actions_file": 3, "action_id":  68, "name": "Water",     "target": "Random Character" },
+        {"actions_file": 6, "action_id":   4, "name": "Sigh",      "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":   5, "name": "Venom",     "target": "Random Character" },
+        {"actions_file": 6, "action_id":   6, "name": "Staccato",  "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":   7, "name": "Transform", "target": "Counter Self"     }
+    ],
+    "m103": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m104": [
+        {"actions_file": 3, "action_id":  65, "name": "Blizzard",                "target": "Random Character" },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",                  "target": "Random Character" },
+        {"actions_file": 6, "action_id":  16, "name": "Thwack",                  "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  17, "name": "Thwack (Ends Encounter)", "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  23, "name": "Shove",                   "target": "Self"             },
+        {"actions_file": 6, "action_id":  24, "name": "Gets up.",                "target": "Self"             },
+        {"actions_file": 6, "action_id":  26, "name": "You're next!",            "target": "Random Character" },
+        {"actions_file": 6, "action_id":  27, "name": "Fist of Fury",            "target": "Last Target"      },
+        {"actions_file": 6, "action_id":  28, "name": "Death",                   "target": "Self"             }
+    ],
+    "m105": [
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",              "target": "Self"                },
+        {"actions_file": 4, "action_id": 240, "name": "Attack",              "target": "Highest MP Character"},
+        {"actions_file": 6, "action_id": 190, "name": "Megaton",             "target": "Random Character"    },
+        {"actions_file": 6, "action_id": 191, "name": "Slime",               "target": "Characters' Party"   },
+        {"actions_file": 6, "action_id": 192, "name": "Broken shell.",       "target": "Self"                },
+        {"actions_file": 6, "action_id": 193, "name": "Hides in shell.",     "target": "Self"                },
+        {"actions_file": 6, "action_id": 194, "name": "Emerges from shell.", "target": "Self"                }
+    ],
+    "m106": [],
+    "m107": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack",        "target": "Random Character"},
+        {"actions_file": 6, "action_id":  10, "name": "Spines",        "target": "Random Character"},
+        {"actions_file": 6, "action_id": 241, "name": "Wings Flicker", "target": "Self"            }
+    ],
+    "m108": [],
+    "m109": [
+        {"actions_file": 6, "action_id":  46, "name": "Swallow",     "target": "Random Character Not Affected By Doom"},
+        {"actions_file": 6, "action_id":  47, "name": "Regurgitate", "target": ""                                     },
+        {"actions_file": 6, "action_id":  48, "name": "Death",       "target": "Self"                                 },
+        {"actions_file": 6, "action_id":  50, "name": "Stone Punch", "target": "Random Character"                     },
+        {"actions_file": 6, "action_id":  51, "name": "KO Punch",    "target": "Random Character"                     },
+        {"actions_file": 6, "action_id":  55, "name": "Half HP",     "target": "Tidus"                                }
+    ],
+    "m110": [
+        {"actions_file": 6, "action_id":   1, "name": "Special 1",      "target": "Self"            },
+        {"actions_file": 6, "action_id":  12, "name": "Blitzball Rush", "target": "Random Character"},
+        {"actions_file": 6, "action_id":  13, "name": "Doze Ball",      "target": "Counter"         },
+        {"actions_file": 6, "action_id":  14, "name": "Blind Ball",     "target": "Counter"         },
+        {"actions_file": 6, "action_id":  15, "name": "Mute Ball",      "target": "Counter"         }
+    ],
+    "m111": [
+        {"actions_file": 6, "action_id":  36, "name": "Aqua Shooter",  "target": "Random Character" },
+        {"actions_file": 6, "action_id":  37, "name": "Depth Charges", "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  38, "name": "Rise",          "target": "Self"             },
+        {"actions_file": 6, "action_id":  39, "name": "Dive",          "target": "Counter Self"     }
+    ],
+    "m112": [
+        {"actions_file": 3, "action_id": 104, "name": "Jump",   "target": "Random Character"},
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m113": [
+        {"actions_file": 6, "action_id":  43, "name": "Move", "target": "Self"}
+    ],
+    "m114": [
+        {"actions_file": 6, "action_id":  11, "name": "Blender",     "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  92, "name": "Drain Touch", "target": "Random Character" }
+    ],
+    "m115": [
+        {"actions_file": 6, "action_id":  61, "name": "Assault", "target": "Random Character"}
+    ],
+    "m116": [
+        {"actions_file": 4, "action_id": 267, "name": "Daigoro", "target": "Random Character"},
+        {"actions_file": 6, "action_id":   0, "name": "Attack",  "target": "Random Character"}
+    ],
+    "m117": [
+        {"actions_file": 3, "action_id":  67, "name": "Thunder", "target": "Random Character" },
+        {"actions_file": 3, "action_id":  78, "name": "Demi",    "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":   0, "name": "Attack",  "target": "Random Character" },
+        {"actions_file": 6, "action_id":  49, "name": "Venom",   "target": "Random Character" }
+    ],
+    "m118": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Lowest HP Character"}
+    ],
+    "m119": [
+        {"actions_file": 3, "action_id":  54, "name": "Haste",                "target": "Counter Self"     },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",               "target": "Random Character" },
+        {"actions_file": 6, "action_id":  91, "name": "Swooping Scythe",      "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  97, "name": "Poison Breath",        "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  98, "name": "Stone Gaze",           "target": "Random Character" },
+        {"actions_file": 6, "action_id":  99, "name": "Photon Spray",         "target": "Random Character" },
+        {"actions_file": 6, "action_id": 100, "name": "Inhale",               "target": "Self"             },
+        {"actions_file": 6, "action_id": 101, "name": "Out of breath range.", "target": "Self"             }
+    ],
+    "m120": [
+        {"actions_file": 6, "action_id":   0, "name": "Counter",                      "target": "Counter"         },
+        {"actions_file": 6, "action_id":  75, "name": "Photon Spray",                 "target": "Random Character"},
+        {"actions_file": 6, "action_id":  76, "name": "Stone Gaze",                   "target": "Random Character"},
+        {"actions_file": 6, "action_id": 107, "name": "Photon Spray (3rd encounter)", "target": "Random Character"}
+    ],
+    "m121": [
+        {"actions_file": 3, "action_id":  65, "name": "Blizzard Counter",     "target": "Counter"                  },
+        {"actions_file": 3, "action_id":  66, "name": "Fire Counter",         "target": "Counter"                  },
+        {"actions_file": 3, "action_id":  67, "name": "Thunder Counter",      "target": "Counter"                  },
+        {"actions_file": 3, "action_id":  68, "name": "Water Counter",        "target": "Counter"                  },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",               "target": "Random Character"         },
+        {"actions_file": 6, "action_id":  54, "name": "Elemental Shift",      "target": "Self"                     },
+        {"actions_file": 6, "action_id":  57, "name": "Fire Counter AoE",     "target": "Counter Characters' Party"},
+        {"actions_file": 6, "action_id":  58, "name": "Blizzard Counter AoE", "target": "Counter Characters' Party"},
+        {"actions_file": 6, "action_id":  59, "name": "Thunder Counter AoE",  "target": "Counter Characters' Party"},
+        {"actions_file": 6, "action_id":  60, "name": "Water Counter AoE",    "target": "Counter Characters' Party"},
+        {"actions_file": 6, "action_id":  63, "name": "Press",                "target": "Characters' Party"        },
+        {"actions_file": 6, "action_id": 103, "name": "Death",                "target": "Self"                     }
+    ],
+    "m122": [
+        {"actions_file": 6, "action_id":  33, "name": "Mana Beam",   "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  34, "name": "Gatling Gun", "target": "Random Character" },
+        {"actions_file": 6, "action_id":  35, "name": "Bit",         "target": "M2"               },
+        {"actions_file": 6, "action_id":  40, "name": "Countdown",   "target": "Self"             },
+        {"actions_file": 6, "action_id": 170, "name": "Counter",     "target": "Counter"          }
+    ],
+    "m123": [
+        {"actions_file": 6, "action_id":  40, "name": "Countdown", "target": "Self"}
+    ],
+    "m124": [
+        {"actions_file": 3, "action_id":  58, "name": "Shell",                  "target": "Self"            },
+        {"actions_file": 3, "action_id":  69, "name": "Fira",                   "target": "Random Character"},
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara",               "target": "Random Character"},
+        {"actions_file": 3, "action_id":  71, "name": "Thundara",               "target": "Random Character"},
+        {"actions_file": 3, "action_id":  72, "name": "Watera",                 "target": "Random Character"},
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",                 "target": "Random Character"},
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga",               "target": "Random Character"},
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",               "target": "Random Character"},
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",                "target": "Random Character"},
+        {"actions_file": 6, "action_id":   1, "name": "Special 1",              "target": "M4"              },
+        {"actions_file": 6, "action_id": 171, "name": "Multi-Fira",             "target": ""                },
+        {"actions_file": 6, "action_id": 172, "name": "Multi-Fira 2nd Hit",     "target": ""                },
+        {"actions_file": 6, "action_id": 173, "name": "Multi-Blizzara",         "target": ""                },
+        {"actions_file": 6, "action_id": 174, "name": "Multi-Blizzara 2nd Hit", "target": ""                },
+        {"actions_file": 6, "action_id": 175, "name": "Multi-Thundara",         "target": ""                },
+        {"actions_file": 6, "action_id": 176, "name": "Multi-Thundara 2nd Hit", "target": ""                },
+        {"actions_file": 6, "action_id": 177, "name": "Multi-Watera",           "target": ""                },
+        {"actions_file": 6, "action_id": 178, "name": "Multi-Watera 2nd Hit",   "target": ""                }
+    ],
+    "m125": [
+        {"actions_file": 3, "action_id":  85, "name": "Boost",                    "target": "Self"             },
+        {"actions_file": 6, "action_id":  81, "name": "Seymour dismisses Anima!", "target": "Self"             },
+        {"actions_file": 6, "action_id": 181, "name": "Summon Anima",             "target": "Self"             },
+        {"actions_file": 6, "action_id": 222, "name": "Pain",                     "target": "Random Character" },
+        {"actions_file": 6, "action_id": 223, "name": "Oblivion",                 "target": "Characters' Party"}
+    ],
+    "m126": [
+        {"actions_file": 3, "action_id":  59, "name": "Protect",                "target": "Counter Self"    },
+        {"actions_file": 3, "action_id":  82, "name": "Flare",                  "target": "Random Character"},
+        {"actions_file": 6, "action_id":  79, "name": "Break",                  "target": "Random Character"},
+        {"actions_file": 6, "action_id":  80, "name": "Banish",                 "target": "Random Character"},
+        {"actions_file": 6, "action_id": 171, "name": "Multi-Fira",             "target": ""                },
+        {"actions_file": 6, "action_id": 172, "name": "Multi-Fira 2nd Hit",     "target": ""                },
+        {"actions_file": 6, "action_id": 173, "name": "Multi-Blizzara",         "target": ""                },
+        {"actions_file": 6, "action_id": 174, "name": "Multi-Blizzara 2nd Hit", "target": ""                },
+        {"actions_file": 6, "action_id": 175, "name": "Multi-Thundara",         "target": ""                },
+        {"actions_file": 6, "action_id": 176, "name": "Multi-Thundara 2nd Hit", "target": ""                },
+        {"actions_file": 6, "action_id": 177, "name": "Multi-Watera",           "target": ""                },
+        {"actions_file": 6, "action_id": 178, "name": "Multi-Watera 2nd Hit",   "target": ""                }
+    ],
+    "m127": [
+        {"actions_file": 3, "action_id":  44, "name": "Cura",            "target": "M1"               },
+        {"actions_file": 6, "action_id":  57, "name": "Fire",            "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  58, "name": "Blizzard",        "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  59, "name": "Thunder",         "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  60, "name": "Water",           "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  94, "name": "Desperado",       "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 118, "name": "Shattering Claw", "target": "Random Character" },
+        {"actions_file": 6, "action_id": 169, "name": "Mortibsorption",  "target": "M1"               }
+    ],
+    "m128": [
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",       "target": "Random Character Affected By Reflect"},
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",       "target": "Self"                                },
+        {"actions_file": 3, "action_id":  51, "name": "Esuna",        "target": "Random Character Affected By Reflect"},
+        {"actions_file": 3, "action_id":  51, "name": "Esuna",        "target": "Self"                                },
+        {"actions_file": 3, "action_id":  54, "name": "Haste",        "target": "Random Character Affected By Reflect"},
+        {"actions_file": 3, "action_id":  54, "name": "Haste",        "target": "Self"                                },
+        {"actions_file": 3, "action_id":  59, "name": "Protect",      "target": "Random Character Affected By Reflect"},
+        {"actions_file": 3, "action_id":  59, "name": "Protect",      "target": "Self"                                },
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",      "target": "Random Character Affected By Reflect"},
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",      "target": "Lowest HP Character"                 },
+        {"actions_file": 3, "action_id":  62, "name": "Regen",        "target": "Random Character Affected By Reflect"},
+        {"actions_file": 3, "action_id":  62, "name": "Regen",        "target": "Self"                                },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",       "target": "Random Character"                    },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",       "target": "Lowest HP Character"                 },
+        {"actions_file": 6, "action_id":  66, "name": "Photon Wings", "target": "Characters' Party"                   },
+        {"actions_file": 6, "action_id":  67, "name": "Mana Breath",  "target": "Random Character"                    },
+        {"actions_file": 6, "action_id":  68, "name": "Tail Sweep",   "target": "Characters' Party"                   }
+    ],
+    "m129": [
+        {"actions_file": 6, "action_id":  69, "name": "Berserk Tail",    "target": "Random Character"},
+        {"actions_file": 6, "action_id":  71, "name": "Attack All",      "target": ""                },
+        {"actions_file": 6, "action_id":  77, "name": "Glyph Mine",      "target": ""                },
+        {"actions_file": 6, "action_id":  77, "name": "Glyph Mine Aeon", "target": "M8"              },
+        {"actions_file": 6, "action_id":  78, "name": "Attack Aeon",     "target": "Random Character"},
+        {"actions_file": 6, "action_id":  78, "name": "Attack Aeon",     "target": "Counter"         },
+        {"actions_file": 6, "action_id": 109, "name": "Absorb",          "target": "Last Target"     },
+        {"actions_file": 6, "action_id": 180, "name": "Death",           "target": "Self"            }
+    ],
+    "m130": [
+        {"actions_file": 3, "action_id":  44, "name": "Cura",            "target": "Random Character"         },
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",          "target": "Random Character"         },
+        {"actions_file": 3, "action_id":  62, "name": "Regen",           "target": "Random Character"         },
+        {"actions_file": 6, "action_id": 109, "name": "Absorb",          "target": "Highest HP Character"     },
+        {"actions_file": 6, "action_id": 109, "name": "Absorb Aeon",     "target": "Random Character"         },
+        {"actions_file": 6, "action_id": 110, "name": "Silence",         "target": "Counter"                  },
+        {"actions_file": 6, "action_id": 112, "name": "Blind",           "target": "Counter"                  },
+        {"actions_file": 6, "action_id": 113, "name": "Sleep",           "target": "Counter"                  },
+        {"actions_file": 6, "action_id": 122, "name": "Osmose",          "target": "Random Character"         },
+        {"actions_file": 6, "action_id": 124, "name": "Dispelling Slap", "target": "Random Character"         },
+        {"actions_file": 6, "action_id": 124, "name": "Dispelling Slap", "target": "Counter"                  },
+        {"actions_file": 6, "action_id": 126, "name": "Metamorphosis 1", "target": "Self"                     },
+        {"actions_file": 6, "action_id": 127, "name": "Metamorphosis 2", "target": "Self"                     },
+        {"actions_file": 6, "action_id": 128, "name": "Hellbiter 1",     "target": "Characters' Party"        },
+        {"actions_file": 6, "action_id": 129, "name": "Mind Blast",      "target": "Characters' Party"        },
+        {"actions_file": 6, "action_id": 130, "name": "Mega Death",      "target": "Counter Characters' Party"},
+        {"actions_file": 6, "action_id": 209, "name": "Hellbiter 2",     "target": "Characters' Party"        },
+        {"actions_file": 6, "action_id": 246, "name": "Mind Blast Aeon", "target": "Characters' Party"        }
+    ],
+    "m131": [
+        {"actions_file": 3, "action_id":  61, "name": "Dispel",   "target": "Characters' Party"},
+        {"actions_file": 3, "action_id":  69, "name": "Fira",     "target": ""                 },
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara", "target": ""                 },
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": ""                 },
+        {"actions_file": 3, "action_id":  72, "name": "Watera",   "target": ""                 },
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",   "target": ""                 },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga", "target": ""                 },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": ""                 },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",  "target": ""                 },
+        {"actions_file": 6, "action_id": 240, "name": "Ultima",   "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 242, "name": "Death",    "target": "Self"             }
+    ],
+    "m132": [
+        {"actions_file": 6, "action_id":   1, "name": "Special 1",           "target": "Self"                                    },
+        {"actions_file": 6, "action_id":   2, "name": "Special 2",           "target": "Self"                                    },
+        {"actions_file": 6, "action_id": 133, "name": "Triumphant Grasp",    "target": "Random Character Not Affected By Petrify"},
+        {"actions_file": 6, "action_id": 134, "name": "Ultimate Jecht Shot", "target": "Characters' Party"                       },
+        {"actions_file": 6, "action_id": 135, "name": "Jecht Bomber",        "target": "Random Character"                        },
+        {"actions_file": 6, "action_id": 136, "name": "Draws sword.",        "target": "Self"                                    },
+        {"actions_file": 6, "action_id": 137, "name": "Blade Blitz",         "target": "Characters' Party"                       },
+        {"actions_file": 6, "action_id": 138, "name": "Jecht Beam",          "target": "Random Character"                        },
+        {"actions_file": 6, "action_id": 198, "name": "Left-Arm Strike",     "target": "Random Character"                        },
+        {"actions_file": 6, "action_id": 199, "name": "Left-Arm Strike 2",   "target": "Random Character"                        },
+        {"actions_file": 6, "action_id": 200, "name": "Jecht Bomber 2",      "target": "Random Character"                        },
+        {"actions_file": 6, "action_id": 201, "name": "Triumphant Grasp 2",  "target": "Random Character Not Affected By Petrify"}
+    ],
+    "m133": [
+        {"actions_file": 6, "action_id":  18, "name": "Crane",               "target": "M1"  },
+        {"actions_file": 6, "action_id":  21, "name": "Crane activated.",    "target": "Self"},
+        {"actions_file": 6, "action_id": 179, "name": "The crane responds.", "target": "Self"}
+    ],
+    "m134": [
+        {"actions_file": 3, "action_id":  65, "name": "Blizzard",     "target": "Random Character"},
+        {"actions_file": 3, "action_id":  67, "name": "Thunder",      "target": "Random Character"},
+        {"actions_file": 3, "action_id": 114, "name": "Mighty Guard", "target": "Monsters' Party" },
+        {"actions_file": 3, "action_id": 114, "name": "Mighty Guard", "target": "Self"            },
+        {"actions_file": 4, "action_id":  15, "name": "Berserk",      "target": "Self"            },
+        {"actions_file": 6, "action_id": 165, "name": "Bulldoze",     "target": "Random Character"}
+    ],
+    "m135": [
+        {"actions_file": 3, "action_id":  54, "name": "Haste",       "target": "Self"             },
+        {"actions_file": 3, "action_id": 112, "name": "White Wind",  "target": "Monsters' Party"  },
+        {"actions_file": 3, "action_id": 112, "name": "White Wind",  "target": "Self"             },
+        {"actions_file": 6, "action_id": 162, "name": "Fire Breath", "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 163, "name": "Aqua Breath", "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 165, "name": "Bulldoze",    "target": "Random Character" }
+    ],
+    "m136": [
+        {"actions_file": 6, "action_id": 144, "name": "Gravija",                 "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 145, "name": "Negation",                "target": "All"              },
+        {"actions_file": 6, "action_id": 146, "name": "Ram",                     "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 147, "name": "Smack",                   "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 166, "name": "Gravija (Long Range)",    "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 167, "name": "Negation",                "target": "Self"             },
+        {"actions_file": 6, "action_id": 168, "name": "Core gathers energy.",    "target": "Self"             },
+        {"actions_file": 6, "action_id": 188, "name": "Sin remains motionless.", "target": "Self"             }
+    ],
+    "m137": [
+        {"actions_file": 6, "action_id": 145, "name": "Negation",                "target": "All"              },
+        {"actions_file": 6, "action_id": 146, "name": "Ram",                     "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 147, "name": "Smack",                   "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 167, "name": "Negation",                "target": "Self"             },
+        {"actions_file": 6, "action_id": 182, "name": "Gravija",                 "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 184, "name": "Gravija (Long Range)",    "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 186, "name": "Core gathers energy.",    "target": "Self"             },
+        {"actions_file": 6, "action_id": 188, "name": "Sin remains motionless.", "target": "Self"             }
+    ],
+    "m138": [
+        {"actions_file": 6, "action_id":  57, "name": "Fire",                 "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  58, "name": "Blizzard",             "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  59, "name": "Thunder",              "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  60, "name": "Water",                "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 148, "name": "Gravija",              "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 189, "name": "Core is inactive.",    "target": "Self"             },
+        {"actions_file": 6, "action_id": 196, "name": "Core gathers energy.", "target": "Self"             },
+        {"actions_file": 6, "action_id": 197, "name": "Negation",             "target": "Counter All"      }
+    ],
+    "m139": [
+        {"actions_file": 3, "action_id":  44, "name": "Cura",          "target": "Counter Self"     },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",       "target": "Counter"          },
+        {"actions_file": 6, "action_id":  42, "name": "Death",         "target": "Self"             },
+        {"actions_file": 6, "action_id": 150, "name": "Sigh",          "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 151, "name": "Venom",         "target": "Random Character" },
+        {"actions_file": 6, "action_id": 152, "name": "Thrashing",     "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 153, "name": "Exits shell.",  "target": "Self"             },
+        {"actions_file": 6, "action_id": 154, "name": "Enters shell.", "target": "Self"             }
+    ],
+    "m140": [
+        {"actions_file": 6, "action_id":  41, "name": "Drawn to Sin.", "target": "Self"             },
+        {"actions_file": 6, "action_id": 156, "name": "Giga-Graviton", "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 157, "name": "Gaze Zombie",   "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 158, "name": "Gaze Petrify",  "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 159, "name": "Gaze Confuse",  "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 160, "name": "Gaze Aeon",     "target": "Characters' Party"}
+    ],
+    "m141": [
+        {"actions_file": 3, "action_id":  59, "name": "Protect",     "target": "Self"            },
+        {"actions_file": 3, "action_id":  65, "name": "Blizzard",    "target": "Random Character"},
+        {"actions_file": 3, "action_id":  67, "name": "Thunder",     "target": "Random Character"},
+        {"actions_file": 4, "action_id":  16, "name": "Auto-Potion", "target": "Counter Self"    },
+        {"actions_file": 6, "action_id":  62, "name": "Hi-Potion",   "target": "M2"              },
+        {"actions_file": 6, "action_id":  64, "name": "Remedy",      "target": "M2"              },
+        {"actions_file": 6, "action_id":  64, "name": "Remedy",      "target": "Self"            },
+        {"actions_file": 6, "action_id":  65, "name": "Shremedy",    "target": "Random Character"}
+    ],
+    "m142": [
+        {"actions_file": 3, "action_id":  59, "name": "Protect",            "target": "Counter Self"                       },
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",            "target": "Self"                               },
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",            "target": "Counter Self"                       },
+        {"actions_file": 3, "action_id":  61, "name": "Dispel",             "target": "Characters' Party"                  },
+        {"actions_file": 6, "action_id":   1, "name": "Special 1",          "target": "Self"                               },
+        {"actions_file": 6, "action_id":   2, "name": "Special 2",          "target": "Self"                               },
+        {"actions_file": 6, "action_id":  80, "name": "Banish",             "target": "Random Character"                   },
+        {"actions_file": 6, "action_id": 116, "name": "Cross Cleave",       "target": "Characters' Party"                  },
+        {"actions_file": 6, "action_id": 117, "name": "Total Annihilation", "target": "Characters' Party"                  },
+        {"actions_file": 6, "action_id": 120, "name": "Lance of Atrophy",   "target": "Random Character"                   },
+        {"actions_file": 6, "action_id": 121, "name": "Flare",              "target": "Self"                               },
+        {"actions_file": 6, "action_id": 141, "name": "Slowga",             "target": "Counter Characters' Party"          },
+        {"actions_file": 6, "action_id": 169, "name": "Mortibsorption",     "target": "Self"                               },
+        {"actions_file": 6, "action_id": 245, "name": "Full-Life",          "target": "Random Character"                   },
+        {"actions_file": 6, "action_id": 245, "name": "Full-Life",          "target": "Random Character Affected By Zombie"}
+    ],
+    "m143": [
+        {"actions_file": 6, "action_id": 140, "name": "Command 150",    "target": "M1"},
+        {"actions_file": 6, "action_id": 169, "name": "Mortibsorption", "target": "M1"}
+    ],
+    "m144": [],
+    "m145": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Lowest HP Character"}
+    ],
+    "m146": [
+        {"actions_file": 6, "action_id":   1, "name": "Special 1",             "target": "Self"},
+        {"actions_file": 6, "action_id":  72, "name": "Attack",                "target": ""},
+        {"actions_file": 6, "action_id":  73, "name": "Attack (Empty Circle)", "target": ""},
+        {"actions_file": 6, "action_id": 108, "name": "Warp",                  "target": ""}
+    ],
+    "m147": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack",        "target": "Random Character"},
+        {"actions_file": 6, "action_id":  10, "name": "Spines",        "target": "Random Character"},
+        {"actions_file": 6, "action_id": 241, "name": "Wings Flicker", "target": "Self"            }
+    ],
+    "m148": [],
+    "m149": [
+        {"actions_file": 6, "action_id": 115, "name": "Guided Missiles", "target": "M1"}
+    ],
+    "m150": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Lowest HP Character"}
+    ],
+    "m151": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m152": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m153": [
+        {"actions_file": 3, "action_id":  68, "name": "Water",                   "target": "Random Character" },
+        {"actions_file": 4, "action_id": 111, "name": "Earthquake (Valefor)",    "target": "Characters' Party"},
+        {"actions_file": 6, "action_id":  52, "name": "Poison Claw",             "target": "Random Character" },
+        {"actions_file": 6, "action_id":  53, "name": "Lord Ochu falls asleep.", "target": "Self"             },
+        {"actions_file": 6, "action_id":  74, "name": "Earthquake",              "target": "Characters' Party"}
+    ],
+    "m154": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Lowest HP Character"}
+    ],
+    "m155": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m156": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m157": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack",     "target": "Random Character" },
+        {"actions_file": 6, "action_id":   0, "name": "Counter",    "target": "Counter"          },
+        {"actions_file": 6, "action_id":  30, "name": "Sonic Boom", "target": "Characters' Party"}
+    ],
+    "m158": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m159": [
+        {"actions_file": 3, "action_id":  78, "name": "Demi", "target": "Characters' Party"}
+    ],
+    "m160": [
+        {"actions_file": 6, "action_id":   1, "name": "Special 1", "target": "M1"}
+    ],
+    "m161": [],
+    "m162": [],
+    "m163": [
+        {"actions_file": 4, "action_id": 139, "name": "Summon",                 "target": "M4"               },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",                 "target": "Random Character" },
+        {"actions_file": 6, "action_id": 211, "name": "Sonic Wings",            "target": "Random Character" },
+        {"actions_file": 6, "action_id": 212, "name": "Energy Blast",           "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 213, "name": "Energy Ray",             "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 231, "name": "Possessed by Yu Yevon!", "target": "Self"             }
+    ],
+    "m164": [
+        {"actions_file": 4, "action_id": 140, "name": "Summon",                 "target": "M4"               },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",                 "target": "Random Character" },
+        {"actions_file": 6, "action_id": 214, "name": "Meteor Strike",          "target": "Random Character" },
+        {"actions_file": 6, "action_id": 215, "name": "Hellfire",               "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 232, "name": "Possessed by Yu Yevon!", "target": "Self"             }
+    ],
+    "m165": [
+        {"actions_file": 4, "action_id": 142, "name": "Summon",                 "target": "M4"               },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",                 "target": "Random Character" },
+        {"actions_file": 6, "action_id": 216, "name": "Aerospark",              "target": "Random Character" },
+        {"actions_file": 6, "action_id": 217, "name": "Thor's Hammer",          "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 233, "name": "Possessed by Yu Yevon!", "target": "Self"             }
+    ],
+    "m166": [
+        {"actions_file": 4, "action_id": 141, "name": "Summon",                 "target": "M4"               },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",                 "target": "Random Character" },
+        {"actions_file": 6, "action_id": 218, "name": "Heavenly Strike",        "target": "Random Character" },
+        {"actions_file": 6, "action_id": 219, "name": "Diamond Dust",           "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 234, "name": "Possessed by Yu Yevon!", "target": "Self"             }
+    ],
+    "m167": [
+        {"actions_file": 4, "action_id": 143, "name": "Summon",                 "target": "M4"               },
+        {"actions_file": 6, "action_id":   0, "name": "Attack",                 "target": "Random Character" },
+        {"actions_file": 6, "action_id": 220, "name": "Impulse",                "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 221, "name": "Mega Flare",             "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 235, "name": "Possessed by Yu Yevon!", "target": "Self"             }
+    ],
+    "m168": [
+        {"actions_file": 4, "action_id": 145, "name": "Summon",                 "target": "M4"               },
+        {"actions_file": 6, "action_id": 222, "name": "Pain",                   "target": "Random Character" },
+        {"actions_file": 6, "action_id": 223, "name": "Oblivion",               "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 237, "name": "Possessed by Yu Yevon!", "target": "Self"             }
+    ],
+    "m169": [
+        {"actions_file": 4, "action_id": 134, "name": "Daigoro",                "target": "M4"               },
+        {"actions_file": 4, "action_id": 144, "name": "Summon",                 "target": "M5"               },
+        {"actions_file": 6, "action_id": 224, "name": "Kozuka",                 "target": "Random Character" },
+        {"actions_file": 6, "action_id": 225, "name": "Wakizashi",              "target": "Random Character" },
+        {"actions_file": 6, "action_id": 226, "name": "Zanmato",                "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 236, "name": "Possessed by Yu Yevon!", "target": "Self"             }
+    ],
+    "m170": [],
+    "m171": [],
+    "m172": [],
+    "m173": [
+        {"actions_file": 6, "action_id": 122, "name": "Osmose",         "target": "Random Character"},
+        {"actions_file": 6, "action_id": 123, "name": "Curse",          "target": "Random Character"},
+        {"actions_file": 6, "action_id": 139, "name": "Power Wave BFA", "target": "M1"              },
+        {"actions_file": 6, "action_id": 210, "name": "Power Wave",     "target": "M1"              }
+    ],
+    "m174": [
+        {"actions_file": 6, "action_id": 122, "name": "Osmose",         "target": "Random Character"},
+        {"actions_file": 6, "action_id": 123, "name": "Curse",          "target": "Random Character"},
+        {"actions_file": 6, "action_id": 139, "name": "Power Wave BFA", "target": "M1"              },
+        {"actions_file": 6, "action_id": 210, "name": "Power Wave",     "target": "M1"              }
+    ],
+    "m175": [],
+    "m176": [
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",      "target": "Counter Self"     },
+        {"actions_file": 3, "action_id":  83, "name": "Ultima",      "target": "Characters' Party"},
+        {"actions_file": 6, "action_id": 122, "name": "Osmose",      "target": "Random Character" },
+        {"actions_file": 6, "action_id": 131, "name": "Gravija",     "target": "All"              },
+        {"actions_file": 6, "action_id": 244, "name": "Command 254", "target": "Self"             }
+    ],
+    "m177": [
+        {"actions_file": 6, "action_id":   0, "name": "Attack", "target": "Lowest HP Character"}
+    ],
+    "m178": [
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",                 "target": "M1"                  },
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",                 "target": "M2"                  },
+        {"actions_file": 3, "action_id":  80, "name": "Drain",                  "target": "Highest HP Character"},
+        {"actions_file": 3, "action_id": 229, "name": "Camisade",               "target": "Random Character"    },
+        {"actions_file": 4, "action_id": 146, "name": "Summon",                 "target": "M6"                  },
+        {"actions_file": 6, "action_id": 230, "name": "Delta Attack",           "target": "Characters' Party"   },
+        {"actions_file": 6, "action_id": 238, "name": "Possessed by Yu Yevon!", "target": "Self"                }
+    ],
+    "m179": [
+        {"actions_file": 3, "action_id":  54, "name": "Haste",     "target": "Self"            },
+        {"actions_file": 3, "action_id":  54, "name": "Haste",     "target": "M1"              },
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",   "target": "M3"              },
+        {"actions_file": 3, "action_id": 231, "name": "Razzia",    "target": "Random Character"},
+        {"actions_file": 6, "action_id":   1, "name": "Special 1", "target": "M3"              }
+    ],
+    "m180": [
+        {"actions_file": 3, "action_id":  82, "name": "Flare",     "target": "Random Character"},
+        {"actions_file": 3, "action_id":  82, "name": "Flare",     "target": "M3"              },
+        {"actions_file": 6, "action_id":   1, "name": "Special 1", "target": "M3"              },
+        {"actions_file": 6, "action_id": 229, "name": "Passado",   "target": "Random Character"}
+    ],
+    "m181": [
+        {"actions_file": 4, "action_id":  38, "name": "Attack",      "target": "Lowest HP Character"},
+        {"actions_file": 4, "action_id":  38, "name": "Attack Aeon", "target": "Random Character"   },
+        {"actions_file": 4, "action_id":  39, "name": "Reaper",      "target": "Characters' Party"  }
+    ],
+    "m182": [
+        {"actions_file": 4, "action_id":  38, "name": "Attack",        "target": "Random Character" },
+        {"actions_file": 4, "action_id":  39, "name": "Reaper",        "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  40, "name": "Leaping Swing", "target": "Random Character" },
+        {"actions_file": 4, "action_id":  88, "name": "Double Reaper", "target": "Characters' Party"}
+    ],
+    "m183": [],
+    "m184": [
+        {"actions_file": 4, "action_id":  38, "name": "Attack",        "target": "Random Character" },
+        {"actions_file": 4, "action_id":  39, "name": "Reaper",        "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  40, "name": "Leaping Swing", "target": "Random Character" },
+        {"actions_file": 4, "action_id":  88, "name": "Double Reaper", "target": "Characters' Party"}
+    ],
+    "m185": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",     "target": "Random Character Not Affected By Petrify"},
+        {"actions_file": 4, "action_id":  56, "name": "Stone Gaze", "target": "Random Character"                        }
+    ],
+    "m186": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack B",   "target": "Random Character Not Affected By Petrify"},
+        {"actions_file": 4, "action_id":  57, "name": "Sonic Tail", "target": "Characters' Party"                       },
+        {"actions_file": 4, "action_id": 127, "name": "Attack A",   "target": "Random Character"                        },
+        {"actions_file": 4, "action_id": 169, "name": "Stone Gaze", "target": "Random Character"                        }
+    ],
+    "m187": [
+        {"actions_file": 4, "action_id": 104, "name": "Earthquake", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 107, "name": "Breath",     "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",     "target": "Random Character" }
+    ],
+    "m188": [
+        {"actions_file": 3, "action_id":  54, "name": "Haste",           "target": "Self"             },
+        {"actions_file": 3, "action_id":  56, "name": "Slow",            "target": "Auron"            },
+        {"actions_file": 3, "action_id":  61, "name": "Dispel",          "target": "Characters' Party"},
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",          "target": "Random Character" },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga",        "target": "Random Character" },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",        "target": "Random Character" },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",         "target": "Random Character" },
+        {"actions_file": 3, "action_id":  78, "name": "Demi",            "target": "Characters' Party"},
+        {"actions_file": 3, "action_id":  79, "name": "Death",           "target": "Random Character" },
+        {"actions_file": 4, "action_id":  58, "name": "Emblem of Fate",  "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  68, "name": "Pharaoh's Curse", "target": "Tidus"            },
+        {"actions_file": 4, "action_id":  79, "name": "Silence",         "target": "Yuna"             },
+        {"actions_file": 4, "action_id": 110, "name": "Mana Focus",      "target": "Self"             }
+    ],
+    "m189": [
+        {"actions_file": 4, "action_id":  43, "name": "Ochu Dance", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  54, "name": "Attack",     "target": "Random Character" }
+    ],
+    "m190": [
+        {"actions_file": 4, "action_id":  42, "name": "Earthquake",           "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  43, "name": "Ochu Dance",           "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  54, "name": "Attack",               "target": "Random Character" },
+        {"actions_file": 4, "action_id": 111, "name": "Earthquake (Valefor)", "target": "Characters' Party"}
+    ],
+    "m191": [
+        {"actions_file": 4, "action_id":  31, "name": "Single", "target": "Random Character" },
+        {"actions_file": 4, "action_id":  31, "name": "Single", "target": "Last Attacker"    },
+        {"actions_file": 4, "action_id":  32, "name": "All",    "target": "Characters' Party"}
+    ],
+    "m192": [
+        {"actions_file": 4, "action_id":  31, "name": "Single", "target": "Random Character" },
+        {"actions_file": 4, "action_id":  31, "name": "Single", "target": "Last Attacker"    },
+        {"actions_file": 4, "action_id":  32, "name": "All",    "target": "Characters' Party"}
+    ],
+    "m193": [
+        {"actions_file": 3, "action_id":  66, "name": "Fire",          "target": "Random Character"},
+        {"actions_file": 4, "action_id":  63, "name": "Grow2",         "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  64, "name": "Grow3",         "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  66, "name": "Self-Destruct", "target": "Counter"         },
+        {"actions_file": 4, "action_id":  67, "name": "RUSH",          "target": "Random Character"}
+    ],
+    "m194": [
+        {"actions_file": 3, "action_id":  69, "name": "Fira",          "target": "Random Character"},
+        {"actions_file": 4, "action_id":  63, "name": "Grow2",         "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  64, "name": "Grow3",         "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  66, "name": "Self-Destruct", "target": "Counter"         },
+        {"actions_file": 4, "action_id":  67, "name": "RUSH",          "target": "Random Character"}
+    ],
+    "m195": [
+        {"actions_file": 4, "action_id":  20, "name": "Thrust Kick", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m196": [
+        {"actions_file": 4, "action_id":  20, "name": "Thrust Kick", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m197": [
+        {"actions_file": 4, "action_id":  17, "name": "Rifle", "target": "Random Character"}
+    ],
+    "m198": [
+        {"actions_file": 4, "action_id":  18, "name": "Rifle", "target": "Random Character"}
+    ],
+    "m199": [
+        {"actions_file": 4, "action_id":  19, "name": "Flamethrower", "target": "Characters' Party"}
+    ],
+    "m200": [
+        {"actions_file": 4, "action_id":  19, "name": "Flamethrower", "target": "Characters' Party"}
+    ],
+    "m201": [],
+    "m202": [
+        {"actions_file": 4, "action_id": 135, "name": "Wrong!",        "target": "Counter Characters' Party"},
+        {"actions_file": 4, "action_id": 136, "name": "Bingo!",        "target": "Counter Characters' Party"},
+        {"actions_file": 4, "action_id": 233, "name": "Self-Destruct", "target": "Counter Characters' Party"}
+    ],
+    "m203": [],
+    "m204": [],
+    "m205": [],
+    "m206": [],
+    "m207": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",       "target": "Random Character"},
+        {"actions_file": 4, "action_id":  49, "name": "1000 Needles", "target": "Random Character"},
+        {"actions_file": 4, "action_id":  51, "name": "Run Away",     "target": "Self"            }
+    ],
+    "m208": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",        "target": "Random Character"},
+        {"actions_file": 4, "action_id":  50, "name": "10000 Needles", "target": "Random Character"},
+        {"actions_file": 4, "action_id":  51, "name": "Run Away",      "target": "Self"            }
+    ],
+    "m209": [
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Random Character"},
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Self"            }
+    ],
+    "m210": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",      "target": "Random Character" },
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 108, "name": "Body Splash", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 109, "name": "Mortar",      "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 109, "name": "Mortar",      "target": "Counter"          },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",      "target": "Random Character" }
+    ],
+    "m211": [
+        {"actions_file": 4, "action_id":  55, "name": "Open",   "target": "Self"},
+        {"actions_file": 4, "action_id": 162, "name": "Mimic1", "target": "M3"  }
+    ],
+    "m212": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack A",         "target": "Random Character"   },
+        {"actions_file": 4, "action_id":  59, "name": "Activate Counter", "target": "Self"               },
+        {"actions_file": 4, "action_id":  98, "name": "Counter",          "target": "Counter"            },
+        {"actions_file": 4, "action_id":  99, "name": "Cancel Counter",   "target": "Self"               },
+        {"actions_file": 4, "action_id": 127, "name": "Attack B",         "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 128, "name": "Attack D",         "target": "Lowest HP Character"}
+    ],
+    "m213": [
+        {"actions_file": 2, "action_id":  12, "name": "Eye Drops",   "target": "M2"              },
+        {"actions_file": 3, "action_id":  58, "name": "Shell",       "target": "M2"              },
+        {"actions_file": 3, "action_id":  59, "name": "Protect",     "target": "M2"              },
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara",    "target": "Random Character"},
+        {"actions_file": 3, "action_id":  71, "name": "Thundara",    "target": "Random Character"},
+        {"actions_file": 4, "action_id":  15, "name": "Berserk M2",  "target": "M2"              },
+        {"actions_file": 4, "action_id":  15, "name": "Berserk M3",  "target": "M3"              },
+        {"actions_file": 4, "action_id":  16, "name": "Auto-Potion", "target": "Counter Self"    },
+        {"actions_file": 4, "action_id": 138, "name": "Summon M2",   "target": "M2"              },
+        {"actions_file": 4, "action_id": 138, "name": "Summon M3",   "target": "M3"              }
+    ],
+    "m214": [
+        {"actions_file": 3, "action_id":  66, "name": "Fire",   "target": "Random Character"         },
+        {"actions_file": 4, "action_id":  44, "name": "Pollen", "target": "Counter Characters' Party"}
+    ],
+    "m215": [
+        {"actions_file": 3, "action_id":  69, "name": "Fira",   "target": "Random Character"         },
+        {"actions_file": 4, "action_id":  45, "name": "Pollen", "target": "Counter Characters' Party"}
+    ],
+    "m216": [
+        {"actions_file": 3, "action_id":  73, "name": "Firaga", "target": "Random Character"         },
+        {"actions_file": 4, "action_id":  46, "name": "Pollen", "target": "Counter Characters' Party"}
+    ],
+    "m217": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Last Target"}
+    ],
+    "m218": [
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",        "target": "Random Character"},
+        {"actions_file": 4, "action_id":  63, "name": "Grow2",         "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  64, "name": "Grow3",         "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  67, "name": "RUSH",          "target": "Random Character"},
+        {"actions_file": 4, "action_id":  73, "name": "Self-Destruct", "target": "Counter"         }
+    ],
+    "m219": [
+        {"actions_file": 3, "action_id":  69, "name": "Fira",        "target": "Random Character"         },
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara",    "target": "Random Character"         },
+        {"actions_file": 3, "action_id":  71, "name": "Thundara",    "target": "Random Character"         },
+        {"actions_file": 3, "action_id":  72, "name": "Watera",      "target": "Random Character"         },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",    "target": "Self"                     },
+        {"actions_file": 4, "action_id":  81, "name": "Poison Mist", "target": "Counter Characters' Party"}
+    ],
+    "m220": [
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",   "target": "Random Character"                     },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga", "target": "Random Character"                     },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": "Random Character"                     },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",  "target": "Random Character"                     },
+        {"actions_file": 4, "action_id":  75, "name": "Death",    "target": "Random Character"                     },
+        {"actions_file": 4, "action_id":  76, "name": "Doom",     "target": "Random Character Not Affected By Doom"}
+    ],
+    "m221": [
+        {"actions_file": 4, "action_id":   4, "name": "Seed Burst", "target": "Random Character"}
+    ],
+    "m222": [
+        {"actions_file": 3, "action_id":  46, "name": "NulFrost", "target": "Monsters' Party"                       },
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",  "target": "Random Monster Not Affected By Reflect"},
+        {"actions_file": 3, "action_id":  69, "name": "Fira",     "target": "Random Character"                      },
+        {"actions_file": 3, "action_id":  69, "name": "Fira",     "target": "Lowest HP Character"                   },
+        {"actions_file": 4, "action_id":  79, "name": "Silence",  "target": "Lulu"                                  },
+        {"actions_file": 6, "action_id": 114, "name": "Confuse",  "target": "Lulu"                                  }
+    ],
+    "m223": [
+        {"actions_file": 4, "action_id":  96, "name": "Karma",  "target": "Counter"         },
+        {"actions_file": 4, "action_id":  97, "name": "Voodoo", "target": "Random Character"},
+        {"actions_file": 4, "action_id":  98, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 129, "name": "Waddle", "target": "Self"            }
+    ],
+    "m224": [
+        {"actions_file": 4, "action_id":  96, "name": "Karma",  "target": "Counter"         },
+        {"actions_file": 4, "action_id":  97, "name": "Voodoo", "target": "Random Character"},
+        {"actions_file": 4, "action_id":  97, "name": "Voodoo", "target": "Counter"         },
+        {"actions_file": 4, "action_id": 129, "name": "Waddle", "target": "Self"            },
+        {"actions_file": 4, "action_id": 271, "name": "Attack", "target": "Random Character"}
+    ],
+    "m225": [
+        {"actions_file": 4, "action_id": 153, "name": "Gaze", "target": "Random Character"}
+    ],
+    "m226": [
+        {"actions_file": 3, "action_id":  66, "name": "Fire",          "target": "Random Character"},
+        {"actions_file": 4, "action_id":  63, "name": "Grow2",         "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  64, "name": "Grow3",         "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  67, "name": "RUSH",          "target": "Random Character"},
+        {"actions_file": 4, "action_id":  74, "name": "Self-Destruct", "target": "Counter"         }
+    ],
+    "m227": [
+        {"actions_file": 3, "action_id":  71, "name": "Thundara",      "target": "Random Character" },
+        {"actions_file": 4, "action_id":  77, "name": "Aqua Breath",   "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  78, "name": "Megiddo Flame", "target": "Random Character" },
+        {"actions_file": 4, "action_id":  89, "name": "RUSH",          "target": "Random Character" }
+    ],
+    "m228": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id":  36, "name": "Gore",   "target": "Random Character"}
+    ],
+    "m229": [
+        {"actions_file": 4, "action_id":  52, "name": "Blast Punch",  "target": "Counter"                  },
+        {"actions_file": 4, "action_id":  53, "name": "Haymaker",     "target": "Random Character"         },
+        {"actions_file": 4, "action_id":  91, "name": "Mighty Guard", "target": "Self"                     },
+        {"actions_file": 4, "action_id": 236, "name": "Attack",       "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 237, "name": "Slowga",       "target": "Counter Characters' Party"}
+    ],
+    "m230": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack",     "target": "Random Character" },
+        {"actions_file": 4, "action_id":   0, "name": "Attack",     "target": "Wakka"            },
+        {"actions_file": 4, "action_id":  12, "name": "Sonic Boom", "target": "Characters' Party"}
+    ],
+    "m231": [
+        {"actions_file": 4, "action_id": 158, "name": "Attack", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 158, "name": "Attack", "target": "Lowest HP Character"}
+    ],
+    "m232": [
+        {"actions_file": 3, "action_id":  68, "name": "Water", "target": "Random Character"},
+        {"actions_file": 3, "action_id":  68, "name": "Water", "target": "Self"            }
+    ],
+    "m233": [
+        {"actions_file": 4, "action_id": 151, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 151, "name": "Attack", "target": "Wakka"           }
+    ],
+    "m234": [
+        {"actions_file": 4, "action_id":   3, "name": "Seed Cannon", "target": "Random Character"},
+        {"actions_file": 4, "action_id":   3, "name": "Seed Cannon", "target": "Kimahri"         }
+    ],
+    "m235": [
+        {"actions_file": 4, "action_id": 156, "name": "Attack", "target": "Random Character"}
+    ],
+    "m236": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack", "target": "Random Character"}
+    ],
+    "m237": [
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "M1"  },
+        {"actions_file": 4, "action_id":  55, "name": "Open",     "target": "Self"}
+    ],
+    "m238": [
+        {"actions_file": 4, "action_id":  22, "name": "Sonic Boom",  "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  25, "name": "Landing",     "target": "Counter Self"     },
+        {"actions_file": 4, "action_id":  26, "name": "Crawl",       "target": "Random Character" },
+        {"actions_file": 4, "action_id": 151, "name": "Attack Aeon", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 171, "name": "Charging",    "target": "Self"             },
+        {"actions_file": 4, "action_id": 223, "name": "Attack",      "target": "Random Character" }
+    ],
+    "m239": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 161, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m240": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 155, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m241": [
+        {"actions_file": 3, "action_id":  72, "name": "Watera", "target": "Random Character"}
+    ],
+    "m242": [
+        {"actions_file": 4, "action_id":  11, "name": "Ultrasonics", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 153, "name": "Gaze",        "target": "Random Character" }
+    ],
+    "m243": [
+        {"actions_file": 3, "action_id":  72, "name": "Watera", "target": "Random Character"},
+        {"actions_file": 3, "action_id":  72, "name": "Watera", "target": "Self"            }
+    ],
+    "m244": [
+        {"actions_file": 4, "action_id":  80, "name": "Blades", "target": "Random Character"},
+        {"actions_file": 4, "action_id":  85, "name": "Attack", "target": "Random Character"}
+    ],
+    "m245": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m246": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 127, "name": "Attack",      "target": "Random Character"}
+    ],
+    "m247": [
+        {"actions_file": 4, "action_id":  10, "name": "Gaze", "target": "Random Character"}
+    ],
+    "m248": [],
+    "m249": [],
+    "m250": [],
+    "m251": [
+        {"actions_file": 4, "action_id":  98, "name": "Attack", "target": "Random Character"}
+    ],
+    "m252": [
+        {"actions_file": 4, "action_id":  98, "name": "Attack", "target": "Random Character"}
+    ],
+    "m253": [
+        {"actions_file": 4, "action_id":  25, "name": "Landing", "target": "Counter Self"    },
+        {"actions_file": 4, "action_id":  98, "name": "Attack",  "target": "Random Character"}
+    ],
+    "m254": [
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon (Isaaru)",    "target": "Random Character" },
+        {"actions_file": 4, "action_id":  61, "name": "Energy Ray",              "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  92, "name": "Attack",                  "target": "Random Character" },
+        {"actions_file": 4, "action_id":  93, "name": "Sonic Wings",             "target": "Random Character" },
+        {"actions_file": 4, "action_id": 115, "name": "Die",                     "target": "Self"             },
+        {"actions_file": 4, "action_id": 127, "name": "Attack Aeon (Belgemine)", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 139, "name": "Summon",                  "target": "M1"               },
+        {"actions_file": 4, "action_id": 166, "name": "Energy Blast",            "target": "Characters' Party"}
+    ],
+    "m255": [
+        {"actions_file": 4, "action_id": 148, "name": "Reaction", "target": "M1"}
+    ],
+    "m256": [
+        {"actions_file": 4, "action_id":  98, "name": "Attack", "target": "Random Character"}
+    ],
+    "m257": [],
+    "m258": [
+        {"actions_file": 4, "action_id": 115, "name": "Die", "target": "Self"}
+    ],
+    "m259": [
+        {"actions_file": 3, "action_id":  69, "name": "Fira",     "target": "Random Character"},
+        {"actions_file": 4, "action_id":  67, "name": "RUSH",     "target": "Random Character"},
+        {"actions_file": 4, "action_id":  94, "name": "Hellfire", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 116, "name": "Die",      "target": "Self"            }
+    ],
+    "m260": [],
+    "m261": [],
+    "m262": [],
+    "m263": [],
+    "m264": [],
+    "m265": [
+        {"actions_file": 3, "action_id":  61, "name": "Dispel",   "target": "Random Character" },
+        {"actions_file": 3, "action_id":  78, "name": "Demi",     "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 121, "name": "Die",      "target": "Self"             },
+        {"actions_file": 4, "action_id": 145, "name": "Summon",   "target": "M1"               },
+        {"actions_file": 4, "action_id": 174, "name": "Attack",   "target": "Random Character" },
+        {"actions_file": 4, "action_id": 175, "name": "Pain",     "target": "Random Character" },
+        {"actions_file": 4, "action_id": 176, "name": "Oblivion", "target": "Characters' Party"}
+    ],
+    "m266": [
+        {"actions_file": 4, "action_id": 177, "name": "Daigoro", "target": "Random Character"}
+    ],
+    "m267": [],
+    "m268": [],
+    "m269": [],
+    "m270": [],
+    "m271": [],
+    "m272": [
+        {"actions_file": 6, "action_id":   1, "name": "Special 1", "target": "M1"}
+    ],
+    "m273": [],
+    "m274": [],
+    "m275": [],
+    "m276": [
+        {"actions_file": 4, "action_id": 126, "name": "Die",             "target": "Self"                     },
+        {"actions_file": 4, "action_id": 216, "name": "Ethereal Cannon", "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 217, "name": "Ultra Spark",     "target": "Characters' Party"        },
+        {"actions_file": 4, "action_id": 240, "name": "Attack",          "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 243, "name": "Ultima",          "target": "Counter Characters' Party"},
+        {"actions_file": 4, "action_id": 244, "name": "Armageddon",      "target": "Characters' Party"        }
+    ],
+    "m277": [
+        {"actions_file": 3, "action_id":  78, "name": "Demi",           "target": "Characters' Party"   },
+        {"actions_file": 4, "action_id": 247, "name": "Toxic Cloud",    "target": "Characters' Party"   },
+        {"actions_file": 4, "action_id": 248, "name": "Toxic Spray",    "target": "Highest HP Character"},
+        {"actions_file": 4, "action_id": 249, "name": "Hundred Thorns", "target": "Characters' Party"   },
+        {"actions_file": 6, "action_id":   7, "name": "Transform",      "target": "M1"                  }
+    ],
+    "m278": [],
+    "m279": [
+        {"actions_file": 3, "action_id":  82, "name": "Flare",         "target": "Self"            },
+        {"actions_file": 4, "action_id": 240, "name": "Attack",        "target": "Random Character"},
+        {"actions_file": 4, "action_id": 245, "name": "Megaton Punch", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 245, "name": "Megaton Punch", "target": "Counter"         },
+        {"actions_file": 6, "action_id":  24, "name": "Gets up.",      "target": "M1"              },
+        {"actions_file": 6, "action_id":  28, "name": "Death",         "target": "M1"              }
+    ],
+    "m280": [
+        {"actions_file": 4, "action_id": 240, "name": "Attack",        "target": "Random Character" },
+        {"actions_file": 4, "action_id": 243, "name": "Ultima",        "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 254, "name": "Contamination", "target": "Random Character" }
+    ],
+    "m281": [
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",          "target": "Counter Characters' Party"},
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga",        "target": "Counter Characters' Party"},
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",        "target": "Counter Characters' Party"},
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",         "target": "Counter Characters' Party"},
+        {"actions_file": 3, "action_id":  82, "name": "Flare",           "target": "Counter Random Character" },
+        {"actions_file": 4, "action_id": 240, "name": "Attack",          "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 243, "name": "Ultima",          "target": "Counter Characters' Party"},
+        {"actions_file": 4, "action_id": 253, "name": "Hydraulic Press", "target": "Characters' Party"        },
+        {"actions_file": 4, "action_id": 253, "name": "Hydraulic Press", "target": "Counter Characters' Party"},
+        {"actions_file": 6, "action_id":  54, "name": "Elemental Shift", "target": "Counter Self"             },
+        {"actions_file": 6, "action_id": 103, "name": "Death",           "target": "Self"                     }
+    ],
+    "m282": [
+        {"actions_file": 3, "action_id":  54, "name": "Haste",       "target": "Counter Self"             },
+        {"actions_file": 3, "action_id":  58, "name": "Shell",       "target": "Self"                     },
+        {"actions_file": 3, "action_id":  59, "name": "Protect",     "target": "Self"                     },
+        {"actions_file": 3, "action_id":  62, "name": "Regen",       "target": "Self"                     },
+        {"actions_file": 4, "action_id": 240, "name": "Attack",      "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 250, "name": "Rainbow",     "target": "Characters' Party"        },
+        {"actions_file": 4, "action_id": 251, "name": "Convergence", "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 252, "name": "Condemn",     "target": "Counter Characters' Party"}
+    ],
+    "m283": [
+        {"actions_file": 4, "action_id": 191, "name": "Shining", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 240, "name": "Attack",  "target": "Random Character"},
+        {"actions_file": 4, "action_id": 246, "name": "Eraser",  "target": "Random Character"}
+    ],
+    "m284": [
+        {"actions_file": 3, "action_id":  69, "name": "Fira",                          "target": "Random Character" },
+        {"actions_file": 4, "action_id":   0, "name": "Attack Aeon",                   "target": "Random Character" },
+        {"actions_file": 4, "action_id":  94, "name": "Hellfire",                      "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  98, "name": "Attack (Belgemine First Turn)", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 116, "name": "Die",                           "target": "Self"             },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",                        "target": "Random Character" },
+        {"actions_file": 4, "action_id": 137, "name": "Meteor Strike",                 "target": "Random Character" },
+        {"actions_file": 4, "action_id": 140, "name": "Summon",                        "target": "M1"               },
+        {"actions_file": 4, "action_id": 230, "name": "Hellfire",                      "target": "Anima"            }
+    ],
+    "m285": [
+        {"actions_file": 3, "action_id":  54, "name": "Haste",               "target": "Self"             },
+        {"actions_file": 4, "action_id":   0, "name": "Attack",              "target": "Random Character" },
+        {"actions_file": 4, "action_id": 100, "name": "Aerospark",           "target": "Random Character" },
+        {"actions_file": 4, "action_id": 101, "name": "Thor's Hammer",       "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 117, "name": "Die",                 "target": "Self"             },
+        {"actions_file": 4, "action_id": 142, "name": "Summon",              "target": "M1"               },
+        {"actions_file": 4, "action_id": 231, "name": "Thor's Hammer Anima", "target": "Characters' Party"}
 
-    },
-    "mortiphasm_4": {
-    },
-    "sahagin_4": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "sahagin_chief": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "garuda_2": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "counter": {
-            "name": "Counter",
-            "target": "Last actor",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "sonic_boom": {
-            "name": "Sonic Boom",
-            "target": "All characters",
-            "accuracy": 130,
-            "can_crit": false,
-            "base_damage": 12,
-            "shatter_chance": 0
-        }
-    },
-    "klikk": {
-        "attack": {
-            "name": "Attack",
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "sinspawn_ammes": {
-        "demi": {
-            "name": "Demi",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Percentage (Current)",
-            "base_damage": 4
-        }
-    },
-    "head": {
-    },
-    "arm": {
-    },
-    "gate_lock": {
-    },
-    "[0x13]8": {
-    },
-    "[0x13]9": {
-    },
-    "[0x13]_": {
-    },
-    "[0x13]!": {
-    },
-    "[0x13]\"": {
-    },
-    "[0x13]#": {
-    },
-    "[0x13]$": {
-    },
-    "tanker": {
-    },
-    "gate_lock_2": {
-    },
-    "monster_172": {
-    },
-    "yu_pagoda": {
-    },
-    "yu_pagoda_2": {
-    },
-    "tentacle": {
-    },
-    "yu_yevon": {
-    },
-    "mortiphasm_5": {
-    },
-    "cindy": {
-    },
-    "sandy": {
-    },
-    "mindy": {
-    },
-    "iron_giant": {
-        "attack": {
-            "name": "Attack",
-            "target": "Lowest HP character",
-            "accuracy": 110,
-            "base_damage": 16
-        },
-        "attack_aeon": {
-            "name": "Attack",
-            "accuracy": 110,
-            "base_damage": 16
-        },
-        "leaping_swing": {
-            "name": "Leaping Swing",
-            "accuracy": 95,
-            "base_damage": 25,
-            "shatter_chance": 0
-        },
-        "reaper": {
-            "name": "Reaper",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 13,
-            "shatter_chance": 0
-        }
-    },
-    "gemini": {
-    },
-    "gemini_2": {
-    },
-    "gemini_3": {
-    },
-    "basilisk": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        },
-        "stone_gaze": {
-            "name": "Stone Gaze",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Petrify": [50, 254]
-            },
-            "shatter_chance": 0
-        }
-    },
-    "anacondaur": {
-    },
-    "adamantoise": {
-    },
-    "varuna": {
-    },
-    "ochu": {
-        "attack": {
-            "name": "Attack",
-            "accuracy": 120,
-            "base_damage": 16,
-            "statuses": {
-                "Poison": [80, 254]
-            },
-            "shatter_chance": 0
-        },
-        "ochu_dance": {
-            "name": "Ochu Dance",
-            "target": "All characters",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Confuse": [20, 254],
-                "Silence": [80, 3],
-                "Dark": [80, 3],
-                "Slow": [20, 5]
-            },
-            "shatter_chance": 0,
-            "drains": false,
-            "rank": 3
-        }
-    },
-    "mandragora": {
-    },
-    "yat-99": {
-    },
-    "yat-97": {
-    },
-    "bomb": {
-        "rush": {
-            "name": "RUSH",
-            "accuracy": 120,
-            "base_damage": 16,
-            "element": "Fire",
-            "shatter_chance": 0
-        },
-        "fire": {
-            "name": "Fire",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Fire"
-        },
-        "self_destruct": {
-            "name": "Self Destruct",
-            "can_miss": false,
-            "damage_type": "Item",
-            "base_damage": 12,
-            "element": "Fire",
-            "shatter_chance": 0
-        },
-        "grow": {
-            "name": "Grow",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "grenade": {
-    },
-    "ykt-63": {
-    },
-    "ykt-11": {
-    },
-    "warrior_monk": {
-    },
-    "fallen_monk": {
-    },
-    "warrior_monk_2": {
-        "flamethrower": {
-            "name": "Flamethrower",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 22,
-            "element": "Fire",
-            "shatter_chance": 0
-        }
-    },
-    "fallen_monk_2": {
-    },
-    "pupu": {
-    },
-    "magic_urn": {
-    },
-    "magic_urn_2": {
-    },
-    "magic_urn_3": {
-    },
-    "magic_urn_4": {
-    },
-    "magic_urn_5": {
-    },
-    "qactuar": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        },
-        "1000_needles": {
-            "name": "1,000 Needles",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Fixed",
-            "base_damage": 1000,
-            "shatter_chance": 0
-        },
-        "run_away": {
-            "name": "Run Away",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Escape": [254, 254]
-            },
-            "shatter_chance": 0
-        }
-    },
-    "cactuar": {
-    },
-    "larva": {
-        "thundara": {
-            "name": "Thundara",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Thunder"
-        },
-        "forced_attack": {
-            "name": "Fire",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Fire"
-        }
-    },
-    "barbatos": {
-    },
-    "???_2": {
-    },
-    "wendigo": {
-        "attack_low_hp": {
-            "name": "Attack (Low HP)",
-            "base_damage": 16
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        },
-        "attack_high_hp": {
-            "name": "Attack (High HP)",
-            "accuracy": 120,
-            "base_damage": 16
-        },
-        "counter": {
-            "name": "Counter",
-            "target": "Last actor",
-            "can_miss": false,
-            "base_damage": 20
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 24,
-            "shatter_chance": 50
-        },
-        "counter_stance": {
-            "name": "Counter Stance",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        },
-        "cancel_counter": {
-            "name": "Cancel Counter",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        },
-        "does_nothing": {
-            "name": "Does Nothing",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "guado_guardian_2": {
-        "thundara": {
-            "name": "Thundara",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Thunder"
-        },
-        "blizzara": {
-            "name": "Blizzara",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 24,
-            "element": "Ice"
-        },
-        "auto_potion": {
-            "name": "Auto Potion",
-            "target": "Self",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Fixed",
-            "base_damage": -1000,
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "auto_potion_wendigo": {
-            "name": "Auto Potion Wendigo",
-            "target": 1,
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Fixed",
-            "base_damage": -1000,
-            "shatter_chance": 0
-        },
-        "berserk_wendigo": {
-            "name": "Berserk Wendigo",
-            "target": 1,
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Berserk": [120, 254]
-            },
-            "shatter_chance": 0
-        },
-        "protect_wendigo": {
-            "name": "Protect Wendigo",
-            "target": 1,
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Protect": [254, 254]
-            },
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "shell_wendigo": {
-            "name": "Shell Wendigo",
-            "target": 1,
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Shell": [120, 254]
-            },
-            "shatter_chance": 0,
-            "rank": 0
-        },
-        "eye_drops_wendigo": {
-            "name": "Eye Drops Wendigo",
-            "target": 1,
-            "can_miss": false,
-            "does_damage": false,
-            "dispels": [
-                "Dark"
-            ],
-            "shatter_chance": 0,
-            "rank": 2
-        }
-    },
-    "funguar": {
-        "fire": {
-            "name": "Fire",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Fire"
-        },
-        "pollen": {
-            "name": "Pollen",
-            "target": "All characters",
-            "can_miss": false,
-            "does_damage": false,
-            "statuses": {
-                "Sleep": [80, 2]
-            },
-            "shatter_chance": 0
-        }
-    },
-    "thorn": {
-    },
-    "exoray": {
-    },
-    "xiphos": {
-        "attack": {
-            "name": "Attack",
-            "target": "Single",
-            "base_damage": 16
-        }
-    },
-    "puroboros": {
-    },
-    "spirit": {
-    },
-    "wraith": {
-    },
-    "sandragora": {
-    },
-    "guado_guardian_3": {
-    },
-    "tonberry": {
-    },
-    "master_tonberry": {
-    },
-    "evil_eye_2": {
-    },
-    "bomb_2": {
-        "rush": {
-            "name": "RUSH",
-            "accuracy": 120,
-            "base_damage": 16,
-            "element": "Fire",
-            "shatter_chance": 0
-        },
-        "fire": {
-            "name": "Fire",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Fire"
-        },
-        "self_destruct": {
-            "name": "Self Destruct",
-            "can_miss": false,
-            "damage_type": "Item",
-            "base_damage": 20,
-            "element": "Fire",
-            "shatter_chance": 0
-        },
-        "grow": {
-            "name": "Grow",
-            "target": "Self",
-            "can_miss": false,
-            "does_damage": false,
-            "shatter_chance": 0
-        }
-    },
-    "chimera_2": {
-    },
-    "dual_horn_2": {
-    },
-    "defender_x": {
-    },
-    "garuda_3": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        },
-        "attack_wakka": {
-            "name": "Attack Wakka",
-            "target": "Wakka",
-            "base_damage": 16
-        },
-        "sonic_boom": {
-            "name": "Sonic Boom",
-            "target": "All characters",
-            "accuracy": 130,
-            "can_crit": false,
-            "base_damage": 8,
-            "shatter_chance": 0
-        }
-    },
-    "dingo_2": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Sleep": [10, 3],
-                "Silence": [10, 3]
-            }
-        },
-        "attack_low_hp_char": {
-            "name": "Attack (Lowest HP Character)",
-            "target": "Lowest HP character",
-            "base_damage": 16,
-            "statuses": {
-                "Sleep": [10, 3],
-                "Silence": [10, 3]
-            }
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "water_flan_2": {
-        "water": {
-            "name": "Water",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Water"
-        },
-        "water_self": {
-            "name": "Water (self)",
-            "target": "Self",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 12,
-            "element": "Water"
-        }
-    },
-    "condor_2": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Dark": [10, 3]
-            }
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        },
-        "attack_wakka": {
-            "name": "Attack Wakka",
-            "target": "Wakka",
-            "base_damage": 16,
-            "statuses": {
-                "Dark": [10, 3]
-            }
-        }
-    },
-    "ragora_2": {
-        "seed_cannon": {
-            "name": "Seed Cannon",
-            "accuracy": 85,
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        },
-        "seed_cannon_kimahri": {
-            "name": "Seed Cannon (Kimahri)",
-            "target": "Kimahri",
-            "accuracy": 85,
-            "can_crit": false,
-            "base_damage": 16,
-            "shatter_chance": 0
-        }
-    },
-    "raldo_2": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16,
-            "statuses": {
-                "Berserk": [10, 254]
-            }
-        },
-        "forced_attack": {
-            "name": "Forced Attack",
-            "base_damage": 16
-        }
-    },
-    "bunyip_2": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        }
-    },
-    "???_3": {
-    },
-    "zu_2": {
-    },
-    "zaurus": {
-    },
-    "halma": {
-    },
-    "aqua_flan": {
-    },
-    "floating_death": {
-    },
-    "maze_larva": {
-    },
-    "machea": {
-    },
-    "cave_iguion": {
-    },
-    "swamp_mafdet": {
-    },
-    "bat_eye": {
-    },
-    "isaaru": {
-    },
-    "mira": {
-    },
-    "belgemine": {
-    },
-    "mimic": {
-    },
-    "mimic_2": {
-    },
-    "mimic_3": {
-    },
-    "valefor": {
-    },
-    "dummy": {
-    },
-    "mimic_4": {
-    },
-    "mimic_parts": {
-    },
-    "valefor_2": {
-    },
-    "ifrit": {
-        "attack_first_turn": {
-            "name": "Attack (first turn only)",
-            "can_miss": false,
-            "base_damage": 20
-        },
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        },
-        "meteor_strike": {
-            "name": "Meteor Strike",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Magic",
-            "base_damage": 28,
-            "shatter_chance": 0
-        }
-    },
-    "mimic_parts_2": {
-    },
-    "mimic_parts_3": {
-    },
-    "mimic_parts_4": {
-    },
-    "rifle": {
-    },
-    "fire_rifle": {
-    },
-    "anima_2": {
-    },
-    "koma_inu": {
-    },
-    "anima_3": {
-    },
-    "anima_4": {
-    },
-    "katana": {
-    },
-    "kozuka": {
-    },
-    "shuriken": {
-    },
-    "head_2": {
-    },
-    "arm_2": {
-    },
-    "nishida": {
-    },
-    "sword": {
-    },
-    "nemesis": {
-    },
-    "catastrophe": {
-    },
-    "none": {
-    },
-    "earth_eater": {
-    },
-    "ultima_buster": {
-    },
-    "greater_sphere": {
-    },
-    "th'uban": {
-    },
-    "shinryu": {
-    },
-    "ifrit_2": {
-    },
-    "ixion": {
-        "attack": {
-            "name": "Attack",
-            "base_damage": 16
-        },
-        "aerospark": {
-            "name": "Aerospark",
-            "can_miss": false,
-            "can_crit": false,
-            "base_damage": 22,
-            "element": null,
-            "dispels": [
-                "Protect",
-                "Shell",
-                "Regen",
-                "Reflect",
-                "NulBlaze",
-                "NulFrost",
-                "NulShock",
-                "NulTide",
-                "Haste"
-            ],
-            "shatter_chance": 0
-        },
-        "thors_hammer": {
-            "name": "Thor's Hammer",
-            "target": "All characters",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "Special Magic",
-            "base_damage": 40,
-            "element": "Thunder",
-            "shatter_chance": 0
-        },
-        "haste": {
-            "name": "Haste",
-            "target": "Self",
-            "can_miss": false,
-            "can_crit": false,
-            "damage_type": "CTB",
-            "base_damage": 8,
-            "statuses": {
-                "Haste": [254, 254]
-            },
-            "shatter_chance": 0,
-            "rank": 4
-        }
-    },
-    "shiva": {
-    },
-    "bahamut": {
-    },
-    "yojimbo": {
-    },
-    "sandy_2": {
-    },
-    "cindy_2": {
-    },
-    "mindy_2": {
-    },
-    "tanket": {
-    },
-    "vidatu": {
-    },
-    "fenrir": {
-    },
-    "jumbo_flan": {
-    },
-    "ornitholestes": {
-    },
-    "pteryx": {
-    },
-    "hornet": {
-    },
-    "one-eye": {
-    },
-    "stratoavis": {
-    },
-    "abyss_worm": {
-    },
-    "juggernaut": {
-    },
-    "fafnir": {
-    },
-    "malboro_menace": {
-    },
-    "kottos": {
-    },
-    "nega_elemental": {
-    },
-    "catoblepas": {
-    },
-    "chimerageist": {
-    },
-    "coeurlregina": {
-    },
-    "ironclad": {
-    },
-    "jormungand": {
-    },
-    "abaddon": {
-    },
-    "bomb_king": {
-    },
-    "cactuar_king": {
-    },
-    "vorban": {
-    },
-    "sleep_sprout": {
-    },
-    "don_tonberry": {
-    },
-    "espada": {
-    },
-    "bomb_3": {
-    },
-    "dual_horn_3": {
-    },
-    "vulture": {
-    },
-    "basilisk_2": {
-    },
-    "ochu_2": {
-    },
-    "larva_2": {
-    },
-    "iron_giant_2": {
-    },
-    "chimera_3": {
-    },
-    "monster_84": {
-    },
-    "qactuar_2": {
-    },
-    "zu_3": {
-    },
-    "sand_worm_2": {
-    },
-    "ghost_2": {
-    },
-    "malboro_2": {
-    },
-    "bashura_2": {
-    },
-    "valefor_3": {
-    },
-    "ifrit_3": {
-    },
-    "ixion_2": {
-    },
-    "shiva_2": {
-    },
-    "bahamut_2": {
-    },
-    "anima_5": {
-    },
-    "yojimbo_2": {
-    },
-    "cindy_3": {
-    },
-    "sandy_3": {
-    },
-    "mindy_3": {
-    }
+    ],
+    "m286": [
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara",                     "target": "Random Character" },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga",                     "target": "Self"             },
+        {"actions_file": 4, "action_id":   0, "name": "Attack (Calm Lands)",          "target": "Random Character" },
+        {"actions_file": 4, "action_id": 118, "name": "Die",                          "target": "Self"             },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",                       "target": "Random Character" },
+        {"actions_file": 4, "action_id": 141, "name": "Summon",                       "target": "M1"               },
+        {"actions_file": 4, "action_id": 149, "name": "Heavenly Strike (Calm Lands)", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 150, "name": "Diamond Dust",                 "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 172, "name": "Heavenly Strike",              "target": "Random Character" }
+    ],
+    "m287": [
+        {"actions_file": 4, "action_id":  95, "name": "Mega Flare", "target": "Characters' Party"        },
+        {"actions_file": 4, "action_id": 119, "name": "Die",        "target": "Self"                     },
+        {"actions_file": 4, "action_id": 127, "name": "Attack",     "target": "Counter"                  },
+        {"actions_file": 4, "action_id": 143, "name": "Summon",     "target": "M1"                       },
+        {"actions_file": 4, "action_id": 173, "name": "Impulse",    "target": "Counter Characters' Party"}
+    ],
+    "m288": [
+        {"actions_file": 4, "action_id": 120, "name": "Die",       "target": "Self"             },
+        {"actions_file": 4, "action_id": 130, "name": "Kozuka",    "target": "Random Character" },
+        {"actions_file": 4, "action_id": 131, "name": "Wakizashi", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 133, "name": "Zanmato",   "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 134, "name": "Daigoro",   "target": "M3"               },
+        {"actions_file": 4, "action_id": 144, "name": "Summon",    "target": "M1"               }
+    ],
+    "m289": [
+        {"actions_file": 4, "action_id": 127, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 218, "name": "Razzia", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 229, "name": "Die",    "target": "Self"            }
+    ],
+    "m290": [
+        {"actions_file": 3, "action_id":  44, "name": "Cura",         "target": "Random Monster"                        },
+        {"actions_file": 3, "action_id":  58, "name": "Shell",        "target": "Random Monster Not Affected By Shell"  },
+        {"actions_file": 3, "action_id":  59, "name": "Protect",      "target": "Random Monster Not Affected By Protect"},
+        {"actions_file": 3, "action_id":  61, "name": "Dispel",       "target": "Characters' Party"                     },
+        {"actions_file": 3, "action_id":  62, "name": "Regen",        "target": "Random Monster"                        },
+        {"actions_file": 3, "action_id":  63, "name": "Holy",         "target": "Random Character"                      },
+        {"actions_file": 3, "action_id":  78, "name": "Demi",         "target": "Characters' Party"                     },
+        {"actions_file": 3, "action_id":  80, "name": "Drain",        "target": "Random Character"                      },
+        {"actions_file": 3, "action_id":  81, "name": "Osmose",       "target": "Random Character"                      },
+        {"actions_file": 4, "action_id":  90, "name": "White Wind",   "target": "Monsters' Party"                       },
+        {"actions_file": 4, "action_id": 146, "name": "Summon",       "target": "M1"                                    },
+        {"actions_file": 4, "action_id": 219, "name": "Camisade",     "target": "Random Character"                      },
+        {"actions_file": 4, "action_id": 221, "name": "Delta Attack", "target": "Characters' Party"                     },
+        {"actions_file": 4, "action_id": 222, "name": "Mighty Guard", "target": "Monsters' Party"                       },
+        {"actions_file": 4, "action_id": 229, "name": "Die",          "target": "Self"                                  }
+    ],
+    "m291": [
+        {"actions_file": 3, "action_id":  69, "name": "Fira",     "target": "Random Character" },
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara", "target": "Random Character" },
+        {"actions_file": 3, "action_id":  71, "name": "Thundara", "target": "Random Character" },
+        {"actions_file": 3, "action_id":  72, "name": "Watera",   "target": "Random Character" },
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",   "target": "Random Character" },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga", "target": "Random Character" },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": "Random Character" },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",  "target": "Random Character" },
+        {"actions_file": 3, "action_id":  82, "name": "Flare",    "target": "Random Character" },
+        {"actions_file": 3, "action_id":  83, "name": "Ultima",   "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 220, "name": "Passado",  "target": "Random Character" },
+        {"actions_file": 4, "action_id": 229, "name": "Die",      "target": "Self"             }
+    ],
+    "m292": [
+        {"actions_file": 4, "action_id": 199, "name": "Attack",      "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 199, "name": "Attack",      "target": "Lowest HP Character"},
+        {"actions_file": 4, "action_id": 200, "name": "Rush Attack", "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 200, "name": "Rush Attack", "target": "Lowest HP Character"}
+    ],
+    "m293": [
+        {"actions_file": 3, "action_id":  81, "name": "Osmose", "target": "Highest MP Character"},
+        {"actions_file": 4, "action_id": 243, "name": "Ultima", "target": "Characters' Party"   }
+    ],
+    "m294": [
+        {"actions_file": 4, "action_id": 192, "name": "Fangs of Ruin",  "target": "Random Character Not Affected By Confuse"},
+        {"actions_file": 4, "action_id": 193, "name": "Fangs of Chaos", "target": "Highest Str Character"                   },
+        {"actions_file": 4, "action_id": 194, "name": "Fangs of Hell",  "target": "Random Character"                        }
+    ],
+    "m295": [
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",   "target": "Random Character Affected By Reflect"},
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",  "target": "Random Character"                    },
+        {"actions_file": 3, "action_id":  62, "name": "Regen",    "target": "Random Character Affected By Reflect"},
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",   "target": "Self"                                },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga", "target": "Self"                                },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": "Self"                                },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",  "target": "Self"                                },
+        {"actions_file": 3, "action_id":  82, "name": "Flare",    "target": "Self"                                },
+        {"actions_file": 4, "action_id": 243, "name": "Ultima",   "target": "Characters' Party"                   }
+    ],
+    "m296": [
+        {"actions_file": 4, "action_id": 197, "name": "Drain Touch",  "target": "Random Character"},
+        {"actions_file": 4, "action_id": 198, "name": "Poison Touch", "target": "Random Character"}
+    ],
+    "m297": [
+        {"actions_file": 4, "action_id": 209, "name": "Beak",        "target": "Random Character"                      },
+        {"actions_file": 4, "action_id": 210, "name": "Beak of Woe", "target": "Random Character Not Affected By Curse"}
+    ],
+    "m298": [
+        {"actions_file": 3, "action_id":  45, "name": "Curaga",          "target": "Self"                                    },
+        {"actions_file": 4, "action_id": 203, "name": "Nothing",         "target": "Random Character"                        },
+        {"actions_file": 4, "action_id": 204, "name": "Bewitching Stab", "target": "Random Character Not Affected By Confuse"},
+        {"actions_file": 4, "action_id": 205, "name": "Venomous Stab",   "target": "Random Character Not Affected By Poison" }
+    ],
+    "m299": [
+        {"actions_file": 4, "action_id": 195, "name": "Black Stare", "target": "Lowest HP Character"},
+        {"actions_file": 4, "action_id": 196, "name": "Shockwave",   "target": "Characters' Party"  }
+    ],
+    "m300": [
+        {"actions_file": 4, "action_id":  25, "name": "Landing",              "target": "Self"             },
+        {"actions_file": 4, "action_id":  26, "name": "Crawl",                "target": "Random Character" },
+        {"actions_file": 4, "action_id": 171, "name": "Charging",             "target": "Self"             },
+        {"actions_file": 4, "action_id": 178, "name": "Paean of the Heavens", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 179, "name": "Attack",               "target": "Random Character" }
+    ],
+    "m301": [
+        {"actions_file": 4, "action_id":   5, "name": "Swallow",              "target": "Random Character"   },
+        {"actions_file": 4, "action_id":   7, "name": "Readying Quake",       "target": "Self"               },
+        {"actions_file": 4, "action_id":   8, "name": "Earthquake",           "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 147, "name": "Earthquake (Valefor)", "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 235, "name": "Regurgitate",          "target": "Counter Last Target"},
+        {"actions_file": 4, "action_id": 240, "name": "Attack",               "target": "Random Character"   }
+    ],
+    "m302": [
+        {"actions_file": 4, "action_id":  69, "name": "Charging",    "target": "Self"             },
+        {"actions_file": 4, "action_id": 206, "name": "Attack",      "target": "Random Character" },
+        {"actions_file": 4, "action_id": 207, "name": "Crush Spike", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 208, "name": "Salvo",       "target": "Characters' Party"}
+    ],
+    "m303": [
+        {"actions_file": 4, "action_id": 201, "name": "Attack",           "target": "Lowest HP Character"},
+        {"actions_file": 4, "action_id": 202, "name": "Breath (Fire)",    "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 224, "name": "Breath (Ice)",     "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 225, "name": "Breath (Thunder)", "target": "Characters' Party"  },
+        {"actions_file": 4, "action_id": 227, "name": "Triple Attack",    "target": "Random Character"   },
+        {"actions_file": 4, "action_id": 228, "name": "Attack3",          "target": "Random Character"   }
+    ],
+    "m304": [
+        {"actions_file": 4, "action_id": 180, "name": "Putrid Breath",       "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 181, "name": "Mega Gastric Juice",  "target": "Random Character" },
+        {"actions_file": 4, "action_id": 182, "name": "Chow Time",           "target": "Random Character" },
+        {"actions_file": 4, "action_id": 183, "name": "Gastric Juice Blast", "target": "Characters' Party"}
+    ],
+    "m305": [
+        {"actions_file": 4, "action_id":  59, "name": "Counterattack", "target": "Self"                 },
+        {"actions_file": 4, "action_id": 128, "name": "Attack",        "target": "Highest Str Character"},
+        {"actions_file": 4, "action_id": 240, "name": "Counter",       "target": "Counter"              }
+    ],
+    "m306": [
+        {"actions_file": 3, "action_id":  60, "name": "Reflect",  "target": "Self"                     },
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",   "target": "Self"                     },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga", "target": "Self"                     },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga", "target": "Self"                     },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",  "target": "Self"                     },
+        {"actions_file": 3, "action_id":  77, "name": "Bio",      "target": "Self"                     },
+        {"actions_file": 3, "action_id":  80, "name": "Drain",    "target": "Random Character"         },
+        {"actions_file": 3, "action_id":  81, "name": "Osmose",   "target": "Random Character"         },
+        {"actions_file": 3, "action_id":  82, "name": "Flare",    "target": "Self"                     },
+        {"actions_file": 4, "action_id": 243, "name": "Ultima",   "target": "Counter Characters' Party"}
+    ],
+    "m307": [
+        {"actions_file": 3, "action_id":  82, "name": "Flare",   "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 239, "name": "Pop Fly", "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 240, "name": "Attack",  "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 243, "name": "Ultima",  "target": "Counter Characters' Party"}
+    ],
+    "m308": [
+        {"actions_file": 3, "action_id":  70, "name": "Blizzara",      "target": "Random Character" },
+        {"actions_file": 3, "action_id":  71, "name": "Thundara",      "target": "Random Character" },
+        {"actions_file": 4, "action_id":  77, "name": "Aqua Breath",   "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  78, "name": "Megiddo Flame", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 240, "name": "Attack",        "target": "Random Character" }
+    ],
+    "m309": [
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",      "target": "Random Character"},
+        {"actions_file": 3, "action_id":  80, "name": "Drain",         "target": "Random Character"},
+        {"actions_file": 3, "action_id":  82, "name": "Flare",         "target": "Random Character"},
+        {"actions_file": 4, "action_id": 184, "name": "Chaos",         "target": "Random Character"},
+        {"actions_file": 4, "action_id": 185, "name": "Hyper Blaster", "target": "Random Character"}
+    ],
+    "m310": [
+        {"actions_file": 4, "action_id": 211, "name": "Reppageki",  "target": "Random Character"    },
+        {"actions_file": 4, "action_id": 212, "name": "Bushinzan",  "target": "Characters' Party"   },
+        {"actions_file": 4, "action_id": 213, "name": "Shinryudan", "target": "Highest HP Character"}
+    ],
+    "m311": [
+        {"actions_file": 4, "action_id": 186, "name": "Attack",            "target": "Random Character"                    },
+        {"actions_file": 4, "action_id": 186, "name": "Attack",            "target": "Random Character Affected By Petrify"},
+        {"actions_file": 4, "action_id": 187, "name": "Cold Stare",        "target": "Random Character"                    },
+        {"actions_file": 4, "action_id": 226, "name": "Space-Time Vorpal", "target": "Characters' Party"                   }
+    ],
+    "m312": [
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",               "target": "Self"             },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga",             "target": "Self"             },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",             "target": "Self"             },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",              "target": "Self"             },
+        {"actions_file": 3, "action_id":  78, "name": "Demi",                 "target": "Characters' Party"},
+        {"actions_file": 3, "action_id":  82, "name": "Flare",                "target": "Self"             },
+        {"actions_file": 4, "action_id":  68, "name": "Pharaoh's Curse",      "target": "Random Character" },
+        {"actions_file": 4, "action_id": 110, "name": "Mana Focus",           "target": "Self"             },
+        {"actions_file": 4, "action_id": 241, "name": "Emblem of the Cosmos", "target": "Characters' Party"}
+    ],
+    "m313": [
+        {"actions_file": 3, "action_id":  66, "name": "Fire",   "target": "Random Character" },
+        {"actions_file": 3, "action_id":  69, "name": "Fira",   "target": "Random Character" },
+        {"actions_file": 3, "action_id":  73, "name": "Firaga", "target": "Random Character" },
+        {"actions_file": 4, "action_id":  63, "name": "Grow2",  "target": "Self"             },
+        {"actions_file": 4, "action_id":  64, "name": "Grow3",  "target": "Self"             },
+        {"actions_file": 4, "action_id":  65, "name": "Grow4",  "target": "Self"             },
+        {"actions_file": 4, "action_id": 240, "name": "Attack", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 243, "name": "Ultima", "target": "Characters' Party"}
+    ],
+    "m314": [
+        {"actions_file": 4, "action_id":  51, "name": "Run Away",      "target": "Self"                    },
+        {"actions_file": 4, "action_id": 188, "name": "10000 Needles", "target": "Random Character"        },
+        {"actions_file": 4, "action_id": 188, "name": "10000 Needles", "target": "Counter Random Character"},
+        {"actions_file": 4, "action_id": 242, "name": "99999 Needles", "target": "Random Character"        }
+    ],
+    "m315": [
+        {"actions_file": 4, "action_id": 108, "name": "Body Splash", "target": "Characters' Party"        },
+        {"actions_file": 4, "action_id": 108, "name": "Body Splash", "target": "Counter Characters' Party"},
+        {"actions_file": 4, "action_id": 109, "name": "Mortar",      "target": "Counter Characters' Party"},
+        {"actions_file": 4, "action_id": 240, "name": "Attack",      "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 240, "name": "Attack",      "target": "Counter"                  }
+    ],
+    "m316": [
+        {"actions_file": 3, "action_id":  73, "name": "Firaga",    "target": "Random Character" },
+        {"actions_file": 3, "action_id":  74, "name": "Blizzaga",  "target": "Random Character" },
+        {"actions_file": 3, "action_id":  75, "name": "Thundaga",  "target": "Random Character" },
+        {"actions_file": 3, "action_id":  76, "name": "Waterga",   "target": "Random Character" },
+        {"actions_file": 3, "action_id":  82, "name": "Flare",     "target": "Random Character" },
+        {"actions_file": 4, "action_id": 214, "name": "Goodnight", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 243, "name": "Ultima",    "target": "Characters' Party"}
+    ],
+    "m317": [
+        {"actions_file": 4, "action_id":  98, "name": "Attack", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 129, "name": "Waddle", "target": "Self"            },
+        {"actions_file": 4, "action_id": 234, "name": "Voodoo", "target": "Random Character"},
+        {"actions_file": 4, "action_id": 255, "name": "Karma",  "target": "Counter"         }
+    ],
+    "m318": [
+        {"actions_file": 4, "action_id": 189, "name": "Hades Claws",  "target": "Random Character"        },
+        {"actions_file": 4, "action_id": 189, "name": "Hades Claws",  "target": "Counter Random Character"},
+        {"actions_file": 4, "action_id": 190, "name": "Blade Shower", "target": "Random Character"        }
+    ],
+    "m319": [],
+    "m320": [],
+    "m321": [],
+    "m322": [],
+    "m323": [],
+    "m324": [],
+    "m325": [],
+    "m326": [],
+    "m327": [],
+    "m328": [],
+    "m329": [],
+    "m330": [],
+    "m331": [],
+    "m332": [],
+    "m333": [],
+    "m334": [
+        {"actions_file": 4, "action_id":  61, "name": "Energy Ray",   "target": "Characters' Party"},
+        {"actions_file": 4, "action_id":  93, "name": "Sonic Wings",  "target": "Random Character" },
+        {"actions_file": 4, "action_id":  98, "name": "Attack",       "target": "Random Character" },
+        {"actions_file": 4, "action_id": 115, "name": "Die",          "target": "Self"             },
+        {"actions_file": 4, "action_id": 296, "name": "Energy Blast", "target": "Characters' Party"}
+    ],
+    "m335": [
+        {"actions_file": 4, "action_id": 116, "name": "Die",            "target": "Self"             },
+        {"actions_file": 4, "action_id": 268, "name": "Hellfire",       "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 269, "name": "Hellfire Anima", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 270, "name": "Meteor Strike",  "target": "Random Character" },
+        {"actions_file": 4, "action_id": 271, "name": "Attack",         "target": "Random Character" }
+    ],
+    "m336": [
+        {"actions_file": 4, "action_id": 117, "name": "Die",                 "target": "Self"             },
+        {"actions_file": 4, "action_id": 272, "name": "Aerospark OD",        "target": "Random Character" },
+        {"actions_file": 4, "action_id": 273, "name": "Thor's Hammer",       "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 274, "name": "Thor's Hammer Anima", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 275, "name": "Thundaja",            "target": "Random Character" },
+        {"actions_file": 4, "action_id": 276, "name": "Counter",             "target": "Counter"          },
+        {"actions_file": 4, "action_id": 277, "name": "Attack",              "target": "Random Character" },
+        {"actions_file": 4, "action_id": 278, "name": "Aerospark",           "target": "Random Character" }
+    ],
+    "m337": [
+        {"actions_file": 4, "action_id": 118, "name": "Die",             "target": "Self"             },
+        {"actions_file": 4, "action_id": 279, "name": "Heavenly Strike", "target": "Random Character" },
+        {"actions_file": 4, "action_id": 280, "name": "Diamond Dust",    "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 281, "name": "Attack",          "target": "Random Character" }
+    ],
+    "m338": [
+        {"actions_file": 4, "action_id": 119, "name": "Die",        "target": "Self"                     },
+        {"actions_file": 4, "action_id": 271, "name": "Attack",     "target": "Random Character"         },
+        {"actions_file": 4, "action_id": 282, "name": "Mega Flare", "target": "Characters' Party"        },
+        {"actions_file": 4, "action_id": 283, "name": "Impulse",    "target": "Counter Characters' Party"}
+    ],
+    "m339": [
+        {"actions_file": 4, "action_id": 121, "name": "Die",           "target": "Self"             },
+        {"actions_file": 4, "action_id": 261, "name": "Mega-Graviton", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 284, "name": "Attack",        "target": "Random Character" },
+        {"actions_file": 4, "action_id": 285, "name": "Pain",          "target": "Random Character" },
+        {"actions_file": 4, "action_id": 286, "name": "Oblivion",      "target": "Characters' Party"}
+    ],
+    "m340": [
+        {"actions_file": 4, "action_id": 120, "name": "Die",       "target": "Self"             },
+        {"actions_file": 4, "action_id": 134, "name": "Daigoro",   "target": "M2"               },
+        {"actions_file": 4, "action_id": 263, "name": "Kozuka",    "target": "Random Character" },
+        {"actions_file": 4, "action_id": 265, "name": "Wakizashi", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 266, "name": "Zanmato",   "target": "Characters' Party"}
+    ],
+    "m341": [
+        {"actions_file": 4, "action_id": 257, "name": "Camisade",      "target": "Random Character" },
+        {"actions_file": 4, "action_id": 261, "name": "Mega-Graviton", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 262, "name": "Delta Attack",  "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 299, "name": "Extra 44",      "target": "Random Character" }
+    ],
+    "m342": [
+        {"actions_file": 4, "action_id": 256, "name": "Razzia",        "target": "Random Character" },
+        {"actions_file": 4, "action_id": 261, "name": "Mega-Graviton", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 295, "name": "Attack",        "target": "Random Character" }
+    ],
+    "m343": [
+        {"actions_file": 4, "action_id": 258, "name": "Passado",       "target": "Random Character" },
+        {"actions_file": 4, "action_id": 260, "name": "Calamity",      "target": "Random Character" },
+        {"actions_file": 4, "action_id": 261, "name": "Mega-Graviton", "target": "Characters' Party"}
+    ],
+    "m344": [
+        {"actions_file": 4, "action_id": 287, "name": "Immolation",   "target": "Random Character" },
+        {"actions_file": 4, "action_id": 288, "name": "Obliteration", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 289, "name": "Judgment Day", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 290, "name": "Separation",   "target": "Self"             },
+        {"actions_file": 4, "action_id": 292, "name": "Death",        "target": "Self"             }
+    ],
+    "m345": [
+        {"actions_file": 4, "action_id": 260, "name": "Calamity",     "target": "Random Character" },
+        {"actions_file": 4, "action_id": 293, "name": "Regeneration", "target": "Self"             },
+        {"actions_file": 4, "action_id": 294, "name": "Atrophy",      "target": "Self"             },
+        {"actions_file": 4, "action_id": 295, "name": "Attack",       "target": "Random Character" },
+        {"actions_file": 4, "action_id": 298, "name": "Mighty Guard", "target": "Characters' Party"}
+    ],
+    "m346": [
+        {"actions_file": 3, "action_id":  57, "name": "Slowga",        "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 293, "name": "Regeneration",  "target": "Self"             },
+        {"actions_file": 4, "action_id": 294, "name": "Atrophy",       "target": "Self"             },
+        {"actions_file": 4, "action_id": 297, "name": "Mega-Graviton", "target": "Characters' Party"},
+        {"actions_file": 4, "action_id": 299, "name": "Extra 44",      "target": "Random Character" }
+    ],
+    "m347": [],
+    "m348": [],
+    "m349": [],
+    "m350": [],
+    "m351": [],
+    "m352": [],
+    "m353": [],
+    "m354": [],
+    "m355": [],
+    "m356": [],
+    "m357": [],
+    "m358": [],
+    "m359": [],
+    "m360": []
 }

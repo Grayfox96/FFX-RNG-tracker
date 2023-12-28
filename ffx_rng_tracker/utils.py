@@ -1,9 +1,8 @@
 import colorsys
 from dataclasses import is_dataclass
+from enum import StrEnum
 from functools import cache, partial
 from typing import Any, overload
-
-from .data.constants import StringEnum
 
 
 def s32(integer: int) -> int:
@@ -85,11 +84,17 @@ def get_contrasting_color(color: str | tuple[int, int, int] | int,
 
 
 def stringify(object: Any) -> str:
-    return str(object).lower().replace(' ', '_')
+    string = (str(object).lower()
+              .replace(' ', '_')
+              .replace('(', '')
+              .replace(')', '')
+              .replace('\'', '')
+              )
+    return string
 
 
 @cache
-def search_stringenum[S: StringEnum](stringenum: type[S], string: str) -> S:
+def search_strenum[S: StrEnum](stringenum: type[S], string: str) -> S:
     for instance in stringenum:
         if stringify(instance) == string:
             return instance

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
+from ..data.actor import MonsterActor
 from ..data.constants import (ICV_VARIANCE, Autoability, Character,
                               EncounterCondition, MonsterSlot, Stat, Status)
 from ..data.encounter_formations import (BOSSES, FORMATIONS, SIMULATIONS,
                                          ZONES, Formation)
-from ..data.monsters import MonsterState
 from ..ui_functions import ctb_sorter
 from .main import Event
 
@@ -21,8 +21,8 @@ class Encounter(Event):
         self.condition = self._get_condition()
         self.index = self._get_index()
         self._duplicate_monsters_rng_advances()
-        self.party_icvs = self._get_party_icvs()
-        self.monsters_icvs = self._get_monsters_icvs()
+        self._set_party_icvs()
+        self._set_monsters_icvs()
         self.icvs_string = self._get_icvs_string()
         self.gamestate.normalize_ctbs(self.gamestate.get_min_ctb())
 
@@ -48,15 +48,15 @@ class Encounter(Event):
 
     def _update_current_monster_formation(self) -> None:
         for monster, slot in zip(self.formation.monsters, MonsterSlot):
-            self.gamestate.monster_party.append(MonsterState(monster, slot))
+            self.gamestate.monster_party.append(MonsterActor(monster, slot))
 
     def _get_condition(self) -> EncounterCondition:
         condition_rng = self._advance_rng(1) & 255
         if self.formation.forced_condition is not None:
             return self.formation.forced_condition
         for character in self.gamestate.party:
-            character_state = self.gamestate.characters[character]
-            if Autoability.INITIATIVE in character_state.autoabilities:
+            actor = self.gamestate.characters[character]
+            if Autoability.INITIATIVE in actor.autoabilities:
                 condition_rng -= 33
                 break
         if condition_rng < 32:
@@ -76,73 +76,52 @@ class Encounter(Event):
                         self._advance_rng(28 + index)
                 self._advance_rng(28 + index)
 
-    def _get_party_icvs(self) -> dict[str, int]:
-        icvs = {}
+    def _set_party_icvs(self) -> None:
         if self.condition is EncounterCondition.PREEMPTIVE:
-            for character in self.gamestate.party:
-                icvs[character] = 0
-                self.gamestate.characters[character].ctb = 0
+            return
         elif self.condition is EncounterCondition.AMBUSH:
-            for character, state in self.gamestate.characters.items():
-                if character not in self.gamestate.party:
+            for character in self.gamestate.party:
+                actor = self.gamestate.characters[character]
+                if actor.first_strike:
                     continue
-                icv = state.base_ctb * 3
-                icvs[character] = icv
-                state.ctb = icv
+                icv = actor.base_ctb * 3
+                if Status.HASTE in actor.statuses:
+                    icv = icv // 2
+                actor.ctb = icv
         else:
-            for character, state in self.gamestate.characters.items():
+            for character, actor in self.gamestate.characters.items():
                 if character is Character.UNKNOWN:
                     continue
-                index = min(20 + state.index, 27)
-                if character not in self.gamestate.party:
-                    self._advance_rng(index)
-                    continue
+                index = min(20 + actor.index, 27)
                 variance_rng = self._advance_rng(index)
-                variance = ICV_VARIANCE[state.stats[Stat.AGILITY]] + 1
-                variance = variance_rng % variance
-                base = state.base_ctb * 3
-                icvs[character] = base - variance
-                state.ctb = base - variance
-        for character in icvs:
-            state = self.gamestate.characters[character]
-            if state.first_strike:
-                icvs[character] = 0
-                state.ctb = 0
-            elif Status.HASTE in state.statuses:
-                icv = icvs[character] // 2
-                icvs[character] = icv
-                state.ctb = icv
-        return icvs
+                if character not in self.gamestate.party or actor.first_strike:
+                    continue
+                variance = ICV_VARIANCE[actor.stats[Stat.AGILITY]] + 1
+                icv = actor.base_ctb * 3 - (variance_rng % variance)
+                if Status.HASTE in actor.statuses:
+                    icv = icv // 2
+                actor.ctb = icv
 
-    def _get_monsters_icvs(self) -> list[int]:
-        icvs = []
+    def _set_monsters_icvs(self) -> None:
         if self.condition is EncounterCondition.PREEMPTIVE:
-            for m in self.gamestate.monster_party:
-                icv = m.base_ctb * 3
-                icvs.append(icv)
-                m.ctb = icv
+            for actor in self.gamestate.monster_party:
+                actor.ctb = actor.base_ctb * 3
         elif self.condition is EncounterCondition.AMBUSH:
-            for m in self.gamestate.monster_party:
-                icvs.append(0)
-                m.ctb = 0
+            return
         else:
-            for m in self.gamestate.monster_party:
-                base = m.base_ctb * 3 * 100
-                index = min(m.slot + 28, 35)
+            for actor in self.gamestate.monster_party:
+                index = min(actor.index + 28, 35)
                 variance_rng = self._advance_rng(index)
                 variance = 100 - (variance_rng % 11)
-                icvs.append(base // variance)
-                m.ctb = base // variance
+                actor.ctb = (actor.base_ctb * 3 * 100) // variance
             # empty monster party slots still advance rng
             for index in range(28 + len(self.formation.monsters), 36):
                 self._advance_rng(index)
-        return icvs
 
     def _get_icvs_string(self) -> str:
-        characters = [cs for c, cs in self.gamestate.characters.items()
+        characters = [actor for c, actor in self.gamestate.characters.items()
                       if c in self.gamestate.party]
-        monsters = self.gamestate.monster_party
-        return ctb_sorter(characters, monsters)
+        return ctb_sorter(characters, self.gamestate.monster_party)
 
 
 @dataclass

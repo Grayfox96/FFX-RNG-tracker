@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from itertools import product
 
 from ..configs import Configs
+from ..data.constants import DamageFormula
 from ..data.seeds import (DAMAGE_VALUES_NEEDED, FRAMES_FROM_BOOT,
                           POSSIBLE_XORED_DATETIMES, datetime_to_seed)
 from ..events.character_action import CharacterAction
@@ -25,9 +26,10 @@ class SeedFinder(ActionsTracker):
 
         indexes = []
         for index, event in enumerate(events):
-            if isinstance(event, CharacterAction):
-                if event.action.does_damage:
-                    indexes.append(index)
+            if (isinstance(event, CharacterAction)
+                    and event.action.damage_formula is not DamageFormula.NO_DAMAGE
+                    and event.action.damages_hp):
+                indexes.append(index)
 
         damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
         if len(indexes) < damage_values_needed:
@@ -69,7 +71,7 @@ class SeedFinder(ActionsTracker):
             damage_values.clear()
             for index in indexes:
                 event: CharacterAction = events[index]
-                damage_values.append(event.damage)
+                damage_values.extend([r.hp.damage for r in event.results])
             if damage_values == input_dvs:
                 self.input_widget.set_input(
                     f'# Seed number: {seed}\n{self.input_widget.get_input()}')

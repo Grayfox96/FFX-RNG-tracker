@@ -32,9 +32,14 @@ class YojimboTurn(Event):
             cost = 'free'
         else:
             cost = f'{self.gil} gil'
+        if self.overdrive:
+            overdrive = ' (OD used)'
+        else:
+            overdrive = ''
         string = (f'{self.action} -> {self.monster}: '
-                  f'{cost} [{self.motivation}/{self.action.needed_motivation}'
-                  f' motivation][{self.compatibility}/255 compatibility]')
+                  f'{cost}{overdrive} '
+                  f'[{self.motivation}/{self.action.needed_motivation} '
+                  f'motivation][{self.compatibility}/255 compatibility]')
         return string
 
     def _free_attack_check(self) -> bool:

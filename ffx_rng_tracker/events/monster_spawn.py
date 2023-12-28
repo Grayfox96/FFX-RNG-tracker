@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
+from ..data.actor import MonsterActor
 from ..data.constants import MonsterSlot, Status
-from ..data.monsters import Monster, MonsterState
+from ..data.monsters import Monster
 from .main import Event
 
 
@@ -20,20 +21,24 @@ class MonsterSpawn(Event):
                   f'with {self.ctb} CTB')
         return string
 
-    def _spawn_monster(self) -> MonsterState:
-        monster = MonsterState(self.monster, self.slot)
+    def _spawn_monster(self) -> MonsterActor:
+        actor = MonsterActor(self.monster, self.slot)
         if self.slot < len(self.gamestate.monster_party):
-            self.gamestate.monster_party[self.slot] = monster
+            self.gamestate.monster_party[self.slot] = actor
         else:
-            self.gamestate.monster_party.append(monster)
-        return monster
+            self.gamestate.monster_party.append(actor)
+        return actor
 
     def _calc_ctb(self) -> int:
         if self.ctb is not None:
             self.new_monster.ctb = self.ctb
             return self.new_monster.ctb
         last_actor = self.gamestate.last_actor
-        last_actor_ctb_at_spawn = last_actor.base_ctb * last_actor.last_action.rank
+        if last_actor.last_action:
+            last_actor_ctb_at_spawn = (last_actor.base_ctb
+                                       * last_actor.last_action.rank)
+        else:
+            last_actor_ctb_at_spawn = 0
         if Status.HASTE in last_actor.statuses:
             last_actor_ctb_at_spawn //= 2
         elif Status.SLOW in last_actor.statuses:

@@ -1,9 +1,9 @@
 from itertools import zip_longest
 
-from .data.characters import CharacterState
+from .data.actor import CharacterActor, MonsterActor
 from .data.constants import EquipmentType, Stat
 from .data.items import InventorySlot
-from .data.monsters import Monster, MonsterState
+from .data.monsters import Monster
 from .tracker import FFXRNGTracker
 from .utils import treeview
 
@@ -65,9 +65,9 @@ def get_status_chance_table(seed: int, amount: int) -> str:
 def format_monster_data(monster: Monster) -> str:
     data = treeview(vars(monster))
     data = data.split('\n')
-    wrap = 55
+    wrap = 79
     string = ''
-    for one, two in zip_longest(data[:wrap], data[wrap:], fillvalue=' '):
+    for one, two in zip_longest(data[:wrap], data[wrap:], fillvalue=''):
         if two:
             string += f'{one:40}|{two}\n'
         else:
@@ -75,8 +75,8 @@ def format_monster_data(monster: Monster) -> str:
     return string
 
 
-def ctb_sorter(characters: list[CharacterState],
-               monsters: list[MonsterState],
+def ctb_sorter(characters: list[CharacterActor],
+               monsters: list[MonsterActor],
                ) -> str:
     ctbs: list[tuple[str, str]] = []
 
@@ -86,8 +86,8 @@ def ctb_sorter(characters: list[CharacterState],
         ctbs.append((sort_key, string))
 
     for m in monsters:
-        sort_key = f'{m.ctb:03}1{m.slot:02}{256 - m.stats[Stat.AGILITY]:03}'
-        string = f'M{m.slot + 1}[{m.ctb}]'
+        sort_key = f'{m.ctb:03}1{m.index:02}{256 - m.stats[Stat.AGILITY]:03}'
+        string = f'M{m.index + 1}[{m.ctb}]'
         ctbs.append((sort_key, string))
 
     # sorting by icv, then by party, then by agility and index (for characters)

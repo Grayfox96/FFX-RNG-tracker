@@ -2,14 +2,13 @@ from itertools import chain
 
 from .configs import Configs
 from .data.actions import Action
-from .data.characters import (CHARACTERS_DEFAULTS, CharacterState,
-                              calculate_power_base)
+from .data.actor import Actor, CharacterActor, MonsterActor
+from .data.characters import CHARACTERS_DEFAULTS, calculate_power_base
 from .data.constants import (AEONS_STATS_CONSTANTS, BASE_COMPATIBILITY,
                              ENCOUNTERS_YUNA_STATS, Character, Item, Stat,
                              Status)
 from .data.equipment import Equipment
 from .data.items import InventorySlot
-from .data.monsters import MonsterState
 from .data.statuses import DURATION_STATUSES, TEMPORARY_STATUSES
 from .tracker import FFXRNGTracker
 
@@ -25,23 +24,20 @@ class GameState:
         self.zone_encounters_counts: dict[str, int] = {}
         self.reset()
 
-    def _get_characters(self) -> dict[Character, CharacterState]:
+    def _get_characters(self) -> dict[Character, CharacterActor]:
         characters = {}
         for character, defaults in CHARACTERS_DEFAULTS.items():
-            characters[character] = CharacterState(defaults)
+            characters[character] = CharacterActor(defaults)
         return characters
 
     def get_min_ctb(self) -> int:
         ctbs = set()
-        for character in self.party:
-            characterstate = self.characters[character]
-            if characterstate.dead or characterstate.inactive:
+        actors = [self.characters[c] for c in self.party] + self.monster_party
+        for actor in actors:
+            if (Status.DEATH in actor.statuses
+                    or Status.EJECT in actor.statuses):
                 continue
-            ctbs.add(characterstate.ctb)
-        for monsterstate in self.monster_party:
-            if monsterstate.dead:
-                continue
-            ctbs.add(monsterstate.ctb)
+            ctbs.add(actor.ctb)
         if not ctbs:
             # TODO
             # should this raise an error?
@@ -55,17 +51,17 @@ class GameState:
             actor.ctb -= min_ctb
 
     def setup_autostatuses(self) -> None:
-        for character in self.characters.values():
-            auto_statuses = set(character.auto_statuses)
-            if character.in_crit:
-                auto_statuses.update(character.sos_auto_statuses)
+        for actor in self.characters.values():
+            auto_statuses = set(actor.auto_statuses)
+            if actor.in_crit:
+                auto_statuses.update(actor.sos_auto_statuses)
             for status in auto_statuses:
-                if status not in character.statuses:
-                    character.statuses[status] = 255
-        for monster in self.monster_party:
-            for status in monster.monster.auto_statuses:
-                if status not in monster.statuses:
-                    monster.statuses[status] = 255
+                if status not in actor.statuses:
+                    actor.statuses[status] = 255
+        for actor in self.monster_party:
+            for status in actor.monster.auto_statuses:
+                if status not in actor.statuses:
+                    actor.statuses[status] = 255
 
     def calculate_aeon_stats(self) -> None:
         yuna_stats = self.characters[Character.YUNA].stats.copy()
@@ -98,18 +94,20 @@ class GameState:
                 aeon.set_stat(stat, value)
 
     def process_start_of_turn(self,
-                              actor: CharacterState | MonsterState,
+                              actor: Actor,
                               ) -> None:
         for status in TEMPORARY_STATUSES:
             actor.statuses.pop(status, None)
         self.setup_autostatuses()
 
     def process_end_of_turn(self,
-                            actor: CharacterState | MonsterState,
+                            actor: Actor,
                             action: Action,
                             ) -> None:
         self.last_actor = actor
         self.last_actor.last_action = action
+        if action.destroys_user:
+            actor.statuses[Status.EJECT] = 254
         statuses = actor.statuses.copy()
         for status, stacks in statuses.items():
             if status is Status.POISON:
@@ -143,13 +141,13 @@ class GameState:
         self.calculate_aeon_stats()
 
     def process_end_of_encounter(self) -> None:
-        for state in self.characters.values():
-            if Status.DEATH in state.statuses:
-                state.current_hp = 1
-            state.ctb = 0
-            state.statuses.clear()
-            for buff in state.buffs:
-                state.buffs[buff] = 0
+        for actor in self.characters.values():
+            if Status.DEATH in actor.statuses:
+                actor.current_hp = 1
+            actor.ctb = 0
+            actor.statuses.clear()
+            for buff in actor.buffs:
+                actor.buffs[buff] = 0
         self.monster_party.clear()
 
     def add_to_inventory(self, item: Item, quantity: int) -> None:
@@ -164,7 +162,8 @@ class GameState:
         empty_slot.quantity = quantity
 
     def clean_equipment_inventory(self) -> None:
-        while self.equipment_inventory and self.equipment_inventory[-1] is None:
+        while (self.equipment_inventory
+               and self.equipment_inventory[-1] is None):
             self.equipment_inventory.pop()
 
     def add_to_equipment_inventory(self, equipment: Equipment) -> None:
@@ -183,22 +182,22 @@ class GameState:
         self.equipment_inventory: list[Equipment | None] = []
         self.gil = 300
         self.party = [Character.TIDUS, Character.AURON]
-        self.monster_party: list[MonsterState] = []
-        self.last_actor: CharacterState | MonsterState = self.characters[Character.TIDUS]
+        self.monster_party: list[MonsterActor] = []
+        self.last_actor: Actor = self.characters[Character.TIDUS]
         self.compatibility = BASE_COMPATIBILITY[Configs.game_version]
         self.equipment_drops = 0
         self.encounters_count = 0
         self.random_encounters_count = 0
         self.zone_encounters_counts.clear()
         self.live_distance = 0
-        for character in self.characters.values():
-            character.reset()
+        for actor in self.characters.values():
+            actor.reset()
         self.calculate_aeon_stats_cache = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         self.calculate_aeon_stats()
-        for character in self.characters.values():
-            if character.index > 7:
-                character.current_hp = 99999
-                character.current_mp = 9999
+        for actor in self.characters.values():
+            if actor.index > 7:
+                actor.current_hp = 99999
+                actor.current_mp = 9999
 
     @property
     def gil(self) -> int:

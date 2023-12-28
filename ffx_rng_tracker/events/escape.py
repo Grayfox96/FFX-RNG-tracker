@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 
-from ..data.characters import CharacterState
+from ..data.actor import CharacterActor
 from ..data.constants import Status
 from .main import Event
 
 
 @dataclass
 class Escape(Event):
-    character: CharacterState
+    character: CharacterActor
 
     def __post_init__(self) -> None:
         self.escape = self._get_escape()
@@ -26,7 +26,7 @@ class Escape(Event):
         escape_roll = self._advance_rng(index) & 255
         escape = escape_roll < 191
         if escape:
-            self.character.statuses[Status.ESCAPE] = 254
+            self.character.statuses[Status.EJECT] = 254
         return escape
 
     def _get_ctb(self) -> int:

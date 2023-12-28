@@ -85,4 +85,5 @@ class FFXRNGTracker:
 
     def reset(self) -> None:
         """Reset the position of the rng arrays."""
-        self._rng_current_positions = [0 for _ in range(68)]
+        self._rng_current_positions.clear()
+        self._rng_current_positions.extend(0 for _ in range(68))

@@ -22,6 +22,6 @@ class Heal(Event):
 
     def _heal(self) -> None:
         for character in self.characters:
-            character_state = self.gamestate.characters[character]
-            character_state.current_hp += self.amount
-            character_state.current_mp += self.amount
+            actor = self.gamestate.characters[character]
+            actor.current_hp += self.amount
+            actor.current_mp += self.amount

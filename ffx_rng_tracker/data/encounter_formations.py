@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass, field
 
-from ..utils import open_cp1252, search_stringenum
+from ..utils import open_cp1252, search_strenum
 from .constants import Character, EncounterCondition
 from .file_functions import get_resource_path
 from .monsters import MONSTERS, MONSTERS_HD, Monster, get_monsters_dict
@@ -59,7 +59,7 @@ Formations = tuple[dict[str, Boss], dict[str, Simulation], dict[str, Zone]]
 
 def _get_condition(condition: str) -> EncounterCondition | None:
     try:
-        condition = search_stringenum(EncounterCondition, condition)
+        condition = search_strenum(EncounterCondition, condition)
     except ValueError:
         condition = None
     return condition

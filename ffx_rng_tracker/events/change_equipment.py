@@ -18,8 +18,8 @@ class ChangeEquipment(Event):
         return string
 
     def _change_equipment(self) -> None:
-        character = self.gamestate.characters[self.equipment.owner]
+        actor = self.gamestate.characters[self.equipment.owner]
         if self.equipment.type_ is EquipmentType.WEAPON:
-            character.weapon = self.equipment
+            actor.weapon = self.equipment
         elif self.equipment.type_ is EquipmentType.ARMOR:
-            character.armor = self.equipment
+            actor.armor = self.equipment

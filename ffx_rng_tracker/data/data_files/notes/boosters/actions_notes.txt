@@ -10,43 +10,17 @@ auron attack m5
 tidus attack m6
 
 encounter ammes
-# auron od, ignore first set of rolls
-# second set is actual rolls
-auron dragon_fang ???
-auron dragon_fang ???
-auron dragon_fang ???
-auron dragon_fang ???
-auron dragon_fang ???
-auron dragon_fang ???
+auron dragon_fang 2.0
 
-auron dragon_fang m1 2.0
-auron dragon_fang m2 2.0
-auron dragon_fang m3 2.0
-auron dragon_fang m4 2.0
-auron dragon_fang m5 2.0
-auron dragon_fang m6 2.0
-
-tidus ice_gem m1
-tidus ice_gem m1
-tidus ice_gem m1
-tidus ice_gem m1
-tidus ice_gem m1
-tidus ice_gem m1
+tidus ice_gem
 
 encounter tanker
 auron attack auron
 tidus ice_gem m1
-tidus ice_gem m1
-tidus ice_gem m1
-tidus ice_gem m1
-tidus ice_gem m1
-tidus ice_gem m1
 
 # -- Underwater Ruins --
 encounter sahagins
-tidus grenade m1
-tidus grenade m2
-tidus grenade m3
+tidus grenade monsters
 
 encounter geosgaeno
 
@@ -57,8 +31,7 @@ encounter klikk_2
 rikku shining_gem m1
 
 encounter piranhas
-rikku grenade m1
-rikku grenade m2
+rikku grenade monsters
 
 encounter tros
 rikku shining_gem m1
@@ -113,22 +86,21 @@ wakka attack m1
 
 # -- Luca --
 encounter machina_1
-tidus grenade m1
-tidus grenade m2
+tidus grenade monsters
 
 encounter machina_2
-tidus grenade m1
-tidus grenade m2
+tidus grenade monsters
 
 encounter machina_3
-tidus grenade m1
-tidus grenade m2
+tidus grenade monsters
 
-kimahri grenade m1
-kimahri grenade m2
+spawn worker 1
+spawn worker 2
+kimahri grenade monsters
 
-lulu grenade m1
-lulu grenade m2
+spawn worker 1
+spawn worker 2
+lulu grenade monsters
 
 encounter oblitzerator
 tidus dark_matter m1
@@ -202,7 +174,9 @@ wakka attack m4
 wakka attack m1
 
 # -- Crevasse --
-# encounter guado_encounter
+# encounter guado_encounter_1
+# encounter guado_encounter_2
+# encounter guado_encounter_3
 
 # Wendigo
 encounter wendigo
@@ -220,10 +194,7 @@ wakka attack m1
 
 # -- Home --
 encounter guado_+_3_bomb
-wakka dark_matter m1
-wakka dark_matter m2
-wakka dark_matter m3
-wakka dark_matter m4
+wakka dark_matter monsters
 
 encounter guado_+_2_dual_horn
 wakka attack m1
@@ -266,9 +237,7 @@ wakka attack m3
 
 # Fight 5
 encounter bevelle_guards_5
-wakka dark_matter m1
-wakka dark_matter m2
-wakka dark_matter m3
+wakka dark_matter monsters
 
 # -- Via Purifico --
 # Isaaru fights
@@ -299,8 +268,7 @@ wakka attack m1
 
 # -- Gagazet --
 encounter biran_&_yenke
-kimahri dark_matter m1
-kimahri dark_matter m2
+kimahri dark_matter monsters
 
 encounter seymour_flux
 wakka attack m1
@@ -344,34 +312,34 @@ wakka quick_hit_hd m1
 # encounter
 
 # Braska's Final Aeon
-encounter
-wakka quick_hit_hd braska's_final_aeon
-wakka quick_hit_hd braska's_final_aeon
-wakka quick_hit_hd braska's_final_aeon
+encounter bfa
+wakka quick_hit_hd braskas_final_aeon
+wakka quick_hit_hd braskas_final_aeon
+wakka quick_hit_hd braskas_final_aeon
 
 # Possessed Aeons' Luck is 1
 
-encounter
+encounter possessed_valefor
 stat valefor luck 1
 # wakka attack valefor_c
 wakka shining_gem valefor_c
 
-encounter
+encounter possessed_ifrit
 stat ifrit luck 1
 # wakka attack ifrit_c
 wakka shining_gem ifrit_c
 
-encounter
+encounter possessed_ixion
 stat ixion luck 1
 # wakka attack ixion_c
 wakka shining_gem ixion_c
 
-encounter
+encounter possessed_shiva
 stat shiva luck 1
 # wakka attack shiva_c
 wakka shining_gem shiva_c
 
-encounter
+encounter possessed_bahamut
 stat bahamut luck 1
 # wakka attack bahamut_c
 wakka shining_gem bahamut_c

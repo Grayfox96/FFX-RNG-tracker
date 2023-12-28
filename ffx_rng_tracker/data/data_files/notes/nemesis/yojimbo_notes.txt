@@ -35,7 +35,7 @@ zanmato ironclad overdrive
 zanmato earth_eater overdrive
 zanmato greater_sphere overdrive
 zanmato catastrophe overdrive
-zanmato th'uban overdrive
+zanmato thuban overdrive
 zanmato neslug overdrive
 zanmato ultima_buster overdrive
 

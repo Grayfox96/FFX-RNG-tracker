@@ -1,16 +1,7 @@
-from enum import Enum, IntEnum
+from enum import IntEnum, StrEnum
 
 
-class StringEnum(str, Enum):
-    """Enum subclass that creates enumerated constants
-    that are also subclasses of str.
-    """
-
-    def __str__(self) -> str:
-        return str.__str__(self)
-
-
-class EncounterCondition(StringEnum):
+class EncounterCondition(StrEnum):
     PREEMPTIVE = 'Preemptive'
     NORMAL = 'Normal'
     AMBUSH = 'Ambush'
@@ -21,7 +12,7 @@ class EquipmentSlots(IntEnum):
     MAX = 4
 
 
-class Element(StringEnum):
+class Element(StrEnum):
     FIRE = 'Fire'
     ICE = 'Ice'
     THUNDER = 'Thunder'
@@ -29,7 +20,7 @@ class Element(StringEnum):
     HOLY = 'Holy'
 
 
-class ElementalAffinity(StringEnum):
+class ElementalAffinity(StrEnum):
     ABSORBS = 'Absorbs'
     IMMUNE = 'Immune'
     RESISTS = 'Resists'
@@ -37,7 +28,7 @@ class ElementalAffinity(StringEnum):
     NEUTRAL = 'Neutral'
 
 
-class Status(StringEnum):
+class Status(StrEnum):
     DEATH = 'Death'
     ZOMBIE = 'Zombie'
     PETRIFY = 'Petrify'
@@ -53,44 +44,40 @@ class Status(StringEnum):
     SLEEP = 'Sleep'
     SILENCE = 'Silence'
     DARK = 'Dark'
-    PROTECT = 'Protect'
     SHELL = 'Shell'
+    PROTECT = 'Protect'
     REFLECT = 'Reflect'
-    NULBLAZE = 'NulBlaze'
-    NULFROST = 'NulFrost'
-    NULSHOCK = 'NulShock'
     NULTIDE = 'NulTide'
+    NULBLAZE = 'NulBlaze'
+    NULSHOCK = 'NulShock'
+    NULFROST = 'NulFrost'
     REGEN = 'Regen'
     HASTE = 'Haste'
     SLOW = 'Slow'
-    DEFEND = 'Defend'
-    SHIELD = 'Shield'
-    BOOST = 'Boost'
-    DELAY_WEAK = 'Delay (Weak)'
-    DELAY_STRONG = 'Delay (Strong)'
+    SCAN = 'Scan'
     POWER_DISTILLER = 'Power Distiller'
     MANA_DISTILLER = 'Mana Distiller'
     SPEED_DISTILLER = 'Speed Distiller'
     ABILITY_DISTILLER = 'Ability Distiller'
+    SHIELD = 'Shield'
+    BOOST = 'Boost'
+    EJECT = 'Eject'
+    AUTOLIFE = 'Auto-Life'
+    CURSE = 'Curse'
+    DEFEND = 'Defend'
     GUARD = 'Guard'
     SENTINEL = 'Sentinel'
-    SCAN = 'Scan'
-    LIFE = 'Life'
-    AUTOLIFE = 'Auto-Life'
-    EJECT = 'Eject'
     DOOM = 'Doom'
-    CURSE = 'Curse'
     MAX_HP_X_2 = 'MAX HP x 2'
     MAX_MP_X_2 = 'MAX MP x 2'
     MP_0 = 'MP = 0'
-    CRITICAL = 'Critical'
     DAMAGE_9999 = 'Damage 9999'
-    OVERDRIVE_X1_5 = 'OverDrive x1.5'
+    CRITICAL = 'Critical'
+    OVERDRIVE_X_1_5 = 'OverDrive x1.5'
     OVERDRIVE_X_2 = 'OverDrive x 2'
-    ESCAPE = 'Escape'
 
 
-class Character(StringEnum):
+class Character(StrEnum):
     TIDUS = 'Tidus'
     YUNA = 'Yuna'
     AURON = 'Auron'
@@ -112,49 +99,101 @@ class Character(StringEnum):
     UNKNOWN = 'Unknown'
 
 
-class KillType(StringEnum):
+class KillType(StrEnum):
     NORMAL = 'Normal'
     OVERKILL = 'Overkill'
 
 
-class Rarity(StringEnum):
+class Rarity(StrEnum):
     COMMON = 'Common'
     RARE = 'Rare'
 
 
-class EquipmentType(StringEnum):
+class EquipmentType(StrEnum):
     WEAPON = 'Weapon'
     ARMOR = 'Armor'
 
 
-class DamageType(StringEnum):
-    HP = 'HP'
-    STRENGTH = 'Strength'
-    SPECIAL_STRENGTH = 'Special Strength'
-    MAGIC = 'Magic'
-    SPECIAL_MAGIC = 'Special Magic'
-    ITEM = 'Item'
-    FIXED = 'Fixed'
-    PERCENTAGE_TOTAL = 'Percentage (Total)'
-    PERCENTAGE_CURRENT = 'Percentage (Current)'
-    HEALING = 'Healing'
-    GIL = 'Gil'
-    CTB = 'CTB'
+class DamageType(StrEnum):
+    PHYSICAL = 'Physical'
+    MAGICAL = 'Magical'
+    OTHER = 'Other'
 
 
-class TargetType(StringEnum):
+class DamageFormula(StrEnum):
+    NO_DAMAGE = "No Damage"
+    STRENGTH = "Strength"
+    PIERCING_STRENGTH = "Piercing Strength"
+    MAGIC = "Magic"
+    PIERCING_MAGIC = "Piercing Magic"
+    PERCENTAGE_CURRENT = "Percentage Current"
+    FIXED_NO_VARIANCE = "Fixed (no variance)"
+    HEALING = "Healing"
+    PERCENTAGE_TOTAL = "Percentage Total"
+    FIXED = "Fixed"
+    PERCENTAGE_TOTAL_MP = "Percentage Total MP (unused)"
+    BASE_CTB = "Base CTB (unused)"
+    PERCENTAGE_CURRENT_MP = "Percentage Current MP (unused)"
+    CTB = "CTB"
+    PIERCING_STRENGTH_NO_VARIANCE = "Piercing Strength (no variance) (unused)"
+    SPECIAL_MAGIC = "Special Magic"
+    HP = "HP"
+    CELESTIAL_HIGH_HP = "Celestial High HP"
+    CELESTIAL_HIGH_MP = "Celestial MP"
+    CELESTIAL_LOW_HP = "Celestial Low HP"
+    SPECIAL_MAGIC_NO_VARIANCE = "Special Magic (no variance) (unused)"
+    GIL = "Gil"
+    KILLS = "Kills"
+    DEAL_9999 = "Deal 9999"
+
+
+class TargetType(StrEnum):
     SELF = 'Self'
     SINGLE = 'Single'
+    PARTY = 'Either Party'
+    SINGLE_CHARACTER = 'Single Character'
+    RANDOM_CHARACTER = 'Random Character'
+    CHARACTERS_PARTY = 'Characters\' Party'
+    SINGLE_MONSTER = 'Single Monster'
+    RANDOM_MONSTER = 'Random Monster'
+    MONSTERS_PARTY = 'Monsters\' Party'
+    COUNTER = 'Counter'
+    COUNTER_SELF = 'Counter Self'
+    # Monster actions target types
     ALL = 'All'
-    SINGLE_CHARACTER = 'Single character'
-    RANDOM_CHARACTER = 'Random character'
-    ALL_CHARACTERS = 'All characters'
-    SINGLE_MONSTER = 'Single monster'
-    RANDOM_MONSTER = 'Random monster'
-    ALL_MONSTERS = 'All monsters'
-    LAST_ACTOR = 'Last actor'
-    HIGHEST_HP_CHARACTER = 'Highest HP character'
-    LOWEST_HP_CHARACTER = 'Lowest HP character'
+    RANDOM_CHARACTER_REFLECT = 'Random Character Affected By Reflect'
+    RANDOM_CHARACTER_ZOMBIE = 'Random Character Affected By Zombie'
+    RANDOM_CHARACTER_PETRIFY = 'Random Character Affected By Petrify'
+    RANDOM_CHARACTER_NOT_PETRIFY = 'Random Character Not Affected By Petrify'
+    RANDOM_CHARACTER_NOT_DOOM = 'Random Character Not Affected By Doom'
+    RANDOM_CHARACTER_NOT_BERSERK = 'Random Character Not Affected By Berserk'
+    RANDOM_CHARACTER_NOT_CONFUSE = 'Random Character Not Affected By Confuse'
+    RANDOM_CHARACTER_NOT_CURSE = 'Random Character Not Affected By Curse'
+    RANDOM_CHARACTER_NOT_POISON = 'Random Character Not Affected By Poison'
+    HIGHEST_HP_CHARACTER = 'Highest HP Character'
+    HIGHEST_STR_CHARACTER = 'Highest Str Character'
+    LOWEST_HP_CHARACTER = 'Lowest HP Character'
+    HIGHEST_MP_CHARACTER = 'Highest MP Character'
+    LOWEST_MAG_DEF_CHARACTER = "Lowest Mag Def Character"
+    RANDOM_MONSTER_NOT_SHELL = 'Random Monster Not Affected By Shell'
+    RANDOM_MONSTER_NOT_PROTECT = 'Random Monster Not Affected By Protect'
+    RANDOM_MONSTER_NOT_REFLECT = 'Random Monster Not Affected By Reflect'
+    PROVOKER = 'Provoker'
+    LAST_ATTACKER = 'Last Attacker'
+    LAST_TARGET = 'Last Target'
+    COUNTER_RANDOM_CHARACTER = 'Counter Random Character'
+    COUNTER_CHARACTERS_PARTY = 'Counter Characters\' Party'
+    COUNTER_ALL = 'Counter All'
+    COUNTER_LAST_TARGET = 'Counter Last Target'
+
+
+class HitChanceFormula(StrEnum):
+    ALWAYS = 'Always Hits'
+    USE_ACTION_ACCURACY = 'Uses Action Accuracy'
+    USE_ACCURACY = 'Accuracy'
+    USE_ACCURACY_x_2_5 = 'Accuracy * 2.5'
+    USE_ACCURACY_x_1_5 = 'Accuracy * 1.5'
+    USE_ACCURACY_x_0_5 = 'Accuracy * 0.5'
 
 
 class MonsterSlot(IntEnum):
@@ -168,7 +207,7 @@ class MonsterSlot(IntEnum):
     MONSTER_8 = 7
 
 
-class Stat(StringEnum):
+class Stat(StrEnum):
     HP = 'HP'
     MP = 'MP'
     STRENGTH = 'Strength'
@@ -181,7 +220,7 @@ class Stat(StringEnum):
     ACCURACY = 'Accuracy'
 
 
-class Buff(StringEnum):
+class Buff(StrEnum):
     CHEER = 'Cheer'
     AIM = 'Aim'
     FOCUS = 'Focus'
@@ -190,7 +229,7 @@ class Buff(StringEnum):
     JINX = 'Jinx'
 
 
-class Item(StringEnum):
+class Item(StrEnum):
     POTION = 'Potion'
     HI_POTION = 'Hi-Potion'
     X_POTION = 'X-Potion'
@@ -305,7 +344,7 @@ class Item(StringEnum):
     WINNING_FORMULA = 'Winning Formula'
 
 
-class Autoability(StringEnum):
+class Autoability(StrEnum):
     SENSOR = 'Sensor'
     FIRST_STRIKE = 'First Strike'
     INITIATIVE = 'Initiative'
@@ -442,13 +481,13 @@ class Autoability(StringEnum):
     EXTRA_5 = 'Extra 5'
 
 
-class GameVersion(StringEnum):
+class GameVersion(StrEnum):
     PS2NA = 'PS2 NA'
     PS2INT = 'PS2 INT'
     HD = 'HD'
 
 
-class SpeedrunCategory(StringEnum):
+class SpeedrunCategory(StrEnum):
     ANYPERCENT = 'AnyPercent'
     BOOSTERS = 'Boosters'
     NSG = 'No Sphere Grid'
@@ -541,13 +580,6 @@ ELEMENTAL_AFFINITY_MODIFIERS = {
     ElementalAffinity.WEAK: 1.5,
     ElementalAffinity.NEUTRAL: 1.0,
 }
-ELEMENT_BITMASKS = {
-    Element.FIRE: 0b00001,
-    Element.ICE: 0b00010,
-    Element.THUNDER: 0b00100,
-    Element.WATER: 0b01000,
-    Element.HOLY: 0b10000,
-}
 
 EQUIPMENT_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 5)
 EQUIPMENT_EMPTY_SLOTS_GIL_MODIFIERS = (1, 1, 1.5, 3, 400)
@@ -638,4 +670,24 @@ SHORT_STATS_NAMES = {
     Stat.LUCK: 'LCK',
     Stat.EVASION: 'EVA',
     Stat.ACCURACY: 'ACC',
+}
+
+HIT_CHANCE_FORMULA_TABLE = (
+    HitChanceFormula.ALWAYS,
+    HitChanceFormula.USE_ACTION_ACCURACY,
+    HitChanceFormula.USE_ACTION_ACCURACY,
+    HitChanceFormula.USE_ACCURACY,
+    HitChanceFormula.USE_ACCURACY,
+    HitChanceFormula.USE_ACCURACY_x_2_5,
+    HitChanceFormula.USE_ACCURACY_x_1_5,
+    HitChanceFormula.USE_ACCURACY_x_0_5,
+)
+
+COUNTER_TARGET_TYPES = {
+    TargetType.COUNTER,
+    TargetType.COUNTER_SELF,
+    TargetType.COUNTER_RANDOM_CHARACTER,
+    TargetType.COUNTER_CHARACTERS_PARTY,
+    TargetType.COUNTER_ALL,
+    TargetType.COUNTER_LAST_TARGET,
 }
