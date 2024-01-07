@@ -4,16 +4,10 @@ from tkinter import ttk
 from typing import Callable
 
 from ..configs import Configs
-from ..data.encounter_formations import ZONES
 from ..data.encounters import EncounterData, get_encounter_notes
 from ..events.parser import EventParser
-from ..ui_abstract.encounters_planner import EncountersPlanner
-from ..ui_abstract.encounters_table import EncountersTable
 from ..ui_abstract.encounters_tracker import EncountersTracker
-from ..ui_tkinter.input_widget import TkSearchBarWidget
-from ..utils import stringify
-from .base_widgets import (BetterSpinbox, ScrollableFrame, TkConfirmPopup,
-                           TkWarningPopup)
+from .base_widgets import ScrollableFrame, TkConfirmPopup, TkWarningPopup
 from .output_widget import TkOutputWidget
 
 
@@ -67,21 +61,25 @@ class TkEncountersInputWidget(tk.Frame):
 
         self.callback_func: Callable = None
 
-        self.initiative_equip = ttk.Checkbutton(self, text='Sentry')
-        self.initiative_equip.grid(row=0, column=0, sticky='w')
-        self.initiative_equip.state(['selected'])
+        self.initiative_button = ttk.Checkbutton(self, text='Sentry')
+        self.initiative_button.grid(row=0, column=0, sticky='w')
+        self.initiative_button.state(['selected'])
+
+        self.padding_button = ttk.Checkbutton(self, text='Padding')
+        self.padding_button.grid(row=0, column=1, sticky='w')
+        self.padding_button.state(['selected'])
 
         self.current_zone = tk.StringVar(value='Start')
 
         self.sliders_frame = ScrollableFrame(self)
-        self.sliders_frame.grid(row=1, column=0, columnspan=2, sticky='nsew')
+        self.sliders_frame.grid(row=1, column=0, columnspan=3, sticky='nsew')
         self.rowconfigure(1, weight=1)
 
         self.sliders: dict[str, EncounterSlider] = {}
 
         self.start_button = tk.Radiobutton(
             self, text='Start', variable=self.current_zone, value='Start')
-        self.start_button.grid(row=0, column=1, sticky='w')
+        self.start_button.grid(row=0, column=2, sticky='w')
 
     def add_slider(self, label: str, min: int, default: int, max: int) -> None:
         slider = EncounterSlider(
@@ -90,12 +88,13 @@ class TkEncountersInputWidget(tk.Frame):
         self.sliders[label] = slider
 
     def get_input(self) -> str:
-        spacer = '# ' + ('=' * 60)
         current_zone = self.current_zone.get()
-        initiative = 'selected' in self.initiative_equip.state()
+        initiative = 'selected' in self.initiative_button.state()
         initiative_equipped = False
 
         input_data = []
+        if 'selected' not in self.padding_button.state():
+            input_data.append('/nopadding')
         for encounter in self.encounters:
             if initiative and encounter.initiative:
                 if not initiative_equipped:
@@ -109,7 +108,6 @@ class TkEncountersInputWidget(tk.Frame):
             else:
                 encs = self.sliders[encounter.label].get()
                 if encs >= 0:
-                    input_data.append(spacer)
                     if current_zone == encounter.label:
                         input_data.append('///')
                     input_data.append(f'#     {encounter.label}:')
@@ -125,7 +123,8 @@ class TkEncountersInputWidget(tk.Frame):
         return
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
-        self.initiative_equip.config(command=callback_func)
+        self.initiative_button.config(command=callback_func)
+        self.padding_button.config(command=callback_func)
         self.start_button.config(command=callback_func)
         for slider in self.sliders.values():
             slider.config(command=callback_func)
@@ -134,15 +133,19 @@ class TkEncountersInputWidget(tk.Frame):
 
 class TkEncountersOutputWidget(TkOutputWidget):
 
+    def __init__(self, parent, *args, **kwargs) -> None:
+        kwargs.setdefault('wrap', 'none')
+        super().__init__(parent, *args, **kwargs)
+
     def get_regex_patterns(self) -> dict[str, str]:
         important_monsters = '(?i)' + '|'.join(
             [re.escape(m) for m in Configs.important_monsters])
         patterns = {
-            'preemptive': 'Preemptive',
-            'ambush': 'Ambush',
+            'preemptive': r'\mPreemptive\M',
+            'ambush': r'\mAmbush\M',
             'important monster': important_monsters,
-            'encounter': '^#(.+?)?$',
-            'error': '^.*# Error: .+$',
+            'encounter': '^# (=| ).+$',
+            'error': '^# Error: .+$',
         }
         return patterns
 
@@ -175,231 +178,4 @@ class TkEncountersTracker(tk.Frame):
             output_widget=output_widget,
             warning_popup=TkWarningPopup(),
             confirmation_popup=TkConfirmPopup(),
-            )
-
-
-class TkEncountersPlannerInputWidget(tk.Frame):
-
-    def __init__(self, parent, *args, **kwargs) -> None:
-        super().__init__(parent, *args, **kwargs)
-
-        self.callback_func: Callable = None
-
-        self.searchbar = TkSearchBarWidget(self)
-        self.searchbar.pack(fill='x')
-        self.searchbar.set_input('Type monster names here')
-
-        options = ['Boss', 'Simulation']
-        options.extend([z.name for z in ZONES.values()])
-        self.selected_zone = tk.StringVar(self)
-        self.selected_zone.set(options[0])
-        combobox = ttk.Combobox(
-            self, values=options, state='readonly',
-            textvariable=self.selected_zone)
-        combobox.pack(fill='x')
-        button = tk.Button(
-            self, text='Add Slider',
-            command=lambda: self.add_slider(self.selected_zone.get()))
-        button.pack(fill='x')
-
-        self.initiative_equip = ttk.Checkbutton(self, text='Initiative')
-        self.initiative_equip.pack(fill='x')
-        self.initiative_equip.state(['selected'])
-
-        self.current_zone_index = tk.IntVar(self, value=0)
-
-        self.sliders_frame = ScrollableFrame(self)
-        self.sliders_frame.pack(expand=True, fill='both')
-        self.sliders: list[EncounterSlider] = []
-
-    def add_slider(self,
-                   label: str,
-                   min: int = 0,
-                   default: int = 1,
-                   max: int = 100
-                   ) -> None:
-        value = len(self.sliders)
-        slider = EncounterSlider(
-            self.sliders_frame, label, min, default, max,
-            self.current_zone_index, value, self.callback_func)
-        slider.pack(anchor='w')
-        self.sliders.append(slider)
-
-    def get_input(self) -> str:
-        spacer = '# ' + ('=' * 60)
-        current_zone_index = self.current_zone_index.get()
-        initiative_equip = 'selected' in self.initiative_equip.state()
-        input_data = []
-        if initiative_equip:
-            input_data.append('equip weapon tidus 1 initiative')
-        for index, scale in enumerate(self.sliders):
-            name = (stringify(scale.get_name())
-                    .replace('(', '')
-                    .replace(')', '')
-                    .replace('-', '_')
-                    .replace('\'', '')
-                    )
-            while '__' in name:
-                name = name.replace('__', '_')
-            match name:
-                case 'boss':
-                    name = 'dummy'
-                case 'simulation':
-                    name = 'simulation'
-            for count in range(scale.get()):
-                if count == 0:
-                    # if there is some data append a spacer
-                    if input_data:
-                        input_data.append(spacer)
-                    if index == current_zone_index:
-                        input_data.append('///')
-                    if name in ZONES:
-                        input_data.append(f'#     {ZONES[name].name}:')
-                line = f'encounter {name}'
-                input_data.append(line)
-        return '\n'.join(input_data)
-
-    def set_input(self, text: str) -> None:
-        return
-
-    def register_callback(self, callback_func: Callable[[], None]) -> None:
-        self.searchbar.register_callback(callback_func)
-        self.initiative_equip.config(command=callback_func)
-        for slider in self.sliders:
-            slider.config(command=callback_func)
-        self.callback_func = callback_func
-
-
-class TkEncountersPlanner(tk.Frame):
-    """"""
-
-    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
-        super().__init__(parent, *args, **kwargs)
-
-        input_widget = TkEncountersPlannerInputWidget(self)
-        input_widget.pack(fill='y', side='left')
-
-        output_widget = TkEncountersOutputWidget(self)
-        output_widget.pack(expand=True, fill='both', side='right')
-
-        self.tracker = EncountersPlanner(
-            parser=parser,
-            input_widget=input_widget,
-            output_widget=output_widget,
-            warning_popup=TkWarningPopup(),
-            confirmation_popup=TkConfirmPopup(),
-            search_bar=input_widget.searchbar,
-            )
-
-
-class TkEncountersTableInputWidget(tk.Frame):
-    """"""
-    def __init__(self, parent, *args, **kwargs) -> None:
-        super().__init__(parent, *args, **kwargs)
-
-        self.searchbar = TkSearchBarWidget(self)
-        self.searchbar.grid(row=0, column=0, columnspan=2, sticky='ew')
-        self.searchbar.set_input('Type monster names here')
-
-        self.initiative_equip = ttk.Checkbutton(self, text='Initiative')
-        self.initiative_equip.grid(row=1, column=0, sticky='w')
-        self.initiative_equip.state(['selected'])
-
-        tk.Label(self, text='Encounters to show').grid(row=2, column=0)
-        self.shown_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.shown_encounters.grid(row=2, column=1)
-        self.shown_encounters.set(20)
-
-        tk.Label(self, text='Start from').grid(row=3, column=0)
-        self.starting_encounter = BetterSpinbox(self, from_=-2000, to=2000)
-        self.starting_encounter.grid(row=3, column=1)
-
-        tk.Label(self, text='Random Encounters').grid(row=4, column=0)
-        self.random_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.random_encounters.grid(row=4, column=1)
-
-        tk.Label(self, text='Bosses').grid(row=5, column=0)
-        self.forced_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.forced_encounters.grid(row=5, column=1)
-
-        tk.Label(self, text='Simulated Encounters').grid(row=6, column=0)
-        self.simulated_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.simulated_encounters.grid(row=6, column=1)
-
-        zones_frame = ScrollableFrame(self)
-        zones_frame.grid(row=10, column=0, columnspan=2, sticky='nsew')
-        self.rowconfigure(10, weight=1)
-
-        self.zones_buttons: dict[str, ttk.Checkbutton] = {}
-        self.zones: dict[str, tk.BooleanVar] = {}
-        for zone_name, zone in ZONES.items():
-            zone_var = tk.BooleanVar(zones_frame, value=False)
-            checkbutton = ttk.Checkbutton(
-                zones_frame, text=zone.name, variable=zone_var)
-            checkbutton.pack(anchor='w', fill='x')
-            self.zones[zone_name] = zone_var
-            self.zones_buttons[zone_name] = checkbutton
-
-    def get_input(self) -> str:
-        initiative_equip = 'selected' in self.initiative_equip.state()
-
-        input_data = []
-        if initiative_equip:
-            input_data.append('equip weapon tidus 1 initiative')
-
-        starting_encounter = int(self.starting_encounter.get())
-        input_data.append(f'encounters_count total {starting_encounter}')
-
-        forced_encounters = int(self.forced_encounters.get())
-        input_data.append(f'roll rng1 {forced_encounters}')
-        input_data.append(f'encounters_count total +{forced_encounters}')
-
-        random_encounters = int(self.random_encounters.get())
-        input_data.append(f'roll rng1 {random_encounters * 2}')
-        input_data.append(f'encounters_count total +{random_encounters}')
-        input_data.append(f'encounters_count random +{random_encounters}')
-
-        simulated_encounters = int(self.simulated_encounters.get())
-        input_data.append(f'roll rng1 {simulated_encounters}')
-
-        zones = [zone for zone, active in self.zones.items() if active.get()]
-        if zones:
-            for _ in range(int(self.shown_encounters.get())):
-                input_data.append(f'encounter multizone {' '.join(zones)}')
-        return '\n'.join(input_data)
-
-    def set_input(self, text: str) -> None:
-        return
-
-    def register_callback(self, callback_func: Callable[[], None]) -> None:
-        self.searchbar.register_callback(callback_func)
-        self.initiative_equip.config(command=callback_func)
-        self.shown_encounters.config(command=callback_func)
-        self.starting_encounter.config(command=callback_func)
-        self.forced_encounters.config(command=callback_func)
-        self.random_encounters.config(command=callback_func)
-        self.simulated_encounters.config(command=callback_func)
-        for button in self.zones_buttons.values():
-            button.config(command=callback_func)
-
-
-class TkEncountersTable(tk.Frame):
-    """"""
-
-    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
-        super().__init__(parent, *args, **kwargs)
-
-        input_widget = TkEncountersTableInputWidget(self)
-        input_widget.pack(fill='y', side='left')
-
-        output_widget = TkEncountersOutputWidget(self, wrap='none')
-        output_widget.pack(expand=True, fill='both', side='right')
-
-        self.tracker = EncountersTable(
-            parser=parser,
-            input_widget=input_widget,
-            output_widget=output_widget,
-            warning_popup=TkWarningPopup(),
-            confirmation_popup=TkConfirmPopup(),
-            search_bar=input_widget.searchbar,
             )

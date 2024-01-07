@@ -10,9 +10,8 @@ from .input_widget import InputWidget
 class EncountersPlanner(EncountersTracker):
     search_bar: InputWidget
 
-    def edit_output(self, output: str) -> str:
-        output = output.replace('Simulation: ', 'Simulation')
-        output = output.replace('Boss: ', 'Boss')
+    def edit_output(self, output: str, padding: bool = False) -> str:
+        output = output.replace('Simulated ', '')
         # TODO
         # find a way to find conflicting monster names
         # instead of hardcoding them
@@ -35,7 +34,7 @@ class EncountersPlanner(EncountersTracker):
                 except ValueError:
                     index_1 = len(output) + 1
                 try:
-                    index_2 = output.index(f': {name}', index)
+                    index_2 = output.index(f'| {name}', index)
                 except ValueError:
                     index_2 = len(output) + 1
                 index = min(index_1, index_2)
@@ -49,14 +48,13 @@ class EncountersPlanner(EncountersTracker):
         captured_monsters = [re.escape(m)
                              for m, t in monsters_tally.items()
                              if t >= 10]
-        pattern = '|'.join(captured_monsters)
+        pattern = fr'\m{'|'.join(captured_monsters)}\M'
         self.output_widget.regex_patterns['captured monster'] = pattern
 
-        important_monsters = self.search_bar.get_input()
+        monsters = self.search_bar.get_input()
         for symbol in (',', '-', '/', '\\', '.'):
-            important_monsters = important_monsters.replace(symbol, ' ')
-        important_monsters = important_monsters.split()
-        pattern = '|'.join([re.escape(m.strip()) for m in important_monsters])
+            monsters = monsters.replace(symbol, ' ')
+        pattern = fr'\m{'|'.join([re.escape(m) for m in monsters.split()])}\M'
         self.output_widget.regex_patterns['important monster'] = pattern
 
-        return super().edit_output(output)
+        return super().edit_output(output, padding)

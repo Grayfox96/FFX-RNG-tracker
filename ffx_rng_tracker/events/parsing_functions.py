@@ -580,8 +580,8 @@ def parse_character_ap(gs: GameState,
 
 
 def parse_actor_status(gs: GameState,
-                           actor_name: str = '',
-                           *_) -> Comment:
+                       actor_name: str = '',
+                       *_) -> Comment:
     if not actor_name:
         raise EventParsingError
     if actor_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
@@ -592,13 +592,13 @@ def parse_actor_status(gs: GameState,
         except ValueError:
             raise EventParsingError(f'"{actor_name}" is not a valid actor')
         actor = gs.characters[character]
-    text = f'{actor}: {actor.current_hp}/{actor.max_hp} HP'
+    text = f'Status: {actor} {actor.current_hp}/{actor.max_hp} HP'
     statuses = [f'{s} ({stacks})' for s, stacks in actor.statuses.items()]
     if statuses:
-        text += f'| Statuses: {', '.join(statuses)}'
+        text += f' | Statuses: {', '.join(statuses)}'
     buffs = [f'{b} ({stacks})' for b, stacks in actor.buffs.items() if stacks]
     if buffs:
-        text += f'| Buffs: {', '.join(statuses)}'
+        text += f' | Buffs: {', '.join(statuses)}'
     return Comment(gs, text)
 
 

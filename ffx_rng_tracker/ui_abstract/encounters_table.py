@@ -1,9 +1,6 @@
 import re
 from dataclasses import dataclass
 
-from ..data.encounter_formations import ZONES
-from ..events.encounter import MultizoneRandomEncounter
-from ..events.main import Event
 from .encounters_tracker import EncountersTracker
 from .input_widget import InputWidget
 
@@ -12,55 +9,49 @@ from .input_widget import InputWidget
 class EncountersTable(EncountersTracker):
     search_bar: InputWidget
 
-    def __post_init__(self) -> None:
-        self.paddings = self._get_paddings()
-        super().__post_init__()
-
-    def events_to_string(self, events: list[Event]) -> str:
-        output = []
-        for event in events:
-            if not isinstance(event, MultizoneRandomEncounter):
-                continue
-            if not output:
-                zones = []
-                for zone in event.zones:
-                    zone_name = ZONES[zone].name
-                    padding = self.paddings[zone]
-                    zones.append(f'{zone_name:{padding}}')
-                first_line = (' ' * 26) + ''.join(zones)
-                output.append(first_line)
-                output.append('=' * len(first_line))
-            line = ''
-            for enc in event.encounters:
-                if not line:
-                    enc = event.encounters[0]
-                    line += (f'{enc.index:4}|{enc.random_index:4}|'
-                             f'{enc.zone_index:3}: {enc.condition:10} ')
-                padding = self.paddings[enc.name]
-                formation = str(enc.formation)
-                line += f'{formation:{padding}}'
-            output.append(line)
-
-        important_monsters = self.search_bar.get_input()
+    def edit_output(self, output: str, padding: bool = False) -> str:
+        monsters = self.search_bar.get_input()
         for symbol in (',', '-', '/', '\\', '.'):
-            important_monsters = important_monsters.replace(symbol, ' ')
-        important_monsters = important_monsters.split()
-        pattern = '(?i)' + '|'.join(
-            [re.escape(m.strip()) for m in important_monsters])
+            monsters = monsters.replace(symbol, ' ')
+        pattern = fr'(?i)\m{'|'.join([re.escape(m) for m in monsters.split()])}\M'
         self.output_widget.regex_patterns['important monster'] = pattern
 
-        return '\n'.join(output)
-
-    def edit_output(self, output: str) -> str:
-        output = output.replace(' Normal', '       ')
-        return output
-
-    def _get_paddings(self) -> dict[str, int]:
-        paddings = {}
-        for zone, data in ZONES.items():
-            padding = len(data.name)
-            for f in data.formations:
-                monsters_padding = len(', '.join([str(m) for m in f.monsters]))
-                padding = max(padding, monsters_padding)
-            paddings[zone] = padding + 1
-        return paddings
+        # if the text contains /// it hides the lines before it
+        if output.find('///') >= 0:
+            output = output.split('///')[-1]
+            output = output[output.find('\n') + 1:]
+        if not output:
+            return output
+        output_lines = output.splitlines()
+        zones = output_lines[0].split(' | ')[1].split('/')
+        for index, line in enumerate(output_lines):
+            parts = line.split(' | ')
+            # remove icvs
+            parts.pop()
+            # replace zones with encounter condition
+            # some encounters force a particular condition so it's possible
+            # to get different ones in different zones
+            parts[1] = ''
+            if 'Ambush' in line:
+                parts[1] += '$amb'
+            if 'Preemptive' in line:
+                if parts[1]:
+                    parts[1] += '/'
+                parts[1] += '$pre'
+            if parts[1] and 'Normal' in line:
+                parts[1] += '/$nor'
+            output_lines[index] = ' | '.join(parts)
+        output_lines.insert(
+            0, f'Random Encounter: | Condition | {' | '.join(zones)}')
+        output = ('\n'.join(output_lines)
+                  .replace(' Normal', '')
+                  .replace('Ambush', '')
+                  .replace('Preemptive', '')
+                  .replace('$nor', 'Normal')
+                  .replace('$amb', 'Ambush')
+                  .replace('$pre', 'Preemptive')
+                  )
+        output = self.pad_output(output).replace('Random Encounter: ', '')
+        output_lines = output.splitlines()
+        output_lines.insert(1, '=' * max(len(line) for line in output_lines))
+        return '\n'.join(output_lines)

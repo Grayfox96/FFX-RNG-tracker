@@ -17,9 +17,7 @@ class MonsterSpawn(Event):
         self.ctb = self._calc_ctb()
 
     def __str__(self) -> str:
-        string = (f'Spawned monster {self.new_monster} '
-                  f'with {self.ctb} CTB')
-        return string
+        return f'Spawn: {self.new_monster} with {self.ctb} CTB'
 
     def _spawn_monster(self) -> MonsterActor:
         actor = MonsterActor(self.monster, self.slot)

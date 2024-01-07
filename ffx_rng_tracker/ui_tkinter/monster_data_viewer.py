@@ -66,6 +66,6 @@ class TkMonsterDataViewer(tk.Frame):
         monster_selection_widget.register_callback(self.callback)
 
     def callback(self, *_, **__) -> None:
-        filter = '(?i)' + re.escape(self.tracker.search_bar_widget.get_input())
+        filter = f'(?i){re.escape(self.tracker.search_bar_widget.get_input())}'
         self.output_widget.regex_patterns['important monster'] = filter
         self.tracker.callback()

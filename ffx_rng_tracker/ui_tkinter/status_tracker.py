@@ -8,7 +8,7 @@ from .output_widget import TkOutputWidget
 class TkStatusTrackerOutputWidget(TkOutputWidget):
 
     def get_regex_patterns(self) -> dict[str, str]:
-        return {'status miss': '100'}
+        return {'status miss': r'\m100\M'}
 
 
 class TkStatusTracker(tk.Frame):

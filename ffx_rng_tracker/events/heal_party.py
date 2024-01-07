@@ -16,8 +16,8 @@ class Heal(Event):
         if len(self.characters) == len(tuple(Character)):
             characters = 'every Character'
         else:
-            characters = ', '.join([str(c) for c in self.characters])
-        string = f'Healed {characters} by {self.amount} HP and MP'
+            characters = ', '.join([c for c in self.characters])
+        string = f'Heal: {characters} healed by {self.amount} HP and MP'
         return string
 
     def _heal(self) -> None:

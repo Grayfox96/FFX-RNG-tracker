@@ -11,11 +11,13 @@ class TkActionsOutputWidget(TkOutputWidget):
 
     def get_regex_patterns(self) -> dict[str, str]:
         tags = {
-            'encounter': 'Encounter',
-            'preemptive': 'Preemptive',
-            'ambush': 'Ambush',
-            'crit': r'\(Crit\)',
-            'stat update': '^.*changed to.+$',
+            'encounter': '^Encounter.*$',
+            'preemptive': r'\mPreemptive\M',
+            'ambush': r'\mAmbush\M',
+            'crit': r'\mCrit\M',
+            'stat update': '^Stat: .+$',
+            'equipment update': '^Equipment: .+$',
+            'party update': '^Party: .+$',
             'status miss': r'\[[^\]]* Fail\]'
         }
         tags.update(super().get_regex_patterns())

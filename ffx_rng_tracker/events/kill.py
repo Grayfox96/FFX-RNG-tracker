@@ -40,27 +40,26 @@ class Kill(Event):
             self.gamestate.characters[character].ap += ap
 
     def __str__(self) -> str:
-        string = f'{self.monster} drops: '
-        drops = []
-        if self.item_1:
-            drops.append(str(self.item_1))
-        if self.item_2:
-            drops.append(str(self.item_2))
-        if self.equipment:
-            drops.append(f'Equipment #{self.equipment_index} '
-                         f'{str(self.equipment)}'
-                         f'({self.ability_rolls} ability roll'
-                         f'{'s' * (self.ability_rolls != 1)})')
-        if drops:
-            string += ', '.join(drops)
+        string = f'Drops: {self.monster} | '
+        if self.item_1 and self.item_2:
+            string += f'{self.item_1}, {self.item_2}'
+        elif self.item_1:
+            string += f'{self.item_1}'
+        elif self.item_2:
+            string += f'{self.item_2}'
         else:
-            string += 'No drops'
+            string += '-'
+        string += f' | {self.monster.ap[self.kill_type]} AP'
         if self.ap_credited_characters:
-            string += (f' | {self.monster.ap[self.kill_type]} AP to '
-                       f'{''.join(c[0] for c in self.ap_credited_characters)}'
-                       )
+            string += f' to {''.join(c[0] for c in self.ap_credited_characters)}'
         if self.kill_type is KillType.OVERKILL:
-            string += ' (Overkill)'
+            string += ' (OK)'
+        if self.equipment:
+            string += (f' | Equipment #{self.equipment_index} '
+                       f'{str(self.equipment)}'
+                       f'({self.ability_rolls} ability roll'
+                       f'{'s' * (self.ability_rolls != 1)})'
+                       )
         return string
 
     def _get_item_1(self) -> ItemDrop | None:

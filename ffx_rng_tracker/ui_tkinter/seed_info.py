@@ -10,7 +10,7 @@ from .output_widget import TkOutputWidget
 class TkSeedInfoOutputWidget(TkOutputWidget):
 
     def get_regex_patterns(self) -> dict[str, str]:
-        return {'equipment': str(EquipmentType.ARMOR)}
+        return {'equipment': rf'\m{EquipmentType.ARMOR}\M'}
 
 
 class TkSeedInfo(tk.Frame):

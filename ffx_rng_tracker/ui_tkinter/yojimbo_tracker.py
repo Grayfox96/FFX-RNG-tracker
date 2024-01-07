@@ -11,9 +11,9 @@ class TkYojimboOutputWidget(TkOutputWidget):
 
     def get_regex_patterns(self) -> dict[str, str]:
         tags = {
-            'yojimbo low gil': ' [0-9]{1,7}(?= gil) ',
-            'yojimbo high gil': ' [0-9]{10,}(?= gil) ',
-            'stat update': '^.*changed to.+$',
+            'yojimbo low gil': r'\m[0-9]{1,7}(?= gil )',
+            'yojimbo high gil': r'\m[0-9]{10,}(?= gil )',
+            'compatibility update': '^Compatibility: .+$',
         }
         tags.update(super().get_regex_patterns())
         return tags

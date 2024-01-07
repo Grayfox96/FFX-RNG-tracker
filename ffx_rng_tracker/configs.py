@@ -20,10 +20,10 @@ class UIWidgetConfigs:
 
 @dataclass
 class Color:
-    foreground: str
-    background: str
-    select_foreground: str
-    select_background: str
+    foreground: str | None
+    background: str | None
+    select_foreground: str | None
+    select_background: str | None
 
 
 class Configs:
@@ -42,6 +42,18 @@ class Configs:
     _default_configs_file = 'default_configs.ini'
 
     @classmethod
+    def getsection(cls,
+                   section: str,
+                   fallback: list[str] = None,
+                   ) -> list[str]:
+        try:
+            return cls._parser.options(section)
+        except configparser.NoSectionError:
+            if fallback is not None:
+                return fallback
+            return []
+
+    @classmethod
     def getboolean(cls, section: str, option: str, fallback: bool) -> bool:
         try:
             return cls._parser.getboolean(section, option, fallback=fallback)
@@ -58,6 +70,20 @@ class Configs:
     @classmethod
     def get(cls, section: str, option: str, fallback: str) -> str:
         return cls._parser.get(section, option, fallback=fallback)
+
+    @classmethod
+    def getlist(cls,
+                section: str,
+                option: str,
+                fallback: list[str] = None,
+                ) -> list[str]:
+        try:
+            string = cls._parser.get(section, option)
+        except (ValueError, configparser.NoOptionError):
+            if fallback is not None:
+                return fallback
+            return []
+        return string.replace(' ', '').split(',')
 
     @classmethod
     def read(cls, file_path: str) -> None:
@@ -95,44 +121,44 @@ class Configs:
         cls.use_theme = cls.getboolean(section, 'use theme', True)
 
         section = 'Colors'
-        options = (
-            'preemptive', 'ambush', 'encounter', 'crit', 'stat update',
-            'comment', 'advance rng', 'equipment', 'no encounters',
-            'yojimbo low gil', 'yojimbo high gil', 'error', 'status miss',
+        allowed_options = (
+            'preemptive', 'ambush', 'encounter', 'crit', 'party update',
+            'stat update', 'equipment update', 'comment', 'advance rng',
+            'equipment', 'no encounters', 'yojimbo low gil',
+            'yojimbo high gil', 'compatibility update', 'error', 'status miss',
             'important monster', 'captured monster',
         )
-        if cls.use_dark_mode:
-            default_fg = '#ffffff'
-            default_bg = '#333333'
-        else:
-            default_fg = '#000000'
-            default_bg = '#ffffff'
-        for option in options:
-            fg = cls.get(section, option, default_fg)
+        for option in cls.getsection(section):
+            if option not in allowed_options:
+                continue
+            colors_list = cls.getlist(section, option)
+            while len(colors_list) < 2:
+                colors_list.append('')
+            fg, bg, *_ = colors_list
             if len(fg) == 7 and fg[0] == '#':
                 try:
                     int(fg[1:], 16)
                 except ValueError:
-                    fg = default_fg
+                    fg = None
             else:
-                fg = default_fg
-            bg = cls.get(section, f'{option} background', default_bg)
+                fg = None
             if len(bg) == 7 and bg[0] == '#':
                 try:
                     int(bg[1:], 16)
                 except ValueError:
-                    bg = default_bg
+                    bg = None
             else:
-                bg = default_bg
+                bg = None
 
-            if (fg, bg) == (default_fg, default_bg):
-                select_fg, select_bg = fg, '#007fff'
-            elif bg == default_bg:
-                select_fg = fg
-                select_bg = get_contrasting_color(fg)
+            if fg and bg:
+                select_fg = get_contrasting_color(fg)
+                select_bg = get_contrasting_color(bg)
+            elif fg:
+                select_fg = get_contrasting_color(fg)
+                select_bg = fg
             else:
-                select_fg = fg
-                select_bg = bg
+                select_fg = None
+                select_bg = None
             cls.colors[option] = Color(fg, bg, select_fg, select_bg)
 
         ui_widgets = (

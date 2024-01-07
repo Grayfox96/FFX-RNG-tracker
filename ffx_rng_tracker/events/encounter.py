@@ -27,9 +27,10 @@ class Encounter(Event):
         self.gamestate.normalize_ctbs(self.gamestate.get_min_ctb())
 
     def __str__(self) -> str:
-        name = FORMATIONS[self.name].name
-        string = (f'Encounter {self.index:3} - {name}: {self.formation} '
-                  f'{self.condition} {self.icvs_string}')
+        string = (f'Encounter: {self.index:>3} | '
+                  f'{FORMATIONS[self.name].name} | '
+                  f'{self.formation} {self.condition} | '
+                  f'{self.icvs_string}')
         return string
 
     def _get_index(self) -> int:
@@ -127,6 +128,9 @@ class Encounter(Event):
 @dataclass
 class SimulatedEncounter(Encounter):
 
+    def __str__(self) -> str:
+        return 'Simulated ' + super().__str__()
+
     def _get_index(self) -> int:
         # simulated encounter don't increment the game's
         # encounter count used to calculate aeons' stats
@@ -146,11 +150,10 @@ class RandomEncounter(Encounter):
         self.zone_index = self._get_zone_index()
 
     def __str__(self) -> str:
-        string = super().__str__()
-        string = (f'{string[:13]}'
-                  f'|{self.random_index:3}|{self.zone_index:3}'
-                  f'{string[13:]}')
-        return string
+        string = 'Random ' + super().__str__()
+        parts = string.split('|')
+        parts[0] += f'{self.random_index:>3} {self.zone_index:>3} '
+        return '|'.join(parts)
 
     def _get_formation(self) -> Formation:
         rng_value = self._advance_rng(1)
@@ -180,13 +183,14 @@ class MultizoneRandomEncounter(Event):
         formations = []
         for count, enc in enumerate(self.encounters, 1):
             if count == 1:
-                string += str(enc)[:24]
+                string += str(enc).split('|')[0]
             zone_name = ZONES[enc.name].name
             zones_names.append(zone_name)
-            formation = f'[{enc.formation}]'
+            formation = f'{enc.formation} {enc.condition}'
             formations.append(formation)
-        string += (f'{'/'.join(zones_names)}: {'/'.join(formations)} '
-                   f'{enc.condition}')
+        string += (f' | {'/'.join(zones_names)} | '
+                   f'{' | '.join(formations)} | '
+                   f'{enc.icvs_string}')
         return string
 
     def _get_encounters(self) -> list[RandomEncounter]:

@@ -14,11 +14,11 @@ class Escape(Event):
         self.ctb = self._get_ctb()
 
     def __str__(self) -> str:
-        string = f'{self.character}: Escape [{self.ctb}] ->'
+        string = f'{self.character} -> Escape [{self.ctb}]: '
         if self.escape:
-            string += ' Succeeded'
+            string += 'Succeeded'
         else:
-            string += ' Failed'
+            string += 'Failed'
         return string
 
     def _get_escape(self) -> bool:

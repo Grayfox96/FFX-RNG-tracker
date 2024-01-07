@@ -55,9 +55,50 @@ class TrackerUI(ABC):
         """Converts a list of events to a string."""
         return '\n'.join([str(e) for e in events])
 
+    def get_paddings(self,
+                     split_lines: list[list[str]],
+                     ) -> dict[str, dict[int, int]]:
+        paddings: dict[str, dict[int, int]] = {}
+        for event_name, *line_parts in split_lines:
+            if not line_parts:
+                continue
+            event_paddings = paddings.setdefault(event_name, {})
+            for i, line_part in enumerate(line_parts):
+                event_paddings[i] = max(
+                    event_paddings.get(i, 0), len(line_part))
+        return paddings
+
+    def pad_output(self, output: str) -> str:
+        split_lines: list[list[str]] = []
+        for line in output.splitlines():
+            event_name, *line_parts = line.split(':')
+            if not any(line_parts):
+                split_lines.append([line])
+                continue
+            line_parts = ':'.join(line_parts).split('|')
+            split_lines.append([event_name] + line_parts)
+        paddings = self.get_paddings(split_lines)
+        lines = []
+        for event_name, *line_parts in split_lines:
+            if not line_parts:
+                lines.append(event_name)
+                continue
+            if event_name not in paddings:
+                lines.append(f'{event_name}:{'|'.join(line_parts)}')
+                continue
+            parts = []
+            for i, line_part in enumerate(line_parts):
+                parts.append(f'{line_part:{paddings[event_name][i]}}')
+            lines.append(f'{event_name}:{'|'.join(parts)}'.rstrip())
+        return '\n'.join(lines)
+
     @abstractmethod
-    def edit_output(self, output: str) -> str:
-        """Edits the output before being sent to the output widget."""
+    def edit_output(self, output: str, padding: bool = False) -> str:
+        """Edits the output before being sent to the output widget.
+
+        If padding is set to True the method pad_output might be called
+        with output as the parameter
+        """
 
     def callback(self, *_, **__) -> None:
         """Method called as a ui callback to parse the input
@@ -74,7 +115,8 @@ class TrackerUI(ABC):
         self.parser.gamestate.reset()
         edited_input = self.edit_input(input_text)
         output = self.events_to_string(self.parser.parse(edited_input))
-        edited_output = self.edit_output(output)
+        padding = '# Command: /nopadding\n' not in output
+        edited_output = self.edit_output(output, padding)
         if self.previous_output_text == edited_output:
             return
         self.previous_output_text = edited_output

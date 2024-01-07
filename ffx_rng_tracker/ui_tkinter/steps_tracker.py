@@ -1,6 +1,5 @@
 import tkinter as tk
 
-from ..data.encounter_formations import ZONES
 from ..data.encounters import StepsData, get_steps_notes
 from ..events.parser import EventParser
 from ..ui_abstract.steps_tracker import StepsTracker
@@ -14,18 +13,15 @@ class TkStepsInputWidget(TkEncountersInputWidget):
     def get_input(self) -> str:
         current_zone = self.current_zone.get()
         input_data = []
+        if 'selected' not in self.padding_button.state():
+            input_data.append('/nopadding\n///')
         self.encounters: list[StepsData]
         for encounter in self.encounters:
             steps = self.sliders[encounter.label].get()
             if current_zone == encounter.label:
                 input_data.append('///')
-            zone = ZONES[encounter.zone]
-            comment = f'# {encounter.label} '
-            if encounter.continue_previous_zone:
-                comment += '(continues previous zone) '
-            comment += f'({zone.grace_period} steps in grace period)'
-            input_data.append(comment)
-            input_data.append(f'walk {encounter.zone} {steps} {encounter.continue_previous_zone}')
+            input_data.append(f'walk {encounter.zone} {steps} '
+                              f'{encounter.continue_previous_zone}')
         return '\n'.join(input_data)
 
 

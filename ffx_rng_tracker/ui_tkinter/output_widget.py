@@ -23,7 +23,10 @@ class TkOutputWidget(ScrollableText):
         self.config(state='disabled')
 
     def highlight_patterns(self) -> None:
-        for tag_name, pattern in self.regex_patterns.items():
+        for tag_name in Configs.colors:
+            pattern = self.regex_patterns.get(tag_name, None)
+            if pattern is None:
+                continue
             self.highlight_pattern(pattern, tag_name)
 
     def get_regex_patterns(self) -> dict[str, str]:

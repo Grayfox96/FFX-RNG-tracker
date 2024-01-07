@@ -13,7 +13,10 @@ class Formation:
     forced_condition: EncounterCondition | None
 
     def __str__(self) -> str:
-        return ', '.join([str(m) for m in self.monsters])
+        string = ', '.join([str(m) for m in self.monsters])
+        if not string:
+            return '-'
+        return string
 
     @property
     def monsters(self) -> list[Monster]:

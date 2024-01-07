@@ -110,7 +110,7 @@ class CharacterAction(Event):
             if not action:
                 action = ' Does nothing'
             actions.append(f'{target} ->{action}')
-        string = (f'{self.user} -> {self.action} [{self.ctb}]: ')
+        string = f'{self.user} -> {self.action} [{self.ctb}]: '
         if actions:
             string += f'\n{' ' * len(string)}'.join(actions)
         else:
@@ -625,9 +625,6 @@ def get_damage(
         case DamageFormula.HP:
             damage = user.max_hp * base_damage // 10
         case DamageFormula.GIL:
-            # TODO
-            # find a better way to calculate this
-            # damage = gil // 10
             # hijacking the od_time_remaining parameter, diving by 1000
             # because it normally represents milliseconds
             damage = (od_time_remaining // 1000) // 10

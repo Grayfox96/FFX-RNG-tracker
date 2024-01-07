@@ -1,4 +1,3 @@
-from ..data.encounter_formations import ZONES
 from ..data.encounters import get_steps_notes
 from ..data.notes import save_notes
 from ..events.parsing_functions import ParsingFunction, parse_encounter_checks
@@ -13,11 +12,18 @@ class StepsTracker(EncountersTracker):
         parsing_functions.append(parse_encounter_checks)
         return parsing_functions
 
-    def edit_output(self, output: str) -> str:
-        output = super().edit_output(output)
-        for zone in ZONES.values():
-            output = output.replace(f'{zone}: ', '')
-        return output
+    def edit_output(self, output: str, padding: bool = False) -> str:
+        output = super().edit_output(output, False)
+        output = output.replace('Encounters', '')
+        output = output.replace(' steps before end of the zone', '')
+        output = ('Encounter checks: # Zone (grace period) | # of Encounters'
+                  f' | Trigger Steps | Steps before end of the Zone\n{output}'
+                  )
+        if padding:
+            output = self.pad_output(output)
+        output_lines = output.replace('Encounter checks: ', '').splitlines()
+        output_lines.insert(1, '=' * len(output_lines[0]))
+        return '\n'.join(output_lines)
 
     def save_input_data(self) -> None:
         seed = self.parser.gamestate.seed
@@ -26,7 +32,9 @@ class StepsTracker(EncountersTracker):
         notes_lines = []
         notes_lines.append(
             '#zone,label (optional),min,default,max,continue previous zone')
-        for steps in encounter_notes:
+        for steps, line in zip(encounter_notes, current_input_lines):
+            if line.startswith('Error: '):
+                continue
             continue_previous_zone = str(steps.continue_previous_zone).lower()
             if steps.min == steps.max:
                 notes_lines.append(f'{steps.zone},{steps.label},{steps.min},'
@@ -34,14 +42,8 @@ class StepsTracker(EncountersTracker):
                                    f'{continue_previous_zone}'
                                    )
                 continue
-            # find which line corresponds with the label
-            for input_index, input_line in enumerate(current_input_lines):
-                if input_line.startswith(f'# {steps.label} ('):
-                    break
-            else:
-                continue
             # steps event has syntax: walk {zone} {steps} {cpz}
-            default = current_input_lines[input_index + 1].split()[2]
+            default = line.split()[2]
             notes_lines.append(f'{steps.zone},{steps.label},{steps.min},'
                                f'{default},{steps.max},'
                                f'{continue_previous_zone}'

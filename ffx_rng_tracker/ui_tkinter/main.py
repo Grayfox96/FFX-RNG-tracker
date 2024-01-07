@@ -14,8 +14,9 @@ from .actions_tracker import TkActionsTracker
 from .base_widgets import DamageValuesDialogue
 from .configslog import TkConfigsLogViewer
 from .drops_tracker import TkDropsTracker
-from .encounters_tracker import (TkEncountersPlanner, TkEncountersTable,
-                                 TkEncountersTracker)
+from .encounters_planner import TkEncountersPlanner
+from .encounters_table import TkEncountersTable
+from .encounters_tracker import TkEncountersTracker
 from .monster_data_viewer import TkMonsterDataViewer
 from .seed_info import TkSeedInfo
 from .seedfinder import TkSeedFinder

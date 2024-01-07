@@ -34,8 +34,22 @@ class DropsTracker(TrackerUI):
             input_lines[index] = line
         return '\n'.join(input_lines)
 
-    def edit_output(self, output: str) -> str:
+    def get_paddings(self,
+                     split_lines: list[list[str]]
+                     ) -> dict[str, dict[int, int]]:
+        paddings = super().get_paddings(split_lines)
+        if 'Steal' in paddings and 'Drops' in paddings:
+            padding = max(paddings['Steal'][0], paddings['Drops'][0])
+            paddings['Steal'][0] = padding
+            paddings['Drops'][0] = padding + 7
+        return paddings
+
+    def edit_output(self, output: str, padding: bool = False) -> str:
+        # if the text contains /// it hides the lines before it
         if output.find('///') >= 0:
             output = output.split('///')[-1]
             output = output[output.find('\n') + 1:]
+        if padding:
+            output = self.pad_output(output)
+        output = output.replace('Drops: ', '')
         return output

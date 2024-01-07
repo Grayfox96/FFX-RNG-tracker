@@ -29,8 +29,10 @@ class EventParser:
     def parse_line(self, line: str) -> Event:
         """Parse the input line and returns an event."""
         words = line.lower().split()
-        if not words or words[0].startswith(('#', '///')):
+        if not words or words[0].startswith('#'):
             return Comment(self.gamestate, line)
+        elif words[0].startswith('/'):
+            return Comment(self.gamestate, f'# Command: {line}')
         event_name, *params = words
         try:
             parsing_func = self._parsing_functions[event_name]

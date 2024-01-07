@@ -12,14 +12,16 @@ class ChangeStat(Event):
     stat_value: int
 
     def __post_init__(self) -> None:
+        self.old_stat_value = self.target.stats[self.stat]
         self.stat_value = self._set_stat()
         if (hasattr(self.target, 'character')
                 and self.target.character is Character.YUNA):
             self.gamestate.calculate_aeon_stats()
 
     def __str__(self) -> str:
-        return (f'{self.target}\'s {self.stat} '
-                f'changed to {self.stat_value}')
+        string = (f'Stat: {self.target} | {self.stat} | '
+                  f'{self.old_stat_value} -> {self.stat_value}')
+        return string
 
     def _set_stat(self) -> int:
         self.target.set_stat(self.stat, self.stat_value)

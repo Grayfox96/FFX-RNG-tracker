@@ -11,9 +11,9 @@ class TkDropsOutputWidget(TkOutputWidget):
 
     def get_regex_patterns(self) -> dict[str, str]:
         tags = {
-            'equipment': 'Equipment',
-            'no encounters': 'No Encounters',
-            'stat update': '^.*changed to.+$',
+            'equipment': r'\mEquipment\M',
+            'no encounters': r'\mNo Encounters\M',
+            'party update': '^Party: .+$',
         }
         tags.update(super().get_regex_patterns())
         return tags

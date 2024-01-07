@@ -66,7 +66,7 @@ class ScrollableText(tk.Text):
         the previous position.
         """
         current_text = self.get('1.0', 'end')[:-1]
-        current_number_of_lines = len(current_text.split('\n'))
+        current_number_of_lines = len(current_text.splitlines())
         last_line = self.index(f'@0,{self.winfo_height()}')
         line_index = int(last_line.split('.')[0])
 

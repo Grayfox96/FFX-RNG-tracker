@@ -25,12 +25,9 @@ class Equipment:
     bonus_crit: int
 
     def __str__(self) -> str:
-        abilities = [str(a) for a in self.abilities]
-        for _ in range(self.slots - len(abilities)):
-            abilities.append('-')
         string = (f'{self.name} '
                   f'({self.owner}) '
-                  f'[{', '.join(abilities)}]'
+                  f'[{self.abilities_string}]'
                   f'[{self.sell_value} gil]')
         return string
 
@@ -56,6 +53,13 @@ class Equipment:
             name = get_armor_name(self.owner, self.abilities, self.slots)
         return name
 
+    @property
+    def abilities_string(self) -> str:
+        abilities = [a for a in self.abilities]
+        for _ in range(self.slots - len(abilities)):
+            abilities.append('-')
+        return ', '.join(abilities)
+
 
 @dataclass
 class EquipmentDrop:
@@ -67,9 +71,9 @@ class EquipmentDrop:
     def __str__(self) -> str:
         string = str(self.equipment)
         if self.monster.equipment.drop_chance == 255:
-            string += ' (guaranteed)'
+            string += '(guaranteed)'
         if self.killer_is_owner:
-            string += ' (for killer)'
+            string += '(for killer)'
         return string
 
 

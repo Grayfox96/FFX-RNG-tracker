@@ -17,7 +17,7 @@ class Steal(Event):
             self.gamestate.add_to_inventory(self.item.item, self.item.quantity)
 
     def __str__(self) -> str:
-        string = f'Steal from {self.monster}: '
+        string = f'Steal: {self.monster} | '
         if self.item:
             string += str(self.item)
         else:
