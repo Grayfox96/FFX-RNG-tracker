@@ -16,7 +16,7 @@ class StepsTracker(EncountersTracker):
         output = super().edit_output(output, False)
         output = output.replace('Encounters', '')
         output = output.replace(' steps before end of the zone', '')
-        output = ('Encounter checks: # Zone (grace period) | # of Encounters'
+        output = ('Encounter checks: Zone (grace period) | # of Encounters'
                   f' | Trigger Steps | Steps before end of the Zone\n{output}'
                   )
         if padding:
@@ -28,7 +28,11 @@ class StepsTracker(EncountersTracker):
     def save_input_data(self) -> None:
         seed = self.parser.gamestate.seed
         encounter_notes = get_steps_notes(self.notes_file, seed)
-        current_input_lines = self.input_widget.get_input().splitlines()
+        current_input = (self.input_widget.get_input()
+                         .replace('/nopadding\n', '')
+                         .replace('///\n', '')
+                         )
+        current_input_lines = current_input.splitlines()
         notes_lines = []
         notes_lines.append(
             '#zone,label (optional),min,default,max,continue previous zone')

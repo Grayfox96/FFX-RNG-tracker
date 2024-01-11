@@ -1,6 +1,7 @@
-import configparser
 import os
+import re
 import shutil
+from configparser import ConfigParser, NoOptionError, NoSectionError
 from dataclasses import dataclass
 from logging import getLogger
 
@@ -13,17 +14,19 @@ from .utils import get_contrasting_color
 class UIWidgetConfigs:
     shown: bool
     windowed: bool
+    tag_names: list[str]
 
     def __str__(self) -> str:
         return ' '.join([f'{v}: {k}' for v, k in vars(self).items()])
 
 
 @dataclass
-class Color:
-    foreground: str | None
-    background: str | None
-    select_foreground: str | None
-    select_background: str | None
+class UITagConfigs:
+    regex_pattern: re.Pattern
+    foreground: str | None = None
+    background: str | None = None
+    select_foreground: str | None = None
+    select_background: str | None = None
 
 
 class Configs:
@@ -31,13 +34,12 @@ class Configs:
     game_version: GameVersion = GameVersion.HD
     continue_ps2_seed_search: bool = False
     speedrun_category: SpeedrunCategory | str = SpeedrunCategory.ANYPERCENT
-    use_dark_mode: bool = False
     font_size: int = 9
     use_theme: bool = True
-    colors: dict[str, Color] = {}
-    important_monsters: list[str] = []
+    use_dark_mode: bool = False
+    ui_tags: dict[str, UITagConfigs] = {}
     ui_widgets: dict[str, UIWidgetConfigs] = {}
-    _parser = configparser.ConfigParser()
+    _parser = ConfigParser()
     _configs_file = 'ffx_rng_tracker_configs.ini'
     _default_configs_file = 'default_configs.ini'
 
@@ -48,7 +50,7 @@ class Configs:
                    ) -> list[str]:
         try:
             return cls._parser.options(section)
-        except configparser.NoSectionError:
+        except NoSectionError:
             if fallback is not None:
                 return fallback
             return []
@@ -79,11 +81,12 @@ class Configs:
                 ) -> list[str]:
         try:
             string = cls._parser.get(section, option)
-        except (ValueError, configparser.NoOptionError):
+        except (ValueError, NoSectionError, NoOptionError):
             if fallback is not None:
                 return fallback
             return []
-        return string.replace(' ', '').split(',')
+        values: list[str] = REGEX_LIST.findall(string)
+        return [v.replace("''", "'") for v in values]
 
     @classmethod
     def read(cls, file_path: str) -> None:
@@ -97,9 +100,9 @@ class Configs:
             cls.seed = seed
         else:
             cls.seed = None
+        game_version = cls.get(section, 'game version', 'HD')
         try:
-            cls.game_version = GameVersion(
-                cls.get(section, 'game version', 'HD'))
+            cls.game_version = GameVersion(game_version)
         except ValueError:
             cls.game_version = GameVersion.HD
         cls.continue_ps2_seed_search = cls.getboolean(
@@ -116,25 +119,22 @@ class Configs:
             cls.speedrun_category = SpeedrunCategory.ANYPERCENT
 
         section = 'UI'
-        cls.use_dark_mode = cls.getboolean(section, 'use dark mode', False)
         cls.font_size = cls.getint(section, 'fontsize', 9)
         cls.use_theme = cls.getboolean(section, 'use theme', True)
+        cls.use_dark_mode = cls.getboolean(section, 'use dark mode', False)
 
-        section = 'Colors'
-        allowed_options = (
-            'preemptive', 'ambush', 'encounter', 'crit', 'party update',
-            'stat update', 'equipment update', 'comment', 'advance rng',
-            'equipment', 'no encounters', 'yojimbo low gil',
-            'yojimbo high gil', 'compatibility update', 'error', 'status miss',
-            'important monster', 'captured monster',
-        )
+        section = 'Tags'
         for option in cls.getsection(section):
-            if option not in allowed_options:
+            tag = cls.getlist(section, option)
+            while len(tag) < 3:
+                tag.append('')
+            pattern, fg, bg, *_ = tag
+            if not pattern.startswith('\'') or not pattern.endswith('\''):
                 continue
-            colors_list = cls.getlist(section, option)
-            while len(colors_list) < 2:
-                colors_list.append('')
-            fg, bg, *_ = colors_list
+            try:
+                regex_pattern = re.compile(pattern[1:-1])
+            except re.error:
+                regex_pattern = REGEX_NEVER_MATCH
             if len(fg) == 7 and fg[0] == '#':
                 try:
                     int(fg[1:], 16)
@@ -156,31 +156,33 @@ class Configs:
             elif fg:
                 select_fg = get_contrasting_color(fg)
                 select_bg = fg
-            else:
+            elif bg:
                 select_fg = None
                 select_bg = None
-            cls.colors[option] = Color(fg, bg, select_fg, select_bg)
+            else:
+                continue
+            cls.ui_tags[option] = UITagConfigs(
+                regex_pattern, fg, bg, select_fg, select_bg)
 
         ui_widgets = (
-            'Seed info', 'Drops', 'Encounters', 'Steps', 'Encounters Table',
-            'Encounters Planner', 'Actions', 'Monster Targeting', 'Status',
-            'Yojimbo', 'Monster Data', 'Seedfinder', 'Configs/Log',
+            'Seed info', 'Drops', 'Encounters', 'Steps', 'Encounters Planner',
+            'Encounters Table', 'Actions', 'Status', 'Yojimbo', 'Monster Data',
+            'Seedfinder', 'Configs/Log',
         )
         for section in ui_widgets:
-            shown = cls.getboolean(section, 'shown', True)
-            windowed = cls.getboolean(section, 'windowed', False)
-            cls.ui_widgets[section] = UIWidgetConfigs(shown, windowed)
-
-        section = 'Encounters'
-        monsters = cls.get(section, 'monsters to highlight', 'ghost')
-        cls.important_monsters = [m.strip() for m in monsters.split(',')]
+            cls.ui_widgets[section] = UIWidgetConfigs(
+                shown=cls.getboolean(section, 'shown', True),
+                windowed=cls.getboolean(section, 'windowed', False),
+                tag_names=cls.getlist(section, 'tags'),
+                )
 
     @classmethod
     def get_configs(cls) -> dict[str, str | int | bool]:
         configs = {}
-        for attr in dir(cls):
-            if not callable(getattr(cls, attr)) and not attr.startswith('_'):
-                configs[attr] = getattr(cls, attr)
+        for name in vars(cls):
+            attr = getattr(cls, name)
+            if not callable(attr) and not name.startswith('_'):
+                configs[name] = attr
         return configs
 
     @classmethod
@@ -195,3 +197,7 @@ class Configs:
                 f'Copied default configs file to "{cls._configs_file}"')
         cls.read(cls._configs_file)
         cls.load_configs()
+
+
+REGEX_NEVER_MATCH = re.compile(r'\A\b\Z invalid regex')
+REGEX_LIST = re.compile("(?:^|,)(?: )*('(?:(?:'')*[^']*)*'|[^',]*)")

@@ -1,14 +1,20 @@
 import re
 from dataclasses import dataclass
 
+from ..configs import REGEX_NEVER_MATCH, UITagConfigs
 from ..data.monsters import get_monsters_dict
 from .encounters_tracker import EncountersTracker
-from .input_widget import InputWidget
 
 
 @dataclass
 class EncountersPlanner(EncountersTracker):
-    search_bar: InputWidget
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        self.output_widget.register_tag(
+            '#captured monsters',
+            UITagConfigs(REGEX_NEVER_MATCH, foreground='#cccccc'),
+            )
 
     def edit_output(self, output: str, padding: bool = False) -> str:
         output = output.replace('Simulated ', '')
@@ -48,13 +54,25 @@ class EncountersPlanner(EncountersTracker):
         captured_monsters = [re.escape(m)
                              for m, t in monsters_tally.items()
                              if t >= 10]
-        pattern = fr'\m{'|'.join(captured_monsters)}\M'
-        self.output_widget.regex_patterns['captured monster'] = pattern
-
-        monsters = self.search_bar.get_input()
-        for symbol in (',', '-', '/', '\\', '.'):
-            monsters = monsters.replace(symbol, ' ')
-        pattern = fr'\m{'|'.join([re.escape(m) for m in monsters.split()])}\M'
-        self.output_widget.regex_patterns['important monster'] = pattern
-
+        tag = self.output_widget.tags['#captured monsters']
+        if captured_monsters:
+            pattern = '|'.join(captured_monsters)
+            tag.regex_pattern = re.compile(pattern, flags=re.IGNORECASE)
+        else:
+            tag.regex_pattern = REGEX_NEVER_MATCH
         return super().edit_output(output, padding)
+
+    def search_callback(self) -> None:
+        search = self.search_bar.get_input()
+        self.output_widget.seek(search)
+        for symbol in (',', '-', '/', '\\', '.'):
+            search = search.replace(symbol, ' ')
+        words = search.split()
+        tag = self.output_widget.tags['#search bar']
+        self.output_widget.clean_tag('#search bar')
+        if not words:
+            tag.regex_pattern = REGEX_NEVER_MATCH
+            return
+        pattern = '|'.join([re.escape(w) for w in words])
+        tag.regex_pattern = re.compile(pattern, flags=re.IGNORECASE)
+        self.output_widget.highlight_pattern('#search bar', tag.regex_pattern)

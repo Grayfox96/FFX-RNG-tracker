@@ -1,21 +1,14 @@
 import re
 from dataclasses import dataclass
 
+from ..configs import REGEX_NEVER_MATCH
 from .encounters_tracker import EncountersTracker
-from .input_widget import InputWidget
 
 
 @dataclass
 class EncountersTable(EncountersTracker):
-    search_bar: InputWidget
 
     def edit_output(self, output: str, padding: bool = False) -> str:
-        monsters = self.search_bar.get_input()
-        for symbol in (',', '-', '/', '\\', '.'):
-            monsters = monsters.replace(symbol, ' ')
-        pattern = fr'(?i)\m{'|'.join([re.escape(m) for m in monsters.split()])}\M'
-        self.output_widget.regex_patterns['important monster'] = pattern
-
         # if the text contains /// it hides the lines before it
         if output.find('///') >= 0:
             output = output.split('///')[-1]
@@ -55,3 +48,18 @@ class EncountersTable(EncountersTracker):
         output_lines = output.splitlines()
         output_lines.insert(1, '=' * max(len(line) for line in output_lines))
         return '\n'.join(output_lines)
+
+    def search_callback(self) -> None:
+        search = self.search_bar.get_input()
+        self.output_widget.seek(search)
+        for symbol in (',', '-', '/', '\\', '.'):
+            search = search.replace(symbol, ' ')
+        words = search.split()
+        tag = self.output_widget.tags['#search bar']
+        self.output_widget.clean_tag('#search bar')
+        if not words:
+            tag.regex_pattern = REGEX_NEVER_MATCH
+            return
+        pattern = '|'.join([re.escape(w) for w in words])
+        tag.regex_pattern = re.compile(pattern, flags=re.IGNORECASE)
+        self.output_widget.highlight_pattern('#search bar', tag.regex_pattern)

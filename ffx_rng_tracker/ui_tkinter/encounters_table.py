@@ -2,13 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Callable
 
+from ..configs import UIWidgetConfigs
 from ..data.encounter_formations import ZONES
 from ..events.parser import EventParser
 from ..ui_abstract.encounters_table import EncountersTable
 from .base_widgets import (BetterSpinbox, ScrollableFrame, TkConfirmPopup,
-                           TkWarningPopup)
-from .encounters_tracker import TkEncountersOutputWidget
+                           TkWarningPopup, create_command_proxy)
 from .input_widget import TkSearchBarWidget
+from .output_widget import TkOutputWidget
 
 
 class TkEncountersTableInputWidget(tk.Frame):
@@ -16,34 +17,30 @@ class TkEncountersTableInputWidget(tk.Frame):
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
-        self.searchbar = TkSearchBarWidget(self)
-        self.searchbar.grid(row=0, column=0, columnspan=2, sticky='ew')
-        self.searchbar.set_input('Type monster names here')
-
         self.initiative_button = ttk.Checkbutton(self, text='Initiative')
-        self.initiative_button.grid(row=1, column=0, sticky='w')
+        self.initiative_button.grid(row=0, column=0, sticky='w')
         self.initiative_button.state(['selected'])
 
-        tk.Label(self, text='Encounters to show').grid(row=2, column=0)
+        tk.Label(self, text='Encounters to show').grid(row=1, column=0)
         self.shown_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.shown_encounters.grid(row=2, column=1)
+        self.shown_encounters.grid(row=1, column=1)
         self.shown_encounters.set(20)
 
-        tk.Label(self, text='Start from').grid(row=3, column=0)
+        tk.Label(self, text='Start from').grid(row=2, column=0)
         self.starting_encounter = BetterSpinbox(self, from_=-2000, to=2000)
-        self.starting_encounter.grid(row=3, column=1)
+        self.starting_encounter.grid(row=2, column=1)
 
-        tk.Label(self, text='Random Encounters').grid(row=4, column=0)
+        tk.Label(self, text='Random Encounters').grid(row=3, column=0)
         self.random_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.random_encounters.grid(row=4, column=1)
+        self.random_encounters.grid(row=3, column=1)
 
-        tk.Label(self, text='Bosses').grid(row=5, column=0)
+        tk.Label(self, text='Bosses').grid(row=4, column=0)
         self.forced_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.forced_encounters.grid(row=5, column=1)
+        self.forced_encounters.grid(row=4, column=1)
 
-        tk.Label(self, text='Simulated Encounters').grid(row=6, column=0)
+        tk.Label(self, text='Simulated Encounters').grid(row=5, column=0)
         self.simulated_encounters = BetterSpinbox(self, from_=0, to=2000)
-        self.simulated_encounters.grid(row=6, column=1)
+        self.simulated_encounters.grid(row=5, column=1)
 
         zones_frame = ScrollableFrame(self)
         zones_frame.grid(row=10, column=0, columnspan=2, sticky='nsew')
@@ -93,34 +90,45 @@ class TkEncountersTableInputWidget(tk.Frame):
         return
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
-        self.searchbar.register_callback(callback_func)
-        self.initiative_button.config(command=callback_func)
-        self.shown_encounters.config(command=callback_func)
-        self.starting_encounter.config(command=callback_func)
-        self.forced_encounters.config(command=callback_func)
-        self.random_encounters.config(command=callback_func)
-        self.simulated_encounters.config(command=callback_func)
+        create_command_proxy(self.initiative_button, {'invoke'}, callback_func)
+        self.shown_encounters.register_callback(callback_func)
+        self.starting_encounter.register_callback(callback_func)
+        self.forced_encounters.register_callback(callback_func)
+        self.random_encounters.register_callback(callback_func)
+        self.simulated_encounters.register_callback(callback_func)
         for button in self.zones_buttons.values():
-            button.config(command=callback_func)
+            create_command_proxy(button, {'invoke'}, callback_func)
 
 
 class TkEncountersTable(tk.Frame):
     """"""
 
-    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
+    def __init__(self,
+                 parent,
+                 parser: EventParser,
+                 configs: UIWidgetConfigs,
+                 *args,
+                 **kwargs,
+                 ) -> None:
         super().__init__(parent, *args, **kwargs)
+        frame = tk.Frame(self)
+        frame.pack(fill='y', side='left')
 
-        input_widget = TkEncountersTableInputWidget(self)
-        input_widget.pack(fill='y', side='left')
+        search_bar = TkSearchBarWidget(frame)
+        search_bar.pack(fill='x')
 
-        output_widget = TkEncountersOutputWidget(self, wrap='none')
+        input_widget = TkEncountersTableInputWidget(frame)
+        input_widget.pack(expand=True, fill='y')
+
+        output_widget = TkOutputWidget(self, wrap='none')
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = EncountersTable(
+            configs=configs,
             parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
+            search_bar=search_bar,
             warning_popup=TkWarningPopup(),
             confirmation_popup=TkConfirmPopup(),
-            search_bar=input_widget.searchbar,
             )

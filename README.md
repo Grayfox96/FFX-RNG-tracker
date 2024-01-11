@@ -36,4 +36,6 @@ Credits to [Camp4r](https://www.twitch.tv/camp4r) for the idea and design of the
 
 Credits to [Mtbanger](https://www.twitch.tv/mtbanger) for fixing the Boosters% notes.
 
+Credits to [Karifean](https://github.com/Karifean) for providing the decompilations of game files (Monsters/Actions/Encounters).
+
 Using the [Azure](https://github.com/rdbende/Azure-ttk-theme) theme for ttk.

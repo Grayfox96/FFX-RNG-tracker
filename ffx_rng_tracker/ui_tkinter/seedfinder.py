@@ -1,11 +1,12 @@
 import tkinter as tk
 from typing import Callable
 
+from ..configs import UIWidgetConfigs
 from ..events.parser import EventParser
 from ..ui_abstract.seedfinder import SeedFinder
-from .actions_tracker import TkActionsOutputWidget
 from .base_widgets import TkConfirmPopup, TkWarningPopup
-from .input_widget import TkInputWidget
+from .input_widget import TkInputWidget, TkSearchBarWidget
+from .output_widget import TkOutputWidget
 
 
 class TkDamageValuesWidget(tk.StringVar):
@@ -23,15 +24,25 @@ class TkDamageValuesWidget(tk.StringVar):
 class TkSeedFinder(tk.Frame):
     """Widget used to find the starting seed."""
 
-    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
+    def __init__(self,
+                 parent,
+                 parser: EventParser,
+                 configs: UIWidgetConfigs,
+                 *args,
+                 **kwargs,
+                 ) -> None:
         super().__init__(parent, *args, **kwargs)
 
         frame = tk.Frame(self)
         frame.pack(fill='y', side='left')
+
+        search_bar = TkSearchBarWidget(frame)
+        search_bar.pack(fill='x')
+
         tk.Label(frame, text='Actions').pack()
 
         input_widget = TkInputWidget(frame)
-        input_widget.pack(fill='y', expand=True)
+        input_widget.pack(expand=True, fill='y')
 
         tk.Label(frame, text='Damage values').pack()
 
@@ -41,15 +52,18 @@ class TkSeedFinder(tk.Frame):
         button = tk.Button(frame, text='Search Seed')
         button.pack()
 
-        output_widget = TkActionsOutputWidget(self)
+        output_widget = TkOutputWidget(self)
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = SeedFinder(
+            configs=configs,
             parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
+            search_bar=search_bar,
             warning_popup=TkWarningPopup(),
             confirmation_popup=TkConfirmPopup(),
             damage_values_widget=damage_values_widget,
         )
         button.configure(command=self.tracker.find_seed)
+        self.tracker.callback()

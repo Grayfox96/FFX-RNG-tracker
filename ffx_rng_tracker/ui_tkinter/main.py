@@ -42,9 +42,9 @@ class FFXRNGTrackerUI(ttk.Notebook):
                 window.title(name)
                 window.geometry('1280x830')
                 window.protocol('WM_DELETE_WINDOW', lambda: None)
-                widget(window, parser).pack(expand=True, fill='both')
+                widget(window, parser, configs).pack(expand=True, fill='both')
             else:
-                self.add(widget(self, parser), text=name)
+                self.add(widget(self, parser, configs), text=name)
 
     def get_widgets(self) -> dict[str, type[tk.Widget]]:
         widgets = {

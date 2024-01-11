@@ -1,27 +1,29 @@
 import tkinter as tk
 
-from ..data.constants import EquipmentType
+from ..configs import UIWidgetConfigs
 from ..events.parser import EventParser
 from ..ui_functions import get_equipment_types
 from ..utils import treeview
 from .output_widget import TkOutputWidget
 
 
-class TkSeedInfoOutputWidget(TkOutputWidget):
-
-    def get_regex_patterns(self) -> dict[str, str]:
-        return {'equipment': rf'\m{EquipmentType.ARMOR}\M'}
-
-
 class TkSeedInfo(tk.Frame):
     """Widget that shows general information
     about the seed.
     """
-    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
-        super().__init__(parent, *args, *kwargs)
+    def __init__(self,
+                 parent,
+                 parser: EventParser,
+                 configs: UIWidgetConfigs,
+                 *args,
+                 **kwargs,
+                 ) -> None:
+        super().__init__(parent, *args, **kwargs)
 
-        self.output_widget = TkSeedInfoOutputWidget(self, wrap='none')
-        self.output_widget.pack(expand=True, fill='both')
+        output_widget = TkOutputWidget(self, wrap='none')
+        for name in configs.tag_names:
+            output_widget.register_tag(name)
+        output_widget.pack(expand=True, fill='both')
         seed = parser.gamestate.seed
         data = [
             f'Seed number: {seed}',
@@ -29,4 +31,4 @@ class TkSeedInfo(tk.Frame):
         ]
         output = '\n\n'.join(data)
 
-        self.output_widget.print_output(treeview(output))
+        output_widget.print_output(treeview(output))

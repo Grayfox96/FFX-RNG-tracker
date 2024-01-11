@@ -1,4 +1,5 @@
 import colorsys
+import re
 from dataclasses import is_dataclass
 from enum import StrEnum
 from functools import cache, partial
@@ -25,6 +26,8 @@ def treeview(obj, indentation: int = 0) -> str:
             string += f'{', '.join([str(a) for a in obj])}\n'
         case dataclass if is_dataclass(dataclass):
             string += '\n' + treeview(vars(dataclass), indentation)
+        case re.Pattern():
+            string += f'\'{obj.pattern}\'\n'
         case _:
             string += f'{obj}\n'
     return string
@@ -47,27 +50,46 @@ def get_contrasting_color(color: tuple[int, int, int]) -> tuple[int, int, int]:
     ...
 
 
-def get_contrasting_color(color: str | tuple[int, int, int] | int,
-                          ) -> str | tuple[int, int, int]:
+@overload
+def get_contrasting_color(color: tuple[float, float, float],
+                          ) -> tuple[float, float, float]:
+    ...
+
+
+def get_contrasting_color(color):
     """Returns a color that contrasts with the one provided as input.
-    Accepts either a string in the format #rrggbb or rrggbb
-    or a tuple of 3 integers in range 0-255."""
+
+    Color can be a tuple of 3 integers in range 0-255,
+    a tuple of floats in range 0-1
+    or a string in the format #rrggbb, rrggbb, #rgb or rgb.
+
+    The return type will match the type of color
+    (string will always start with #).
+    """
+    return_string = False
+    return_ints = False
     match color:
-        case str():
+        case (float() as r, float() as g, float() as b):
+            pass
+        case (int() as r, int() as g, int() as b):
+            r, g, b = r / 255, g / 255, b / 255
+            return_ints = True
+        case str() if len(color) in (6, 7):
             hexcode = color.strip('#')
-            red = int(hexcode[:2], 16)
-            green = int(hexcode[2:4], 16)
-            blue = int(hexcode[4:6], 16)
+            r = int(hexcode[0:2], 16) / 255
+            g = int(hexcode[2:4], 16) / 255
+            b = int(hexcode[4:6], 16) / 255
             return_string = True
-        case (int(), int(), int()):
-            red, green, blue = color
-            return_string = False
-        case (red, green, blue):
-            return_string = False
+        case str() if len(color) in (3, 4):
+            hexcode = color.strip('#')
+            r = int(hexcode[0], 16) / 15
+            g = int(hexcode[1], 16) / 15
+            b = int(hexcode[2], 16) / 15
+            return_string = True
         case _:
             raise TypeError()
 
-    h, s, v = colorsys.rgb_to_hsv(red / 255, green / 255, blue / 255)
+    h, s, v = colorsys.rgb_to_hsv(r, g, b)
     if s < 0.1:
         if v < 0.1:
             s = 0
@@ -76,11 +98,14 @@ def get_contrasting_color(color: str | tuple[int, int, int] | int,
         else:
             v = 0
     h = (h + 0.5) % 1
-    red, green, blue = [int(c * 255) for c in colorsys.hsv_to_rgb(h, s, v)]
-
-    if return_string:
-        return f'#{red:02x}{green:02x}{blue:02x}'
-    return red, green, blue
+    color = colorsys.hsv_to_rgb(h, s, v)
+    if return_ints or return_string:
+        color = [int(c * 255) for c in color]
+        if return_string:
+            r, g, b = color
+            return f'#{r:02x}{g:02x}{b:02x}'
+    r, g, b = color
+    return r, g, b
 
 
 def stringify(object: Any) -> str:

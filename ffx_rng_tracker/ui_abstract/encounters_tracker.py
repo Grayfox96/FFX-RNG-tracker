@@ -34,7 +34,7 @@ class EncountersTracker(TrackerUI):
         output_lines = output.splitlines()
         for index, line in enumerate(output_lines):
             # remove information about initiative equipment
-            if line.startswith('Equipment:') or line.startswith('# Command:'):
+            if line.startswith('Equipment:') or line.startswith('Command:'):
                 output_lines[index] = ''
                 continue
 
@@ -67,7 +67,7 @@ class EncountersTracker(TrackerUI):
         output = output.replace('Encounter: ', '')
         output_lines = output.splitlines()
         output = '\n'.join(output_lines)
-        spacer = f'# {'=' * max(len(line) for line in output_lines)}\n'
+        spacer = f'{'=' * max(len(line) for line in output_lines)}\n'
         index = 0
         while (index := output.find('\n#', index)) >= 0:
             output = output[:index + 1] + spacer + output[index + 1:]

@@ -1,13 +1,14 @@
-import re
 import tkinter as tk
 from tkinter import ttk
 from typing import Callable
 
-from ..configs import Configs
+from ..configs import UIWidgetConfigs
 from ..data.encounters import EncounterData, get_encounter_notes
 from ..events.parser import EventParser
 from ..ui_abstract.encounters_tracker import EncountersTracker
-from .base_widgets import ScrollableFrame, TkConfirmPopup, TkWarningPopup
+from .base_widgets import (ScrollableFrame, TkConfirmPopup, TkWarningPopup,
+                           create_command_proxy)
+from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
 
 
@@ -21,22 +22,20 @@ class EncounterSlider(tk.Frame):
                  max: int,
                  variable: tk.Variable = None,
                  value=None,
-                 command: Callable = None,
                  *args,
                  **kwargs,
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
 
         self.scale = tk.Scale(
-            self, orient='horizontal', label=None, from_=min, to=max,
-            command=command)
+            self, orient='horizontal', label=None, from_=min, to=max)
         self.scale.set(default)
         self.scale.pack(side='left', anchor='w')
 
         if value is None:
             value = label
         self.button = tk.Radiobutton(
-            self, text=label, variable=variable, value=value, command=command)
+            self, text=label, variable=variable, value=value)
         self.button.pack(side='right', anchor='se')
 
     def get(self) -> int:
@@ -45,11 +44,9 @@ class EncounterSlider(tk.Frame):
     def get_name(self) -> str:
         return self.button.cget(key='text')
 
-    def config(self, command=None, *args, **kwargs) -> None:
-        if command is not None:
-            self.scale.config(command=command)
-            self.button.config(command=command)
-        super().config(*args, **kwargs)
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
+        create_command_proxy(self.scale, {'set'}, callback_func)
+        create_command_proxy(self.button, {'invoke'}, callback_func)
 
 
 class TkEncountersInputWidget(tk.Frame):
@@ -58,8 +55,6 @@ class TkEncountersInputWidget(tk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         self.encounters: list[EncounterData] = []
-
-        self.callback_func: Callable = None
 
         self.initiative_button = ttk.Checkbutton(self, text='Sentry')
         self.initiative_button.grid(row=0, column=0, sticky='w')
@@ -123,39 +118,30 @@ class TkEncountersInputWidget(tk.Frame):
         return
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
-        self.initiative_button.config(command=callback_func)
-        self.padding_button.config(command=callback_func)
-        self.start_button.config(command=callback_func)
+        create_command_proxy(self.initiative_button, {'invoke'}, callback_func)
+        create_command_proxy(self.padding_button, {'invoke'}, callback_func)
+        create_command_proxy(self.start_button, {'invoke'}, callback_func)
         for slider in self.sliders.values():
-            slider.config(command=callback_func)
-        self.callback_func = callback_func
-
-
-class TkEncountersOutputWidget(TkOutputWidget):
-
-    def __init__(self, parent, *args, **kwargs) -> None:
-        kwargs.setdefault('wrap', 'none')
-        super().__init__(parent, *args, **kwargs)
-
-    def get_regex_patterns(self) -> dict[str, str]:
-        important_monsters = '(?i)' + '|'.join(
-            [re.escape(m) for m in Configs.important_monsters])
-        patterns = {
-            'preemptive': r'\mPreemptive\M',
-            'ambush': r'\mAmbush\M',
-            'important monster': important_monsters,
-            'encounter': '^# (=| ).+$',
-            'error': '^# Error: .+$',
-        }
-        return patterns
+            slider.register_callback(callback_func)
 
 
 class TkEncountersTracker(tk.Frame):
 
-    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
+    def __init__(self,
+                 parent,
+                 parser: EventParser,
+                 configs: UIWidgetConfigs,
+                 *args,
+                 **kwargs,
+                 ) -> None:
         super().__init__(parent, *args, **kwargs)
+        frame = tk.Frame(self)
+        frame.pack(fill='y', side='left')
 
-        input_widget = TkEncountersInputWidget(self)
+        search_bar = TkSearchBarWidget(frame)
+        search_bar.pack(fill='x')
+
+        input_widget = TkEncountersInputWidget(frame)
         encounters = get_encounter_notes(
             EncountersTracker.notes_file, parser.gamestate.seed)
         input_widget.encounters = encounters
@@ -165,17 +151,20 @@ class TkEncountersTracker(tk.Frame):
             input_widget.add_slider(
                 encounter.label, encounter.min,
                 encounter.default, encounter.max)
-        input_widget.pack(fill='y', side='left')
+        input_widget.pack(expand=True, fill='y')
 
-        output_widget = TkEncountersOutputWidget(self)
+        output_widget = TkOutputWidget(self, wrap='none')
         output_widget.pack(expand=True, fill='both', side='right')
-        output_widget.bind(
+        output_widget.text.bind(
             '<Control-s>', lambda _: self.tracker.save_input_data())
 
         self.tracker = EncountersTracker(
+            configs=configs,
             parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
+            search_bar=search_bar,
             warning_popup=TkWarningPopup(),
             confirmation_popup=TkConfirmPopup(),
             )
+        self.tracker.callback()

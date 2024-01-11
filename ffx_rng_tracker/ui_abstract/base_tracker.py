@@ -1,8 +1,9 @@
+import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
+from ..configs import REGEX_NEVER_MATCH, UITagConfigs, UIWidgetConfigs
 from ..data.notes import get_notes, save_notes
-from ..events.main import Event
 from ..events.parser import EventParser
 from ..events.parsing_functions import USAGE, ParsingFunction, parse_roll
 from .input_widget import InputWidget
@@ -11,13 +12,15 @@ from .output_widget import ConfirmationPopup, OutputWidget
 
 @dataclass
 class TrackerUI(ABC):
+    configs: UIWidgetConfigs
     parser: EventParser
     input_widget: InputWidget
     output_widget: OutputWidget
+    search_bar: InputWidget
     warning_popup: OutputWidget
     confirmation_popup: ConfirmationPopup
-    previous_input_text: str = field(default='', init=False, repr=False)
-    previous_output_text: str = field(default='', init=False, repr=False)
+    previous_edited_input: str = field(default='', init=False, repr=False)
+    previous_edited_output: str = field(default='', init=False, repr=False)
     notes_file: str = field(default='', init=False, repr=False)
     usage: str = field(default='', init=False, repr=False)
 
@@ -25,11 +28,17 @@ class TrackerUI(ABC):
         for function in self.get_parsing_functions():
             for usage_string in USAGE[function]:
                 command = usage_string.split()[0]
-                self.parser.register_parsing_function(command, function)
+                self.parser.parsing_functions[command] = function
         self.usage = self.get_usage()
         self.input_widget.set_input(self.get_default_input_data())
         self.input_widget.register_callback(self.callback)
-        self.callback()
+        for name in self.configs.tag_names:
+            self.output_widget.register_tag(name)
+        self.output_widget.register_tag(
+            '#search bar',
+            UITagConfigs(REGEX_NEVER_MATCH, background='#ffff00'),
+            )
+        self.search_bar.register_callback(self.search_callback)
 
     def get_default_input_data(self) -> str:
         """Returns the default input data."""
@@ -50,10 +59,6 @@ class TrackerUI(ABC):
     @abstractmethod
     def edit_input(self, input_text: str) -> str:
         """Edits the input text to adhere to the parser's syntax."""
-
-    def events_to_string(self, events: list[Event]) -> str:
-        """Converts a list of events to a string."""
-        return '\n'.join([str(e) for e in events])
 
     def get_paddings(self,
                      split_lines: list[list[str]],
@@ -100,7 +105,7 @@ class TrackerUI(ABC):
         with output as the parameter
         """
 
-    def callback(self, *_, **__) -> None:
+    def callback(self) -> None:
         """Method called as a ui callback to parse the input
         and print it to screen.
         If the input has not changed since the last time this method
@@ -108,19 +113,28 @@ class TrackerUI(ABC):
         If the output has not changed since the last time this method
         was called it will not be sent to the output widget.
         """
-        input_text = self.input_widget.get_input()
-        if self.previous_input_text == input_text:
-            return
-        self.previous_input_text = input_text
-        self.parser.gamestate.reset()
-        edited_input = self.edit_input(input_text)
-        output = self.events_to_string(self.parser.parse(edited_input))
-        padding = '# Command: /nopadding\n' not in output
-        edited_output = self.edit_output(output, padding)
-        if self.previous_output_text == edited_output:
-            return
-        self.previous_output_text = edited_output
+        edited_input = self.edit_input(self.input_widget.get_input())
+        if self.previous_edited_input == edited_input:
+            edited_output = self.previous_edited_output
+        else:
+            self.previous_edited_input = edited_input
+            self.parser.gamestate.reset()
+            output = self.parser.parse_to_string(edited_input)
+            padding = 'Command: /nopadding\n' not in output
+            edited_output = self.edit_output(output, padding)
+            self.previous_edited_output = edited_output
         self.output_widget.print_output(edited_output)
+
+    def search_callback(self) -> None:
+        search = self.search_bar.get_input()
+        self.output_widget.seek(search)
+        tag = self.output_widget.tags['#search bar']
+        self.output_widget.clean_tag('#search bar')
+        if not search:
+            tag.regex_pattern = REGEX_NEVER_MATCH
+            return
+        tag.regex_pattern = re.compile(re.escape(search), flags=re.IGNORECASE)
+        self.output_widget.highlight_pattern('#search bar', tag.regex_pattern)
 
     def save_input_data(self) -> None:
         seed = self.parser.gamestate.seed

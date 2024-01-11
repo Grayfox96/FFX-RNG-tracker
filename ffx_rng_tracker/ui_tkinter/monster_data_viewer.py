@@ -1,8 +1,10 @@
-import re
 import tkinter as tk
 from typing import Callable
 
+from ..configs import UIWidgetConfigs
+from ..events.parser import EventParser
 from ..ui_abstract.monster_data_viewer import MonsterDataViewer
+from .base_widgets import create_command_proxy
 from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
 
@@ -25,47 +27,49 @@ class TkMonsterSelectionWidget(tk.Listbox):
             return ''
         return self._monster_names[monster_index]
 
-    def set_input(self, data: list[str]) -> None:
-        self._monster_names = data
-        self._listvar.set(data)
+    def set_input(self, data: str) -> None:
+        old_selection, *monster_names = data.split('|')
+        self._monster_names = monster_names
+        self._listvar.set(monster_names)
+        try:
+            index = monster_names.index(old_selection)
+        except ValueError:
+            index = 0
+        self.selection_clear(0, 'end')
+        self.selection_set(index)
+        self.activate(index)
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
-        self.bind('<<ListboxSelect>>', callback_func)
+        create_command_proxy(self, {'activate'}, callback_func)
 
 
 class TkMonsterDataViewer(tk.Frame):
     """Widget used to display monster's data."""
 
-    def __init__(self, parent, _=None, *args, **kwargs) -> None:
+    def __init__(self,
+                 parent,
+                 parser: EventParser,
+                 configs: UIWidgetConfigs,
+                 *args,
+                 **kwargs,
+                 ) -> None:
         super().__init__(parent, *args, **kwargs)
 
-        outer_frame = tk.Frame(self)
-        outer_frame.pack(fill='y', side='left')
+        frame = tk.Frame(self)
+        frame.pack(fill='y', side='left')
 
-        inner_frame = tk.Frame(outer_frame)
-        inner_frame.pack(fill='x')
-        tk.Label(inner_frame, text='Search:').pack(side='left')
-        search_bar_widget = TkSearchBarWidget(inner_frame)
-        search_bar_widget.pack(fill='x', side='right')
+        search_bar = TkSearchBarWidget(frame)
+        search_bar.pack(fill='x')
 
-        monster_selection_widget = TkMonsterSelectionWidget(
-            outer_frame, width=30)
+        monster_selection_widget = TkMonsterSelectionWidget(frame, width=30)
         monster_selection_widget.pack(expand=True, fill='y')
 
-        self.output_widget = TkOutputWidget(self, wrap='none')
-        self.output_widget.pack(expand=True, fill='both', side='right')
+        output_widget = TkOutputWidget(self, wrap='none')
+        output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = MonsterDataViewer(
+            configs=configs,
             monster_selection_widget=monster_selection_widget,
-            search_bar_widget=search_bar_widget,
-            output_widget=self.output_widget,
+            search_bar=search_bar,
+            output_widget=output_widget,
         )
-
-        monster_selection_widget.set_input(sorted(self.tracker.monster_data))
-        search_bar_widget.register_callback(self.tracker.filter_monsters)
-        monster_selection_widget.register_callback(self.callback)
-
-    def callback(self, *_, **__) -> None:
-        filter = f'(?i){re.escape(self.tracker.search_bar_widget.get_input())}'
-        self.output_widget.regex_patterns['important monster'] = filter
-        self.tracker.callback()

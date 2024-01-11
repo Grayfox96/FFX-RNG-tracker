@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import font
 from typing import Callable
 
-from .base_widgets import ScrollableText, get_default_font_args
+from .base_widgets import (ScrollableText, create_command_proxy,
+                           get_default_font_args)
 
 
 class TkInputWidget(ScrollableText):
@@ -16,29 +17,52 @@ class TkInputWidget(ScrollableText):
         super().__init__(parent, *args, **kwargs)
 
     def get_input(self) -> str:
-        return self.get('1.0', 'end')
+        return self.text.get('1.0', 'end')
 
     def set_input(self, text: str) -> None:
         self.set(text)
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
-        def callback_func_after(_: tk.Event):
-            while scheduled_callbacks:
-                self.after_cancel(scheduled_callbacks.pop(0))
-            scheduled_callbacks.append(self.after(100, callback_func))
-
-        scheduled_callbacks: list[str] = []
-        self.bind('<KeyRelease>', callback_func_after)
+        create_command_proxy(
+            self.text, {'insert', 'delete', 'replace'}, callback_func)
 
 
 class TkSearchBarWidget(tk.Entry):
 
+    def __init__(self, parent, *args, **kwargs) -> None:
+        super().__init__(parent, *args, **kwargs)
+        self.on_focus_out()
+        self.bind('<FocusIn>', self.on_focus_in)
+        self.bind('<FocusOut>', self.on_focus_out)
+        self.bind('<Return>', self.on_return)
+
     def get_input(self) -> str:
+        if self.cget('fg') == 'gray':
+            return ''
         return self.get()
 
     def set_input(self, text: str) -> None:
-        self.delete('1', 'end')
-        self.insert('1', text)
+        self.delete('0', 'end')
+        self.insert('0', text)
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
-        self.bind('<KeyRelease>', callback_func)
+        create_command_proxy(
+            self, {'insert', 'delete', 'replace', 'Return'}, callback_func)
+
+    def on_focus_in(self, event: str = None) -> None:
+        if self.cget('fg') == 'gray':
+            self.delete('0', 'end')
+            self.config(fg='black')
+
+    def on_focus_out(self, event: str = None) -> None:
+        if self.get() == '':
+            self.set_input('Search...')
+            self.config(fg='gray')
+
+    def on_return(self, event: str = None) -> None:
+        # will always raise a TclError but
+        # it will be intercepted by the command proxy
+        try:
+            self.tk.call(str(self), 'Return')
+        except tk.TclError:
+            pass

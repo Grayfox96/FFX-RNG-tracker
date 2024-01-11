@@ -2,13 +2,16 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Callable
 
+from ..configs import UIWidgetConfigs
 from ..data.encounter_formations import ZONES
 from ..events.parser import EventParser
 from ..ui_abstract.encounters_planner import EncountersPlanner
 from ..utils import stringify
-from .base_widgets import ScrollableFrame, TkConfirmPopup, TkWarningPopup
-from .encounters_tracker import EncounterSlider, TkEncountersOutputWidget
+from .base_widgets import (ScrollableFrame, TkConfirmPopup, TkWarningPopup,
+                           create_command_proxy)
+from .encounters_tracker import EncounterSlider
 from .input_widget import TkSearchBarWidget
+from .output_widget import TkOutputWidget
 
 
 class TkEncountersPlannerInputWidget(tk.Frame):
@@ -17,10 +20,6 @@ class TkEncountersPlannerInputWidget(tk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         self.callback_func: Callable = None
-
-        self.searchbar = TkSearchBarWidget(self)
-        self.searchbar.pack(fill='x')
-        self.searchbar.set_input('Type monster names here')
 
         options = ['Boss', 'Simulation']
         options.extend([z.name for z in ZONES.values()])
@@ -45,16 +44,18 @@ class TkEncountersPlannerInputWidget(tk.Frame):
         self.sliders_frame.pack(expand=True, fill='both')
         self.sliders: list[EncounterSlider] = []
 
-    def add_slider(self,
-                   label: str,
-                   min: int = 0,
-                   default: int = 1,
-                   max: int = 100
-                   ) -> None:
+    def add_slider(self, label: str) -> None:
         value = len(self.sliders)
         slider = EncounterSlider(
-            self.sliders_frame, label, min, default, max,
-            self.current_zone_index, value, self.callback_func)
+            parent=self.sliders_frame,
+            label=label,
+            min=0,
+            default=0,
+            max=100,
+            variable=self.current_zone_index,
+            value=value,
+            )
+        slider.register_callback(self.callback_func)
         slider.pack(anchor='w')
         self.sliders.append(slider)
 
@@ -92,30 +93,41 @@ class TkEncountersPlannerInputWidget(tk.Frame):
         return
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
-        self.searchbar.register_callback(callback_func)
-        self.initiative_button.config(command=callback_func)
+        create_command_proxy(self.initiative_button, {'invoke'}, callback_func)
         for slider in self.sliders:
-            slider.config(command=callback_func)
+            slider.register_callback(callback_func)
         self.callback_func = callback_func
 
 
 class TkEncountersPlanner(tk.Frame):
     """"""
 
-    def __init__(self, parent, parser: EventParser, *args, **kwargs) -> None:
+    def __init__(self,
+                 parent,
+                 parser: EventParser,
+                 configs: UIWidgetConfigs,
+                 *args,
+                 **kwargs,
+                 ) -> None:
         super().__init__(parent, *args, **kwargs)
+        frame = tk.Frame(self)
+        frame.pack(fill='y', side='left')
 
-        input_widget = TkEncountersPlannerInputWidget(self)
-        input_widget.pack(fill='y', side='left')
+        search_bar = TkSearchBarWidget(frame)
+        search_bar.pack(fill='x')
 
-        output_widget = TkEncountersOutputWidget(self)
+        input_widget = TkEncountersPlannerInputWidget(frame)
+        input_widget.pack(expand=True, fill='y')
+
+        output_widget = TkOutputWidget(self, wrap='none')
         output_widget.pack(expand=True, fill='both', side='right')
 
         self.tracker = EncountersPlanner(
+            configs=configs,
             parser=parser,
             input_widget=input_widget,
             output_widget=output_widget,
+            search_bar=search_bar,
             warning_popup=TkWarningPopup(),
             confirmation_popup=TkConfirmPopup(),
-            search_bar=input_widget.searchbar,
             )

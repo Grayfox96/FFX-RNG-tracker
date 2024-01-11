@@ -1,6 +1,6 @@
 from tkinter import font
 
-from ..configs import Configs
+from ..configs import Configs, UITagConfigs
 from .base_widgets import ScrollableText, get_default_font_args
 
 
@@ -11,37 +11,38 @@ class TkOutputWidget(ScrollableText):
         kwargs.setdefault('state', 'disabled')
         kwargs.setdefault('wrap', 'word')
         super().__init__(parent, *args, **kwargs)
-        self.tag_configure('wrap margin', lmargin2='1c')
-        self.regex_patterns = self.get_regex_patterns()
-        self.setup_tags()
+        self.text.tag_configure('wrap margin', lmargin2='1c')
+        self.tags: dict[str, UITagConfigs] = {}
 
     def print_output(self, output: str) -> None:
-        self.config(state='normal')
+        self.text.config(state='normal')
         self.set(output)
-        self.tag_add('wrap margin', '1.0', 'end')
-        self.highlight_patterns()
-        self.config(state='disabled')
+        self.text.tag_add('wrap margin', '1.0', 'end')
+        for name, tag in self.tags.items():
+            self.highlight_pattern(name, tag.regex_pattern, output)
+        self.text.config(state='disabled')
 
-    def highlight_patterns(self) -> None:
-        for tag_name in Configs.colors:
-            pattern = self.regex_patterns.get(tag_name, None)
-            if pattern is None:
-                continue
-            self.highlight_pattern(pattern, tag_name)
+    def clean_tag(self, tag_name: str) -> None:
+        self.text.tag_remove(tag_name, '1.0', 'end')
 
-    def get_regex_patterns(self) -> dict[str, str]:
-        patterns = {
-            'advance rng': '^Advanced rng.+$',
-            'error': '^.*# Error: .+$',
-            'comment': '^#(.+?)?$',
-        }
-        return patterns
+    def register_tag(self,
+                     tag_name: str,
+                     tag: UITagConfigs | None = None,
+                     ) -> None:
+        """Setup tag to be used in print_output.
 
-    def setup_tags(self) -> None:
-        """Setup tags to be used by highlight_patterns."""
-        for tag_name, color in Configs.colors.items():
-            self.tag_configure(
-                tag_name, foreground=color.foreground,
-                background=color.background,
-                selectforeground=color.select_foreground,
-                selectbackground=color.select_background)
+        If tag is not provided, a tag with the name tag_name
+        will be retrieved from Configs.ui_tags.
+        """
+        if tag is None:
+            tag = Configs.ui_tags.get(tag_name)
+            if tag is None:
+                return
+        self.tags[tag_name] = tag
+        self.text.tag_configure(
+            tagName=tag_name,
+            foreground=tag.foreground,
+            background=tag.background,
+            selectforeground=tag.select_foreground,
+            selectbackground=tag.select_background,
+            )
