@@ -12,8 +12,8 @@ if __version__ != version:
 
 file_name = abspath('ffx_rng_tracker_ui.py')
 name = f'FFX RNG tracker v{__version__}'
-data = f'{abspath("ffx_rng_tracker/data/data_files")};data_files/'
-ui_tkinter = f'{abspath("ffx_rng_tracker/ui_tkinter/azure_theme")};azure_theme/'
+data = f'{abspath('ffx_rng_tracker/data/data_files')};data_files/'
+ui_tkinter = f'{abspath('ffx_rng_tracker/ui_tkinter/azure_theme')};azure_theme/'
 
 pyinstaller.run([
     f'{file_name}',

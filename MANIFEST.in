@@ -1,2 +1,0 @@
-recursive-include ffx_rng_tracker/data/data_files *
-recursive-include ffx_rng_tracker/ui_tkinter/azure_theme *

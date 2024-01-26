@@ -1,3 +1,38 @@
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "ffx_rng_tracker"
+dynamic = ["version"]
+requires-python = ">= 3.12"
+authors = [
+  {name = "Grayfox96"},
+]
+maintainers = [
+  {name = "Grayfox96"},
+]
+description = "FFX RNG tracker"
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Utilities",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://grayfox96.github.io/FFX-RNG-tracker/"
+Repository = "https://github.com/Grayfox96/FFX-RNG-tracker.git"
+
+[tool.setuptools.packages.find]
+include = ["ffx_rng_tracker*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "ffx_rng_tracker.__version__"}

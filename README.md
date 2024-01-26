@@ -1,7 +1,7 @@
 # FFX RNG Tracker
 To use the program download it from the [releases page](https://github.com/Grayfox96/FFX-RNG-tracker/releases), unzip it and open `FFX RNG tracker vXX.XX.XX.exe`.
 
-To install the `ffx_rng_tracker` library run `pip install .` while in the main directory (where `setup.cfg` is located).
+To install the `ffx_rng_tracker` library run `pip install .` while in the main directory (where `pyproject.toml` is located).
 
 To build the .exe run `python ffx_rng_tracker_pyinstaller.py` (the latest pyinstaller version is required, install with `pip install pyinstaller`).
 
