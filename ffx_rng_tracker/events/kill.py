@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 
-from ..data.constants import (Character, EquipmentSlots, EquipmentType,
-                              KillType, Rarity)
+from ..data.constants import Character, EquipmentType, KillType, Rarity
 from ..data.equipment import Equipment, EquipmentDrop
 from ..data.items import ItemDrop
 from ..data.monsters import Monster
@@ -18,12 +17,10 @@ class Kill(Event):
     def __post_init__(self) -> None:
         self.item_1 = self._get_item_1()
         if self.item_1:
-            self.gamestate.add_to_inventory(
-                self.item_1.item, self.item_1.quantity)
+            self.gamestate.inventory.add(self.item_1.item, self.item_1.quantity)
         self.item_2 = self._get_item_2()
         if self.item_2:
-            self.gamestate.add_to_inventory(
-                self.item_2.item, self.item_2.quantity)
+            self.gamestate.inventory.add(self.item_2.item, self.item_2.quantity)
         self.gamestate.gil += self.monster.gil
         rng_current_positions = self.gamestate._rng_tracker._rng_current_positions
         self.ability_rolls = rng_current_positions[13]
@@ -117,16 +114,12 @@ class Kill(Event):
 
         rng_number_of_slots = self._advance_rng(12) & 7
         number_of_slots = self.monster.equipment.slots_range[rng_number_of_slots]
-        if number_of_slots > EquipmentSlots.MAX:
-            number_of_slots = EquipmentSlots.MAX.value
-        elif number_of_slots < EquipmentSlots.MIN:
-            number_of_slots = EquipmentSlots.MIN.value
 
         # get number of abilities
         rng_number_of_abilities = self._advance_rng(12) & 7
         number_of_abilities = self.monster.equipment.max_ability_rolls_range[rng_number_of_abilities]
 
-        abilities_list = self.monster.equipment.ability_lists[owner, type_]
+        abilities_list = self.monster.equipment.ability_lists[type_][owner]
 
         abilities = []
 

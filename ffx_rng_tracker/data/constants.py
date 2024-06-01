@@ -7,11 +7,6 @@ class EncounterCondition(StrEnum):
     AMBUSH = 'Ambush'
 
 
-class EquipmentSlots(IntEnum):
-    MIN = 1
-    MAX = 4
-
-
 class Element(StrEnum):
     FIRE = 'Fire'
     ICE = 'Ice'
@@ -121,30 +116,30 @@ class DamageType(StrEnum):
 
 
 class DamageFormula(StrEnum):
-    NO_DAMAGE = "No Damage"
-    STRENGTH = "Strength"
-    PIERCING_STRENGTH = "Piercing Strength"
-    MAGIC = "Magic"
-    PIERCING_MAGIC = "Piercing Magic"
-    PERCENTAGE_CURRENT = "Percentage Current"
-    FIXED_NO_VARIANCE = "Fixed (no variance)"
-    HEALING = "Healing"
-    PERCENTAGE_TOTAL = "Percentage Total"
-    FIXED = "Fixed"
-    PERCENTAGE_TOTAL_MP = "Percentage Total MP (unused)"
-    BASE_CTB = "Base CTB (unused)"
-    PERCENTAGE_CURRENT_MP = "Percentage Current MP (unused)"
-    CTB = "CTB"
-    PIERCING_STRENGTH_NO_VARIANCE = "Piercing Strength (no variance) (unused)"
-    SPECIAL_MAGIC = "Special Magic"
-    HP = "HP"
-    CELESTIAL_HIGH_HP = "Celestial High HP"
-    CELESTIAL_HIGH_MP = "Celestial MP"
-    CELESTIAL_LOW_HP = "Celestial Low HP"
-    SPECIAL_MAGIC_NO_VARIANCE = "Special Magic (no variance) (unused)"
-    GIL = "Gil"
-    KILLS = "Kills"
-    DEAL_9999 = "Deal 9999"
+    NO_DAMAGE = 'No Damage'
+    STRENGTH = 'Strength'
+    PIERCING_STRENGTH = 'Piercing Strength'
+    MAGIC = 'Magic'
+    PIERCING_MAGIC = 'Piercing Magic'
+    PERCENTAGE_CURRENT = 'Percentage Current'
+    FIXED_NO_VARIANCE = 'Fixed (no variance)'
+    HEALING = 'Healing'
+    PERCENTAGE_TOTAL = 'Percentage Total'
+    FIXED = 'Fixed'
+    PERCENTAGE_TOTAL_MP = 'Percentage Total MP (unused)'
+    BASE_CTB = 'Base CTB (unused)'
+    PERCENTAGE_CURRENT_MP = 'Percentage Current MP (unused)'
+    CTB = 'CTB'
+    PIERCING_STRENGTH_NO_VARIANCE = 'Piercing Strength (no variance) (unused)'
+    SPECIAL_MAGIC = 'Special Magic'
+    HP = 'HP'
+    CELESTIAL_HIGH_HP = 'Celestial High HP'
+    CELESTIAL_HIGH_MP = 'Celestial MP'
+    CELESTIAL_LOW_HP = 'Celestial Low HP'
+    SPECIAL_MAGIC_NO_VARIANCE = 'Special Magic (no variance) (unused)'
+    GIL = 'Gil'
+    KILLS = 'Kills'
+    DEAL_9999 = 'Deal 9999'
 
 
 class TargetType(StrEnum):
@@ -174,7 +169,7 @@ class TargetType(StrEnum):
     HIGHEST_STR_CHARACTER = 'Highest Str Character'
     LOWEST_HP_CHARACTER = 'Lowest HP Character'
     HIGHEST_MP_CHARACTER = 'Highest MP Character'
-    LOWEST_MAG_DEF_CHARACTER = "Lowest Mag Def Character"
+    LOWEST_MAG_DEF_CHARACTER = 'Lowest Mag Def Character'
     RANDOM_MONSTER_NOT_SHELL = 'Random Monster Not Affected By Shell'
     RANDOM_MONSTER_NOT_PROTECT = 'Random Monster Not Affected By Protect'
     RANDOM_MONSTER_NOT_REFLECT = 'Random Monster Not Affected By Reflect'

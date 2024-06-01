@@ -8,7 +8,7 @@ from .data.constants import (AEONS_STATS_CONSTANTS, BASE_COMPATIBILITY,
                              ENCOUNTERS_YUNA_STATS, Character, Item, Stat,
                              Status)
 from .data.equipment import Equipment
-from .data.items import InventorySlot
+from .data.items import Inventory
 from .data.statuses import DURATION_STATUSES, TEMPORARY_STATUSES
 from .tracker import FFXRNGTracker
 
@@ -20,8 +20,13 @@ class GameState:
 
     def __init__(self, rng_tracker: FFXRNGTracker) -> None:
         self._rng_tracker = rng_tracker
+        self._default_party = Character.TIDUS, Character.AURON
         self.characters = self._get_characters()
         self.zone_encounters_counts: dict[str, int] = {}
+        self.inventory = Inventory()
+        self.equipment_inventory: list[Equipment | None] = []
+        self.party: list[Character] = []
+        self.monster_party: list[MonsterActor] = []
         self.reset()
 
     def _get_characters(self) -> dict[Character, CharacterActor]:
@@ -93,17 +98,12 @@ class GameState:
                 value = max(value, enc_value) + bonus_stats.get(stat, 0)
                 aeon.set_stat(stat, value)
 
-    def process_start_of_turn(self,
-                              actor: Actor,
-                              ) -> None:
+    def process_start_of_turn(self, actor: Actor) -> None:
         for status in TEMPORARY_STATUSES:
             actor.statuses.pop(status, None)
         self.setup_autostatuses()
 
-    def process_end_of_turn(self,
-                            actor: Actor,
-                            action: Action,
-                            ) -> None:
+    def process_end_of_turn(self, actor: Actor, action: Action) -> None:
         self.last_actor = actor
         self.last_actor.last_action = action
         if action.destroys_user:
@@ -146,20 +146,8 @@ class GameState:
                 actor.current_hp = 1
             actor.ctb = 0
             actor.statuses.clear()
-            for buff in actor.buffs:
-                actor.buffs[buff] = 0
+            actor.buffs.clear()
         self.monster_party.clear()
-
-    def add_to_inventory(self, item: Item, quantity: int) -> None:
-        empty_slot = None
-        for slot in self.inventory:
-            if not empty_slot and not slot.item:
-                empty_slot = slot
-            elif slot.item is item:
-                slot.quantity += quantity
-                return
-        empty_slot.item = item
-        empty_slot.quantity = quantity
 
     def clean_equipment_inventory(self) -> None:
         while (self.equipment_inventory
@@ -176,13 +164,14 @@ class GameState:
 
     def reset(self) -> None:
         self._rng_tracker.reset()
-        self.inventory = [InventorySlot() for _ in Item]
-        self.inventory[0] = InventorySlot(Item.POTION, 10)
-        self.inventory[1] = InventorySlot(Item.PHOENIX_DOWN, 3)
-        self.equipment_inventory: list[Equipment | None] = []
+        self.inventory.reset()
+        self.inventory.add(Item.POTION, 10)
+        self.inventory.add(Item.PHOENIX_DOWN, 3)
+        self.equipment_inventory.clear()
         self.gil = 300
-        self.party = [Character.TIDUS, Character.AURON]
-        self.monster_party: list[MonsterActor] = []
+        self.party.clear()
+        self.party.extend(self._default_party)
+        self.monster_party.clear()
         self.last_actor: Actor = self.characters[Character.TIDUS]
         self.compatibility = BASE_COMPATIBILITY[Configs.game_version]
         self.equipment_drops = 0

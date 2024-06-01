@@ -9,11 +9,10 @@ from ..data.constants import (SHORT_STATS_NAMES, Autoability, Character,
                               KillType, MonsterSlot, Stat, TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
-from ..data.items import ITEM_PRICES, ITEMS
+from ..data.items import ITEM_PRICES
 from ..data.monsters import get_monsters_dict
 from ..errors import EventParsingError
 from ..gamestate import GameState
-from ..ui_functions import get_inventory_table
 from ..utils import search_strenum, stringify
 from .advance_rng import AdvanceRNG
 from .change_equipment import ChangeEquipment
@@ -139,9 +138,7 @@ def parse_equipment(equipment_type_name: str = '',
     return equipment
 
 
-def parse_target(gs: GameState,
-                 target_name: str,
-                 ) -> Actor:
+def parse_target(gs: GameState, target_name: str) -> Actor:
     if target_name in ('m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'):
         return parse_monster_slot(gs, target_name)
     elif target_name.endswith('_c'):
@@ -300,10 +297,7 @@ def parse_party_change(gs: GameState,
     return ChangeParty(gs, party_formation)
 
 
-def parse_summon(gs: GameState,
-                 aeon_name: str = '',
-                 *_,
-                 ) -> ChangeParty:
+def parse_summon(gs: GameState, aeon_name: str = '', *_) -> ChangeParty:
     if not aeon_name:
         raise EventParsingError
     if 'magus_sisters'.startswith(aeon_name):
@@ -673,7 +667,7 @@ def parse_inventory_command(gs: GameState,
             elif params and params[0] == 'gil':
                 text = f'Gil: {gs.gil}\n'
             else:
-                text = get_inventory_table(gs.inventory)
+                text = gs.inventory.to_string()
         case ('get' | 'use', 'gil', amount, *_):
             try:
                 gil = int(amount)
@@ -742,6 +736,7 @@ def parse_inventory_command(gs: GameState,
             if amount < 1:
                 raise EventParsingError('Amount needs to be more than 0')
             if command == 'get':
+                gs.inventory.add(item, amount)
                 text = f'Added {item} x{amount} to inventory'
             elif command == 'buy':
                 gil = ITEM_PRICES[item] * amount
@@ -749,14 +744,13 @@ def parse_inventory_command(gs: GameState,
                     raise EventParsingError('Not enough gil '
                                             f'(need {gil - gs.gil} more)')
                 gs.gil -= gil
+                gs.inventory.add(item, amount)
                 text = f'Bought {item} x{amount} for {gil} gil'
             else:
-                items = [s.item for s in gs.inventory]
-                if item not in items:
-                    raise EventParsingError(f'{item} is not in the inventory')
-                slot = gs.inventory[items.index(item)]
-                if amount > slot.quantity:
-                    raise EventParsingError(f'Not enough {item} to {command}')
+                try:
+                    gs.inventory.remove(item, amount)
+                except ValueError as error:
+                    raise EventParsingError(str(error))
                 if command == 'use':
                     text = f'Used {item} x{amount}'
                 else:
@@ -764,7 +758,6 @@ def parse_inventory_command(gs: GameState,
                     gs.gil += gil
                     text = f'Sold {item} x{amount} for {gil} gil'
                 amount = amount * -1
-            gs.add_to_inventory(item, amount)
         case ('get' | 'buy' | 'use' | 'sell', *_):
             usage = f'Usage: inventory {command} [item] [amount]'
             raise EventParsingError(usage)
@@ -774,24 +767,20 @@ def parse_inventory_command(gs: GameState,
                 slot_2_index = int(slot_2_index) - 1
             except ValueError:
                 raise EventParsingError('Inventory slot needs to be an integer')
-            if (max(slot_1_index, slot_2_index) >= len(gs.inventory)
-                    or min(slot_1_index, slot_2_index) < 0):
+            try:
+                gs.inventory.switch(slot_1_index, slot_2_index)
+            except ValueError:
                 raise EventParsingError('Inventory slot needs to be between'
                                         f' 1 and {len(gs.inventory)}')
-            slot_1 = gs.inventory[slot_1_index]
-            slot_2 = gs.inventory[slot_2_index]
-            gs.inventory[slot_1_index] = slot_2
-            gs.inventory[slot_2_index] = slot_1
-            text = (f'Switched {slot_1.item} (slot {slot_1_index + 1})'
-                    f' for {slot_2.item} (slot {slot_2_index + 1})')
+            item_1 = gs.inventory[slot_1_index][0]
+            item_2 = gs.inventory[slot_2_index][0]
+            text = (f'Switched {item_2} (slot {slot_1_index + 1})'
+                    f' for {item_1} (slot {slot_2_index + 1})')
         case ('switch', *_):
             usage = 'Usage: inventory switch [slot 1] [slot 2]'
             raise EventParsingError(usage)
         case ('autosort', *_):
-            # TODO
-            # autosort order is not by index
-            items = list(ITEMS) + [None]
-            gs.inventory.sort(key=lambda s: items.index(s.item))
+            gs.inventory.autosort()
             text = 'Autosorted inventory'
         case _:
             raise EventParsingError

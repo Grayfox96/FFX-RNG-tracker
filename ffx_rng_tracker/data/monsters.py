@@ -9,8 +9,8 @@ from ..utils import add_bytes, open_cp1252, stringify
 from .actions import ACTIONS, ACTIONS_FILES_BY_ID, Action
 from .autoabilities import AUTOABILITIES
 from .constants import (Autoability, Character, Element, ElementalAffinity,
-                        EquipmentSlots, EquipmentType, GameVersion, KillType,
-                        MonsterSlot, Rarity, Stat, Status, TargetType)
+                        EquipmentType, GameVersion, KillType, MonsterSlot,
+                        Rarity, Stat, Status, TargetType)
 from .file_functions import get_resource_path
 from .items import ITEMS, ItemDrop
 from .text_characters import bytes_to_string
@@ -70,13 +70,14 @@ class EquipmentDropInfo:
     max_ability_rolls_modifier: int
     max_ability_rolls_range: list[int]
     added_to_inventory: bool
-    ability_lists: dict[tuple[Character, EquipmentType], list[Autoability | None]] = field(
+    ability_lists: dict[EquipmentType, dict[Character, list[Autoability | None]]] = field(
         default_factory=dict)
 
     def __post_init__(self) -> None:
-        for c in tuple(Character)[:7]:
-            for t in EquipmentType:
-                self.ability_lists[c, t] = [None for _ in range(8)]
+        for t in EquipmentType:
+            char_lists = self.ability_lists[t] = {}
+            for c in tuple(Character)[:7]:
+                char_lists[c] = [None for _ in range(8)]
 
 
 @dataclass
@@ -379,7 +380,7 @@ def _get_monsters(monsters_data: dict[str, list[int]]) -> dict[str, Monster]:
             else:
                 elemental_affinities[element] = ElementalAffinity.NEUTRAL
 
-        status_resistances: dict[Status: int] = {}
+        status_resistances: dict[Status, int] = {}
         for i, status in enumerate(Status, 47):
             if i > 71:
                 break
@@ -401,7 +402,7 @@ def _get_monsters(monsters_data: dict[str, list[int]]) -> dict[str, Monster]:
 
         status_immunities_bytes = add_bytes(*monster_data[78:80])
         for i, status in enumerate(tuple(Status)[25:39]):
-            if i > 4:
+            if i > 3:
                 i += 1
             if status_immunities_bytes & (1 << i):
                 status_resistances[status] = 255
@@ -492,12 +493,10 @@ def _get_monsters(monsters_data: dict[str, list[int]]) -> dict[str, Monster]:
 
         for rng_roll in range(8):
             slots = (equipment.slots_modifier + rng_roll - 4) // 4
-            if slots < EquipmentSlots.MIN:
-                slots = EquipmentSlots.MIN.value
-            elif slots > EquipmentSlots.MAX:
-                slots = EquipmentSlots.MAX.value
+            slots = min(max(1, slots), 4)
             equipment.slots_range.append(slots)
             ab_rolls = (equipment.max_ability_rolls_modifier + rng_roll - 4) // 8
+            ab_rolls = max(0, ab_rolls)
             equipment.max_ability_rolls_range.append(ab_rolls)
 
         for c, base_address in zip(Character, range(178, 371, 32)):
@@ -507,7 +506,7 @@ def _get_monsters(monsters_data: dict[str, list[int]]) -> dict[str, Monster]:
                     if monster_data[address + 1] != 128:
                         continue
                     autoability = AUTOABILITIES[monster_data[address]]
-                    equipment.ability_lists[c, t][ability_offset] = autoability
+                    equipment.ability_lists[t][c][ability_offset] = autoability
 
         zanmato_level = monster_data[402]
         monster = Monster(
