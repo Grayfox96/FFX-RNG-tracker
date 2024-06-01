@@ -6,4 +6,4 @@ from ffx_rng_tracker.ui_tkinter.main import main
 if __name__ == '__main__':
     setup_main_logger()
     Configs.init_configs()
-    main(TkEncountersTracker, 'FFX Encounters tracker')
+    main(title='FFX Encounters tracker', widget=TkEncountersTracker)

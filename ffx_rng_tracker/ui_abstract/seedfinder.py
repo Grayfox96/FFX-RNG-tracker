@@ -71,7 +71,7 @@ class SeedFinder(ActionsTracker):
             damage_values.clear()
             for index in indexes:
                 event: CharacterAction = events[index]
-                damage_values.extend([r.hp.damage for r in event.results])
+                damage_values.extend(r.hp.damage for r in event.results)
             if damage_values == input_dvs:
                 self.input_widget.set_input(
                     f'# Seed number: {seed}\n{self.input_widget.get_input()}')

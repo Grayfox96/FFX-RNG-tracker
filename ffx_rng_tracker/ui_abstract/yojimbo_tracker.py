@@ -35,10 +35,12 @@ class YojimboTracker(TrackerUI):
             match line.lower().split():
                 case ['death', *_]:
                     line = 'death yojimbo'
-                case [action_name, *params] if action_name in YOJIMBO_ACTIONS:
-                    line = ' '.join(['yojimboturn', action_name, *params])
+                case [action_name, *_] if action_name in YOJIMBO_ACTIONS:
+                    line = f'yojimboturn {line}'
                 case ['/usage']:
                     line = self.usage
+                case _:
+                    continue
             input_lines[index] = line
         return '\n'.join(input_lines)
 

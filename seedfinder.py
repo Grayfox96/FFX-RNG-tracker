@@ -7,4 +7,4 @@ if __name__ == '__main__':
     setup_main_logger()
     Configs.init_configs()
     Configs.seed = 0
-    main(TkSeedFinder, 'FFX Seedfinder', '800x600')
+    main(title='FFX Seedfinder', widget=TkSeedFinder)

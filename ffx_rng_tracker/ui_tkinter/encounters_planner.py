@@ -1,6 +1,6 @@
 import tkinter as tk
+from collections.abc import Callable
 from tkinter import ttk
-from typing import Callable
 
 from ..configs import UIWidgetConfigs
 from ..data.encounter_formations import ZONES
@@ -19,10 +19,10 @@ class TkEncountersPlannerInputWidget(tk.Frame):
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
-        self.callback_func: Callable = None
+        self.callback_func: Callable[[], None] = lambda: None
 
         options = ['Boss', 'Simulation']
-        options.extend([z.name for z in ZONES.values()])
+        options.extend(z.name for z in ZONES.values())
         self.selected_zone = tk.StringVar(self)
         self.selected_zone.set(options[0])
         combobox = ttk.Combobox(

@@ -27,10 +27,12 @@ class DropsTracker(TrackerUI):
         input_lines = input_text.splitlines()
         for index, line in enumerate(input_lines):
             match line.lower().split():
-                case [monster, *params] if monster in MONSTERS:
-                    line = ' '.join(['kill', monster, *params])
+                case [monster, *_] if monster in MONSTERS:
+                    line = f'kill {line}'
                 case ['/usage']:
                     line = self.usage
+                case _:
+                    continue
             input_lines[index] = line
         return '\n'.join(input_lines)
 
@@ -51,5 +53,4 @@ class DropsTracker(TrackerUI):
             output = output[output.find('\n') + 1:]
         if padding:
             output = self.pad_output(output)
-        output = output.replace('Drops: ', '')
-        return output
+        return output.replace('Drops: ', '')

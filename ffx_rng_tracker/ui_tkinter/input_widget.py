@@ -1,6 +1,6 @@
 import tkinter as tk
+from collections.abc import Callable
 from tkinter import font
-from typing import Callable
 
 from .base_widgets import (ScrollableText, create_command_proxy,
                            get_default_font_args)

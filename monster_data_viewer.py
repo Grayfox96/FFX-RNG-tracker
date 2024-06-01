@@ -7,4 +7,4 @@ if __name__ == '__main__':
     setup_main_logger()
     Configs.init_configs()
     Configs.seed = 0
-    main(TkMonsterDataViewer, 'FFX Monster data viewer')
+    main(title='FFX Monster Data Viewer', widget=TkMonsterDataViewer)

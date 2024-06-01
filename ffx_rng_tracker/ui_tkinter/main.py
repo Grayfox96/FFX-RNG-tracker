@@ -2,9 +2,10 @@ import os
 import sys
 import tkinter as tk
 from tkinter import ttk
+from typing import Protocol
 
 from .. import __version__
-from ..configs import Configs
+from ..configs import Configs, UIWidgetConfigs
 from ..data.file_functions import get_resource_path
 from ..events.parser import EventParser
 from ..gamestate import GameState
@@ -25,49 +26,26 @@ from .steps_tracker import TkStepsTracker
 from .yojimbo_tracker import TkYojimboTracker
 
 
-class FFXRNGTrackerUI(ttk.Notebook):
-    """Widget that contains all the other tracking widgets."""
+class TkTracker(Protocol):
 
-    def __init__(self, parent, seed: int, *args, **kwargs) -> None:
-        super().__init__(parent, *args, **kwargs)
+    def __init__(self,
+                 parent,
+                 parser: EventParser,
+                 configs: UIWidgetConfigs,
+                 *args,
+                 **kwargs,
+                 ) -> None:
+        ...
 
-        widgets = self.get_widgets()
-        for name, widget in widgets.items():
-            configs = Configs.ui_widgets.get(name)
-            if configs is None or not configs.shown:
-                continue
-            parser = EventParser(GameState(FFXRNGTracker(seed)))
-            if configs.windowed:
-                window = tk.Toplevel()
-                window.title(name)
-                window.geometry('1280x830')
-                window.protocol('WM_DELETE_WINDOW', lambda: None)
-                widget(window, parser, configs).pack(expand=True, fill='both')
-            else:
-                self.add(widget(self, parser, configs), text=name)
-
-    def get_widgets(self) -> dict[str, type[tk.Widget]]:
-        widgets = {
-            'Seed info': TkSeedInfo,
-            'Drops': TkDropsTracker,
-            'Encounters': TkEncountersTracker,
-            'Steps': TkStepsTracker,
-            'Encounters Planner': TkEncountersPlanner,
-            'Encounters Table': TkEncountersTable,
-            'Actions': TkActionsTracker,
-            'Status': TkStatusTracker,
-            'Yojimbo': TkYojimboTracker,
-            'Monster Data': TkMonsterDataViewer,
-            'Seedfinder': TkSeedFinder,
-            'Configs/Log': TkConfigsLogViewer,
-        }
-        return widgets
+    def pack(self, *args, **kwargs) -> None:
+        ...
 
 
 @log_exceptions()
-def main(widget: type[tk.Widget],
+def main(*,
          title='FFX RNG tracker',
          size='1280x830',
+         widget: type[TkTracker] | None = None,
          ) -> None:
     """Creates a Tkinter main window, initializes the rng tracker
     and the root logger.
@@ -104,13 +82,47 @@ def main(widget: type[tk.Widget],
     else:
         seed = Configs.seed
 
-    ui = widget(root, seed)
+    if widget is not None:
+        parser = EventParser(GameState(FFXRNGTracker(seed)))
+        name = WIDGET_NAMES[widget]
+        configs = Configs.ui_widgets[name]
+        ui = widget(root, parser, configs)
+    else:
+        ui = ttk.Notebook(root)
+        for sub_widget, name in WIDGET_NAMES.items():
+            configs = Configs.ui_widgets.get(name)
+            if configs is None or not configs.shown:
+                continue
+            parser = EventParser(GameState(FFXRNGTracker(seed)))
+            if configs.windowed:
+                window = tk.Toplevel()
+                window.title(name)
+                window.geometry('1280x830')
+                window.protocol('WM_DELETE_WINDOW', lambda: None)
+                sub_widget(window, parser, configs).pack(expand=True, fill='both')
+            else:
+                ui.add(sub_widget(ui, parser, configs), text=name)
 
     ui.pack(expand=True, fill='both')
 
     root.deiconify()
     root.mainloop()
 
+
+WIDGET_NAMES: dict[type[TkTracker], str] = {
+    TkSeedInfo: 'Seed info',
+    TkDropsTracker: 'Drops',
+    TkEncountersTracker: 'Encounters',
+    TkStepsTracker: 'Steps',
+    TkEncountersPlanner: 'Encounters Planner',
+    TkEncountersTable: 'Encounters Table',
+    TkActionsTracker: 'Actions',
+    TkStatusTracker: 'Status',
+    TkYojimboTracker: 'Yojimbo',
+    TkMonsterDataViewer: 'Monster Data',
+    TkSeedFinder: 'Seedfinder',
+    TkConfigsLogViewer: 'Configs/Log',
+}
 
 AZURE_THEME_DIRECTORY = os.path.dirname(__file__)
 AZURE_THEME_PATH = 'azure_theme/azure.tcl'

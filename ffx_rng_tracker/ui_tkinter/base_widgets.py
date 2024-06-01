@@ -1,9 +1,10 @@
 import re
 import tkinter as tk
 from collections import deque
+from collections.abc import Callable
 from logging import getLogger
 from tkinter import messagebox, simpledialog, ttk
-from typing import Callable
+from typing import Any
 
 from ..configs import Configs
 from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
@@ -170,13 +171,17 @@ class DamageValuesDialogue(simpledialog.Dialog):
         self.seed = None
         super().__init__(*args, **kwargs)
 
-    def body(self, parent: tk.Tk) -> tk.Entry:
-        self.parent = parent
-        text = 'Damage values (Auron1 Tidus1 A2)'
-        if DAMAGE_VALUES_NEEDED[Configs.game_version] == 3:
-            text = 'Damage values (Auron1 Tidus Auron2)'
+    def body(self, parent: tk.Frame) -> tk.Entry:
+        damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
+        text = (f'Input the first {damage_values_needed} damage values '
+                'in this order: ')
+        if damage_values_needed == 3:
+            text += 'Auron1 Tidus Auron2\n'
         else:
-            text = 'Damage values (Auron1 Tidus1 A2 T2 A3 T3 A4 A5)'
+            text += ('Auron1 Tidus1 A2 T2 A3 T3 A4 A5\n'
+                     '(A4 and A5 are the first 2 Auron Attacks '
+                     'vs Sinspawn Ammes)\n')
+        text += 'Alternatively input a Seed Number to load that seed directly'
         tk.Label(parent, text=text).pack()
         self.entry = tk.Entry(parent, width=25)
         self.entry.pack(fill='x')
@@ -185,7 +190,7 @@ class DamageValuesDialogue(simpledialog.Dialog):
     def buttonbox(self) -> None:
         tk.Button(self, text='Submit', command=self.validate_input).pack()
         self.bind('<Return>', lambda _: self.validate_input())
-        self.bind('<Escape>', lambda _: self.parent.quit())
+        self.bind('<Escape>', lambda _: self.destroy())
 
     def validate_input(self) -> None:
         input_string = self.entry.get()
@@ -197,7 +202,7 @@ class DamageValuesDialogue(simpledialog.Dialog):
             seed_info = [int(i) for i in seed_info]
         except ValueError as error:
             error = str(error).split(':', 1)[1]
-            self.show_warning(f'{error} is not a valid damage value.')
+            self.show_warning(f'{error} is not a valid damage value')
             return
         match seed_info:
             case []:
@@ -220,7 +225,8 @@ class DamageValuesDialogue(simpledialog.Dialog):
         self.seed = seed
         self.destroy()
 
-    def show_warning(self, text) -> None:
+    def show_warning(self, text: str) -> None:
+        text = f'Error: {text}'
         if self.warning_label:
             self.warning_label.config(text=text)
         else:
@@ -235,10 +241,9 @@ class TkWarningPopup:
 
 
 class TkConfirmPopup:
-    confirmed: bool
 
-    def print_output(self, output: str) -> None:
-        self.confirmed = messagebox.askokcancel(message=output)
+    def print_output(self, output: str) -> bool:
+        return messagebox.askokcancel(message=output)
 
 
 def create_command_proxy(widget: tk.Widget,
@@ -262,7 +267,7 @@ def create_command_proxy(widget: tk.Widget,
     except tk.TclError:
         pass
 
-    def command_proxy(command: str, *args: str) -> str:
+    def command_proxy(command: str, *args: str) -> Any:
         try:
             result = widget.tk.call((new_name, command) + args)
         except tk.TclError:

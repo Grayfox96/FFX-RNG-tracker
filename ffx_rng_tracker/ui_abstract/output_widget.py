@@ -37,5 +37,15 @@ class OutputWidget(Protocol):
         """
 
 
-class ConfirmationPopup(OutputWidget):
-    confirmed: bool
+class WarningPopup(Protocol):
+
+    def print_output(self, output: str) -> None:
+        """Prints the output data to the screen."""
+
+
+class ConfirmPopup(Protocol):
+
+    def print_output(self, output: str) -> bool:
+        """Prints the output data to the screen and asks for confirmation,
+        returning the result.
+        """

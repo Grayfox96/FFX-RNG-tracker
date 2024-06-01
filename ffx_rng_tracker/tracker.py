@@ -1,4 +1,4 @@
-from typing import Iterator
+from collections.abc import Iterator
 
 from .data.constants import RNG_CONSTANTS_1, RNG_CONSTANTS_2
 

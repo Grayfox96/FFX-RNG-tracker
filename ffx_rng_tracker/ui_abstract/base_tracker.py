@@ -1,5 +1,6 @@
 import re
 from abc import ABC, abstractmethod
+from collections import defaultdict
 from dataclasses import dataclass, field
 
 from ..configs import REGEX_NEVER_MATCH, UITagConfigs, UIWidgetConfigs
@@ -7,7 +8,7 @@ from ..data.notes import get_notes, save_notes
 from ..events.parser import EventParser
 from ..events.parsing_functions import USAGE, ParsingFunction, parse_roll
 from .input_widget import InputWidget
-from .output_widget import ConfirmationPopup, OutputWidget
+from .output_widget import ConfirmPopup, OutputWidget, WarningPopup
 
 
 @dataclass
@@ -17,8 +18,8 @@ class TrackerUI(ABC):
     input_widget: InputWidget
     output_widget: OutputWidget
     search_bar: InputWidget
-    warning_popup: OutputWidget
-    confirmation_popup: ConfirmationPopup
+    warning_popup: WarningPopup
+    confirmation_popup: ConfirmPopup
     previous_edited_input: str = field(default='', init=False, repr=False)
     previous_edited_output: str = field(default='', init=False, repr=False)
     notes_file: str = field(default='', init=False, repr=False)
@@ -63,11 +64,11 @@ class TrackerUI(ABC):
     def get_paddings(self,
                      split_lines: list[list[str]],
                      ) -> dict[str, dict[int, int]]:
-        paddings: dict[str, dict[int, int]] = {}
+        paddings: dict[str, dict[int, int]] = defaultdict(dict)
         for event_name, *line_parts in split_lines:
             if not line_parts:
                 continue
-            event_paddings = paddings.setdefault(event_name, {})
+            event_paddings = paddings[event_name]
             for i, line_part in enumerate(line_parts):
                 event_paddings[i] = max(
                     event_paddings.get(i, 0), len(line_part))
@@ -76,12 +77,14 @@ class TrackerUI(ABC):
     def pad_output(self, output: str) -> str:
         split_lines: list[list[str]] = []
         for line in output.splitlines():
-            event_name, *line_parts = line.split(':')
-            if not any(line_parts):
+            if ':' not in line:
                 split_lines.append([line])
                 continue
-            line_parts = ':'.join(line_parts).split('|')
-            split_lines.append([event_name] + line_parts)
+            event_name, rest = line.split(':', 1)
+            if not rest:
+                split_lines.append([line])
+                continue
+            split_lines.append([event_name] + rest.split('|'))
         paddings = self.get_paddings(split_lines)
         lines = []
         for event_name, *line_parts in split_lines:
@@ -141,9 +144,9 @@ class TrackerUI(ABC):
         try:
             save_notes(self.notes_file, seed, self.input_widget.get_input())
         except FileExistsError as error:
-            self.confirmation_popup.print_output(
+            confirmed = self.confirmation_popup.print_output(
                 f'Do you want to overwrite file {error.args[0]!r}?')
-            if self.confirmation_popup.confirmed:
+            if confirmed:
                 save_notes(
                     self.notes_file, seed, self.input_widget.get_input(),
                     force=True)

@@ -1,5 +1,5 @@
 import tkinter as tk
-from typing import Callable
+from collections.abc import Callable
 
 from ..configs import UIWidgetConfigs
 from ..events.parser import EventParser

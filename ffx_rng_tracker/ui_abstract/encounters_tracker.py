@@ -57,7 +57,8 @@ class EncountersTracker(TrackerUI):
         output = '\n'.join([line for line in output_lines if line])
         if not output:
             return output
-        output = (output.replace(' Normal', '')
+        output = (output
+                  .replace(' Normal', '')
                   .replace('Random Encounter:', 'Encounter:')
                   .replace('Simulated Encounter:', 'Encounter:')
                   .replace('| -', '')
@@ -107,9 +108,9 @@ class EncountersTracker(TrackerUI):
         try:
             save_notes(self.notes_file, seed, notes)
         except FileExistsError as error:
-            self.confirmation_popup.print_output(
+            confirmed = self.confirmation_popup.print_output(
                 f'Do you want to overwrite file {error.args[0]!r}?')
-            if self.confirmation_popup.confirmed:
+            if confirmed:
                 save_notes(self.notes_file, seed, notes, force=True)
                 self.warning_popup.print_output(
                     f'File "{seed}_{self.notes_file}" '

@@ -13,9 +13,9 @@ class StepsTracker(EncountersTracker):
         return parsing_functions
 
     def edit_output(self, output: str, padding: bool = False) -> str:
-        output = super().edit_output(output, False)
-        output = output.replace('Encounters', '')
-        output = output.replace(' steps before end of the zone', '')
+        output = (super().edit_output(output, False)
+                  .replace('Encounters', '')
+                  .replace(' steps before end of the zone', ''))
         output = ('Encounter checks: Zone (grace period) | # of Encounters'
                   f' | Trigger Steps | Steps before end of the Zone\n{output}'
                   )
@@ -56,9 +56,9 @@ class StepsTracker(EncountersTracker):
         try:
             save_notes(self.notes_file, seed, notes)
         except FileExistsError as error:
-            self.confirmation_popup.print_output(
+            confirmed = self.confirmation_popup.print_output(
                 f'Do you want to overwrite file {error.args[0]!r}?')
-            if self.confirmation_popup.confirmed:
+            if confirmed:
                 save_notes(self.notes_file, seed, notes, force=True)
                 self.warning_popup.print_output(
                     f'File "{seed}_{self.notes_file}" '

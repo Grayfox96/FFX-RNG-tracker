@@ -45,7 +45,8 @@ class ActionsTracker(TrackerUI):
         return usage
 
     def edit_input(self, input_text: str) -> str:
-        character_names = [stringify(c) for c in Character]
+        character_names = {stringify(c) for c in Character}
+        monster_names = set(MONSTERS) | {f'm{i + 1}' for i in range(8)}
         input_lines = input_text.splitlines()
         for index, line in enumerate(input_lines):
             match line.lower().split():
@@ -61,15 +62,12 @@ class ActionsTracker(TrackerUI):
                     line = f'encounter {name}'
                 case ['encounter']:
                     line = 'encounter dummy'
-                case [character, *params] if character in character_names:
-                    line = ' '.join(['action', character, *params])
-                case [monster, *params] if monster in MONSTERS:
-                    line = ' '.join(['monsteraction', monster, *params])
-                case [monster, *params] if (monster.startswith('m')
-                                            and monster[1:].isnumeric()):
-                    line = ' '.join(['monsteraction', monster, *params])
-                case [equip_type, *params] if equip_type in ('weapon', 'armor'):
-                    line = ' '.join(['equip', equip_type, *params])
+                case [character, *_] if character in character_names:
+                    line = f'action {line}'
+                case [monster, *_] if monster in monster_names:
+                    line = f'monsteraction {line}'
+                case [equip_type, *_] if equip_type in ('weapon', 'armor'):
+                    line = f'equip {line}'
                 case ['/usage']:
                     line = self.usage
                 case _:
@@ -82,10 +80,12 @@ class ActionsTracker(TrackerUI):
         if output.find('///') >= 0:
             output = output.split('///')[-1]
             output = output[output.find('\n') + 1:]
-        output = output.replace('Boss', '')
-        output = output.replace(' Normal', '')
-        output = output.replace('Random ', '')
-        output = output.replace('Simulated ', '')
+        output = (output
+                  .replace('Boss', '')
+                  .replace(' Normal', '')
+                  .replace('Random ', '')
+                  .replace('Simulated ', '')
+                  )
         if padding:
             output = self.pad_output(output)
         return output
