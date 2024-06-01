@@ -281,35 +281,59 @@ class CharacterAction(Event):
             luck += self.user.equipment_crit
         else:
             luck += self.action.bonus_crit
+
+        elements = set(self.action.elements)
+        if self.action.uses_weapon_properties:
+            elements.update(self.user.weapon_elements)
+        nul_statuses: set[Status] = {NUL_STATUSES.get(element, None)
+                                     for element in elements}
+        nul_statuses.discard(None)
+
         for target, result in zip(self.targets, self.results):
             if not result.hit:
                 continue
             target_luck = max(target.stats[Stat.LUCK], 1)
             target_luck -= target.buffs[Buff.JINX] * 10
+            # if all the elements are covered by a nul status the
+            # target is immune and decrease the amount of status stacks by 1
+            if nul_statuses and nul_statuses.issubset(target.statuses):
+                immune = True
+                for nul_status in nul_statuses:
+                    if target.statuses[nul_status] >= 254:
+                        continue
+                    target.statuses[nul_status] -= 1
+                    result.removed_statuses.append(nul_status)
+                    if target.statuses[nul_status] <= 0:
+                        target.statuses.pop(nul_status)
+            else:
+                immune = False
             if self.action.damages_hp:
                 result.hp.damage_rng = self._advance_rng(index) & 31
                 result.hp.crit = self._get_crit(luck, target_luck)
-                result.hp.damage = get_damage(
-                    self.user, self.action, target, result.hp.damage_rng,
-                    result.hp.crit, self.od_time_remaining, 'hp')
-                target.current_hp -= result.hp.damage
+                if not immune:
+                    result.hp.damage = get_damage(
+                        self.user, self.action, target, result.hp.damage_rng,
+                        result.hp.crit, self.od_time_remaining, 'hp')
+                    target.current_hp -= result.hp.damage
             if self.action.damages_mp:
                 result.mp.damage_rng = self._advance_rng(index) & 31
                 result.mp.crit = self._get_crit(luck, target_luck)
-                result.mp.damage = get_damage(
-                    self.user, self.action, target, result.mp.damage_rng,
-                    result.mp.crit, self.od_time_remaining, 'mp')
-                result.mp.damage = min(result.mp.damage, target.current_mp)
-                target.current_mp -= result.mp.damage
+                if not immune:
+                    result.mp.damage = get_damage(
+                        self.user, self.action, target, result.mp.damage_rng,
+                        result.mp.crit, self.od_time_remaining, 'mp')
+                    result.mp.damage = min(result.mp.damage, target.current_mp)
+                    target.current_mp -= result.mp.damage
             if self.action.damages_ctb:
                 result.ctb.damage_rng = self._advance_rng(index) & 31
                 result.ctb.crit = self._get_crit(luck, target_luck)
-                result.ctb.damage = get_damage(
-                    self.user, self.action, target, result.ctb.damage_rng,
-                    result.ctb.crit, self.od_time_remaining)
-                result.ctb.damage *= -1
-                target.ctb -= result.ctb.damage
-            if self.action.drains:
+                if not immune:
+                    result.ctb.damage = get_damage(
+                        self.user, self.action, target, result.ctb.damage_rng,
+                        result.ctb.crit, self.od_time_remaining)
+                    result.ctb.damage *= -1
+                    target.ctb -= result.ctb.damage
+            if not immune and self.action.drains:
                 self.user.current_hp += result.hp.damage
                 self.user.current_mp += result.mp.damage
                 # self.user.ctb += result.ctb.damage
@@ -397,7 +421,7 @@ class CharacterAction(Event):
                 continue
             for buff, amount in self.action.buffs.items():
                 amount += target.buffs[buff]
-                target.set_stat(buff, amount)
+                target.set_buff(buff, amount)
                 result.buffs[buff] = target.buffs[buff]
 
     def _get_possible_character_targets(self) -> list[CharacterActor]:
@@ -504,39 +528,18 @@ class CharacterAction(Event):
         return ctb
 
 
-def get_element_mods(target: Actor,
+def get_element_mods(elemental_affinities: dict[Element, ElementalAffinity],
                      elements: set[Element],
                      ) -> list[float]:
-    """returns a list of elemental modifiers
-
-    it can modify target.statuses if all the elements have
-    the corresponding nul status in it
-    """
+    """returns a list of elemental modifiers"""
     if not elements:
         return [1.0]
-    element_mods = [-1.0]
-    # check if all the elements are covered by a nul status
-    nul_statuses = set()
-    for element in elements:
-        status = NUL_STATUSES.get(element, None)
-        if status in target.statuses:
-            nul_statuses.add(status)
-    # if they are, target is immune and decrease
-    # the amount of status stacks by 1
-    if len(elements) == len(nul_statuses):
-        for nul_status in nul_statuses:
-            if target.statuses[nul_status] >= 254:
-                continue
-            target.statuses[nul_status] -= 1
-            if target.statuses[nul_status] <= 0:
-                target.statuses.pop(nul_status)
-        return [0.0]
-    # otherwise check other element affinities normally
     # if more than 1 element then only the stronger one applies
     # unless the target is weak to more than one
     # then apply all of those
+    element_mods = [-1.0]
     for element in elements:
-        affinity = target.elemental_affinities[element]
+        affinity = elemental_affinities[element]
         if (element_mods[0] == 1.5
                 and affinity is ElementalAffinity.WEAK):
             element_mods.append(ELEMENTAL_AFFINITY_MODIFIERS[affinity])
@@ -594,9 +597,7 @@ def get_damage(
         return 0
     if target.immune_to_magical_damage and action.damage_type.MAGICAL:
         return 0
-    elements = set(action.elements)
     if action.uses_weapon_properties:
-        elements.update(user.weapon_elements)
         base_damage = user.base_weapon_damage
     else:
         base_damage = action.base_damage
@@ -692,8 +693,13 @@ def get_damage(
         damage = int(damage * 1.5)
     if Status.SHIELD in target.statuses:
         damage = damage // 4
-    for element_mod in get_element_mods(target, elements):
+
+    elements = set(action.elements)
+    if action.uses_weapon_properties:
+        elements.update(user.weapon_elements)
+    for element_mod in get_element_mods(target.elemental_affinities, elements):
         damage = int(damage * element_mod)
+
     if action.damage_type is DamageType.PHYSICAL:
         if Status.PROTECT in target.statuses:
             damage = damage // 2

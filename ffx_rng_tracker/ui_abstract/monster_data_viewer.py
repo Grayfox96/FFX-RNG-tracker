@@ -55,8 +55,9 @@ class MonsterDataViewer:
         search = self.search_bar.get_input()
         tag = self.output_widget.tags['#search bar']
         self.output_widget.clean_tag('#search bar')
-        if not search:
+        if search:
+            tag.regex_pattern = re.compile(
+                re.escape(search), flags=re.IGNORECASE)
+        else:
             tag.regex_pattern = REGEX_NEVER_MATCH
-            return
-        tag.regex_pattern = re.compile(re.escape(search), flags=re.IGNORECASE)
         self.filter_monsters()

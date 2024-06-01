@@ -1,5 +1,5 @@
+from collections import defaultdict
 from copy import deepcopy
-from dataclasses import dataclass
 from typing import Protocol, Self
 
 from .actions import Action
@@ -48,17 +48,20 @@ class Actor(Protocol):
     last_attacker: Self | None
     last_target: list[Self]
 
-    def set_stat(self, stat: Stat | Buff, value: int) -> None:
+    def set_stat(self, stat: Stat, value: int) -> None:
         """Sets the stat to the value, clamping to the
-        appropriate min and max values
+        appropriate min and max values.
+        """
+
+    def set_buff(self, buff: Buff, value: int) -> None:
+        """Sets the buff to the value, clamping to the
+        appropriate min and max values.
         """
 
 
 class CharacterActor:
     def __init__(self, defaults: DefaultCharacterState) -> None:
-        self.defaults = defaults
         self.index = defaults.index
-        self.character = defaults.character
         self.armored = False
         self.immune_to_damage = False
         self.immune_to_physical_damage = False
@@ -66,37 +69,52 @@ class CharacterActor:
         self.immune_to_percentage_damage = False
         self.immune_to_delay = False
         self.immune_to_life = False
+        self.stats: dict[Stat, int] = {}
+        self.buffs: dict[Buff, int] = defaultdict(int)
+        self.statuses: dict[Status, int] = {}
+        self.status_resistances: dict[Status, int] = defaultdict(int)
+        self.elemental_affinities: dict[Element, ElementalAffinity] = {}
+        self.autoabilities: list[Autoability] = []
+        self.weapon_elements: list[Element] = []
+        self.weapon_statuses: list[StatusApplication] = []
+        self.last_target: list[Actor] = []
+        self.defaults = defaults
+        self.character = defaults.character
+        self.auto_statuses: list[Status] = []
+        self.sos_auto_statuses: list[Status] = []
         self.reset()
 
     def __str__(self) -> str:
         return self.character
 
     def reset(self) -> None:
+        self.stats.update(self.defaults.stats)
         self.ap = 0
-        self.stats = self.defaults.stats.copy()
         self.ctb = 0
-        self.buffs = dict.fromkeys(Buff, 0)
+        self.buffs.clear()
         self._current_hp = self.stats[Stat.HP]
         self._current_mp = self.stats[Stat.MP]
-        self.statuses: dict[Status, int] = {}
+        self.statuses.clear()
         self.in_crit = False
         self._weapon = deepcopy(self.defaults.weapon)
         self._armor = deepcopy(self.defaults.armor)
         self._update_abilities_effects()
-        self.last_action = None
+        self.last_action: Action | None = None
         self.provoker: Actor | None = None
         self.last_attacker: Actor | None = None
-        self.last_target: list[Actor] = []
+        self.last_target.clear()
 
-    def set_stat(self, stat: Stat | Buff, value: int) -> None:
+    def set_stat(self, stat: Stat, value: int) -> None:
+        """Sets the stat to the value, clamping to the
+        appropriate min and max values.
+        """
+        if self.stats[stat] == value:
+            return
         match stat:
             case Stat.HP:
                 max_value = 99999
             case Stat.MP:
                 max_value = 9999
-            case Buff():
-                self.buffs[stat] = min(max(0, value), 5)
-                return
             case _:
                 max_value = 255
         value = min(max(0, value), max_value)
@@ -105,6 +123,12 @@ class CharacterActor:
             self.current_hp = self.max_hp
         elif stat is Stat.MP and self.max_mp < self.current_mp:
             self.current_mp = self.max_mp
+
+    def set_buff(self, buff: Buff, value: int) -> None:
+        """Sets the buff to the value, clamping to the
+        appropriate min and max values.
+        """
+        self.buffs[buff] = min(max(0, value), 5)
 
     @property
     def max_hp(self) -> int:
@@ -195,17 +219,19 @@ class CharacterActor:
     def _update_abilities_effects(self) -> None:
         self.base_weapon_damage = self.weapon.base_weapon_damage
         self.equipment_crit = self.weapon.bonus_crit + self.armor.bonus_crit
-        self.autoabilities = self.weapon.abilities + self.armor.abilities
+        self.autoabilities.clear()
+        self.autoabilities.extend(self.weapon.abilities)
+        self.autoabilities.extend(self.armor.abilities)
         self._hp_multiplier = 100
         self._mp_multiplier = 100
-        self.elemental_affinities = dict.fromkeys(
-            Element, ElementalAffinity.NEUTRAL)
-        self.status_resistances = dict.fromkeys(Status, 0)
+        self.elemental_affinities.update(
+            (e, ElementalAffinity.NEUTRAL) for e in Element)
+        self.status_resistances.clear()
         self.status_resistances[Status.THREATEN] = 255
-        self.weapon_elements: list[Element] = []
-        self.weapon_statuses: list[StatusApplication] = []
-        self.auto_statuses: list[Status] = []
-        self.sos_auto_statuses: list[Status] = []
+        self.weapon_elements.clear()
+        self.weapon_statuses.clear()
+        self.auto_statuses.clear()
+        self.sos_auto_statuses.clear()
         self.first_strike = Autoability.FIRST_STRIKE in self.autoabilities
         self.break_hp_limit = Autoability.BREAK_HP_LIMIT in self.autoabilities
         self.break_mp_limit = Autoability.BREAK_MP_LIMIT in self.autoabilities
@@ -244,9 +270,10 @@ class CharacterActor:
                 self.weapon_statuses.append(STATUS_STRIKES[ability])
             elif ability in AUTO_STATUSES:
                 self.auto_statuses.append(AUTO_STATUSES[ability])
-            elif (ability in SOS_AUTO_STATUSES
-                    or ability in ELEMENTAL_SOS_AUTO_STATUSES):
-                self.sos_auto_statuses.append(ability)
+            elif ability in SOS_AUTO_STATUSES:
+                self.sos_auto_statuses.append(SOS_AUTO_STATUSES[ability])
+            elif ability in ELEMENTAL_SOS_AUTO_STATUSES:
+                self.sos_auto_statuses.append(ELEMENTAL_SOS_AUTO_STATUSES[ability])
 
 
 class MonsterActor:
@@ -254,12 +281,7 @@ class MonsterActor:
                  monster: Monster,
                  index: MonsterSlot = MonsterSlot.MONSTER_1,
                  ) -> None:
-        self.monster = monster
         self.index = index
-        self.equipment_crit = 0
-        self.weapon_elements = []
-        self.autoabilities = []
-        self.weapon_statuses = []
         self.armored = monster.armored
         self.immune_to_damage = monster.immune_to_damage
         self.immune_to_physical_damage = monster.immune_to_physical_damage
@@ -267,39 +289,56 @@ class MonsterActor:
         self.immune_to_percentage_damage = monster.immune_to_percentage_damage
         self.immune_to_delay = monster.immune_to_delay
         self.immune_to_life = monster.immune_to_life
+        self.stats: dict[Stat, int] = {}
+        self.buffs: dict[Buff, int] = defaultdict(int)
+        self.statuses: dict[Status, int] = {}
+        self.status_resistances: dict[Status, int] = {}
+        self.elemental_affinities: dict[Element, ElementalAffinity] = {}
+        self.base_weapon_damage = 0
+        self.equipment_crit = 0
+        self.autoabilities: list[Autoability] = []
+        self.weapon_elements: list[Element] = []
+        self.weapon_statuses: list[StatusApplication] = []
+        self.last_target: list[Actor] = []
+        self.monster = monster
         self.reset()
 
     def __str__(self) -> str:
         return f'{self.monster} (M{self.index + 1})'
 
     def reset(self) -> None:
-        self.stats = self.monster.stats.copy()
+        self.stats.update(self.monster.stats)
         self.ctb = 0
-        self.buffs = dict.fromkeys(Buff, 0)
+        self.buffs.clear()
         self._current_hp = self.stats[Stat.HP]
         self._current_mp = self.stats[Stat.MP]
-        self.statuses: dict[Status, int] = {}
-        self.elemental_affinities = self.monster.elemental_affinities.copy()
-        self.status_resistances = self.monster.status_resistances.copy()
-        self.last_action = None
+        self.statuses.clear()
+        self.elemental_affinities.update(self.monster.elemental_affinities)
+        self.status_resistances.update(self.monster.status_resistances)
+        self.last_action: Action | None = None
         self.provoker: Actor | None = None
         self.last_attacker: Actor | None = None
-        self.last_target: list[Actor] = []
+        self.last_target.clear()
 
-    def set_stat(self, stat: Stat | Buff, value: int) -> None:
-        match stat:
-            case Stat.HP | Stat.MP:
-                pass
-            case Buff():
-                self.buffs[stat] = min(max(0, value), 5)
-                return
-            case _:
-                value = min(value, 255)
+    def set_stat(self, stat: Stat, value: int) -> None:
+        """Sets the stat to the value, clamping to the
+        appropriate min and max values.
+        """
+        if self.stats[stat] == value:
+            return
+        if stat not in (Stat.HP, Stat.MP):
+            value = min(value, 255)
         self.stats[stat] = max(0, value)
         if stat is Stat.HP and self.max_hp < self.current_hp:
             self.current_hp = self.max_hp
         elif stat is Stat.MP and self.max_mp < self.current_mp:
             self.current_mp = self.max_mp
+
+    def set_buff(self, buff: Buff, value: int) -> None:
+        """Sets the buff to the value, clamping to the
+        appropriate min and max values.
+        """
+        self.buffs[buff] = min(max(0, value), 5)
 
     @property
     def max_hp(self) -> int:

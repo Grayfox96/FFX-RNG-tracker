@@ -9,6 +9,9 @@ class StatusApplication:
     chance: int
     stacks: int
 
+    def __str__(self) -> str:
+        return f'{self.chance}/101 x{self.stacks}'
+
 
 NUL_STATUSES = {
     Element.FIRE: Status.NULBLAZE,
