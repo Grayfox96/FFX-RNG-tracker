@@ -48,10 +48,8 @@ class Equipment:
     @property
     def name(self) -> str:
         if self.type_ is EquipmentType.WEAPON:
-            name = get_weapon_name(self.owner, self.abilities, self.slots)
-        elif self.type_ is EquipmentType.ARMOR:
-            name = get_armor_name(self.owner, self.abilities, self.slots)
-        return name
+            return get_weapon_name(self.owner, self.abilities, self.slots)
+        return get_armor_name(self.owner, self.abilities, self.slots)
 
     @property
     def abilities_string(self) -> str:
@@ -274,7 +272,7 @@ def get_weapon_name(owner: Character,
 
 
 def get_armor_name(owner: Character,
-                   abilities: list[int],
+                   abilities: list[Autoability],
                    slots: int,
                    ) -> str:
     """Returns an armor's name given the owner,

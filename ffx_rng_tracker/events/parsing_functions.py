@@ -592,7 +592,7 @@ def parse_actor_status(gs: GameState,
         text += f' | Statuses: {', '.join(statuses)}'
     buffs = [f'{b} ({stacks})' for b, stacks in actor.buffs.items() if stacks]
     if buffs:
-        text += f' | Buffs: {', '.join(statuses)}'
+        text += f' | Buffs: {', '.join(buffs)}'
     return Comment(gs, text)
 
 

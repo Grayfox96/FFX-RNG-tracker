@@ -9,8 +9,9 @@ class ChangeParty(Event):
     party: list[Character]
 
     def __post_init__(self) -> None:
-        self.old_party = self.gamestate.party
-        self.gamestate.party = self.party
+        self.old_party = self.gamestate.party.copy()
+        self.gamestate.party.clear()
+        self.gamestate.party.extend(self.party)
 
     def __str__(self) -> str:
         return f'Party: {', '.join(self.old_party)} -> {', '.join(self.party)}'

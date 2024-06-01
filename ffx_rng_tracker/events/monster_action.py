@@ -38,33 +38,37 @@ class MonsterAction(CharacterAction):
                 possible_targets = self._get_possible_character_targets()
                 if len(possible_targets) > 1:
                     self._advance_rng(4)
-                    possible_targets.sort(key=lambda c: c.current_hp)
-                    possible_targets = [possible_targets[-1]]
+                    max_hp = max(c.current_hp for c in possible_targets)
+                    possible_targets = [c for c in possible_targets
+                                        if c.current_hp == max_hp]
             case TargetType.HIGHEST_STR_CHARACTER:
                 possible_targets = self._get_possible_character_targets()
                 if len(possible_targets) > 1:
                     self._advance_rng(4)
-                    possible_targets.sort(key=lambda c: c.stats[Stat.STRENGTH])
-                    possible_targets = [possible_targets[-1]]
+                    max_str = max(c.stats[Stat.STRENGTH] for c in possible_targets)
+                    possible_targets = [c for c in possible_targets
+                                        if c.stats[Stat.STRENGTH] == max_str]
             case TargetType.LOWEST_HP_CHARACTER:
                 possible_targets = self._get_possible_character_targets()
                 if len(possible_targets) > 1:
                     self._advance_rng(4)
-                    possible_targets.sort(key=lambda c: c.current_hp)
-                    possible_targets = [possible_targets[0]]
+                    min_hp = min(c.current_hp for c in possible_targets)
+                    possible_targets = [c for c in possible_targets
+                                        if c.current_hp == min_hp]
             case TargetType.HIGHEST_MP_CHARACTER:
                 possible_targets = self._get_possible_character_targets()
                 if len(possible_targets) > 1:
                     self._advance_rng(4)
-                    possible_targets.sort(key=lambda c: c.current_mp)
-                    possible_targets = [possible_targets[-1]]
+                    max_mp = max(c.current_mp for c in possible_targets)
+                    possible_targets = [c for c in possible_targets
+                                        if c.current_mp == max_mp]
             case TargetType.LOWEST_MAG_DEF_CHARACTER:
                 possible_targets = self._get_possible_character_targets()
                 if len(possible_targets) > 1:
                     self._advance_rng(4)
-                    possible_targets.sort(
-                        key=lambda c: c.stats[Stat.MAGIC_DEFENSE])
-                    possible_targets = [possible_targets[0]]
+                    min_mag_def = min(c.stats[Stat.MAGIC_DEFENSE] for c in possible_targets)
+                    possible_targets = [c for c in possible_targets
+                                        if c.stats[Stat.MAGIC_DEFENSE] == min_mag_def]
             case TargetType.RANDOM_CHARACTER_REFLECT:
                 possible_targets = [c for c
                                     in self._get_possible_character_targets()

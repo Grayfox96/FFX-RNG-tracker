@@ -95,8 +95,8 @@ class Configs:
     @classmethod
     def load_configs(cls) -> None:
         section = 'General'
-        seed = cls.getint(section, 'seed', None)
-        if seed is not None and (0 <= seed <= 0xffffffff):
+        seed = cls.getint(section, 'seed', -1)
+        if 0 <= seed <= 0xffffffff:
             cls.seed = seed
         else:
             cls.seed = None

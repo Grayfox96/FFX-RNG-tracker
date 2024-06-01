@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 from ..data.actor import MonsterActor
@@ -45,7 +46,8 @@ class Encounter(Event):
             return
         boss = BOSSES[self.name]
         if boss.forced_party:
-            self.gamestate.party = boss.forced_party
+            self.gamestate.party.clear()
+            self.gamestate.party.extend(boss.forced_party)
 
     def _update_current_monster_formation(self) -> None:
         for monster, slot in zip(self.formation.monsters, MonsterSlot):
@@ -172,7 +174,7 @@ class RandomEncounter(Encounter):
 
 @dataclass
 class MultizoneRandomEncounter(Event):
-    zones: list[str]
+    zones: Iterable[str]
 
     def __post_init__(self) -> None:
         self.encounters = self._get_encounters()

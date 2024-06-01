@@ -430,6 +430,8 @@ def _get_monsters(monsters_data: dict[str, list[int]]) -> dict[str, Monster]:
                 action_index = forced_action_byte & 0b1111_11111111
                 forced_action = deepcopy(action_file[action_index])
                 forced_action.target = TargetType.PROVOKER
+            else:
+                forced_action = ACTIONS['does_nothing']
         else:
             forced_action = ACTIONS['does_nothing']
 

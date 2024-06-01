@@ -60,7 +60,7 @@ class Action:
     destroys_user: bool
     empties_od_bar: bool
     copied_by_copycat: bool
-    overdrive_user: Character
+    overdrive_user: Character | None
     overdrive_index: int
 
     def __str__(self) -> str:
@@ -180,7 +180,7 @@ def parse_actions_file(file_path: str) -> list[Action]:
         for i, status_flag in enumerate(NO_RNG_STATUSES):
             if i > 3:
                 i += 1
-            if i > 13:
+            if i > 14:
                 i += 1
             if status_flags_bytes & (1 << i):
                 status_flags.add(status_flag)
@@ -258,8 +258,8 @@ def parse_actions_file(file_path: str) -> list[Action]:
 
 def get_target(is_character_action: bool,
                targeting_byte: int,
-               random_targeting_byte: bool,
-               overdrive_user: Character,
+               random_targeting_byte: int,
+               overdrive_user: Character | None,
                overdrive_index: int,
                ) -> TargetType | None:
     has_target = bool(targeting_byte & 0b00000001)
@@ -376,6 +376,7 @@ def get_character_actions() -> dict[str, Action]:
 
     does_nothing = deepcopy(actions['switch'])
     does_nothing.name = 'Does Nothing'
+    does_nothing.description = 'Does Nothing'
     actions['does_nothing'] = does_nothing
 
     quick_hit_hd = actions.pop('quick_hit')

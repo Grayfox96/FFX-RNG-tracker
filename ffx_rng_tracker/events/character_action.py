@@ -19,7 +19,7 @@ class DamageInstance:
     damage: int = 0
     crit: bool = False
     damage_rng: int = 0
-    pool: Literal['HP'] | Literal['MP'] | Literal['CTB'] = ''
+    pool: Literal['HP'] | Literal['MP'] | Literal['CTB'] = 'HP'
 
     def __str__(self) -> str:
         string = f'[{self.damage_rng}/31] {self.damage} {self.pool}'
@@ -39,7 +39,6 @@ class ActionResult:
     ctb: DamageInstance = field(default_factory=DamageInstance, init=False)
 
     def __post_init__(self) -> None:
-        self.hp.pool = 'HP'
         self.mp.pool = 'MP'
         self.ctb.pool = 'CTB'
 
@@ -396,6 +395,9 @@ class CharacterAction(Event):
                     result.statuses[Status.DEATH] = True
                     target.statuses[Status.EJECT] = 254
                     result.statuses[Status.EJECT] = True
+                else:
+                    result.statuses[Status.DEATH] = False
+                    result.statuses[Status.EJECT] = False
 
     def _remove_statuses(self) -> None:
         for target, result in zip(self.targets, self.results):

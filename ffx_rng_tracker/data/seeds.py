@@ -1,8 +1,8 @@
 import os
 import pprint
+from collections.abc import Iterable
 from itertools import islice
 from logging import getLogger
-from typing import Iterable
 
 from ..configs import Configs
 from ..errors import InvalidDamageValueError, SeedNotFoundError
@@ -10,30 +10,26 @@ from ..tracker import FFXRNGTracker
 from ..utils import open_cp1252
 from .constants import GameVersion
 
-type Node = dict[str, Node] | str
+type Node = dict[int, Node] | int
+type PrunedNode = dict[str, PrunedNode] | str
 
 
-def reduce(node: Node) -> Node:
-    """reduces branches with a single child to a leaf recursively"""
-    # if the node is a leaf return the node
-    if isinstance(node, str) or len(node) == 0:
-        return node
+def prune(node: Node) -> PrunedNode:
+    """prune branches with a single child to a leaf recursively"""
+    # if the node is a leaf return it
+    if isinstance(node, int):
+        return f'{node:010}'
     elif len(node) == 1:
-        _, v = next(iter(node.items()))
-        child = reduce(v)
-        # if it got reduced to a leaf return it
+        # get the only value in the dict and prune it
+        k, v = next(iter(node.items()))
+        child = prune(v)
+        # if it got pruned to a leaf return it
         if isinstance(child, str):
             return child
-        # otherwise return the node since it cant be reduced further
-        return node
+        # otherwise return the node since it cant be pruned further
+        return {f'{k:02}': child}
     # if there is more than one child then reduce all of them
-    new_childrens: dict[str, Node] = {}
-    for k, v in node.items():
-        if isinstance(v, str):
-            continue
-        new_childrens[k] = reduce(v)
-    node.update(new_childrens)
-    return node
+    return {f'{k:02}': prune(v) for k, v in node.items()}
 
 
 def damage_rolls_to_values(damage_rolls: Iterable[int]) -> list[int]:
@@ -229,8 +225,8 @@ def get_damage_rolls(tracker: FFXRNGTracker) -> list[int]:
         # if tidus crits the sinscale adds 32, otherwise 0
         tidus_damage_index += 32 * ((tidus_rolls[i + 1] % 101) < 23)
         indexes.append(tidus_damage_index)
-        # second encounter after dragon fang
-        # get 2 damage rolls from auron
+    # second encounter after dragon fang
+    # get 2 damage rolls from auron
     for i in (32, 34):
         auron_damage_index = auron_rolls[i] & 31
         # if auron crits ammes adds 32, otherwise 0
@@ -268,12 +264,12 @@ def make_seeds_file(file_path: str,
                 continue
             seeds.add(seed)
             tracker.seed = seed
-            indexes = [f'{index:02}' for index in get_damage_rolls(tracker)]
+            *indexes, last_index = get_damage_rolls(tracker)
             node = root_node
-            for index in indexes[:-1]:
+            for index in indexes:
                 node = node.setdefault(index, {})
-            node[indexes[-1]] = f'{seed:010}'
-    data = (pprint.pformat(reduce(root_node), width=1)
+            node[last_index] = seed
+    data = (pprint.pformat(prune(root_node), width=1)
             .replace('}', '')
             .replace(',', '')
             .replace(':', '')
