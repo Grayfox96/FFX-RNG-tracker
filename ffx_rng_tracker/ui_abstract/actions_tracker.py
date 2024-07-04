@@ -1,5 +1,5 @@
 from ..data.constants import Character
-from ..data.monsters import MONSTERS
+from ..data.monsters import get_monsters_dict
 from ..events.parsing_functions import (
     ParsingFunction, parse_action, parse_actor_status, parse_encounter,
     parse_encounter_count_change, parse_end_encounter, parse_equipment_change,
@@ -46,7 +46,9 @@ class ActionsTracker(TrackerUI):
 
     def edit_input(self, input_text: str) -> str:
         character_names = {stringify(c) for c in Character}
-        monster_names = set(MONSTERS) | {f'm{i + 1}' for i in range(8)}
+        monster_names = (set(get_monsters_dict())
+                         | {f'm{i + 1}' for i in range(8)}
+                         )
         input_lines = input_text.splitlines()
         for index, line in enumerate(input_lines):
             match line.lower().split():

@@ -1,7 +1,7 @@
 import json
 from copy import deepcopy
 from dataclasses import dataclass, field
-from itertools import count
+from itertools import chain, count
 from math import sqrt
 
 from ..configs import Configs
@@ -144,155 +144,12 @@ def parse_monsters_file(file_path: str) -> dict[str, list[int]]:
     return monsters
 
 
-def _patch_mon_data_bin_for_hd(monsters: dict[str, list[int]],
-                               ) -> dict[str, list[int]]:
-    """Apply changes made in the HD version to the monsters."""
-    def patch_abilities(monster_name: str,
-                        abilities: tuple[int, int, int, int, int, int, int],
-                        equipment_type: EquipmentType = EquipmentType.WEAPON,
-                        ) -> None:
-        """Modifies ability values 1-7 of every character's weapon
-        or armor ability array.
-        """
-        # base address for abilities in the prize struct
-        base_address = 178
-        type_offset = 0 if equipment_type == EquipmentType.WEAPON else 1
-        # place the abilities values at the correct offsets
-        for owner_index in range(7):
-            offset = (type_offset + (owner_index * 2)) * 16
-            for slot in range(7):
-                slot_offset = (slot + 1) * 2
-                address = base_address + offset + slot_offset
-                patched_monsters[monster_name][address] = abilities[slot]
-
-    patched_monsters = deepcopy(monsters)
-
-    # in the HD version equipment droprates were modified
-    # from 8/255 to 12/255 for these monsters
-    monster_names = (
-        'condor', 'dingo', 'water_flan', 'condor_2', 'dingo_2',
-        'water_flan_2', 'dinonix', 'killer_bee', 'yellow_element',
-        'worker', 'vouivre_2', 'raldo_2', 'floating_eye', 'ipiria',
-        'miihen_fang', 'raldo', 'vouivre', 'white_element', 'funguar',
-        'gandarewa', 'lamashtu', 'raptor', 'red_element', 'thunder_flan',
-        'bite_bug', 'bunyip', 'garm', 'simurgh', 'snow_flan', 'bunyip_2',
-        'aerouge', 'buer', 'gold_element', 'kusariqqu', 'melusine',
-        'blue_element', 'iguion', 'murussu', 'wasp', 'evil_eye',
-        'ice_flan', 'mafdet', 'snow_wolf', 'guado_guardian_2', 'alcyone',
-        'mech_guard', 'mushussu', 'sand_wolf', 'bomb_2', 'evil_eye_2',
-        'guado_guardian_3', 'warrior_monk', 'warrior_monk_2', 'aqua_flan',
-        'bat_eye', 'cave_iguion', 'sahagin_2', 'swamp_mafdet',
-        'sahagin_3', 'flame_flan', 'mech_scouter', 'mech_scouter_2',
-        'nebiros', 'shred', 'skoll', 'flame_flan', 'nebiros', 'shred',
-        'skoll', 'dark_element', 'imp', 'nidhogg', 'yowie',
-    )
-    for monster_name in monster_names:
-        patched_monsters[monster_name][139] = 12
-
-    # all the monsters that have ability arrays modified in the HD version
-    # besaid
-    patch_abilities('dingo', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('condor', (0, 0, 0, 0, 126, 126, 126))
-    patch_abilities('water_flan', (42, 42, 42, 42, 125, 125, 125))
-    patch_abilities('dingo_2', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('condor_2', (0, 0, 0, 0, 126, 126, 126))
-    patch_abilities('water_flan_2', (42, 42, 42, 42, 125, 125, 125))
-
-    # kilika
-    patch_abilities('dinonix', (38, 42, 38, 30, 126, 126, 126))
-    patch_abilities('killer_bee', (38, 42, 34, 30, 126, 126, 126))
-    patch_abilities('yellow_element', (38, 38, 38, 38, 125, 125, 125))
-
-    # mi'ihen
-    patch_abilities('raldo_2', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('bomb', (30, 30, 30, 30, 30, 30, 125))
-    patch_abilities('dual_horn', (67, 30, 30, 30, 30, 127, 127))
-    patch_abilities('floating_eye', (38, 42, 34, 30, 99, 126, 126))
-    patch_abilities('ipiria', (38, 42, 38, 30, 126, 126, 126))
-    patch_abilities('miihen_fang', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('raldo', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('vouivre', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('white_element', (34, 34, 34, 34, 125, 125, 125))
-
-    # mushroom rock road
-    patch_abilities('gandarewa', (38, 38, 38, 38, 125, 125, 125))
-    patch_abilities('lamashtu', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('raptor', (38, 42, 38, 30, 126, 126, 126))
-    patch_abilities('red_element', (30, 30, 30, 30, 125, 125, 125))
-    patch_abilities('thunder_flan', (38, 38, 38, 38, 125, 125, 125))
-
-    # djose highroad
-    patch_abilities('bite_bug', (38, 42, 34, 30, 126, 126, 126))
-    patch_abilities('bunyip', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('garm', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('simurgh', (0, 0, 0, 0, 126, 126, 126))
-    patch_abilities('snow_flan', (34, 34, 34, 34, 125, 125, 125))
-
-    # moonflow
-    patch_abilities('bunyip_2', (38, 42, 34, 30, 124, 124, 124))
-
-    # thunder plains
-    patch_abilities('aerouge', (38, 38, 38, 38, 125, 125, 125))
-    patch_abilities('buer', (38, 42, 34, 30, 99, 126, 126))
-    patch_abilities('gold_element', (38, 38, 38, 38, 125, 125, 125))
-    patch_abilities('kusariqqu', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('melusine', (38, 42, 38, 30, 126, 126, 126))
-
-    # macalania woods
-    patch_abilities('blue_element', (42, 42, 42, 42, 125, 125, 125))
-    patch_abilities('chimera', (104, 104, 103, 103, 103, 103, 125))
-    patch_abilities('iguion', (38, 42, 38, 30, 126, 126, 126))
-    patch_abilities('murussu', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('wasp', (38, 42, 34, 30, 126, 126, 126))
-
-    # lake macalania
-    patch_abilities('evil_eye', (38, 42, 34, 30, 99, 126, 126))
-    patch_abilities('ice_flan', (34, 34, 34, 34, 125, 125, 125))
-    patch_abilities('mafdet', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('snow_wolf', (38, 42, 34, 30, 124, 124, 124))
-
-    # bikanel
-    patch_abilities('alcyone', (0, 0, 0, 0, 126, 126, 126))
-    patch_abilities('mushussu', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('sand_wolf', (38, 42, 34, 30, 124, 124, 124))
-
-    # home
-    patch_abilities('bomb_2', (30, 30, 30, 30, 30, 30, 125))
-    patch_abilities('chimera_2', (104, 104, 103, 103, 103, 103, 125))
-    patch_abilities('dual_horn_2', (67, 67, 67, 30, 30, 127, 127))
-    patch_abilities('evil_eye_2', (38, 42, 34, 30, 99, 126, 126))
-
-    # via purifico
-    patch_abilities('aqua_flan', (42, 42, 42, 42, 125, 125, 125))
-    patch_abilities('bat_eye', (38, 42, 34, 30, 99, 126, 126))
-    patch_abilities('cave_iguion', (38, 42, 38, 30, 126, 126, 126))
-    patch_abilities('swamp_mafdet', (38, 42, 34, 30, 124, 124, 124))
-
-    # calm lands
-    patch_abilities('chimera_brain', (104, 104, 104, 104, 103, 103, 125))
-    patch_abilities('flame_flan', (30, 30, 30, 30, 125, 125, 125))
-    patch_abilities('nebiros', (38, 42, 34, 30, 126, 126, 126))
-    patch_abilities('shred', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('skoll', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('defender_x', (100, 99, 99, 99, 99, 99, 124))
-
-    # cavern of the stolen fayth
-    patch_abilities('dark_element', (42, 30, 30, 34, 125, 125, 125))
-    patch_abilities('defender', (99, 99, 99, 99, 98, 98, 124))
-    patch_abilities('ghost', (104, 104, 104, 103, 103, 103, 125))
-    patch_abilities('imp', (38, 38, 38, 38, 125, 125, 125))
-    patch_abilities('nidhogg', (38, 42, 34, 30, 124, 124, 124))
-    patch_abilities('valaha', (67, 67, 67, 30, 30, 127, 127))
-    patch_abilities('yowie', (38, 42, 38, 30, 126, 126, 126))
-    return patched_monsters
-
-
 def _patch_monsters_actions(file_path: str) -> None:
     absolute_file_path = get_resource_path(file_path)
     with open_cp1252(absolute_file_path) as file_object:
         data: dict[str, list[dict[str, str | int]]] = json.load(file_object)
 
-    for monster_id, monster in MONSTERS.items():
+    for monster in chain(MONSTERS.values(), MONSTERS_HD.values()):
         index = f'm{monster.index:03}'
         for action_data in data[index]:
             actions_file_id = action_data['actions_file']
@@ -314,14 +171,12 @@ def _patch_monsters_actions(file_path: str) -> None:
 
             if action.name != action_data['name']:
                 action.name = action_data['name']
-                action_name = stringify(action.name)
             action_name = stringify(action.name)
             if action_name in monster.actions:
                 action.name += f' {action.target}'
                 action_name = stringify(action.name)
 
             monster.actions[action_name] = action
-            MONSTERS_HD[monster_id].actions[action_name] = action
 
 
 def _get_monsters(monsters_data: dict[str, list[int]]) -> dict[str, Monster]:
@@ -579,7 +434,7 @@ MONSTER_NAMES = {
 MON_DATA_BIN = parse_monsters_file('data_files/ffx_mon_data.csv')
 MONSTERS = _get_monsters(MON_DATA_BIN)
 
-MON_DATA_BIN_HD = _patch_mon_data_bin_for_hd(MON_DATA_BIN)
+MON_DATA_BIN_HD = parse_monsters_file('data_files/ffx_mon_data_hd.csv')
 MONSTERS_HD = _get_monsters(MON_DATA_BIN_HD)
 
 _patch_monsters_actions('data_files/monster_actions.json')

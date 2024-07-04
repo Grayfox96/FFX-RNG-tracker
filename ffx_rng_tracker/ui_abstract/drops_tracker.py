@@ -1,4 +1,4 @@
-from ..data.monsters import MONSTERS
+from ..data.monsters import get_monsters_dict
 from ..events.parsing_functions import (ParsingFunction, parse_bribe,
                                         parse_character_ap, parse_death,
                                         parse_inventory_command, parse_kill,
@@ -25,9 +25,10 @@ class DropsTracker(TrackerUI):
 
     def edit_input(self, input_text: str) -> str:
         input_lines = input_text.splitlines()
+        monster_names = set(get_monsters_dict())
         for index, line in enumerate(input_lines):
             match line.lower().split():
-                case [monster, *_] if monster in MONSTERS:
+                case [monster, *_] if monster in monster_names:
                     line = f'kill {line}'
                 case ['/usage']:
                     line = self.usage
