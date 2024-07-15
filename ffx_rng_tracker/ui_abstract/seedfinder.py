@@ -7,12 +7,10 @@ from ..data.seeds import (DAMAGE_VALUES_NEEDED, FRAMES_FROM_BOOT,
                           POSSIBLE_XORED_DATETIMES, datetime_to_seed)
 from ..events.character_action import CharacterAction
 from .actions_tracker import ActionsTracker
-from .input_widget import InputWidget
 
 
 @dataclass
 class SeedFinder(ActionsTracker):
-    damage_values_widget: InputWidget
 
     def get_default_input_data(self) -> str:
         input_data = ('encounter\nauron attack sinscale_6\n'
@@ -21,8 +19,11 @@ class SeedFinder(ActionsTracker):
         return input_data
 
     def find_seed(self) -> None:
-        input_text = self.edit_input(self.input_widget.get_input())
-        events = self.parser.parse(input_text)
+        # first 2 lines are always input dvs and "///"
+        input_dvs, _, *input_lines = self.input_widget.get_input().splitlines()
+        input_text = '\n'.join(input_lines)
+        edited_input_text = self.edit_input(input_text)
+        events = self.parser.parse(edited_input_text)
 
         indexes = []
         for index, event in enumerate(events):
@@ -37,7 +38,6 @@ class SeedFinder(ActionsTracker):
                 f'Need {damage_values_needed} damaging actions.')
             return
 
-        input_dvs = self.damage_values_widget.get_input()
         for symbol in (',', '-', '/', '\\', '.'):
             input_dvs = input_dvs.replace(symbol, ' ')
         input_dvs = input_dvs.split()
@@ -67,14 +67,14 @@ class SeedFinder(ActionsTracker):
             already_tested_seeds.add(seed)
             self.parser.gamestate.seed = seed
             self.parser.gamestate.reset()
-            events = self.parser.parse(input_text)
+            events = self.parser.parse(edited_input_text)
             damage_values.clear()
             for index in indexes:
                 event: CharacterAction = events[index]
                 damage_values.extend(r.hp.damage for r in event.results)
             if damage_values == input_dvs:
                 self.input_widget.set_input(
-                    f'# Seed number: {seed}\n{self.input_widget.get_input()}')
+                    f'# Seed number: {seed}\n{input_text}')
                 self.warning_popup.print_output(f'Seed: {seed}')
                 self.callback()
                 break

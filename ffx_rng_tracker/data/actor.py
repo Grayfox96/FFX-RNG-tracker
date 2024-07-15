@@ -1,5 +1,4 @@
 from collections import defaultdict
-from copy import deepcopy
 from typing import Protocol, Self
 
 from .actions import Action
@@ -40,7 +39,7 @@ class Actor(Protocol):
     elemental_affinities: dict[Element, ElementalAffinity]
     base_weapon_damage: int
     equipment_crit: int
-    autoabilities: list[Autoability]
+    autoabilities: set[Autoability]
     weapon_elements: list[Element]
     weapon_statuses: list[StatusApplication]
     last_action: Action | None
@@ -74,7 +73,7 @@ class CharacterActor:
         self.statuses: dict[Status, int] = {}
         self.status_resistances: dict[Status, int] = defaultdict(int)
         self.elemental_affinities: dict[Element, ElementalAffinity] = {}
-        self.autoabilities: list[Autoability] = []
+        self.autoabilities: set[Autoability] = {None}
         self.weapon_elements: list[Element] = []
         self.weapon_statuses: list[StatusApplication] = []
         self.last_target: list[Actor] = []
@@ -96,8 +95,8 @@ class CharacterActor:
         self._current_mp = self.stats[Stat.MP]
         self.statuses.clear()
         self.in_crit = False
-        self._weapon = deepcopy(self.defaults.weapon)
-        self._armor = deepcopy(self.defaults.armor)
+        self._weapon = self.defaults.weapon.copy()
+        self._armor = self.defaults.armor.copy()
         self._update_abilities_effects()
         self.last_action: Action | None = None
         self.provoker: Actor | None = None
@@ -219,9 +218,11 @@ class CharacterActor:
     def _update_abilities_effects(self) -> None:
         self.base_weapon_damage = self.weapon.base_weapon_damage
         self.equipment_crit = self.weapon.bonus_crit + self.armor.bonus_crit
+        autoabilities = set(self.weapon.abilities + self.armor.abilities)
+        if self.autoabilities == autoabilities:
+            return
         self.autoabilities.clear()
-        self.autoabilities.extend(self.weapon.abilities)
-        self.autoabilities.extend(self.armor.abilities)
+        self.autoabilities.update(autoabilities)
         self._hp_multiplier = 100
         self._mp_multiplier = 100
         self.elemental_affinities.update(
@@ -296,7 +297,7 @@ class MonsterActor:
         self.elemental_affinities: dict[Element, ElementalAffinity] = {}
         self.base_weapon_damage = 0
         self.equipment_crit = 0
-        self.autoabilities: list[Autoability] = []
+        self.autoabilities: set[Autoability] = set()
         self.weapon_elements: list[Element] = []
         self.weapon_statuses: list[StatusApplication] = []
         self.last_target: list[Actor] = []

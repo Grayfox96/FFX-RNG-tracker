@@ -1,5 +1,6 @@
 import json
 from dataclasses import dataclass
+from typing import Self
 
 from ..utils import open_cp1252
 from .autoabilities import (AUTO_STATUSES, DEFENSE_BONUSES, ELEMENTAL_EATERS,
@@ -57,6 +58,17 @@ class Equipment:
         for _ in range(self.slots - len(abilities)):
             abilities.append('-')
         return ', '.join(abilities)
+
+    def copy(self) -> Self:
+        copy = self.__class__(
+            owner=self.owner,
+            type_=self.type_,
+            slots=self.slots,
+            abilities=self.abilities.copy(),
+            base_weapon_damage=self.base_weapon_damage,
+            bonus_crit=self.bonus_crit,
+        )
+        return copy
 
 
 @dataclass
