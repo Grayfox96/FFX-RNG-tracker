@@ -22,7 +22,7 @@ def get_equipment_types(seed: int, amount: int, columns: int = 2) -> str:
         equipment_types.append(equipment_type)
 
     spacer = ('-' * ((14 + len(str(amount))) * columns + 1)) + '\n'
-    data = f'First {amount} equipment types\n{spacer}'
+    data = f'First {amount} Equipment Types\n{spacer}'
     for _ in range(columns):
         data += f'| [{'#' * len(str(amount))}] |   Type '
     data += f'|\n{spacer}'
@@ -48,9 +48,8 @@ def get_status_chance_table(seed: int, amount: int) -> str:
         )
     header = '| ' + '| '.join(columns) + '|'
     spacer = '-' * len(header)
-    data = spacer + '\n'
-    data += header + '\n'
-    data += spacer + '\n'
+    data = (f'First {amount} Status Rolls for each Character/Monster Slot\n'
+            f'{spacer}\n{header}\n{spacer}\n')
     for i in range(amount):
         data += f'| Roll [{i + 1:>{digits}}]'
         for j, title in zip(range(52, 68), columns[1:]):

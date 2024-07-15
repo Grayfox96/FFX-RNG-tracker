@@ -46,7 +46,7 @@ class YojimboTracker(TrackerUI):
 
     def edit_output(self, output: str, padding: bool = False) -> str:
         # if the text contains /// it hides the lines before it
-        if output.find('///') >= 0:
-            output = output.split('///')[-1]
+        if output.find('Command: ///') >= 0:
+            output = output.split('Command: ///')[-1]
             output = output[output.find('\n') + 1:]
         return output

@@ -1,6 +1,20 @@
 from enum import IntEnum, StrEnum
 
 
+class UIWidget(StrEnum):
+    SEED_INFO = 'Seed info'
+    DROPS = 'Drops'
+    ENCOUNTERS = 'Encounters'
+    STEPS = 'Steps'
+    ENCOUNTERS_PLANNER = 'Encounters Planner'
+    ENCOUNTERS_TABLE = 'Encounters Table'
+    ACTIONS = 'Actions'
+    YOJIMBO = 'Yojimbo'
+    MONSTER_DATA = 'Monster Data'
+    SEEDFINDER = 'Seedfinder'
+    CONFIGS = 'Configs/Log'
+
+
 class EncounterCondition(StrEnum):
     PREEMPTIVE = 'Preemptive'
     NORMAL = 'Normal'

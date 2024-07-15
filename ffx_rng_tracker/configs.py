@@ -5,8 +5,9 @@ from configparser import ConfigParser, NoOptionError, NoSectionError
 from dataclasses import dataclass
 from logging import getLogger
 
-from .data.constants import GameVersion, SpeedrunCategory
+from .data.constants import GameVersion, SpeedrunCategory, UIWidget
 from .data.file_functions import get_resource_path
+from .data.macros import get_macros
 from .utils import get_contrasting_color
 
 
@@ -15,6 +16,7 @@ class UIWidgetConfigs:
     shown: bool
     windowed: bool
     tag_names: list[str]
+    macros: dict[str, str]
 
     def __str__(self) -> str:
         return ' '.join([f'{v}: {k}' for v, k in vars(self).items()])
@@ -38,7 +40,7 @@ class Configs:
     use_theme: bool = True
     use_dark_mode: bool = False
     ui_tags: dict[str, UITagConfigs] = {}
-    ui_widgets: dict[str, UIWidgetConfigs] = {}
+    ui_widgets: dict[UIWidget, UIWidgetConfigs] = {}
     _parser = ConfigParser()
     _configs_file = 'ffx_rng_tracker_configs.ini'
     _default_configs_file = 'default_configs.ini'
@@ -164,16 +166,13 @@ class Configs:
             cls.ui_tags[option] = UITagConfigs(
                 regex_pattern, fg, bg, select_fg, select_bg)
 
-        ui_widgets = (
-            'Seed info', 'Drops', 'Encounters', 'Steps', 'Encounters Planner',
-            'Encounters Table', 'Actions', 'Status', 'Yojimbo', 'Monster Data',
-            'Seedfinder', 'Configs/Log',
-        )
-        for section in ui_widgets:
+        macros = get_macros()
+        for section in UIWidget:
             cls.ui_widgets[section] = UIWidgetConfigs(
                 shown=cls.getboolean(section, 'shown', True),
                 windowed=cls.getboolean(section, 'windowed', False),
                 tag_names=cls.getlist(section, 'tags'),
+                macros=macros.get(section, {}),
                 )
 
     @classmethod

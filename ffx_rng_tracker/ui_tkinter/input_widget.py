@@ -27,10 +27,16 @@ class TkInputWidget(ScrollableText):
             self.text, {'insert', 'delete', 'replace'}, callback_func)
 
 
-class TkSearchBarWidget(tk.Entry):
+class TkDefaultTextEntry(tk.Entry):
 
-    def __init__(self, parent, *args, **kwargs) -> None:
+    def __init__(self,
+                 parent,
+                 default_text: str = '',
+                 *args,
+                 **kwargs,
+                 ) -> None:
         super().__init__(parent, *args, **kwargs)
+        self.default_text = default_text
         self.on_focus_out()
         self.bind('<FocusIn>', self.on_focus_in)
         self.bind('<FocusOut>', self.on_focus_out)
@@ -56,7 +62,7 @@ class TkSearchBarWidget(tk.Entry):
 
     def on_focus_out(self, event: str = None) -> None:
         if self.get() == '':
-            self.set_input('Search...')
+            self.set_input(self.default_text)
             self.config(fg='gray')
 
     def on_return(self, event: str = None) -> None:
@@ -66,3 +72,8 @@ class TkSearchBarWidget(tk.Entry):
             self.tk.call(str(self), 'Return')
         except tk.TclError:
             pass
+
+
+class TkSearchBarWidget(TkDefaultTextEntry):
+    def __init__(self, parent, *args, **kwargs) -> None:
+        super().__init__(parent, 'Search...', *args, **kwargs)

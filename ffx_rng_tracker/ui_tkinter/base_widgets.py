@@ -2,13 +2,10 @@ import re
 import tkinter as tk
 from collections import deque
 from collections.abc import Callable
-from logging import getLogger
-from tkinter import messagebox, simpledialog, ttk
+from tkinter import messagebox, ttk
 from typing import Any
 
 from ..configs import Configs
-from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
-from ..errors import InvalidDamageValueError, SeedNotFoundError
 
 
 class ScrollableText(tk.Frame):
@@ -57,7 +54,7 @@ class ScrollableText(tk.Frame):
     def highlight_pattern(self,
                           tag_name: str,
                           pattern: re.Pattern,
-                          text: str = None,
+                          text: str | None = None,
                           ) -> None:
         """Apply the tag named tag_name to all occurrences
         of the pattern.
@@ -161,77 +158,6 @@ class ScrollableFrame(tk.Frame):
         canvas.bind('<Leave>', lambda _: canvas.unbind_all('<MouseWheel>'))
         self.pack = self.outer_frame.pack
         self.grid = self.outer_frame.grid
-
-
-class DamageValuesDialogue(simpledialog.Dialog):
-    """Input dialogue used to get damage values."""
-
-    def __init__(self, *args, **kwargs) -> None:
-        self.warning_label = False
-        self.seed = None
-        super().__init__(*args, **kwargs)
-
-    def body(self, parent: tk.Frame) -> tk.Entry:
-        damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
-        text = (f'Input the first {damage_values_needed} damage values '
-                'in this order: ')
-        if damage_values_needed == 3:
-            text += 'Auron1 Tidus Auron2\n'
-        else:
-            text += ('Auron1 Tidus1 A2 T2 A3 T3 A4 A5\n'
-                     '(A4 and A5 are the first 2 Auron Attacks '
-                     'vs Sinspawn Ammes)\n')
-        text += 'Alternatively input a Seed Number to load that seed directly'
-        tk.Label(parent, text=text).pack()
-        self.entry = tk.Entry(parent, width=25)
-        self.entry.pack(fill='x')
-        return self.entry
-
-    def buttonbox(self) -> None:
-        tk.Button(self, text='Submit', command=self.validate_input).pack()
-        self.bind('<Return>', lambda _: self.validate_input())
-        self.bind('<Escape>', lambda _: self.destroy())
-
-    def validate_input(self) -> None:
-        input_string = self.entry.get()
-        # replace different symbols with spaces
-        for symbol in (',', '-', '/', '\\', '.'):
-            input_string = input_string.replace(symbol, ' ')
-        seed_info = input_string.split()
-        try:
-            seed_info = [int(i) for i in seed_info]
-        except ValueError as error:
-            error = str(error).split(':', 1)[1]
-            self.show_warning(f'{error} is not a valid damage value')
-            return
-        match seed_info:
-            case []:
-                return
-            case [seed]:
-                if not (0 <= seed <= 0xffffffff):
-                    self.show_warning(
-                        'Seed must be an integer between 0 and 4294967295')
-                    return
-            case _:
-                try:
-                    seed = get_seed(
-                        seed_info, Configs.continue_ps2_seed_search)
-                except (InvalidDamageValueError,
-                        SeedNotFoundError) as error:
-                    self.show_warning(error)
-                    return
-
-        getLogger(__name__).info(f'Opened with seed {seed}.')
-        self.seed = seed
-        self.destroy()
-
-    def show_warning(self, text: str) -> None:
-        text = f'Error: {text}'
-        if self.warning_label:
-            self.warning_label.config(text=text)
-        else:
-            self.warning_label = tk.Label(self, text=text)
-            self.warning_label.pack(fill='x')
 
 
 class TkWarningPopup:

@@ -17,13 +17,21 @@ def treeview(obj, indentation: int = 0) -> str:
             for key, value in obj.items():
                 string += ' ' * 4 * indentation
                 if isinstance(key, tuple):
-                    key = ', '.join(key)
-                string += f'{key}: '
-                if isinstance(value, dict):
+                    key = f'{', '.join(key)}: '
+                else:
+                    key = f'{key}: '
+                string += key
+                if isinstance(value, str) and '\n' in value:
+                    value = value.replace('\n', f'\n{' ' * (len(key) - 3)}')
+                elif isinstance(value, dict):
                     string += '\n'
                 string += treeview(value, indentation + 1)
         case list() | tuple() | set():
             string += f'{', '.join([str(a) for a in obj])}\n'
+        case str():
+            if '\n' in obj:
+                obj = obj.replace('\n', f'\n{' ' * 4 * indentation}')
+            string += f'\'{obj}\'\n'
         case dataclass if is_dataclass(dataclass):
             string += '\n' + treeview(vars(dataclass), indentation)
         case re.Pattern():

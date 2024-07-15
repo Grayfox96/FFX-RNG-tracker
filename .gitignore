@@ -11,3 +11,4 @@ ffx_rng_tracker_seeds/*
 ffx_rng_tracker_notes/*
 ffx_rng_tracker_log.log
 ffx_rng_tracker_configs.ini
+ffx_rng_tracker_macros.toml

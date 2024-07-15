@@ -2,7 +2,6 @@ import tkinter as tk
 from collections.abc import Callable
 
 from ..configs import UIWidgetConfigs
-from ..events.parser import EventParser
 from ..ui_abstract.monster_data_viewer import MonsterDataViewer
 from .base_widgets import create_command_proxy
 from .input_widget import TkSearchBarWidget
@@ -48,7 +47,6 @@ class TkMonsterDataViewer(tk.Frame):
 
     def __init__(self,
                  parent,
-                 parser: EventParser,
                  configs: UIWidgetConfigs,
                  *args,
                  **kwargs,

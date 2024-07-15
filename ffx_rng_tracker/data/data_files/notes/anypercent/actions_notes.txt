@@ -150,8 +150,7 @@ valefor thunder garuda_3
 valefor thunder garuda_3
 valefor thunder garuda_3
 
-# Besaid grid
-stat tidus strength +1
+/macro besaid grid
 
 encounter garuda_2
 tidus escape
@@ -197,8 +196,7 @@ kimahri lancet ragora_2
 tidus attack ragora_2
 lulu fire ragora_2
 
-# Kilika grid
-stat tidus agility +1
+/macro kilika grid
 
 # Kilika In encounters
 # Wakka equips Scout
@@ -281,8 +279,7 @@ kimahri attack oblitzerator
 lulu thunder oblitzerator
 # tidus attack oblitzerator
 
-# Haste grid
-stat tidus strength +1
+/macro haste grid
 
 encounter sahagin_chiefs
 tidus haste tidus
@@ -397,7 +394,7 @@ weapon wakka 1
 # If Wakka equips Thunder Ball
 # weapon wakka 1 lightningstrike
 
-stat wakka strength +2
+/macro extractor grid
 
 encounter extractor
 tidus haste tidus
@@ -436,10 +433,7 @@ encounter rikku_tutorial
 rikku ultra_potion rikku
 # rikku frag_grenade bunyip
 
-# Moonflow grid
-stat tidus hp +200
-stat tidus strength +1
-stat tidus agility +2
+/macro moonflow grid
 
 encounter moonflow_north
 # rikku grenade monsters
@@ -490,8 +484,7 @@ element m1 thunder weak
 rikku lightning_bolt
 status m1
 
-# Post-Spherimorph grid
-stat rikku agility +3
+/macro crawler grid
 
 encounter lake_macalania
 
@@ -506,12 +499,7 @@ rikku lightning_marble crawler
 yuna phoenix_down rikku
 rikku lightning_bolt crawler
 
-# Post-Crawler grid
-stat tidus hp +600
-stat tidus strength +20
-stat tidus agility +4
-stat kimahri hp +200
-stat kimahri agility +4
+/macro seymour grid
 # Tidus equips Brotherhood
 weapon tidus 4 strength_+10% strength_+5% waterstrike
 
@@ -540,10 +528,7 @@ tidus attack m2
 tidus attack m2
 stat tidus strength -10
 
-# Pre-Wendigo grid
-stat tidus hp +200
-stat tidus strength +4
-stat tidus agility +2
+/macro wendigo grid
 
 # -- Crevasse --
 # encounter guado_encounter_1
@@ -578,8 +563,7 @@ tidus attack guado_guardian_2
 encounter zu
 tidus attack zu_2
 
-# Bikanel grid
-stat tidus strength +4
+/macro bikanel grid
 
 # Tidus equips Sonic Steel
 weapon tidus 1 first_strike
@@ -689,12 +673,7 @@ kimahri bomb_core m2
 # rikku sleeping_powder monsters
 
 # -- Via Purifico --
-stat yuna hp +600
-stat yuna mp +40
-stat yuna strength +28
-stat yuna defense +3
-stat yuna magic +13
-stat yuna agility +10
+/macro via purifico grid
 
 encounter via_purifico_corridor
 ixion attack maze_larva
@@ -727,10 +706,7 @@ tidus elixir evrae_altana
 # tidus phoenix_down evrae_altana
 
 # -- Highbridge --
-stat yuna hp +200
-stat yuna strength +16
-stat yuna defense +6
-stat yuna agility +2
+/macro highbridge grid
 
 encounter highbridge
 tidus attack ykt-63
@@ -743,8 +719,7 @@ tidus attack seymour_natus
 bahamut attack seymour_natus
 
 # -- Calm Lands --
-# Pre-Defender X grid
-stat yuna strength +4
+/macro calm lands grid
 
 encounter calm_lands_south_before_defender_x
 encounter calm_lands_south_before_defender_x
@@ -776,20 +751,9 @@ kimahri water_gem yenke_ronso
 kimahri water_gem biran_ronso
 
 # Post-Ronso grid
-# With 4 Return Spheres
-stat yuna strength +4
-stat yuna agility +2
-weapon yuna 1 first_strike
-weapon auron 1 first_strike
-
-# With 2/2 Spheres
-# stat yuna strength +15
-# stat yuna agility +10
-# weapon yuna 1 first_strike
-
-# With 4 Friend Spheres
-# stat yuna strength +19
-# stat yuna agility +14
+/macro b&y grid 4 returns
+# /macro b&y grid 2/2
+# /macro b&y grid 4 friends
 
 # encounter gagazet_mountain
 
@@ -820,31 +784,18 @@ bahamut attack m1
 # encounter zanarkand_dome
 
 # Zanarkand grid
-# With 4 Return Spheres
-stat yuna strength +11
-stat yuna agility +8
-stat yuna luck +4
+/macro zanarkand grid 4 returns
 
-# With 2/2 Spheres
-# stat yuna mp +20
-# stat yuna strength +2
-# stat yuna agility +4
-# stat yuna luck +4
+# /macro zanarkand grid 2/2
 
-# With 4 Friend Spheres
-# stat yuna luck +4
-# weapon yuna 1 first_strike
-# weapon auron 1 first_strike
+# /macro zanarkand grid 4 friends
 
 encounter spectral_keeper
 bahamut attack spectral_keeper
 bahamut attack spectral_keeper
 
 # Pre-Yunalesca grid
-# With 4 Return Spheres
-stat yuna mp +20
-stat yuna strength +2
-stat yuna agility +4
+/macro yunalesca grid 4 returns
 
 encounter yunalesca
 bahamut attack yunalesca
@@ -882,8 +833,7 @@ bahamut attack m1
 # encounter
 # encounter
 
-# BFA grid
-stat yuna agility +10
+/macro bfa grid
 # weapon auron 1 first_strike
 
 # Braska's Final Aeon

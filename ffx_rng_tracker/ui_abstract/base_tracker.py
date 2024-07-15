@@ -26,15 +26,21 @@ class TrackerUI(ABC):
     usage: str = field(default='', init=False, repr=False)
 
     def __post_init__(self) -> None:
+        self.usage = self.get_usage()
+
         for function in self.get_parsing_functions():
             for usage_string in USAGE[function]:
                 command = usage_string.split()[0]
                 self.parser.parsing_functions[command] = function
-        self.usage = self.get_usage()
+        self.parser.macros.update((k, self.edit_input(v))
+                                  for k, v in self.configs.macros.items())
+
         self.input_widget.set_input(self.get_default_input_data())
         self.input_widget.register_callback(self.callback)
+
         for name in self.configs.tag_names:
             self.output_widget.register_tag(name)
+
         self.output_widget.register_tag(
             '#search bar',
             UITagConfigs(REGEX_NEVER_MATCH, background='#ffff00'),
@@ -50,12 +56,25 @@ class TrackerUI(ABC):
         """Returns a list of parsing functions."""
 
     def get_usage(self) -> str:
-        usage_lines = ['# Usage:']
+        usage_lines = [
+            '# Usage:',
+            '/usage',
+            '///',
+            '/nopadding',
+            '/macro [macro name]',
+            ]
         for function in self.get_parsing_functions():
             if function is parse_roll:
                 continue
             usage_lines.extend(USAGE.get(function, []))
         return '\n#     '.join(usage_lines)
+
+    def change_seed(self, seed: int, reload_notes: bool) -> None:
+        self.parser.gamestate.seed = seed
+        self.previous_edited_input = ''
+        if reload_notes:
+            self.input_widget.set_input(self.get_default_input_data())
+        self.callback()
 
     @abstractmethod
     def edit_input(self, input_text: str) -> str:

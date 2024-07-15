@@ -2,7 +2,6 @@ import logging
 import tkinter as tk
 
 from ..configs import Configs, UIWidgetConfigs
-from ..events.parser import EventParser
 from ..logger import UIHandler
 from ..utils import treeview
 from .output_widget import TkOutputWidget
@@ -13,7 +12,6 @@ class TkConfigsLogViewer(tk.Frame):
 
     def __init__(self,
                  parent,
-                 parser: EventParser,
                  configs: UIWidgetConfigs,
                  *args,
                  **kwargs,

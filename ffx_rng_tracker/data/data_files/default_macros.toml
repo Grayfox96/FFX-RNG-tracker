@@ -1,0 +1,116 @@
+# Define macros as key/value pairs
+# Keys don't need quotation marks but to avoid errors it is recommended to use them
+# Values need quotation marks, 1 for single line and 3 for multiple lines
+# Newlines at the start and end of values will be removed
+# If a value is not a string it will be ignored
+# Values can contain nested macros, define the parent macro first, then the nested one
+
+[General]
+# Macros defined in this section will be used for all widgets
+# Macros from this section will be evaluated first, unless they are redefined
+# in a widget section, in that case only that one will be evaluated
+
+[Drops]
+
+[Actions]
+"pre b&y grids" = """
+/macro besaid grid
+/macro kilika grid
+/macro haste grid
+/macro extractor grid
+/macro moonflow grid
+/macro crawler grid
+/macro seymour grid
+/macro wendigo grid
+/macro bikanel grid
+/macro via purifico grid
+/macro highbridge grid
+/macro calm lands grid
+"""
+"4 returns grids" = """
+/macro b&y grid 4 returns
+/macro zanarkand grid 4 returns
+/macro yunalesca grid 4 returns
+/macro bfa grid
+"""
+"2/2 grids" = """
+/macro b&y grid 2/2
+/macro zanarkand grid 2/2
+/macro bfa grid
+"""
+"4 friends grids" = """
+/macro b&y grid 4 friends
+/macro zanarkand grid 4 friends
+/macro bfa grid
+"""
+"besaid grid" = "stat tidus strength +1"
+"kilika grid" = "stat tidus agility +1"
+"haste grid" = "stat tidus strength +1"
+"extractor grid" = "stat wakka strength +2"
+"moonflow grid" = """
+stat tidus hp +200
+stat tidus strength +1
+stat tidus agility +2
+"""
+"crawler grid" = "stat rikku agility +3"
+"seymour grid" = """
+stat tidus hp +600
+stat tidus strength +20
+stat tidus agility +4
+stat kimahri hp +200
+stat kimahri agility +4
+"""
+"wendigo grid" = """
+stat tidus hp +200
+stat tidus strength +4
+stat tidus agility +2
+"""
+"bikanel grid" = "stat tidus strength +4"
+"via purifico grid" = """
+stat auron magic +3
+stat yuna hp +600
+stat yuna mp +40
+stat yuna strength +28
+stat yuna defense +3
+stat yuna magic +13
+stat yuna agility +10
+"""
+"highbridge grid" = """
+stat yuna hp +200
+stat yuna strength +16
+stat yuna defense +6
+stat yuna agility +2
+"""
+"calm lands grid" = "stat yuna strength +4"
+"b&y grid 4 returns" = """
+stat yuna strength +4
+stat yuna agility +2
+"""
+"b&y grid 2/2" = """
+stat yuna strength +15
+stat yuna agility +10
+"""
+"b&y grid 4 friends" = """
+stat yuna strength +19
+stat yuna agility +14
+"""
+"zanarkand grid 4 returns" = """
+stat yuna strength +11
+stat yuna agility +8
+stat yuna luck +4
+"""
+"zanarkand grid 2/2" = """
+stat yuna mp +20
+stat yuna strength +2
+stat yuna agility +4
+stat yuna luck +4
+"""
+"zanarkand grid 4 friends" = "stat yuna luck +4"
+"yunalesca grid 4 returns" = """
+stat yuna mp +20
+stat yuna strength +2
+stat yuna agility +4
+"""
+"bfa grid" = "stat yuna agility +10"
+
+[Yojimbo]
