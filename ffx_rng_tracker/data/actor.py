@@ -45,7 +45,7 @@ class Actor(Protocol):
     last_action: Action | None
     provoker: Self | None
     last_attacker: Self | None
-    last_target: list[Self]
+    last_targets: list[Self]
 
     def set_stat(self, stat: Stat, value: int) -> None:
         """Sets the stat to the value, clamping to the
@@ -76,7 +76,7 @@ class CharacterActor:
         self.autoabilities: set[Autoability] = {None}
         self.weapon_elements: list[Element] = []
         self.weapon_statuses: list[StatusApplication] = []
-        self.last_target: list[Actor] = []
+        self.last_targets: list[Actor] = []
         self.defaults = defaults
         self.character = defaults.character
         self.auto_statuses: list[Status] = []
@@ -101,7 +101,7 @@ class CharacterActor:
         self.last_action: Action | None = None
         self.provoker: Actor | None = None
         self.last_attacker: Actor | None = None
-        self.last_target.clear()
+        self.last_targets.clear()
 
     def set_stat(self, stat: Stat, value: int) -> None:
         """Sets the stat to the value, clamping to the
@@ -149,6 +149,8 @@ class CharacterActor:
         max_hp = self.max_hp
         value = min(max(value, 0), max_hp)
         if value == 0:
+            self.statuses.clear()
+            self.buffs.clear()
             self.statuses[Status.DEATH] = 254
         self.in_crit = value < (max_hp / 2)
         self._current_hp = value
@@ -300,7 +302,7 @@ class MonsterActor:
         self.autoabilities: set[Autoability] = set()
         self.weapon_elements: list[Element] = []
         self.weapon_statuses: list[StatusApplication] = []
-        self.last_target: list[Actor] = []
+        self.last_targets: list[Actor] = []
         self.monster = monster
         self.reset()
 
@@ -319,7 +321,7 @@ class MonsterActor:
         self.last_action: Action | None = None
         self.provoker: Actor | None = None
         self.last_attacker: Actor | None = None
-        self.last_target.clear()
+        self.last_targets.clear()
 
     def set_stat(self, stat: Stat, value: int) -> None:
         """Sets the stat to the value, clamping to the
@@ -353,6 +355,8 @@ class MonsterActor:
     def current_hp(self, value: int) -> None:
         value = min(max(value, 0), self.max_hp)
         if value == 0:
+            self.statuses.clear()
+            self.buffs.clear()
             self.statuses[Status.DEATH] = 254
         self._current_hp = value
 

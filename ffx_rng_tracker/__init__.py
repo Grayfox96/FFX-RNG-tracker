@@ -7,4 +7,4 @@ if sys.version_info < MIN_PYTHON_VERSION_INFO:
     raise RuntimeError(
         f'Python ver. {MIN_PYTHON_VERSION_INFO} or higher is required')
 
-__version__ = '24.01.15'
+__version__ = '24.08.30'

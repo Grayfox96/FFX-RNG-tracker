@@ -146,8 +146,18 @@ class MonsterAction(CharacterAction):
                     return [self.user.last_attacker]
                 possible_targets = []
             case TargetType.LAST_TARGET | TargetType.COUNTER_LAST_TARGET:
-                if self.user.last_target:
-                    return [self.user.last_target]
+                if self.user.last_targets:
+                    targets = []
+                    for target in self.user.last_targets:
+                        if Status.DEATH in target.statuses:
+                            continue
+                        if hasattr(target, 'character'):
+                            if target.character in self.gamestate.party:
+                                targets.append(target)
+                        elif target in self.gamestate.monster_party:
+                            targets.append(target)
+                    if targets:
+                        return targets
                 possible_targets = self._get_possible_character_targets()
             case Character() as character:
                 possible_targets = self._get_possible_character_targets()
@@ -172,7 +182,9 @@ class MonsterAction(CharacterAction):
 
         target_rng = self._advance_rng(4)
         target_index = target_rng % len(possible_targets)
-        if self.action.n_of_hits == 1:
+        # TODO
+        # n_of_hits is 0 at this point only for youre_next!
+        if self.action.n_of_hits <= 1:
             return [possible_targets[target_index]]
         targets: list[Actor] = []
         for _ in range(self.action.n_of_hits):

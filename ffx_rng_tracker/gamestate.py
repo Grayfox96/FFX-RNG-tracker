@@ -40,7 +40,8 @@ class GameState:
         actors = [self.characters[c] for c in self.party] + self.monster_party
         for actor in actors:
             if (Status.DEATH in actor.statuses
-                    or Status.EJECT in actor.statuses):
+                    or Status.EJECT in actor.statuses
+                    or Status.PETRIFY in actor.statuses):
                 continue
             ctbs.add(actor.ctb)
         if not ctbs:
@@ -52,11 +53,18 @@ class GameState:
     def normalize_ctbs(self, min_ctb: int) -> None:
         if min_ctb == 0:
             return
-        for actor in chain(self.characters.values(), self.monster_party):
+        actors = [self.characters[c] for c in self.party] + self.monster_party
+        for actor in actors:
+            if Status.PETRIFY in actor.statuses:
+                continue
             actor.ctb -= min_ctb
 
     def setup_autostatuses(self) -> None:
         for actor in self.characters.values():
+            if (Status.DEATH in actor.statuses
+                    or Status.EJECT in actor.statuses
+                    or Status.PETRIFY in actor.statuses):
+                continue
             auto_statuses = set(actor.auto_statuses)
             if actor.in_crit:
                 auto_statuses.update(actor.sos_auto_statuses)
@@ -119,7 +127,7 @@ class GameState:
             stacks -= 1
             if stacks <= 0:
                 if status is Status.DOOM:
-                    actor.statuses[Status.DEATH] = 254
+                    actor.current_hp = 0
                 actor.statuses.pop(status, None)
             else:
                 actor.statuses[status] = stacks

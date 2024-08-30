@@ -63,6 +63,7 @@ class CharacterAction(Event):
         else:
             self._remove_statuses()
         self._get_buffs()
+        self._shatter_check()
         if self.action.is_counter:
             self.ctb = 0
         else:
@@ -73,7 +74,7 @@ class CharacterAction(Event):
                 target.provoker = self.user
         for target in self.targets:
             target.last_attacker = self.user
-        self.user.last_target = self.targets
+        self.user.last_targets = self.targets
 
     def __str__(self) -> str:
         actions = []
@@ -133,12 +134,35 @@ class CharacterAction(Event):
         luck = max(self.user.stats[Stat.LUCK], 1)
         accuracy = self.user.stats[Stat.ACCURACY]
         aims = self.user.buffs[Buff.AIM]
+
+        elements = set(self.action.elements)
+        if self.action.uses_weapon_properties:
+            elements.update(self.user.weapon_elements)
+        nul_statuses: set[Status] = {NUL_STATUSES.get(element, None)
+                                     for element in elements}
+        nul_statuses.discard(None)
+
         for target, result in zip(self.targets, self.results):
             if (self.action.misses_if_target_alive
                     and Status.DEATH not in target.statuses
                     and Status.ZOMBIE not in target.statuses):
                 result.hit = False
-            if self.action.hit_chance_formula is HitChanceFormula.ALWAYS:
+                continue
+            # if all the elements are covered by a nul status the
+            # target is immune and decrease the amount of status stacks by 1
+            if nul_statuses and nul_statuses.issubset(target.statuses):
+                for nul_status in nul_statuses:
+                    if target.statuses[nul_status] >= 254:
+                        continue
+                    target.statuses[nul_status] -= 1
+                    result.removed_statuses.append(nul_status)
+                    if target.statuses[nul_status] <= 0:
+                        target.statuses.pop(nul_status)
+                result.hit = False
+                continue
+            if (self.action.hit_chance_formula is HitChanceFormula.ALWAYS
+                    or Status.SLEEP in target.statuses
+                    or Status.PETRIFY in target.statuses):
                 continue
             hit_rng = self._advance_rng(index) % 101
             target_evasion = target.stats[Stat.EVASION]
@@ -281,35 +305,16 @@ class CharacterAction(Event):
         else:
             luck += self.action.bonus_crit
 
-        elements = set(self.action.elements)
-        if self.action.uses_weapon_properties:
-            elements.update(self.user.weapon_elements)
-        nul_statuses: set[Status] = {NUL_STATUSES.get(element, None)
-                                     for element in elements}
-        nul_statuses.discard(None)
-
         for target, result in zip(self.targets, self.results):
             if not result.hit:
                 continue
+            discard_damage = Status.PETRIFY in target.statuses
             target_luck = max(target.stats[Stat.LUCK], 1)
             target_luck -= target.buffs[Buff.JINX] * 10
-            # if all the elements are covered by a nul status the
-            # target is immune and decrease the amount of status stacks by 1
-            if nul_statuses and nul_statuses.issubset(target.statuses):
-                immune = True
-                for nul_status in nul_statuses:
-                    if target.statuses[nul_status] >= 254:
-                        continue
-                    target.statuses[nul_status] -= 1
-                    result.removed_statuses.append(nul_status)
-                    if target.statuses[nul_status] <= 0:
-                        target.statuses.pop(nul_status)
-            else:
-                immune = False
             if self.action.damages_hp:
                 result.hp.damage_rng = self._advance_rng(index) & 31
                 result.hp.crit = self._get_crit(luck, target_luck)
-                if not immune:
+                if not discard_damage:
                     result.hp.damage = get_damage(
                         self.user, self.action, target, result.hp.damage_rng,
                         result.hp.crit, self.od_time_remaining, 'hp')
@@ -317,7 +322,7 @@ class CharacterAction(Event):
             if self.action.damages_mp:
                 result.mp.damage_rng = self._advance_rng(index) & 31
                 result.mp.crit = self._get_crit(luck, target_luck)
-                if not immune:
+                if not discard_damage:
                     result.mp.damage = get_damage(
                         self.user, self.action, target, result.mp.damage_rng,
                         result.mp.crit, self.od_time_remaining, 'mp')
@@ -326,13 +331,13 @@ class CharacterAction(Event):
             if self.action.damages_ctb:
                 result.ctb.damage_rng = self._advance_rng(index) & 31
                 result.ctb.crit = self._get_crit(luck, target_luck)
-                if not immune:
+                if not discard_damage:
                     result.ctb.damage = get_damage(
                         self.user, self.action, target, result.ctb.damage_rng,
                         result.ctb.crit, self.od_time_remaining)
                     result.ctb.damage *= -1
                     target.ctb -= result.ctb.damage
-            if not immune and self.action.drains:
+            if not discard_damage and self.action.drains:
                 self.user.current_hp += result.hp.damage
                 self.user.current_mp += result.mp.damage
                 # self.user.ctb += result.ctb.damage
@@ -383,21 +388,16 @@ class CharacterAction(Event):
                     continue
                 result.statuses[status] = True
                 target.statuses[status] = 254
+            if Status.PETRIFY in target.statuses:
+                petrify_stacks = target.statuses[Status.PETRIFY]
+                target.statuses.clear()
+                target.statuses[Status.PETRIFY] = petrify_stacks
+            if Status.DEATH in target.statuses:
+                target.current_hp = 0
             if self.action.has_weak_delay:
                 target.ctb += target.base_ctb * 3 // 2
             if self.action.has_strong_delay:
                 target.ctb += target.base_ctb * 3
-            if Status.PETRIFY in target.statuses:
-                shatter_rng = self._advance_rng(index) % 101
-                if (hasattr(target, 'monster')
-                        or self.action.shatter_chance > shatter_rng):
-                    target.statuses[Status.DEATH] = 254
-                    result.statuses[Status.DEATH] = True
-                    target.statuses[Status.EJECT] = 254
-                    result.statuses[Status.EJECT] = True
-                else:
-                    result.statuses[Status.DEATH] = False
-                    result.statuses[Status.EJECT] = False
 
     def _remove_statuses(self) -> None:
         for target, result in zip(self.targets, self.results):
@@ -407,7 +407,7 @@ class CharacterAction(Event):
                 if status is Status.DEATH and Status.ZOMBIE in target.statuses:
                     if not target.immune_to_life:
                         result.statuses[Status.DEATH] = True
-                        target.statuses[Status.DEATH] = 254
+                        target.current_hp = 0
                     continue
                 if (status not in target.statuses
                         or target.statuses[status] >= 255):
@@ -417,9 +417,26 @@ class CharacterAction(Event):
                     target.ctb = target.base_ctb * 3
                 result.removed_statuses.append(status)
 
-    def _get_buffs(self) -> None:
+    def _shatter_check(self) -> None:
+        index = self.status_rng_index
         for target, result in zip(self.targets, self.results):
             if not result.hit:
+                continue
+            if Status.PETRIFY not in target.statuses:
+                continue
+            shatter_rng = self._advance_rng(index) % 101
+            if (hasattr(target, 'monster')
+                    or self.action.shatter_chance > shatter_rng):
+                result.statuses[Status.DEATH] = True
+                target.current_hp = 0
+                result.statuses[Status.EJECT] = True
+                target.statuses[Status.EJECT] = 254
+            else:
+                result.statuses[Status.EJECT] = False
+
+    def _get_buffs(self) -> None:
+        for target, result in zip(self.targets, self.results):
+            if not result.hit or Status.PETRIFY in target.statuses:
                 continue
             for buff, amount in self.action.buffs.items():
                 amount += target.buffs[buff]

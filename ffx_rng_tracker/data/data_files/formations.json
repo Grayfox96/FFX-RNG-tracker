@@ -296,37 +296,37 @@
         },
         "evrae": {
             "name": "Evrae",
-            "formation": ["evrae", "cid"],
+            "formation": ["evrae", "cid", "dummy"],
             "forced_condition": "normal",
             "forced_party": ""
         },
         "bevelle_guards_1": {
             "name": "Bevelle Guards 1",
-            "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk"],
+            "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk", "rifle", "rifle", "fire_rifle"],
             "forced_condition": "normal",
             "forced_party": ""
         },
         "bevelle_guards_2": {
             "name": "Bevelle Guards 2",
-            "formation": ["ykt-63", "warrior_monk", "warrior_monk"],
+            "formation": ["ykt-63", "warrior_monk_2", "warrior_monk_2", "fire_rifle", "fire_rifle"],
             "forced_condition": "normal",
             "forced_party": ""
         },
         "bevelle_guards_3": {
             "name": "Bevelle Guards 3",
-            "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk"],
+            "formation": ["warrior_monk", "warrior_monk_2", "warrior_monk", "rifle", "rifle", "fire_rifle"],
             "forced_condition": "normal",
             "forced_party": ""
         },
         "bevelle_guards_4": {
             "name": "Bevelle Guards 4",
-            "formation": ["ykt-63", "warrior_monk", "warrior_monk"],
+            "formation": ["ykt-63", "warrior_monk_2", "warrior_monk_2", "fire_rifle", "fire_rifle"],
             "forced_condition": "normal",
             "forced_party": ""
         },
         "bevelle_guards_5": {
             "name": "Bevelle Guards 5",
-            "formation": ["warrior_monk", "yat-99", "warrior_monk"],
+            "formation": ["warrior_monk", "yat-99", "warrior_monk", "rifle", "rifle"],
             "forced_condition": "normal",
             "forced_party": ""
         },
@@ -378,6 +378,12 @@
             "forced_condition": "normal",
             "forced_party": ""
         },
+        "yojimbo": {
+            "name": "Yojimbo",
+            "formation": ["mira", "yojimbo", "koma_inu"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
         "biran_&_yenke": {
             "name": "Biran & Yenke",
             "formation": ["biran_ronso", "yenke_ronso"],
@@ -398,13 +404,25 @@
         },
         "spectral_keeper": {
             "name": "Spectral Keeper",
-            "formation": ["spectral_keeper"],
+            "formation": ["spectral_keeper", "circle", "circle", "circle", "circle", "circle", "circle", "circle"],
             "forced_condition": "normal",
             "forced_party": ""
         },
         "yunalesca": {
             "name": "Yunalesca",
             "formation": ["yunalesca"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "ultima_weapon": {
+            "name": "Ultima Weapon",
+            "formation": ["ultima_weapon"],
+            "forced_condition": "normal",
+            "forced_party": ""
+        },
+        "omega_weapon": {
+            "name": "Omega Weapon",
+            "formation": ["omega_weapon"],
             "forced_condition": "normal",
             "forced_party": ""
         },
@@ -1173,9 +1191,9 @@
                 {"monsters": ["thorn", "thorn", "thorn"], "forced_condition": ""},
                 {"monsters": ["ghost"], "forced_condition": ""},
                 {"monsters": ["valaha", "epaaj"], "forced_condition": ""},
-                {"monsters": ["magic_urn"], "forced_condition": ""},
-                {"monsters": ["magic_urn"], "forced_condition": ""},
-                {"monsters": ["magic_urn"], "forced_condition": ""}
+                {"monsters": ["magic_urn", "dummy", "dummy", "dummy", "dummy"], "forced_condition": "normal"},
+                {"monsters": ["magic_urn", "dummy", "dummy", "dummy", "dummy"], "forced_condition": "normal"},
+                {"monsters": ["magic_urn", "dummy", "dummy", "dummy", "dummy"], "forced_condition": "normal"}
             ],
             "danger_value": 40
         },
@@ -1188,10 +1206,10 @@
                 {"monsters": ["defender"], "forced_condition": ""},
                 {"monsters": ["tonberry"], "forced_condition": ""},
                 {"monsters": ["coeurl", "coeurl"], "forced_condition": ""},
-                {"monsters": ["magic_urn"], "forced_condition": ""},
-                {"monsters": ["magic_urn"], "forced_condition": ""},
-                {"monsters": ["magic_urn"], "forced_condition": ""},
-                {"monsters": ["magic_urn"], "forced_condition": ""}
+                {"monsters": ["magic_urn", "dummy", "dummy", "dummy", "dummy"], "forced_condition": "normal"},
+                {"monsters": ["magic_urn", "dummy", "dummy", "dummy", "dummy"], "forced_condition": "normal"},
+                {"monsters": ["magic_urn", "dummy", "dummy", "dummy", "dummy"], "forced_condition": "normal"},
+                {"monsters": ["magic_urn", "dummy", "dummy", "dummy", "dummy"], "forced_condition": "normal"}
             ],
             "danger_value": 35
         },
@@ -1266,7 +1284,7 @@
                 {"monsters": ["halma", "spirit", "halma"], "forced_condition": ""},
                 {"monsters": ["zaurus", "floating_death", "zaurus"], "forced_condition": ""},
                 {"monsters": ["black_element", "spirit", "black_element"], "forced_condition": ""},
-                {"monsters": ["varuna"], "forced_condition": ""},
+                {"monsters": ["varuna"], "forced_condition": "normal"},
                 {"monsters": ["master_tonberry"], "forced_condition": ""},
                 {"monsters": ["adamantoise"], "forced_condition": ""},
                 {"monsters": ["machea", "machea"], "forced_condition": ""},
@@ -1276,10 +1294,10 @@
                 {"monsters": ["zaurus", "???_2"], "forced_condition": ""},
                 {"monsters": ["zaurus", "???_2"], "forced_condition": ""},
                 {"monsters": ["zaurus", "???_2"], "forced_condition": ""},
-                {"monsters": ["zaurus", "???_2", "mimic"], "forced_condition": ""},
-                {"monsters": ["zaurus", "???_2", "mimic_2"], "forced_condition": ""},
-                {"monsters": ["zaurus", "???_2", "mimic_3"], "forced_condition": ""},
-                {"monsters": ["zaurus", "???_2", "mimic_4"], "forced_condition": ""},
+                {"monsters": ["zaurus", "???_2", "mimic"], "forced_condition": "normal"},
+                {"monsters": ["zaurus", "???_2", "mimic_2"], "forced_condition": "normal"},
+                {"monsters": ["zaurus", "???_2", "mimic_3"], "forced_condition": "normal"},
+                {"monsters": ["zaurus", "???_2", "mimic_4"], "forced_condition": "normal"},
                 {"monsters": ["puroboros", "puroboros", "puroboros"], "forced_condition": ""},
                 {"monsters": ["wraith"], "forced_condition": ""}
             ],
@@ -1289,7 +1307,7 @@
             "name": "Omega Ruins (Upper)",
             "encounters": [
                 {"monsters": ["demonolith", "demonolith"], "forced_condition": ""},
-                {"monsters": ["varuna"], "forced_condition": ""},
+                {"monsters": ["varuna"], "forced_condition": "normal"},
                 {"monsters": ["great_malboro"], "forced_condition": "ambush"},
                 {"monsters": ["master_tonberry"], "forced_condition": ""},
                 {"monsters": ["gemini", "gemini_3"], "forced_condition": ""},
