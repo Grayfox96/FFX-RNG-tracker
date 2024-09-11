@@ -158,6 +158,15 @@ def parse_encounter(gs: GameState,
                     name: str = '',
                     *zones: str,
                     ) -> Encounter | MultizoneRandomEncounter:
+    if not name:
+        name = 'dummy'
+    elif 'simulated'.startswith(name):
+        name = 'simulation'
+    elif 'preemptive'.startswith(name):
+        name = 'dummy_preemptive'
+    elif 'ambush'.startswith(name):
+        name = 'dummy_ambush'
+
     if name in BOSSES:
         encounter_type = Encounter
     elif name in ZONES:

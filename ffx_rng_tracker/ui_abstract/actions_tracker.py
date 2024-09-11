@@ -52,18 +52,6 @@ class ActionsTracker(TrackerUI):
         input_lines = input_text.splitlines()
         for index, line in enumerate(input_lines):
             match line.lower().split():
-                case ['encounter', condition]:
-                    if 'simulated'.startswith(condition):
-                        name = 'simulation'
-                    elif 'preemptive'.startswith(condition):
-                        name = 'dummy_preemptive'
-                    elif 'ambush'.startswith(condition):
-                        name = 'dummy_ambush'
-                    else:
-                        continue
-                    line = f'encounter {name}'
-                case ['encounter']:
-                    line = 'encounter dummy'
                 case [character, *_] if character in character_names:
                     line = f'action {line}'
                 case [monster, *_] if monster in monster_names:
