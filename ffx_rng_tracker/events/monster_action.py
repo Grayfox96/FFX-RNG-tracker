@@ -180,11 +180,11 @@ class MonsterAction(CharacterAction):
         if len(possible_targets) == 1:
             return possible_targets * max(1, self.action.n_of_hits)
 
-        target_rng = self._advance_rng(4)
-        target_index = target_rng % len(possible_targets)
         # TODO
         # n_of_hits is 0 at this point only for youre_next!
         if self.action.n_of_hits <= 1:
+            target_rng = self._advance_rng(4)
+            target_index = target_rng % len(possible_targets)
             return [possible_targets[target_index]]
         targets: list[Actor] = []
         for _ in range(self.action.n_of_hits):
