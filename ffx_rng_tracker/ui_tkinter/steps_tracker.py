@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from ..configs import UIWidgetConfigs
-from ..data.encounters import StepsData, get_steps_notes
+from ..data.encounters import get_steps_notes
 from ..events.parser import EventParser
 from ..ui_abstract.steps_tracker import StepsTracker
 from .base_widgets import TkConfirmPopup, TkWarningPopup
@@ -13,17 +13,16 @@ from .output_widget import TkOutputWidget
 class TkStepsInputWidget(TkEncountersInputWidget):
 
     def get_input(self) -> str:
-        current_zone = self.current_zone.get()
+        current_zone = self.sliders.current_zone.get()
         input_data = []
         if 'selected' not in self.padding_button.state():
             input_data.append('/nopadding\n///')
-        self.encounters: list[StepsData]
-        for encounter in self.encounters:
-            steps = self.sliders[encounter.label].get()
-            if current_zone == encounter.label:
+        for slider in self.sliders:
+            steps = slider.value
+            if current_zone == slider.zone_index:
                 input_data.append('///')
-            input_data.append(f'walk {encounter.zone} {steps} '
-                              f'{encounter.continue_previous_zone}')
+            input_data.append(f'walk {slider.data.zone} {steps} '
+                              f'{slider.data.continue_previous_zone}')
         return '\n'.join(input_data)
 
 
@@ -46,11 +45,8 @@ class TkStepsTracker(tk.Frame):
         input_widget = TkStepsInputWidget(frame)
         encounters = get_steps_notes(
             StepsTracker.notes_file, parser.gamestate.seed)
-        input_widget.encounters = encounters
         for encounter in encounters:
-            input_widget.add_slider(
-                encounter.label, encounter.min,
-                encounter.default, encounter.max)
+            input_widget.sliders.add_slider(encounter)
         input_widget.pack(expand=True, fill='y')
 
         output_widget = TkOutputWidget(self, wrap='none')

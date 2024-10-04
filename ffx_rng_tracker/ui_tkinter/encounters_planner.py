@@ -4,12 +4,12 @@ from tkinter import ttk
 
 from ..configs import UIWidgetConfigs
 from ..data.encounter_formations import ZONES
+from ..data.encounters import EncounterData
 from ..events.parser import EventParser
 from ..ui_abstract.encounters_planner import EncountersPlanner
 from ..utils import stringify
-from .base_widgets import (ScrollableFrame, TkConfirmPopup, TkWarningPopup,
-                           create_command_proxy)
-from .encounters_tracker import EncounterSlider
+from .base_widgets import TkConfirmPopup, TkWarningPopup, create_command_proxy
+from .encounters_tracker import EncounterSliders
 from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
 
@@ -19,8 +19,6 @@ class TkEncountersPlannerInputWidget(tk.Frame):
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
-        self.callback_func: Callable[[], None] = lambda: None
-
         options = ['Boss', 'Simulation']
         options.extend(z.name for z in ZONES.values())
         self.selected_zone = tk.StringVar(self)
@@ -29,63 +27,52 @@ class TkEncountersPlannerInputWidget(tk.Frame):
             self, values=options, state='readonly',
             textvariable=self.selected_zone)
         combobox.pack(fill='x')
-        button = tk.Button(
-            self, text='Add Slider',
-            command=lambda: self.add_slider(self.selected_zone.get()))
-        button.pack(fill='x')
+        self.add_slider_button = tk.Button(
+            self, text='Add Slider', command=lambda: self.add_slider())
+        self.add_slider_button.pack(fill='x')
 
         self.initiative_button = ttk.Checkbutton(self, text='Initiative')
         self.initiative_button.pack(fill='x')
         self.initiative_button.state(['selected'])
 
-        self.current_zone_index = tk.IntVar(self, value=0)
+        self.sliders = EncounterSliders(self)
+        self.sliders.pack(expand=True, fill='both')
 
-        self.sliders_frame = ScrollableFrame(self)
-        self.sliders_frame.pack(expand=True, fill='both')
-        self.sliders: list[EncounterSlider] = []
-
-    def add_slider(self, label: str) -> None:
-        value = len(self.sliders)
-        slider = EncounterSlider(
-            parent=self.sliders_frame,
-            label=label,
+    def add_slider(self) -> None:
+        label = self.selected_zone.get()
+        name = (stringify(label)
+                .replace('-', '_')
+                )
+        while '__' in name:
+            name = name.replace('__', '_')
+        match name:
+            case 'boss':
+                name = 'dummy'
+            case 'simulation':
+                name = 'simulation'
+        data = EncounterData(
+            name=name,
+            initiative=True,
+            label=self.selected_zone.get(),
             min=0,
             default=0,
-            max=100,
-            variable=self.current_zone_index,
-            value=value,
+            max=100
             )
-        slider.register_callback(self.callback_func)
-        slider.pack(anchor='w')
-        self.sliders.append(slider)
+        self.sliders.add_slider(data)
+        self.sliders.callback_func()
 
     def get_input(self) -> str:
-        current_zone_index = self.current_zone_index.get()
+        current_zone = self.sliders.current_zone.get()
         initiative_equip = 'selected' in self.initiative_button.state()
         input_data = []
         if initiative_equip:
             input_data.append('equip weapon tidus 1 initiative')
-        for index, scale in enumerate(self.sliders):
-            name = (stringify(scale.get_name())
-                    .replace('(', '')
-                    .replace(')', '')
-                    .replace('-', '_')
-                    .replace('\'', '')
-                    )
-            while '__' in name:
-                name = name.replace('__', '_')
-            match name:
-                case 'boss':
-                    name = 'dummy'
-                case 'simulation':
-                    name = 'simulation'
-            for count in range(scale.get()):
-                if count == 0:
-                    if index == current_zone_index:
-                        input_data.append('///')
-                    if name in ZONES:
-                        input_data.append(f'#     {ZONES[name].name}:')
-                line = f'encounter {name}'
+        for slider in self.sliders:
+            if current_zone == slider.zone_index:
+                input_data.append('///')
+            input_data.append(f'#     {slider.data.label}:')
+            for _ in range(slider.value):
+                line = f'encounter {slider.data.name}'
                 input_data.append(line)
         return '\n'.join(input_data)
 
@@ -94,9 +81,8 @@ class TkEncountersPlannerInputWidget(tk.Frame):
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
         create_command_proxy(self.initiative_button, {'invoke'}, callback_func)
-        for slider in self.sliders:
-            slider.register_callback(callback_func)
-        self.callback_func = callback_func
+        create_command_proxy(self.add_slider_button, {'invoke'}, callback_func)
+        self.sliders.register_callback(callback_func)
 
 
 class TkEncountersPlanner(tk.Frame):

@@ -1,60 +1,90 @@
 import tkinter as tk
 from collections.abc import Callable
+from dataclasses import dataclass
+from itertools import count
 from tkinter import ttk
+from typing import Iterator
 
 from ..configs import UIWidgetConfigs
-from ..data.encounters import EncounterData, get_encounter_notes
+from ..data.encounters import EncounterData, StepsData, get_encounter_notes
 from ..events.parser import EventParser
 from ..ui_abstract.encounters_tracker import EncountersTracker
-from .base_widgets import (ScrollableFrame, TkConfirmPopup, TkWarningPopup,
-                           create_command_proxy)
+from .base_widgets import (BetterScale, ScrollableFrame, TkConfirmPopup,
+                           TkWarningPopup, create_command_proxy)
 from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
 
 
-class EncounterSlider(tk.Frame):
+@dataclass
+class EncounterSlider:
+    data: EncounterData | StepsData
+    scale: BetterScale | None = None
+    radiobutton: ttk.Radiobutton | None = None
 
-    def __init__(self,
-                 parent,
-                 label: str,
-                 min: int,
-                 default: int,
-                 max: int,
-                 variable: tk.Variable = None,
-                 value=None,
-                 *args,
-                 **kwargs,
-                 ) -> None:
-        super().__init__(parent, *args, **kwargs)
+    @property
+    def value(self) -> int:
+        if self.scale is not None:
+            return self.scale.get_input()
+        return self.data.default
 
-        self.scale = tk.Scale(
-            self, orient='horizontal', label=None, from_=min, to=max)
-        self.scale.set(default)
-        self.scale.pack(side='left', anchor='w')
+    @property
+    def name(self) -> str:
+        return self.data.label
 
-        if value is None:
-            value = label
-        self.button = tk.Radiobutton(
-            self, text=label, variable=variable, value=value)
-        self.button.pack(side='right', anchor='se')
-
-    def get(self) -> int:
-        return self.scale.get()
-
-    def get_name(self) -> str:
-        return self.button.cget(key='text')
+    @property
+    def zone_index(self) -> str:
+        if self.radiobutton is not None:
+            return f'{self.radiobutton.cget('value')}'
+        return ''
 
     def register_callback(self, callback_func: Callable[[], None]) -> None:
-        create_command_proxy(self.scale, {'set'}, callback_func)
-        create_command_proxy(self.button, {'invoke'}, callback_func)
+        if self.scale is not None:
+            self.scale.register_callback(callback_func)
+        if self.radiobutton is not None:
+            create_command_proxy(self.radiobutton, {'invoke'}, callback_func)
+
+
+class EncounterSliders(ScrollableFrame):
+    def __init__(self, parent: tk.Widget, *args, **kwargs) -> None:
+        super().__init__(parent, *args, **kwargs)
+        self.callback_func: Callable[[], None] = lambda: None
+        self.current_zone = tk.StringVar(value='Start')
+        self._sliders: list[EncounterSlider] = []
+        self._count = count()
+
+    def __iter__(self) -> Iterator[EncounterSlider]:
+        return iter(self._sliders)
+
+    def add_slider(self, data: EncounterData) -> None:
+        if data.min == data.max:
+            self._sliders.append(EncounterSlider(data))
+            return
+        row = next(self._count)
+        scale = BetterScale(
+            self, orient='horizontal', label=None, from_=data.min, to=data.max,
+            value=data.default,
+            command=lambda _: scale_label.configure(text=slider.value))
+        scale.grid(column=0, row=row, sticky='w')
+        scale_label = ttk.Label(self, text=data.default)
+        scale_label.grid(column=1, row=row, sticky='w')
+
+        radiobutton = ttk.Radiobutton(
+            self, text=data.label, variable=self.current_zone, value=row)
+        radiobutton.grid(column=2, row=row, sticky='w')
+        slider = EncounterSlider(data, scale, radiobutton)
+        slider.register_callback(self.callback_func)
+        self._sliders.append(slider)
+
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
+        for slider in self:
+            slider.register_callback(callback_func)
+        self.callback_func = callback_func
 
 
 class TkEncountersInputWidget(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
-
-        self.encounters: list[EncounterData] = []
 
         self.initiative_button = ttk.Checkbutton(self, text='Sentry')
         self.initiative_button.grid(row=0, column=0, sticky='w')
@@ -64,54 +94,41 @@ class TkEncountersInputWidget(tk.Frame):
         self.padding_button.grid(row=0, column=1, sticky='w')
         self.padding_button.state(['selected'])
 
-        self.current_zone = tk.StringVar(value='Start')
-
-        self.sliders_frame = ScrollableFrame(self)
-        self.sliders_frame.grid(row=1, column=0, columnspan=3, sticky='nsew')
+        self.sliders = EncounterSliders(self)
+        self.sliders.grid(row=1, column=0, columnspan=3, sticky='nsew')
         self.rowconfigure(1, weight=1)
 
-        self.sliders: dict[str, EncounterSlider] = {}
-
-        self.start_button = tk.Radiobutton(
-            self, text='Start', variable=self.current_zone, value='Start')
+        self.start_button = ttk.Radiobutton(
+            self, text='Start', variable=self.sliders.current_zone,
+            value='Start')
         self.start_button.grid(row=0, column=2, sticky='w')
 
-    def add_slider(self, label: str, min: int, default: int, max: int) -> None:
-        slider = EncounterSlider(
-            self.sliders_frame, label, min, default, max, self.current_zone)
-        slider.pack(anchor='w')
-        self.sliders[label] = slider
-
     def get_input(self) -> str:
-        current_zone = self.current_zone.get()
+        current_zone = self.sliders.current_zone.get()
         initiative = 'selected' in self.initiative_button.state()
         initiative_equipped = False
 
         input_data = []
         if 'selected' not in self.padding_button.state():
             input_data.append('/nopadding')
-        for encounter in self.encounters:
-            if initiative and encounter.initiative:
+        for slider in self.sliders:
+            if initiative and slider.data.initiative:
                 if not initiative_equipped:
                     input_data.append('equip weapon tidus 1 initiative')
                     initiative_equipped = True
             elif initiative_equipped:
                 input_data.append('equip weapon tidus 1')
                 initiative_equipped = False
-            if encounter.label not in self.sliders:
-                encs = encounter.default
-            else:
-                encs = self.sliders[encounter.label].get()
-                if encs >= 0:
-                    if current_zone == encounter.label:
-                        input_data.append('///')
-                    input_data.append(f'#     {encounter.label}:')
-            if ' ' in encounter.name:
+            if slider.radiobutton is not None:
+                if current_zone == slider.zone_index:
+                    input_data.append('///')
+                input_data.append(f'#     {slider.data.label}:')
+            if ' ' in slider.data.name:
                 multizone = 'multizone '
             else:
                 multizone = ''
-            for _ in range(encs):
-                input_data.append(f'encounter {multizone}{encounter.name}')
+            for _ in range(slider.value):
+                input_data.append(f'encounter {multizone}{slider.data.name}')
         return '\n'.join(input_data)
 
     def set_input(self, text: str) -> None:
@@ -121,8 +138,7 @@ class TkEncountersInputWidget(tk.Frame):
         create_command_proxy(self.initiative_button, {'invoke'}, callback_func)
         create_command_proxy(self.padding_button, {'invoke'}, callback_func)
         create_command_proxy(self.start_button, {'invoke'}, callback_func)
-        for slider in self.sliders.values():
-            slider.register_callback(callback_func)
+        self.sliders.register_callback(callback_func)
 
 
 class TkEncountersTracker(tk.Frame):
@@ -144,13 +160,8 @@ class TkEncountersTracker(tk.Frame):
         input_widget = TkEncountersInputWidget(frame)
         encounters = get_encounter_notes(
             EncountersTracker.notes_file, parser.gamestate.seed)
-        input_widget.encounters = encounters
         for encounter in encounters:
-            if encounter.min == encounter.max:
-                continue
-            input_widget.add_slider(
-                encounter.label, encounter.min,
-                encounter.default, encounter.max)
+            input_widget.sliders.add_slider(encounter)
         input_widget.pack(expand=True, fill='y')
 
         output_widget = TkOutputWidget(self, wrap='none')

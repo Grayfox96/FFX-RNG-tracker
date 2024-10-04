@@ -82,14 +82,25 @@ class EncountersTracker(TrackerUI):
         notes_lines = []
         notes_lines.append('#name or zone,initiative (true or false),'
                            'label (optional),min,default,max')
+        labels_tally: dict[str, int] = {}
         for enc in encounter_notes:
             initiative = str(enc.initiative).lower()
             if enc.min == enc.max:
-                notes_lines.append(f'{enc.name},{initiative},,'
+                notes_lines.append(f'{enc.name},{initiative},{enc.label},'
                                    f'{enc.min},{enc.default},{enc.max}')
                 continue
-            # find which line corresponds with the label
-            input_index = current_input_lines.index(f'#     {enc.label}:')
+            # find which line corresponds with the label, label might not
+            # be unique, find out how many were already processed
+            label = f'#     {enc.label}:'
+            count = current_input_lines.count(label)
+            if count == 1:
+                input_index = current_input_lines.index(label)
+            else:
+                already_used = labels_tally.get(label, 0)
+                labels_tally[label] = already_used + 1
+                input_index = -1
+                for _ in range(already_used + 1):
+                    input_index = current_input_lines.index(label, input_index + 1)
             # if zone has a space it must be a multizone random encounter
             if ' ' in enc.name:
                 multizone = 'multizone '

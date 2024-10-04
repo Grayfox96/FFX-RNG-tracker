@@ -1,6 +1,5 @@
 import csv
 from dataclasses import dataclass
-from itertools import count
 
 from .notes import get_notes
 
@@ -27,7 +26,7 @@ class StepsData:
 
 def get_encounter_notes(file_path: str, seed: int) -> list[EncounterData]:
     encounters_notes = get_notes(file_path, seed)
-    encounters = {}
+    encounters = []
     csv_reader = csv.reader(encounters_notes.splitlines())
     for fields in csv_reader:
         while len(fields) < 6:
@@ -36,14 +35,6 @@ def get_encounter_notes(file_path: str, seed: int) -> list[EncounterData]:
         if not name or name.startswith('#'):
             continue
         initiative = initiative.lower() == 'true'
-        if not label:
-            label = name
-        if label in encounters:
-            for i in count(2):
-                new_label = f'{label} #{i}'
-                if new_label not in encounters:
-                    label = new_label
-                    break
         try:
             minimum = int(minimum)
         except ValueError:
@@ -59,36 +50,27 @@ def get_encounter_notes(file_path: str, seed: int) -> list[EncounterData]:
         except ValueError:
             maximum = 1
         maximum = max(default, maximum)
-        encounters[label] = EncounterData(
+        encounters.append(EncounterData(
             name=name,
             initiative=initiative,
             label=label,
             min=minimum,
             default=default,
             max=maximum,
-        )
-    return list(encounters.values())
+        ))
+    return encounters
 
 
 def get_steps_notes(file_path: str, seed: int) -> list[StepsData]:
     steps_notes = get_notes(file_path, seed)
-    steps = {}
+    steps = []
     csv_reader = csv.reader(steps_notes.splitlines())
-    # zone,label (optional),min,default,max,continue previous zone
     for fields in csv_reader:
         while len(fields) < 6:
             fields.append('')
         zone, label, minimum, default, maximum, continue_previous_zone = fields
         if not zone or zone.startswith('#'):
             continue
-        if not label:
-            label = zone
-        if label in steps:
-            for i in count(2):
-                new_label = f'{label} #{i}'
-                if new_label not in steps:
-                    label = new_label
-                    break
         try:
             minimum = int(minimum)
         except ValueError:
@@ -105,12 +87,12 @@ def get_steps_notes(file_path: str, seed: int) -> list[StepsData]:
             maximum = 1000
         maximum = max(default, maximum)
         continue_previous_zone = continue_previous_zone.lower() == 'true'
-        steps[label] = StepsData(
+        steps.append(StepsData(
             zone=zone,
             label=label,
             min=minimum,
             default=default,
             max=maximum,
             continue_previous_zone=continue_previous_zone,
-        )
-    return list(steps.values())
+        ))
+    return steps

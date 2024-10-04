@@ -160,6 +160,25 @@ class ScrollableFrame(tk.Frame):
         self.grid = self.outer_frame.grid
 
 
+class BetterScale(ttk.Scale):
+    """Scale widget that sets itself to an integer value
+    when manually set with the mouse.
+    """
+    def __init__(self, parent: tk.Widget, *args, **kwargs) -> None:
+        super().__init__(parent, *args, **kwargs)
+        self.bind('<ButtonRelease>', self.on_release)
+
+    def get_input(self) -> int:
+        return int(round(self.get()))
+
+    def on_release(self, event: tk.Event) -> None:
+        value = self.get_input()
+        self.configure(value=value)
+
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
+        create_command_proxy(self, {'set'}, callback_func)
+
+
 class TkWarningPopup:
 
     def print_output(self, output: str) -> None:
