@@ -4,9 +4,9 @@ from tkinter import ttk
 
 from ..configs import UIWidgetConfigs
 from ..ui_abstract.monster_data_viewer import MonsterDataViewer
-from .base_widgets import create_command_proxy
 from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
+from .tkinter_utils import create_command_proxy
 
 
 class TkMonsterSelectionWidget(tk.Listbox):

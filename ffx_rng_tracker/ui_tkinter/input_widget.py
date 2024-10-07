@@ -1,15 +1,15 @@
 import tkinter as tk
 from collections.abc import Callable
-from tkinter import font, ttk
+from tkinter import ttk
 
-from .base_widgets import (ScrollableText, create_command_proxy,
-                           get_default_font_args)
+from .base_widgets import ScrollableText
+from .tkinter_utils import create_command_proxy, get_default_font
 
 
 class TkInputWidget(ScrollableText):
 
     def __init__(self, parent, *args, **kwargs) -> None:
-        kwargs.setdefault('font', font.Font(**get_default_font_args()))
+        kwargs.setdefault('font', get_default_font())
         kwargs.setdefault('width', 40)
         kwargs.setdefault('undo', True)
         kwargs.setdefault('autoseparators', True)

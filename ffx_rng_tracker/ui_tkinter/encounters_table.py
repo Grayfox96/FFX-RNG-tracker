@@ -7,9 +7,10 @@ from ..data.encounter_formations import ZONES
 from ..events.parser import EventParser
 from ..ui_abstract.encounters_table import EncountersTable
 from .base_widgets import (BetterSpinbox, ScrollableFrame, TkConfirmPopup,
-                           TkWarningPopup, create_command_proxy)
+                           TkWarningPopup)
 from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
+from .tkinter_utils import create_command_proxy
 
 
 class TkEncountersTableInputWidget(ttk.Frame):

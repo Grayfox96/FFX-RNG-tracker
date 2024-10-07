@@ -8,6 +8,7 @@ from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .encounters_tracker import TkEncountersInputWidget
 from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
+from .tkinter_utils import bind_all_children
 
 
 class TkStepsInputWidget(TkEncountersInputWidget):
@@ -51,8 +52,9 @@ class TkStepsTracker(ttk.Frame):
 
         output_widget = TkOutputWidget(self, wrap='none')
         output_widget.pack(expand=True, fill='both', side='right')
-        output_widget.text.bind(
-            '<Control-s>', lambda _: self.tracker.save_input_data())
+
+        bind_all_children(
+            self, '<Control-s>', lambda _: self.tracker.save_input_data())
 
         self.tracker = StepsTracker(
             configs=configs,

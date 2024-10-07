@@ -21,7 +21,7 @@ from .monster_data_viewer import TkMonsterDataViewer
 from .seed_info import TkSeedInfo
 from .seedfinder import TkSeedFinder
 from .steps_tracker import TkStepsTracker
-from .themes import import_themes
+from .themes import cycle_theme, import_themes
 from .yojimbo_tracker import TkYojimboTracker
 
 
@@ -65,6 +65,8 @@ def main(*,
     style = ttk.Style()
     if Configs.default_theme in style.theme_names():
         style.theme_use(Configs.default_theme)
+
+    root.bind_all('<F8>', cycle_theme)
 
     if widget is not None:
         ui_configs = Configs.ui_widgets[WIDGET_NAMES[TkSeedInfo]]

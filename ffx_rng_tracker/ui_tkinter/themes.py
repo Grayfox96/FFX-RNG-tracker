@@ -6,6 +6,23 @@ from tkinter import ttk
 from ..data.file_functions import get_resource_path
 
 
+def cycle_theme(event: tk.Event | None = None) -> None:
+    style = ttk.Style()
+    theme_names = sorted(style.theme_names())
+    current_theme = style.theme_use()
+    index = theme_names.index(current_theme)
+    try:
+        new_theme = theme_names[index + 1]
+    except IndexError:
+        new_theme = theme_names[0]
+    logger = getLogger(__name__)
+    style.theme_use(new_theme)
+    theme_names.pop(theme_names.index(current_theme))
+    theme_names.pop(theme_names.index(new_theme))
+    logger.info(f'Switched theme from {current_theme} to {new_theme}'
+                f' (other themes: {', '.join(theme_names)})')
+
+
 def import_themes(root: tk.Tk) -> None:
     style = ttk.Style()
     theme_names = style.theme_names()

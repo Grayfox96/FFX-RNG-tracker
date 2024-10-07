@@ -56,7 +56,7 @@ def save_notes(file_name: str,
     if not force and os.path.exists(file_path):
         raise FileExistsError(file_path)
     with open_cp1252(file_path, 'w') as notes_file:
-        notes_file.write(notes)
+        notes_file.write(f'{notes.rstrip('\n')}\n')
     getLogger(__name__).info(f'Saved notes file to "{file_path}".')
 
 

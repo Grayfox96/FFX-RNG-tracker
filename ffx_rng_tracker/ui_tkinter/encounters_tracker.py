@@ -10,9 +10,10 @@ from ..data.encounters import EncounterData, StepsData, get_encounter_notes
 from ..events.parser import EventParser
 from ..ui_abstract.encounters_tracker import EncountersTracker
 from .base_widgets import (BetterScale, ScrollableFrame, TkConfirmPopup,
-                           TkWarningPopup, create_command_proxy)
+                           TkWarningPopup)
 from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
+from .tkinter_utils import bind_all_children, create_command_proxy
 
 
 @dataclass
@@ -166,8 +167,9 @@ class TkEncountersTracker(ttk.Frame):
 
         output_widget = TkOutputWidget(self, wrap='none')
         output_widget.pack(expand=True, fill='both', side='right')
-        output_widget.text.bind(
-            '<Control-s>', lambda _: self.tracker.save_input_data())
+
+        bind_all_children(
+            self, '<Control-s>', lambda _: self.tracker.save_input_data())
 
         self.tracker = EncountersTracker(
             configs=configs,

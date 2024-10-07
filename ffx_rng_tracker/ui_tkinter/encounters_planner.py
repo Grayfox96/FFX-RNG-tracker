@@ -8,10 +8,11 @@ from ..data.encounters import EncounterData
 from ..events.parser import EventParser
 from ..ui_abstract.encounters_planner import EncountersPlanner
 from ..utils import stringify
-from .base_widgets import TkConfirmPopup, TkWarningPopup, create_command_proxy
+from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .encounters_tracker import EncounterSliders
 from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
+from .tkinter_utils import create_command_proxy
 
 
 class TkEncountersPlannerInputWidget(ttk.Frame):

@@ -6,6 +6,7 @@ from ..ui_abstract.actions_tracker import ActionsTracker
 from .base_widgets import TkConfirmPopup, TkWarningPopup
 from .input_widget import TkInputWidget, TkSearchBarWidget
 from .output_widget import TkOutputWidget
+from .tkinter_utils import bind_all_children
 
 
 class TkActionsTracker(ttk.Frame):
@@ -26,11 +27,12 @@ class TkActionsTracker(ttk.Frame):
 
         input_widget = TkInputWidget(frame)
         input_widget.pack(expand=True, fill='y')
-        input_widget.text.bind(
-            '<Control-s>', lambda _: self.tracker.save_input_data())
 
         output_widget = TkOutputWidget(self)
         output_widget.pack(expand=True, fill='both', side='right')
+
+        bind_all_children(
+            self, '<Control-s>', lambda _: self.tracker.save_input_data())
 
         self.tracker = ActionsTracker(
             configs=configs,
