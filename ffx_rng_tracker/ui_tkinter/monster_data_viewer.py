@@ -1,5 +1,6 @@
 import tkinter as tk
 from collections.abc import Callable
+from tkinter import ttk
 
 from ..configs import UIWidgetConfigs
 from ..ui_abstract.monster_data_viewer import MonsterDataViewer
@@ -12,7 +13,9 @@ class TkMonsterSelectionWidget(tk.Listbox):
 
     def __init__(self, parent, *args, **kwargs) -> None:
         kwargs.setdefault('listvariable', tk.StringVar())
+        kwargs.setdefault('highlightthickness', 0)
         super().__init__(parent, *args, **kwargs)
+        self.bind('<<ThemeChanged>>', self.on_theme_changed)
         self._listvar: tk.StringVar = kwargs['listvariable']
         self._monster_names: list[str] = []
 
@@ -41,8 +44,18 @@ class TkMonsterSelectionWidget(tk.Listbox):
     def register_callback(self, callback_func: Callable[[], None]) -> None:
         create_command_proxy(self, {'activate'}, callback_func)
 
+    def on_theme_changed(self, event: tk.Event) -> None:
+        style = ttk.Style()
+        fg = style.configure('.', 'foreground')
+        bg = style.configure('.', 'background')
+        fg_rgb = self.winfo_rgb(fg)
+        # fg_rgb is a tuple of values from 0 to 0xffff
+        if fg_rgb < (0xff, 0xff, 0xff):
+            bg = '#ffffff'
+        self.configure(foreground=fg, background=bg)
 
-class TkMonsterDataViewer(tk.Frame):
+
+class TkMonsterDataViewer(ttk.Frame):
     """Widget used to display monster's data."""
 
     def __init__(self,
@@ -53,7 +66,7 @@ class TkMonsterDataViewer(tk.Frame):
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
 
-        frame = tk.Frame(self)
+        frame = ttk.Frame(self)
         frame.pack(fill='y', side='left')
 
         search_bar = TkSearchBarWidget(frame)

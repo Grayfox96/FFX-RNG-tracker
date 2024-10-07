@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 from ..configs import UIWidgetConfigs
 from ..events.parser import EventParser
@@ -21,7 +22,7 @@ class TkSeedFinderInputWidget(TkInputWidget):
         return text
 
 
-class TkSeedFinder(tk.Frame):
+class TkSeedFinder(ttk.Frame):
     """Widget used to find the starting seed."""
 
     def __init__(self,
@@ -33,22 +34,22 @@ class TkSeedFinder(tk.Frame):
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
 
-        frame = tk.Frame(self)
+        frame = ttk.Frame(self)
         frame.pack(fill='y', side='left')
 
         search_bar = TkSearchBarWidget(frame)
         search_bar.pack(fill='x')
 
-        tk.Label(frame, text='Actions').pack()
+        ttk.Label(frame, text='Actions').pack()
 
         input_widget = TkSeedFinderInputWidget(frame)
         input_widget.pack(expand=True, fill='y')
 
-        tk.Label(frame, text='Damage values').pack()
+        ttk.Label(frame, text='Damage values').pack()
 
-        tk.Entry(frame, textvariable=input_widget.damage_values).pack(fill='x')
+        ttk.Entry(frame, textvariable=input_widget.damage_values).pack(fill='x')
 
-        button = tk.Button(frame, text='Search Seed')
+        button = ttk.Button(frame, text='Search Seed')
         button.pack()
 
         output_widget = TkOutputWidget(self)

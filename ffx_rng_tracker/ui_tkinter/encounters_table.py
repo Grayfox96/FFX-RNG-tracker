@@ -12,33 +12,33 @@ from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
 
 
-class TkEncountersTableInputWidget(tk.Frame):
+class TkEncountersTableInputWidget(ttk.Frame):
     """"""
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         self.initiative_button = ttk.Checkbutton(self, text='Initiative')
         self.initiative_button.grid(row=0, column=0, sticky='w')
-        self.initiative_button.state(['selected'])
+        self.initiative_button.invoke()
 
-        tk.Label(self, text='Encounters to show').grid(row=1, column=0)
+        ttk.Label(self, text='Encounters to show').grid(row=1, column=0)
         self.shown_encounters = BetterSpinbox(self, from_=0, to=2000)
         self.shown_encounters.grid(row=1, column=1)
         self.shown_encounters.set(20)
 
-        tk.Label(self, text='Start from').grid(row=2, column=0)
+        ttk.Label(self, text='Start from').grid(row=2, column=0)
         self.starting_encounter = BetterSpinbox(self, from_=-2000, to=2000)
         self.starting_encounter.grid(row=2, column=1)
 
-        tk.Label(self, text='Random Encounters').grid(row=3, column=0)
+        ttk.Label(self, text='Random Encounters').grid(row=3, column=0)
         self.random_encounters = BetterSpinbox(self, from_=0, to=2000)
         self.random_encounters.grid(row=3, column=1)
 
-        tk.Label(self, text='Bosses').grid(row=4, column=0)
+        ttk.Label(self, text='Bosses').grid(row=4, column=0)
         self.forced_encounters = BetterSpinbox(self, from_=0, to=2000)
         self.forced_encounters.grid(row=4, column=1)
 
-        tk.Label(self, text='Simulated Encounters').grid(row=5, column=0)
+        ttk.Label(self, text='Simulated Encounters').grid(row=5, column=0)
         self.simulated_encounters = BetterSpinbox(self, from_=0, to=2000)
         self.simulated_encounters.grid(row=5, column=1)
 
@@ -100,7 +100,7 @@ class TkEncountersTableInputWidget(tk.Frame):
             create_command_proxy(button, {'invoke'}, callback_func)
 
 
-class TkEncountersTable(tk.Frame):
+class TkEncountersTable(ttk.Frame):
     """"""
 
     def __init__(self,
@@ -111,7 +111,7 @@ class TkEncountersTable(tk.Frame):
                  **kwargs,
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
-        frame = tk.Frame(self)
+        frame = ttk.Frame(self)
         frame.pack(fill='y', side='left')
 
         search_bar = TkSearchBarWidget(frame)

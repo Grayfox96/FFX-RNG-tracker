@@ -1,4 +1,4 @@
-import tkinter as tk
+from tkinter import ttk
 
 from ..configs import UIWidgetConfigs
 from ..data.encounters import get_steps_notes
@@ -26,7 +26,7 @@ class TkStepsInputWidget(TkEncountersInputWidget):
         return '\n'.join(input_data)
 
 
-class TkStepsTracker(tk.Frame):
+class TkStepsTracker(ttk.Frame):
 
     def __init__(self,
                  parent,
@@ -36,7 +36,7 @@ class TkStepsTracker(tk.Frame):
                  **kwargs,
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
-        frame = tk.Frame(self)
+        frame = ttk.Frame(self)
         frame.pack(fill='y', side='left')
 
         search_bar = TkSearchBarWidget(frame)

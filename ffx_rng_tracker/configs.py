@@ -36,9 +36,8 @@ class Configs:
     game_version: GameVersion = GameVersion.HD
     continue_ps2_seed_search: bool = False
     speedrun_category: SpeedrunCategory | str = SpeedrunCategory.ANYPERCENT
+    default_theme: str = 'azure-light'
     font_size: int = 9
-    use_theme: bool = True
-    use_dark_mode: bool = False
     ui_tags: dict[str, UITagConfigs] = {}
     ui_widgets: dict[UIWidget, UIWidgetConfigs] = {}
     _parser = ConfigParser()
@@ -121,9 +120,8 @@ class Configs:
             cls.speedrun_category = SpeedrunCategory.ANYPERCENT
 
         section = 'UI'
+        cls.default_theme = cls.get(section, 'default theme', 'azure-light')
         cls.font_size = cls.getint(section, 'fontsize', 9)
-        cls.use_theme = cls.getboolean(section, 'use theme', True)
-        cls.use_dark_mode = cls.getboolean(section, 'use dark mode', False)
 
         section = 'Tags'
         for option in cls.getsection(section):

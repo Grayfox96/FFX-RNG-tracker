@@ -14,7 +14,7 @@ from .input_widget import TkSearchBarWidget
 from .output_widget import TkOutputWidget
 
 
-class TkEncountersPlannerInputWidget(tk.Frame):
+class TkEncountersPlannerInputWidget(ttk.Frame):
 
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
@@ -27,13 +27,13 @@ class TkEncountersPlannerInputWidget(tk.Frame):
             self, values=options, state='readonly',
             textvariable=self.selected_zone)
         combobox.pack(fill='x')
-        self.add_slider_button = tk.Button(
+        self.add_slider_button = ttk.Button(
             self, text='Add Slider', command=lambda: self.add_slider())
         self.add_slider_button.pack(fill='x')
 
         self.initiative_button = ttk.Checkbutton(self, text='Initiative')
         self.initiative_button.pack(fill='x')
-        self.initiative_button.state(['selected'])
+        self.initiative_button.invoke()
 
         self.sliders = EncounterSliders(self)
         self.sliders.pack(expand=True, fill='both')
@@ -85,7 +85,7 @@ class TkEncountersPlannerInputWidget(tk.Frame):
         self.sliders.register_callback(callback_func)
 
 
-class TkEncountersPlanner(tk.Frame):
+class TkEncountersPlanner(ttk.Frame):
     """"""
 
     def __init__(self,
@@ -96,7 +96,7 @@ class TkEncountersPlanner(tk.Frame):
                  **kwargs,
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
-        frame = tk.Frame(self)
+        frame = ttk.Frame(self)
         frame.pack(fill='y', side='left')
 
         search_bar = TkSearchBarWidget(frame)

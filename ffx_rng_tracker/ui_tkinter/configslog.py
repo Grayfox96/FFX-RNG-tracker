@@ -1,5 +1,5 @@
 import logging
-import tkinter as tk
+from tkinter import ttk
 
 from ..configs import Configs, UIWidgetConfigs
 from ..logger import UIHandler
@@ -7,7 +7,7 @@ from ..utils import treeview
 from .output_widget import TkOutputWidget
 
 
-class TkConfigsLogViewer(tk.Frame):
+class TkConfigsLogViewer(ttk.Frame):
     """Widget that shows the loaded configuration and the log."""
 
     def __init__(self,
@@ -18,8 +18,8 @@ class TkConfigsLogViewer(tk.Frame):
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
 
-        tk.Label(self, text='Configs').grid(row=0, column=0, sticky='nsew')
-        tk.Label(self, text='Log').grid(row=0, column=1, sticky='nsew')
+        ttk.Label(self, text='Configs').grid(row=0, column=0)
+        ttk.Label(self, text='Log').grid(row=0, column=1)
         self.rowconfigure(1, weight=1)
         self.columnconfigure(1, weight=1)
 

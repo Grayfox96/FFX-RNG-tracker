@@ -81,18 +81,18 @@ class EncounterSliders(ScrollableFrame):
         self.callback_func = callback_func
 
 
-class TkEncountersInputWidget(tk.Frame):
+class TkEncountersInputWidget(ttk.Frame):
 
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
 
         self.initiative_button = ttk.Checkbutton(self, text='Sentry')
         self.initiative_button.grid(row=0, column=0, sticky='w')
-        self.initiative_button.state(['selected'])
+        self.initiative_button.invoke()
 
         self.padding_button = ttk.Checkbutton(self, text='Padding')
         self.padding_button.grid(row=0, column=1, sticky='w')
-        self.padding_button.state(['selected'])
+        self.padding_button.invoke()
 
         self.sliders = EncounterSliders(self)
         self.sliders.grid(row=1, column=0, columnspan=3, sticky='nsew')
@@ -141,7 +141,7 @@ class TkEncountersInputWidget(tk.Frame):
         self.sliders.register_callback(callback_func)
 
 
-class TkEncountersTracker(tk.Frame):
+class TkEncountersTracker(ttk.Frame):
 
     def __init__(self,
                  parent,
@@ -151,7 +151,7 @@ class TkEncountersTracker(tk.Frame):
                  **kwargs,
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
-        frame = tk.Frame(self)
+        frame = ttk.Frame(self)
         frame.pack(fill='y', side='left')
 
         search_bar = TkSearchBarWidget(frame)

@@ -1,4 +1,3 @@
-import os
 import tkinter as tk
 from logging import getLogger
 from tkinter import ttk
@@ -7,7 +6,6 @@ from typing import Protocol
 from .. import __version__
 from ..configs import Configs, UIWidgetConfigs
 from ..data.constants import UIWidget
-from ..data.file_functions import get_resource_path
 from ..events.parser import EventParser
 from ..gamestate import GameState
 from ..logger import log_exceptions, log_tkinter_error
@@ -23,6 +21,7 @@ from .monster_data_viewer import TkMonsterDataViewer
 from .seed_info import TkSeedInfo
 from .seedfinder import TkSeedFinder
 from .steps_tracker import TkStepsTracker
+from .themes import import_themes
 from .yojimbo_tracker import TkYojimboTracker
 
 
@@ -62,16 +61,10 @@ def main(*,
     root.title(title)
     root.geometry(size)
 
-    if Configs.use_theme:
-        theme_path = get_resource_path(
-            relative_path=AZURE_THEME_PATH,
-            file_directory=AZURE_THEME_DIRECTORY
-            )
-        root.tk.call('source', theme_path)
-        if Configs.use_dark_mode:
-            root.tk.call('set_theme', 'dark')
-        else:
-            root.tk.call('set_theme', 'light')
+    import_themes(root)
+    style = ttk.Style()
+    if Configs.default_theme in style.theme_names():
+        style.theme_use(Configs.default_theme)
 
     if widget is not None:
         ui_configs = Configs.ui_widgets[WIDGET_NAMES[TkSeedInfo]]
@@ -203,6 +196,3 @@ TRACKERS: tuple[type[TkTracker]] = (
     TkYojimboTracker,
     TkSeedFinder,
 )
-
-AZURE_THEME_DIRECTORY = os.path.dirname(__file__)
-AZURE_THEME_PATH = 'azure_theme/azure.tcl'

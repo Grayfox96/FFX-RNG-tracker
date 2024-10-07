@@ -1,4 +1,4 @@
-import tkinter as tk
+from tkinter import ttk
 
 from ..configs import UIWidgetConfigs
 from ..events.parser import EventParser
@@ -8,7 +8,7 @@ from .input_widget import TkInputWidget, TkSearchBarWidget
 from .output_widget import TkOutputWidget
 
 
-class TkActionsTracker(tk.Frame):
+class TkActionsTracker(ttk.Frame):
 
     def __init__(self,
                  parent,
@@ -18,7 +18,7 @@ class TkActionsTracker(tk.Frame):
                  **kwargs,
                  ) -> None:
         super().__init__(parent, *args, **kwargs)
-        frame = tk.Frame(self)
+        frame = ttk.Frame(self)
         frame.pack(fill='y', side='left')
 
         search_bar = TkSearchBarWidget(frame)

@@ -1,6 +1,6 @@
 import tkinter as tk
 from collections.abc import Callable
-from tkinter import font
+from tkinter import font, ttk
 
 from .base_widgets import (ScrollableText, create_command_proxy,
                            get_default_font_args)
@@ -27,7 +27,7 @@ class TkInputWidget(ScrollableText):
             self.text, {'insert', 'delete', 'replace'}, callback_func)
 
 
-class TkDefaultTextEntry(tk.Entry):
+class TkDefaultTextEntry(ttk.Entry):
 
     def __init__(self,
                  parent,
@@ -43,7 +43,7 @@ class TkDefaultTextEntry(tk.Entry):
         self.bind('<Return>', self.on_return)
 
     def get_input(self) -> str:
-        if self.cget('fg') == 'gray':
+        if str(self.cget('state')) == 'readonly':
             return ''
         return self.get()
 
@@ -56,14 +56,14 @@ class TkDefaultTextEntry(tk.Entry):
             self, {'insert', 'delete', 'replace', 'Return'}, callback_func)
 
     def on_focus_in(self, event: str = None) -> None:
-        if self.cget('fg') == 'gray':
-            self.delete('0', 'end')
-            self.config(fg='black')
+        if str(self.cget('state')) == 'readonly':
+            self.config(state='normal')
+            self.set_input('')
 
     def on_focus_out(self, event: str = None) -> None:
         if self.get() == '':
             self.set_input(self.default_text)
-            self.config(fg='gray')
+            self.config(state='readonly')
 
     def on_return(self, event: str = None) -> None:
         # will always raise a TclError but

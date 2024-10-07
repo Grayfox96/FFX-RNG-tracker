@@ -22,8 +22,9 @@ class ScrollableText(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent)
-        self.h_scrollbar: tk.Scrollbar | None = None
-        self.v_scrollbar = tk.Scrollbar(self)
+        self.bind('<<ThemeChanged>>', self.on_theme_changed)
+        self.h_scrollbar: ttk.Scrollbar | None = None
+        self.v_scrollbar = ttk.Scrollbar(self)
         self.v_scrollbar.grid(row=0, column=1, sticky='ns')
         kwargs['yscrollcommand'] = self.v_scrollbar.set
         self.text = tk.Text(self, *args, **kwargs)
@@ -46,7 +47,7 @@ class ScrollableText(tk.Frame):
     def add_h_scrollbar(self) -> None:
         if self.h_scrollbar is not None:
             return
-        self.h_scrollbar = tk.Scrollbar(self, orient='horizontal')
+        self.h_scrollbar = ttk.Scrollbar(self, orient='horizontal')
         self.h_scrollbar.grid(row=1, column=0, sticky='ew')
         self.text.configure(xscrollcommand=self.h_scrollbar.set)
         self.h_scrollbar.configure(command=self.text.xview)
@@ -108,6 +109,16 @@ class ScrollableText(tk.Frame):
         self.text.see(index)
         self.text.tag_add('#seek', index, f'{index}+{len(text)}c')
 
+    def on_theme_changed(self, event: tk.Event) -> None:
+        style = ttk.Style()
+        fg = style.configure('.', 'foreground')
+        bg = style.configure('.', 'background')
+        fg_rgb = self.winfo_rgb(fg)
+        # fg_rgb is a tuple of values from 0 to 0xffff
+        if fg_rgb < (0xff, 0xff, 0xff):
+            bg = '#ffffff'
+        self.text.configure(foreground=fg, background=bg)
+
 
 class BetterSpinbox(ttk.Spinbox):
     """Upgraded Spinbox widget with a set method
@@ -129,35 +140,43 @@ class BetterSpinbox(ttk.Spinbox):
         create_command_proxy(self, {'set'}, callback_func)
 
 
-class ScrollableFrame(tk.Frame):
+class ScrollableFrame(ttk.Frame):
     """"""
 
     def __init__(self, parent, *args, **kwargs) -> None:
         self.parent = parent
-        self.outer_frame = tk.Frame(parent)
-        canvas = tk.Canvas(self.outer_frame, width=280)
-        canvas.pack(side='left', fill='both', expand=True)
-        scrollbar = tk.Scrollbar(
-            self.outer_frame, orient='vertical', command=canvas.yview)
+        self.outer_frame = ttk.Frame(parent)
+        self.canvas = tk.Canvas(
+            self.outer_frame, width=280, highlightthickness=0)
+        self.canvas.pack(side='left', fill='both', expand=True)
+        self.canvas.bind('<<ThemeChanged>>', self.on_theme_changed)
+        scrollbar = ttk.Scrollbar(
+            self.outer_frame, orient='vertical', command=self.canvas.yview)
         scrollbar.pack(side='right', fill='y')
-        canvas.config(yscrollcommand=scrollbar.set)
-        super().__init__(canvas, *args, **kwargs)
+        self.canvas.config(yscrollcommand=scrollbar.set)
+        super().__init__(self.canvas, *args, **kwargs)
         super().pack(fill='both', expand=True)
         self.bind(
             '<Configure>',
-            lambda _: canvas.config(scrollregion=canvas.bbox('all')))
-        canvas.create_window((0, 0), window=self, anchor='nw')
+            lambda _: self.canvas.config(scrollregion=self.canvas.bbox('all')))
+        self.canvas.create_window((0, 0), window=self, anchor='nw')
         # when the mouse enters the canvas it binds the mousewheel to scroll
-        canvas.bind(
+        self.canvas.bind(
             '<Enter>',
-            lambda _: canvas.bind_all(
+            lambda _: self.canvas.bind_all(
                 '<MouseWheel>',
-                lambda e: canvas.yview_scroll(
+                lambda e: self.canvas.yview_scroll(
                     int(-1 * (e.delta / 120)), 'units')))
         # when the mouse leaves the canvas it unbinds the mousewheel
-        canvas.bind('<Leave>', lambda _: canvas.unbind_all('<MouseWheel>'))
+        self.canvas.bind(
+            '<Leave>', lambda _: self.canvas.unbind_all('<MouseWheel>'))
         self.pack = self.outer_frame.pack
         self.grid = self.outer_frame.grid
+
+    def on_theme_changed(self, event: tk.Event) -> None:
+        style = ttk.Style()
+        bg = style.configure('.', 'background')
+        self.canvas.configure(background=bg)
 
 
 class BetterScale(ttk.Scale):
@@ -215,10 +234,14 @@ def create_command_proxy(widget: tk.Widget,
     def command_proxy(command: str, *args: str) -> Any:
         try:
             result = widget.tk.call((new_name, command) + args)
-        except tk.TclError:
+        except tk.TclError as e:
             # returning nothing when calls raise errors
             # doesn't seem to cause any problems
-            result = ''
+            result = str(e)
+            # fixes a bug with ttk.Entry
+            if result == 'can\'t read "w": no such variable':
+                new_args = [a.replace('$w', old_name) for a in args]
+                result = command_proxy(command, *new_args)
         if command in triggers:
             # if there are calls on the queue cancel them
             while scheduled_callbacks:
