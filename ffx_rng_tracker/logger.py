@@ -1,7 +1,7 @@
 import logging
 import sys
 from functools import wraps
-from traceback import format_tb
+from traceback import format_exception
 from types import TracebackType
 
 from .ui_abstract.output_widget import OutputWidget
@@ -63,16 +63,14 @@ def setup_main_logger() -> None:
     logger.addHandler(file_handler)
 
 
-def log_tkinter_error(error: Exception,
-                      message: tuple[str],
-                      tb: TracebackType,
+def log_tkinter_error(exception_type: type[BaseException],
+                      exception: BaseException,
+                      tb: TracebackType | None,
                       ) -> None:
     """Receives an error from Tkinter, prints it
     and logs it to the root logger.
     """
     error_message = (f'Exception in Tkinter callback\n'
-                     f'Traceback (most recent call last):\n'
-                     f'{''.join(format_tb(tb))}'
-                     f'{error.__name__}: {message}')
+                     f'{''.join(format_exception(exception))}')
     logger = logging.getLogger(__name__)
     logger.error(error_message)
