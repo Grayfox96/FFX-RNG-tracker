@@ -1,9 +1,27 @@
 import tkinter as tk
 from collections import deque
 from collections.abc import Callable
-from typing import Any, Literal
+from typing import Any, Literal, Protocol
 
-from ..configs import Configs
+from ..configs import Configs, UIWidgetConfigs
+from ..events.parser import EventParser
+from ..ui_abstract.base_tracker import TrackerUI
+
+
+class TkTracker(Protocol):
+    tracker: TrackerUI
+
+    def __init__(self,
+                 parent,
+                 parser: EventParser,
+                 configs: UIWidgetConfigs,
+                 *args,
+                 **kwargs,
+                 ) -> None:
+        ...
+
+    def pack(self, *args, **kwargs) -> None:
+        ...
 
 
 def create_command_proxy(widget: tk.Widget,
