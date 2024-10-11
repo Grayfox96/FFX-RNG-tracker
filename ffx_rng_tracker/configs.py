@@ -197,4 +197,4 @@ class Configs:
 
 
 REGEX_NEVER_MATCH = re.compile(r'\A\b\Z invalid regex')
-REGEX_LIST = re.compile("(?:^|,)(?: )*('(?:(?:'')*[^']*)*'|[^',]*)")
+REGEX_LIST = re.compile("(?:^|,)(?: )*('(?:(?:'')*[^']*)*'|[^',]+)")
