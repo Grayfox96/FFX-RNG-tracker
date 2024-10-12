@@ -1,6 +1,4 @@
 import colorsys
-import re
-from dataclasses import is_dataclass
 from enum import StrEnum
 from functools import cache, partial
 from typing import Any, overload
@@ -8,37 +6,6 @@ from typing import Any, overload
 
 def s32(integer: int) -> int:
     return ((integer & 0xffffffff) ^ 0x80000000) - 0x80000000
-
-
-def treeview(obj, indentation: int = 0) -> str:
-    string = ''
-    match obj:
-        case dict():
-            for key, value in obj.items():
-                string += ' ' * 4 * indentation
-                if isinstance(key, tuple):
-                    key = f'{', '.join(key)}: '
-                else:
-                    key = f'{key}: '
-                string += key
-                if isinstance(value, str) and '\n' in value:
-                    value = value.replace('\n', f'\n{' ' * (len(key) - 3)}')
-                elif isinstance(value, dict):
-                    string += '\n'
-                string += treeview(value, indentation + 1)
-        case list() | tuple() | set():
-            string += f'{', '.join([str(a) for a in obj])}\n'
-        case str():
-            if '\n' in obj:
-                obj = obj.replace('\n', f'\n{' ' * 4 * indentation}')
-            string += f'\'{obj}\'\n'
-        case dataclass if is_dataclass(dataclass):
-            string += '\n' + treeview(vars(dataclass), indentation)
-        case re.Pattern():
-            string += f'\'{obj.pattern}\'\n'
-        case _:
-            string += f'{obj}\n'
-    return string
 
 
 def add_bytes(*values: int) -> int:
