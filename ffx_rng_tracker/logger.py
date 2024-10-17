@@ -41,7 +41,9 @@ def log_exceptions(logger: logging.Logger | None = None):
     return decorator
 
 
-def setup_main_logger() -> None:
+def setup_main_logger(use_console_handler: bool = True,
+                      use_file_handler: bool = True,
+                      ) -> None:
     """Setup the main logger."""
     logger = logging.getLogger(__name__.split('.')[0])
 
@@ -52,15 +54,17 @@ def setup_main_logger() -> None:
         datefmt='%Y-%m-%d %H:%M:%S',
         style='{',
         )
+    if use_console_handler:
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setFormatter(formatter)
+        console_handler.setLevel(logging.DEBUG)
+        logger.addHandler(console_handler)
 
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
-
-    file_handler = logging.FileHandler('ffx_rng_tracker_log.log')
-    file_handler.setFormatter(formatter)
-    file_handler.setLevel(logging.INFO)
-    logger.addHandler(file_handler)
+    if use_file_handler:
+        file_handler = logging.FileHandler('ffx_rng_tracker_log.log')
+        file_handler.setFormatter(formatter)
+        file_handler.setLevel(logging.INFO)
+        logger.addHandler(file_handler)
 
 
 def log_tkinter_error(exception_type: type[BaseException],
