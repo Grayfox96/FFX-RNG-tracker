@@ -8,6 +8,9 @@ from .encounters_tracker import EncountersTracker
 @dataclass
 class EncountersTable(EncountersTracker):
 
+    def get_default_input_data(self) -> str:
+        return ''
+
     def edit_output(self, output: str, padding: bool = False) -> str:
         # if the text contains /// it hides the lines before it
         if output.find('Command: ///') >= 0:

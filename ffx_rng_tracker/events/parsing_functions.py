@@ -656,7 +656,7 @@ def parse_encounter_checks(gs: GameState,
         distance = int(steps) * 10
     except ValueError:
         raise EventParsingError('Step must be an integer')
-    continue_previous_zone = continue_zone == 'true'
+    continue_previous_zone = continue_zone == 'true' or continue_zone == 'cpz'
     return EncounterChecks(gs, zone, distance, continue_previous_zone)
 
 
@@ -869,7 +869,7 @@ USAGE: dict[ParsingFunction, list[str]] = {
         'element [monster slot] [element] [affinity]',
     ],
     parse_encounter_checks: [
-        'walk [zone] [steps]',
+        'walk [zone] [steps] (continue previous zone)',
     ],
     parse_inventory_command: [
         'inventory [show/get/buy/use/sell/switch/autosort] [...]',

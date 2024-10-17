@@ -11,7 +11,31 @@ class EncountersTracker(TrackerUI):
     notes_file = 'encounters_notes.csv'
 
     def get_default_input_data(self) -> str:
-        return ''
+        encounters = get_encounter_notes(
+            self.notes_file, self.parser.gamestate.seed)
+        lines = ['/nopadding', '/usage']
+        initiative_equipped = False
+        for encounter in encounters:
+            if encounter.initiative and not initiative_equipped:
+                lines.append('weapon tidus 1 initiative')
+                initiative_equipped = True
+            elif not encounter.initiative and initiative_equipped:
+                lines.append('weapon tidus 1')
+                initiative_equipped = False
+
+            if ' ' in encounter.name:
+                multizone = 'multizone '
+            else:
+                multizone = ''
+            line = f'encounter {multizone}{encounter.name}'
+            if encounter.min == encounter.max:
+                lines.extend([line] * encounter.default)
+                continue
+
+            lines.append(f'\n#    {encounter.label}')
+            lines.extend([line] * encounter.default)
+            lines.extend([f'# {line}'] * (encounter.max - encounter.default))
+        return '\n'.join(lines).strip('\n')
 
     def get_parsing_functions(self) -> list[ParsingFunction]:
         parsing_functions = [
@@ -70,7 +94,7 @@ class EncountersTracker(TrackerUI):
         output = '\n'.join(output_lines)
         spacer = f'{'=' * max(len(line) for line in output_lines)}\n'
         index = 0
-        while (index := output.find('\n#', index)) >= 0:
+        while (index := output.find('\n#    ', index)) >= 0:
             output = output[:index + 1] + spacer + output[index + 1:]
             index += len(spacer) + 2
         return output

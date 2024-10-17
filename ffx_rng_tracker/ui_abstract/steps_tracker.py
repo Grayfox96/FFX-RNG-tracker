@@ -7,9 +7,22 @@ from ..ui_abstract.encounters_tracker import EncountersTracker
 class StepsTracker(EncountersTracker):
     notes_file = 'steps_notes.csv'
 
+    def get_default_input_data(self) -> str:
+        steps_datas = get_steps_notes(
+            self.notes_file, self.parser.gamestate.seed)
+        lines = []
+        for steps_data in steps_datas:
+            if steps_data.continue_previous_zone:
+                cpz = ' cpz'
+            else:
+                cpz = ''
+            lines.append(f'walk {steps_data.zone} {steps_data.default}{cpz}')
+        return '\n'.join(lines)
+
     def get_parsing_functions(self) -> list[ParsingFunction]:
-        parsing_functions = super().get_parsing_functions()
-        parsing_functions.append(parse_encounter_checks)
+        parsing_functions = [
+            parse_encounter_checks,
+        ]
         return parsing_functions
 
     def edit_output(self, output: str, padding: bool = False) -> str:

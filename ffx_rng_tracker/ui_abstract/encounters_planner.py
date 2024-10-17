@@ -16,6 +16,9 @@ class EncountersPlanner(EncountersTracker):
             UITagConfigs(REGEX_NEVER_MATCH, foreground='#cccccc'),
             )
 
+    def get_default_input_data(self) -> str:
+        return ''
+
     def edit_output(self, output: str, padding: bool = False) -> str:
         output = output.replace('Simulated ', '')
         # TODO
