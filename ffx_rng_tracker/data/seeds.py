@@ -94,6 +94,28 @@ def damage_value_to_rolls(damage_values: Iterable[int]) -> list[int]:
     return indexes
 
 
+def get_seed_from_string(damage_values_string: str,
+                         continue_search: bool = False,
+                         ) -> int:
+    for symbol in (',', '-', '/', '\\', '.'):
+        damage_values_string = damage_values_string.replace(symbol, ' ')
+    seed_info = damage_values_string.split()
+    try:
+        seed_info = [int(i) for i in seed_info]
+    except ValueError as error:
+        error = str(error).split(': ', 1)[1]
+        raise SeedNotFoundError(f'{error} is not a valid damage value')
+    if len(seed_info) == 0:
+        raise SeedNotFoundError('Input damage values or a Seed Number first')
+    elif len(seed_info) == 1:
+        seed = seed_info[0]
+        if 0 <= seed <= 0xffffffff:
+            return seed
+        raise SeedNotFoundError(
+            'Seed must be an integer between 0 and 4294967295')
+    return get_seed(seed_info, Configs.continue_ps2_seed_search)
+
+
 def get_seed(damage_values: Iterable[int],
              continue_search: bool = False,
              ) -> int:

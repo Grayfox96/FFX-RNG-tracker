@@ -2,7 +2,7 @@ from collections.abc import Callable
 from tkinter import ttk
 
 from ..configs import Configs, UIWidgetConfigs
-from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed
+from ..data.seeds import DAMAGE_VALUES_NEEDED, get_seed_from_string
 from ..errors import InvalidDamageValueError, SeedNotFoundError
 from ..ui_functions import get_equipment_types, get_status_chance_table
 from .output_widget import TkOutputWidget
@@ -67,33 +67,12 @@ class TkSeedInfo(ttk.Frame):
 
     def validate_input(self) -> None:
         input_string = self.entry.get()
-        # replace different symbols with spaces
-        for symbol in (',', '-', '/', '\\', '.'):
-            input_string = input_string.replace(symbol, ' ')
-        seed_info = input_string.split()
         try:
-            seed_info = [int(i) for i in seed_info]
-        except ValueError as error:
-            error = str(error).split(': ', 1)[1]
-            self.show_warning(f'{error} is not a valid damage value')
+            seed = get_seed_from_string(
+                input_string, Configs.continue_ps2_seed_search)
+        except (InvalidDamageValueError, SeedNotFoundError) as error:
+            self.show_warning(str(error))
             return
-        match seed_info:
-            case []:
-                self.show_warning('Input damage values or a Seed Number first')
-                return
-            case [seed]:
-                if not (0 <= seed <= 0xffffffff):
-                    self.show_warning(
-                        'Seed must be an integer between 0 and 4294967295')
-                    return
-            case _:
-                try:
-                    seed = get_seed(
-                        seed_info, Configs.continue_ps2_seed_search)
-                except (InvalidDamageValueError,
-                        SeedNotFoundError) as error:
-                    self.show_warning(error)
-                    return
 
         self.show_warning('')
         self.print_output(seed)
