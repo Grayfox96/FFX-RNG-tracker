@@ -32,22 +32,24 @@ class UITagConfigs:
 
 
 class Configs:
-    seed: int | None = None
-    game_version: GameVersion = GameVersion.HD
-    continue_ps2_seed_search: bool = False
-    speedrun_category: SpeedrunCategory | str = SpeedrunCategory.ANYPERCENT
-    default_theme: str = 'azure-light'
-    font_size: int = 9
-    ui_tags: dict[str, UITagConfigs] = {}
-    ui_widgets: dict[UIWidget, UIWidgetConfigs] = {}
+    seed: int | None
+    game_version: GameVersion
+    continue_ps2_seed_search: bool
+    speedrun_category: SpeedrunCategory | str
+    default_theme: str
+    font_size: int
+    ui_tags: dict[str, UITagConfigs]
+    ui_widgets: dict[UIWidget, UIWidgetConfigs]
     _parser = ConfigParser()
     _configs_file = 'ffx_rng_tracker_configs.ini'
     _default_configs_file = 'default_configs.ini'
+    _macros_file = 'ffx_rng_tracker_macros.toml'
+    _default_macros_file = 'default_macros.toml'
 
     @classmethod
     def getsection(cls,
                    section: str,
-                   fallback: list[str] = None,
+                   fallback: list[str] | None = None,
                    ) -> list[str]:
         try:
             return cls._parser.options(section)
@@ -78,7 +80,7 @@ class Configs:
     def getlist(cls,
                 section: str,
                 option: str,
-                fallback: list[str] = None,
+                fallback: list[str] | None = None,
                 ) -> list[str]:
         try:
             string = cls._parser.get(section, option)
@@ -91,10 +93,23 @@ class Configs:
 
     @classmethod
     def read(cls, file_path: str) -> None:
+        cls._parser.clear()
         cls._parser.read(file_path)
 
     @classmethod
-    def load_configs(cls) -> None:
+    def init_configs(cls,
+                     configs_file_path: str | None = None,
+                     macros_file_path: str | None = None,
+                     ) -> None:
+        if configs_file_path is None:
+            configs_file_path = get_resource_path(
+                f'data_files/{Configs._default_configs_file}')
+        cls.read(configs_file_path)
+        if macros_file_path is None:
+            macros_file_path = get_resource_path(
+                f'data_files/{Configs._default_macros_file}')
+        macros = get_macros(macros_file_path)
+
         section = 'General'
         seed = cls.getint(section, 'seed', -1)
         if 0 <= seed <= 0xffffffff:
@@ -124,6 +139,7 @@ class Configs:
         cls.font_size = cls.getint(section, 'fontsize', 9)
 
         section = 'Tags'
+        cls.ui_tags = {}
         for option in cls.getsection(section):
             tag = cls.getlist(section, option)
             while len(tag) < 3:
@@ -164,7 +180,7 @@ class Configs:
             cls.ui_tags[option] = UITagConfigs(
                 regex_pattern, fg, bg, select_fg, select_bg)
 
-        macros = get_macros()
+        cls.ui_widgets = {}
         for section in UIWidget:
             cls.ui_widgets[section] = UIWidgetConfigs(
                 shown=cls.getboolean(section, 'shown', True),
@@ -183,18 +199,25 @@ class Configs:
         return configs
 
     @classmethod
-    def init_configs(cls) -> None:
+    def init_configs_from_user_files(cls) -> None:
+        logger = getLogger(__name__)
         if not os.path.exists(cls._configs_file):
-            logger = getLogger(__name__)
             logger.warning('Configs file not found.')
             default_configs_file = get_resource_path(
                 f'data_files/{cls._default_configs_file}')
             shutil.copyfile(default_configs_file, cls._configs_file)
             logger.info(
                 f'Copied default configs file to "{cls._configs_file}"')
-        cls.read(cls._configs_file)
-        cls.load_configs()
+        if not os.path.exists(cls._macros_file):
+            logger.warning('Macros file not found.')
+            default_macros_file = get_resource_path(
+                f'data_files/{cls._default_macros_file}')
+            shutil.copyfile(default_macros_file, cls._macros_file)
+            logger.info(f'Copied default macros file to "{cls._macros_file}"')
+        cls.init_configs(cls._configs_file, cls._macros_file)
 
 
 REGEX_NEVER_MATCH = re.compile(r'\A\b\Z invalid regex')
 REGEX_LIST = re.compile("(?:^|,)(?: )*('(?:(?:'')*[^']*)*'|[^',]+)")
+
+Configs.init_configs()

@@ -1,28 +1,19 @@
-import os
-import shutil
 import tomllib
 from logging import getLogger
 
 from ..utils import open_cp1252
 from .constants import UIWidget
-from .file_functions import get_resource_path
 
 
-def get_macros() -> dict[UIWidget, dict[str, str]]:
+def get_macros(file_path: str) -> dict[UIWidget, dict[str, str]]:
     logger = getLogger(__name__)
-    if not os.path.exists(MACROS_FILE):
-        logger.warning('Macros file not found.')
-        default_macros_file = get_resource_path(
-            f'data_files/{DEFAULT_MACROS_FILE}')
-        shutil.copyfile(default_macros_file, MACROS_FILE)
-        logger.info(f'Copied default macros file to "{MACROS_FILE}"')
-    with open_cp1252(MACROS_FILE) as macros_file:
+    with open_cp1252(file_path) as macros_file:
         data = macros_file.read()
 
     try:
         data = tomllib.loads(data)
     except tomllib.TOMLDecodeError as error:
-        logger.error(f'Error while parsing "{MACROS_FILE}": {error}')
+        logger.error(f'Error while parsing "{file_path}": {error}')
         return {}
 
     if 'General' in data:
@@ -53,7 +44,3 @@ def get_macros() -> dict[UIWidget, dict[str, str]]:
                 macros_dict[k] = v.strip('\n')
         macros[widget] = macros_dict
     return macros
-
-
-MACROS_FILE = 'ffx_rng_tracker_macros.toml'
-DEFAULT_MACROS_FILE = 'default_macros.toml'

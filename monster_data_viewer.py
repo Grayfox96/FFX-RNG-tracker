@@ -38,5 +38,5 @@ def main() -> None:
 
 if __name__ == '__main__':
     setup_main_logger()
-    Configs.init_configs()
+    Configs.init_configs_from_user_files()
     main()
