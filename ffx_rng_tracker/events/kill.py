@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 
-from ..data.constants import Character, EquipmentType, KillType, Rarity
+from ..configs import Configs
+from ..data.constants import (KILLER_BONUS_CHANCE, Character, EquipmentType,
+                              KillType, Rarity)
 from ..data.equipment import Equipment, EquipmentDrop
 from ..data.items import ItemDrop
 from ..data.monsters import Monster
@@ -89,18 +91,18 @@ class Kill(Event):
                            if c in self.gamestate.party]
         rng_equipment_owner = self._advance_rng(12)
 
+        killer_bonus_chance = KILLER_BONUS_CHANCE[Configs.game_version]
+
         # check if killing with a party member
         # always gives the equipment to that character
-        killer_is_owner_test = rng_equipment_owner % (len(possible_owners) + 3)
-        if killer_is_owner_test >= len(possible_owners):
-            killer_is_owner = True
-        else:
-            killer_is_owner = False
+        test_owner_index = (rng_equipment_owner
+                            % (len(possible_owners) + killer_bonus_chance))
+        killer_is_owner = test_owner_index >= len(possible_owners)
 
         # if the killer is a party member (0-6)
         # it gives them a bonus chance for the equipment to be theirs
         if tuple(Character).index(self.killer) < 7:
-            for _ in range(3):
+            for _ in range(killer_bonus_chance):
                 possible_owners.append(self.killer)
 
         rng_equipment_owner = rng_equipment_owner % len(possible_owners)

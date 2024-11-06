@@ -491,6 +491,7 @@ class Autoability(StrEnum):
 
 
 class GameVersion(StrEnum):
+    PS2JP = 'PS2 JP'
     PS2NA = 'PS2 NA'
     PS2INT = 'PS2 INT'
     HD = 'HD'
@@ -502,6 +503,13 @@ class SpeedrunCategory(StrEnum):
     NSG = 'No Sphere Grid'
     NEMESIS = 'Nemesis'
 
+
+KILLER_BONUS_CHANCE = {
+    GameVersion.PS2JP: 1,
+    GameVersion.PS2NA: 3,
+    GameVersion.PS2INT: 3,
+    GameVersion.HD: 3,
+}
 
 HIT_CHANCE_TABLE = (25, 30, 30, 40, 40, 50, 60, 80, 100)
 
@@ -562,21 +570,25 @@ ICV_VARIANCE = (
 
 # Yojimbo-related constants
 BASE_COMPATIBILITY = {
+    GameVersion.PS2JP: 50,  # TODO: test this
     GameVersion.PS2NA: 50,
     GameVersion.PS2INT: 128,
     GameVersion.HD: 128,
 }
 COMPATIBILITY_MODIFIER = {
+    GameVersion.PS2JP: 30,  # TODO: test this
     GameVersion.PS2NA: 30,
     GameVersion.PS2INT: 10,
     GameVersion.HD: 10,
 }
 OVERDRIVE_MOTIVATION = {
+    GameVersion.PS2JP: 2,  # TODO: test this
     GameVersion.PS2NA: 2,
     GameVersion.PS2INT: 20,
     GameVersion.HD: 20,
 }
 GIL_MOTIVATION_MODIFIER = {
+    GameVersion.PS2JP: 2,  # TODO: test this
     GameVersion.PS2NA: 2,
     GameVersion.PS2INT: 4,
     GameVersion.HD: 4,
