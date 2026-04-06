@@ -279,23 +279,23 @@ def parse_roll(gs: GameState,
                ) -> AdvanceRNG:
     try:
         if rng_index.startswith('rng'):
-            rng_index = int(rng_index[3:])
+            rng_index_int = int(rng_index[3:])
         else:
-            rng_index = int(rng_index)
-        amount = int(amount)
+            rng_index_int = int(rng_index)
     except ValueError:
         raise EventParsingError('rng needs to be an integer')
+    if not (0 <= rng_index_int < 68):
+        raise EventParsingError(f'Can\'t advance rng index {rng_index}')
+
     try:
-        amount = int(amount)
+        amount_int = int(amount)
     except ValueError:
         raise EventParsingError('amount needs to be an integer')
-    if amount < 0:
+    if amount_int < 0:
         raise EventParsingError('amount needs to be an greater or equal to 0')
-    if not (0 <= rng_index < 68):
-        raise EventParsingError(f'Can\'t advance rng index {rng_index}')
-    if amount > 200:
+    if amount_int > 200:
         raise EventParsingError('Can\'t advance rng more than 200 times')
-    return AdvanceRNG(gs, rng_index, amount)
+    return AdvanceRNG(gs, rng_index_int, amount_int)
 
 
 def parse_party_change(gs: GameState,

@@ -58,6 +58,15 @@ class TkEncountersTableInputWidget(ttk.Frame):
             self.zones_buttons[zone_name] = checkbutton
 
     def get_input(self) -> str:
+        def roll_rng1(amount: int) -> None:
+            # the roll event has a limit of 200 rolls
+            while True:
+                if amount <= 200:
+                    input_data.append(f'roll rng1 {amount}')
+                    break
+                amount -= 200
+                input_data.append('roll rng1 200')
+
         initiative_equip = 'selected' in self.initiative_button.state()
 
         input_data = []
@@ -68,16 +77,16 @@ class TkEncountersTableInputWidget(ttk.Frame):
         input_data.append(f'encounters_count total {starting_encounter}')
 
         forced_encounters = int(self.forced_encounters.get())
-        input_data.append(f'roll rng1 {forced_encounters}')
+        roll_rng1(forced_encounters)
         input_data.append(f'encounters_count total +{forced_encounters}')
 
         random_encounters = int(self.random_encounters.get())
-        input_data.append(f'roll rng1 {random_encounters * 2}')
+        roll_rng1(random_encounters * 2)
         input_data.append(f'encounters_count total +{random_encounters}')
         input_data.append(f'encounters_count random +{random_encounters}')
 
         simulated_encounters = int(self.simulated_encounters.get())
-        input_data.append(f'roll rng1 {simulated_encounters}')
+        roll_rng1(simulated_encounters)
 
         input_data.append('///')
 
