@@ -11,20 +11,30 @@ class FFXRNGTracker:
     replaces the old one. Each value in the array is used
     in one or a handful of cases:
         0: encounter chance
-        1: encounter formations and preemptive/ambush
+        1: encounter formations and condition
         2: monster ai and animations
-        4: monster targeting
+        3:
+        4: monster, yojimbo and magus sisters targeting
         5: multihit actions targeting
+        6: reflected actions targeting
+        7:
+        8:
         9: screenshake
-        10: drop/steal chance
+        10: item drop, equipment drop and steal chance
         11: rare item chance
-        12: equipment owner, type, number of slots/abilities
+        12: equipment owner and type, number of slots, number of ability rolls
         13: abilities
         14: camera
-        17: yojimbo motivation
-        20-35: damage/crit/escape chance
+        15:
+        16: lulu od targeting and slice & dice fail targeting
+        17: yojimbo ai
+        18: magus sisters ai
+        19: wakka od targeting
+        20-35: damage/crit chance and icv variance
+        20-27: escape chance, bribe variance and rounding
         36-51: hit chance
-        52-67: status landing chance
+        52-67: status application chance
+        60-67: bribe chance
     """
 
     def __init__(self, seed: int) -> None:
