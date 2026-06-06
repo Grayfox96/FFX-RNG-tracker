@@ -770,7 +770,7 @@ def parse_inventory_command(gs: GameState,
                     lines.append('Empty')
                 text += '\n           '.join(lines)
             elif params and params[0] == 'gil':
-                text = f'Gil: {gs.gil}\n'
+                text = f'Gil: {gs.gil}'
             else:
                 text = gs.inventory.to_string()
         case ('get' | 'use', 'gil', amount, *_):

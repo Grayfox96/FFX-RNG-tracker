@@ -7,7 +7,7 @@ from ..configs import REGEX_NEVER_MATCH, UITagConfigs, UIWidgetConfigs
 from ..data.constants import UIWidget
 from ..data.notes import get_notes, save_notes
 from ..events.parser import EventParser
-from ..events.parsing_functions import USAGE, ParsingFunction, parse_roll
+from ..events.parsing_functions import USAGE, ParsingFunction
 from .input_widget import InputWidget
 from .output_widget import ConfirmPopup, OutputWidget, WarningPopup
 

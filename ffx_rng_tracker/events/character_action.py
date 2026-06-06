@@ -140,6 +140,7 @@ class CharacterAction(Event):
         luck = max(self.user.stats[Stat.LUCK], 1)
         accuracy = self.user.stats[Stat.ACCURACY]
         aims = self.user.buffs[Buff.AIM]
+        lucks = self.user.buffs[Buff.LUCK]
 
         elements = set(self.action.elements)
         if self.action.uses_weapon_properties:
@@ -180,6 +181,7 @@ class CharacterAction(Event):
             target_evasion = target.stats[Stat.EVASION]
             target_luck = max(target.stats[Stat.LUCK], 1)
             target_reflexes = target.buffs[Buff.REFLEX]
+            target_jinxes = target.buffs[Buff.JINX]
             if self.action.uses_hit_chance_table:
                 match self.action.hit_chance_formula:
                     case HitChanceFormula.USE_ACCURACY:
@@ -208,6 +210,8 @@ class CharacterAction(Event):
             hit_chance = (base_hit_chance
                           + luck
                           - target_luck
+                          + lucks
+                          + target_jinxes
                           + ((aims - target_reflexes) * 10))
             result.hit = hit_chance > hit_rng
 

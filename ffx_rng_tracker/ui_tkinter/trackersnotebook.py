@@ -70,9 +70,11 @@ class TkTrackersNotebook(ttk.Notebook):
         getLogger(__name__).info(f'Opened with seed {seed}.')
         for tracker_type in TRACKERS:
             self.add_tracker(tracker_type, seed)
-        if self.monster_data is not None:
+        if (self.monster_data is not None
+                and self.monster_data.winfo_parent() == str(self)):
             self.insert('end', self.monster_data)
-        if self.configs_log is not None:
+        if (self.configs_log is not None
+                and self.configs_log.winfo_parent() == str(self)):
             self.insert('end', self.configs_log)
         self.seed_info.register_callback(self.reload_seed_callback_func)
 

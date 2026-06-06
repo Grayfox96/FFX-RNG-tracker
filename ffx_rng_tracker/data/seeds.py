@@ -113,7 +113,7 @@ def get_seed_from_string(damage_values_string: str,
             return seed
         raise SeedNotFoundError(
             'Seed must be an integer between 0 and 4294967295')
-    return get_seed(seed_info, Configs.continue_ps2_seed_search)
+    return get_seed(seed_info, continue_search)
 
 
 def get_seed(damage_values: Iterable[int],
