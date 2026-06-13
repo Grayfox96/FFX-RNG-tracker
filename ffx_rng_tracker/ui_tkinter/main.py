@@ -18,7 +18,6 @@ from .trackersnotebook import TkTrackersNotebook
 @log_exceptions()
 def main(*,
          title='FFX RNG tracker',
-         size='1280x830',
          widget: type[TkTracker] | None = None,
          ) -> None:
     """Creates a Tkinter main window, initializes the rng tracker
@@ -33,7 +32,6 @@ def main(*,
               f' | Category: {Configs.speedrun_category}'
               )
     root.title(title)
-    root.geometry(size)
 
     import_themes(root)
     style = ttk.Style()
@@ -44,11 +42,12 @@ def main(*,
     root.bind_all('<F8>', cycle_theme)
 
     if widget is None:
+        root.geometry(str(Configs.ui_widgets[UIWidget.SEED_INFO].geometry))
         ui = TkTrackersNotebook(root)
         ui.pack(expand=True, fill='both')
     else:
-        ui_configs = Configs.ui_widgets[UIWidget.SEED_INFO]
-        ui = TkSeedInfo(root, ui_configs)
+        root.geometry(str(Configs.ui_widgets[widget.tracker_type.name].geometry))
+        ui = TkSeedInfo(root, Configs.ui_widgets[UIWidget.SEED_INFO])
         ui.pack(expand=True, fill='both')
 
         def callback_func(seed: int, _: bool) -> None:

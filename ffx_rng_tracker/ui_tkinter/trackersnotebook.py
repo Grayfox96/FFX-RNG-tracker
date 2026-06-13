@@ -2,7 +2,7 @@ import tkinter as tk
 from logging import getLogger
 from tkinter import ttk
 
-from ..configs import Configs
+from ..configs import Configs, UIWidgetConfigs
 from ..data.constants import UIWidget
 from ..events.parser import EventParser
 from ..gamestate import GameState
@@ -32,7 +32,7 @@ class TkTrackersNotebook(ttk.Notebook):
         m_d_configs = Configs.ui_widgets[UIWidget.MONSTER_DATA]
         if m_d_configs.shown:
             if m_d_configs.windowed:
-                window = self.make_new_toplevel(UIWidget.MONSTER_DATA)
+                window = self.make_new_toplevel(UIWidget.MONSTER_DATA, m_d_configs)
                 self.monster_data = TkMonsterDataViewer(window, m_d_configs)
                 self.monster_data.pack(expand=True, fill='both')
             else:
@@ -44,7 +44,7 @@ class TkTrackersNotebook(ttk.Notebook):
         c_l_configs = Configs.ui_widgets[UIWidget.CONFIGS]
         if c_l_configs.shown:
             if c_l_configs.windowed:
-                window = self.make_new_toplevel(UIWidget.CONFIGS)
+                window = self.make_new_toplevel(UIWidget.CONFIGS, c_l_configs)
                 self.configs_log = TkConfigsLogViewer(window, c_l_configs)
                 self.configs_log.pack(expand=True, fill='both')
             else:
@@ -86,10 +86,10 @@ class TkTrackersNotebook(ttk.Notebook):
         for tracker in self.trackers:
             tracker.tracker.change_seed(seed, reload_notes)
 
-    def make_new_toplevel(self, title: str) -> tk.Toplevel:
+    def make_new_toplevel(self, title: str, configs: UIWidgetConfigs) -> tk.Toplevel:
         window = tk.Toplevel()
         window.title(title)
-        window.geometry('1280x830')
+        window.geometry(str(configs.geometry))
         window.protocol('WM_DELETE_WINDOW', lambda: None)
         return window
 
@@ -100,7 +100,7 @@ class TkTrackersNotebook(ttk.Notebook):
             return
         parser = EventParser(GameState(FFXRNGTracker(seed)))
         if configs.windowed:
-            window = self.make_new_toplevel(name)
+            window = self.make_new_toplevel(name, configs)
             tracker = tracker_type(window, parser, configs)
             tracker.pack(expand=True, fill='both')
         else:

@@ -21,7 +21,6 @@ def main() -> None:
                f' v{__version__}'
                f' | Game Version: {Configs.game_version}'
                )
-    root.geometry('1280x830')
 
     import_themes(root)
     style = ttk.Style()
@@ -32,6 +31,7 @@ def main() -> None:
     root.bind_all('<F8>', cycle_theme)
 
     ui_configs = Configs.ui_widgets[UIWidget.MONSTER_DATA]
+    root.geometry(str(ui_configs.geometry))
     ui = TkMonsterDataViewer(root, ui_configs)
     ui.pack(expand=True, fill='both')
 

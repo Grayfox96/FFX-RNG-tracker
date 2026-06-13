@@ -1,5 +1,7 @@
 import logging
 import re
+import tkinter as tk
+from collections.abc import Callable
 from dataclasses import is_dataclass
 from tkinter import ttk
 from typing import Any, Iterable
@@ -7,6 +9,7 @@ from typing import Any, Iterable
 from ..configs import Configs, UIWidgetConfigs
 from ..data.constants import UIWidget
 from ..logger import UIHandler
+from .base_widgets import BetterSpinbox
 from .output_widget import TkOutputWidget
 
 
@@ -53,6 +56,50 @@ def add_dict_to_treeview(treeview: ttk.Treeview,
         iid = treeview.insert(parent, 'end', text=text, values=(value,))
 
 
+class TkGeometryConfigs(ttk.Frame):
+    def __init__(self, parent, *args, **kwargs) -> None:
+        super().__init__(parent, *args, **kwargs)
+
+        ttk.Label(self, text='Width').grid(row=0, column=0)
+        self.width_spinbox = BetterSpinbox(self, from_=-32_000, to=32_000)
+        self.width_spinbox.grid(row=1, column=0)
+
+        ttk.Label(self, text='Height').grid(row=0, column=1)
+        self.height_spinbox = BetterSpinbox(self, from_=-32_000, to=32_000)
+        self.height_spinbox.grid(row=1, column=1)
+
+        ttk.Label(self, text='X').grid(row=0, column=2)
+        self.x_spinbox = BetterSpinbox(self, from_=-32_000, to=32_000)
+        self.x_spinbox.grid(row=1, column=2)
+
+        ttk.Label(self, text='Y').grid(row=0, column=3)
+        self.y_spinbox = BetterSpinbox(self, from_=-32_000, to=32_000)
+        self.y_spinbox.grid(row=1, column=3)
+
+        self.register_callback(self.resize_toplevel)
+
+    def resize_toplevel(self) -> None:
+        width = self.width_spinbox.get()
+        height = self.height_spinbox.get()
+        x = self.x_spinbox.get()
+        y = self.y_spinbox.get()
+        self.winfo_toplevel().geometry(f'{width}x{height}+{x}+{y}')
+
+    def on_root_configure(self, event: tk.Event) -> None:
+        size, x, y = self.winfo_toplevel().geometry().split('+')
+        width, height = size.split('x')
+        self.width_spinbox.set(width)
+        self.height_spinbox.set(height)
+        self.x_spinbox.set(x)
+        self.y_spinbox.set(y)
+
+    def register_callback(self, callback_func: Callable[[], None]) -> None:
+        self.width_spinbox.register_callback(callback_func)
+        self.height_spinbox.register_callback(callback_func)
+        self.x_spinbox.register_callback(callback_func)
+        self.y_spinbox.register_callback(callback_func)
+
+
 class TkConfigsLogViewer(ttk.Frame):
     """Widget that shows the loaded configuration and the log."""
     name = UIWidget.CONFIGS
@@ -76,6 +123,10 @@ class TkConfigsLogViewer(ttk.Frame):
         self.configs.column('Values', anchor='w')
         add_dict_to_treeview(self.configs, Configs.get_configs().items())
         self.configs.grid(row=1, column=0, sticky='nsew')
+
+        self.geometry_configs = TkGeometryConfigs(self)
+        self.geometry_configs.grid(row=2, column=0, sticky='nsew', columnspan=2)
+        self.winfo_toplevel().bind('<Configure>', self.geometry_configs.on_root_configure)
 
         self.logger = TkOutputWidget(self, wrap='none')
         for name in configs.tag_names:

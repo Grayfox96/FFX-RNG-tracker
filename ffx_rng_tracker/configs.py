@@ -12,9 +12,21 @@ from .utils import get_contrasting_color
 
 
 @dataclass
+class Geometry:
+    width: int
+    height: int
+    x: int
+    y: int
+
+    def __str__(self) -> str:
+        return f'{self.width}x{self.height}+{self.x}+{self.y}'
+
+
+@dataclass
 class UIWidgetConfigs:
     shown: bool
     windowed: bool
+    geometry: Geometry
     tag_names: list[str]
     macros: dict[str, str]
 
@@ -182,9 +194,22 @@ class Configs:
 
         cls.ui_widgets = {}
         for section in UIWidget:
+            geometry = cls.getlist(section, 'geometry', [])
+            width, height, x, y = 1280, 830, 100, 100
+            if len(geometry) >= 2:
+                try:
+                    width, height = int(geometry[0]), int(geometry[1])
+                except ValueError:
+                    pass
+            if len(geometry) >= 4:
+                try:
+                    x, y = int(geometry[2]), int(geometry[3])
+                except ValueError:
+                    pass
             cls.ui_widgets[section] = UIWidgetConfigs(
                 shown=cls.getboolean(section, 'shown', True),
                 windowed=cls.getboolean(section, 'windowed', False),
+                geometry=Geometry(width, height, x, y),
                 tag_names=cls.getlist(section, 'tags'),
                 macros=macros.get(section, {}),
                 )
