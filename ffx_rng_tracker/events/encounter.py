@@ -149,6 +149,21 @@ class SimulatedEncounter(Encounter):
 
 
 @dataclass
+class ArenaEncounter(Encounter):
+    _monster_name: str
+
+    def __str__(self) -> str:
+        string = (f'Arena Encounter: {self.index:>3} | '
+                  f'Arena {self.formation.monsters[0].name} | '
+                  f'{self.formation} {self.condition} | '
+                  f'{self.icvs_string}')
+        return string
+
+    def _get_formation(self) -> Formation:
+        return Formation([self._monster_name], None)
+
+
+@dataclass
 class RandomEncounter(Encounter):
 
     def __post_init__(self) -> None:

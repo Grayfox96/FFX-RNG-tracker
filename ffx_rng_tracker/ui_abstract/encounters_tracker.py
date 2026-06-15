@@ -25,11 +25,12 @@ class EncountersTracker(TrackerUI):
                 lines.append('weapon tidus 1')
                 initiative_equipped = False
 
-            if ' ' in encounter.name:
-                multizone = 'multizone '
+            if encounter.name.startswith('arena '):
+                line = f'encounter {encounter.name}'
+            elif ' ' in encounter.name:
+                line = f'encounter multizone {encounter.name}'
             else:
-                multizone = ''
-            line = f'encounter {multizone}{encounter.name}'
+                line = f'encounter {encounter.name}'
             if encounter.min == encounter.max:
                 lines.extend([line] * encounter.default)
                 continue
@@ -72,7 +73,8 @@ class EncountersTracker(TrackerUI):
                 # remove icvs
                 parts.pop()
                 line = '|'.join(parts)
-            elif line.startswith('Encounter:'):
+            elif (line.startswith('Encounter:')
+                    or line.startswith('Arena Encounter:')):
                 parts = line.split('|')
                 # remove icvs
                 parts.pop()
@@ -87,6 +89,7 @@ class EncountersTracker(TrackerUI):
                   .replace(' Normal', '')
                   .replace('Random Encounter:', 'Encounter:')
                   .replace('Simulated Encounter:', 'Encounter:')
+                  .replace('Arena Encounter:', 'Encounter:')
                   .replace('| -', '')
                   )
         if padding:

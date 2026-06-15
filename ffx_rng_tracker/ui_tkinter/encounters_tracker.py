@@ -15,8 +15,8 @@ from .tktracker import TkTracker
 
 
 @dataclass
-class EncounterSlider:
-    data: EncounterData | StepsData
+class EncounterSlider[T: EncounterData | StepsData]:
+    data: T
     scale: BetterScale | None = None
     radiobutton: ttk.Radiobutton | None = None
 
@@ -43,18 +43,18 @@ class EncounterSlider:
             create_command_proxy(self.radiobutton, {'invoke'}, callback_func)
 
 
-class EncounterSliders(ScrollableFrame):
+class EncounterSliders[T: EncounterData | StepsData](ScrollableFrame):
     def __init__(self, parent: tk.Widget, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
         self.callback_func: Callable[[], None] = lambda: None
         self.current_zone = tk.StringVar(value='Start')
-        self._sliders: list[EncounterSlider] = []
+        self._sliders: list[EncounterSlider[T]] = []
         self._count = count()
 
-    def __iter__(self) -> Iterator[EncounterSlider]:
+    def __iter__(self) -> Iterator[EncounterSlider[T]]:
         return iter(self._sliders)
 
-    def add_slider(self, data: EncounterData | StepsData) -> None:
+    def add_slider(self, data: T) -> None:
         if data.min == data.max:
             self._sliders.append(EncounterSlider(data))
             return
@@ -93,7 +93,7 @@ class TkEncountersInputWidget(ttk.Frame):
         self.padding_button.grid(row=0, column=1, sticky='w')
         self.padding_button.invoke()
 
-        self.sliders = EncounterSliders(self)
+        self.sliders: EncounterSliders[EncounterData] = EncounterSliders(self)
         self.sliders.grid(row=1, column=0, columnspan=3, sticky='nsew')
         self.rowconfigure(1, weight=1)
         self.columnconfigure(2, weight=1)
@@ -123,12 +123,14 @@ class TkEncountersInputWidget(ttk.Frame):
                 if current_zone == slider.zone_index:
                     input_data.append('///')
                 input_data.append(f'#     {slider.data.label}:')
-            if ' ' in slider.data.name:
-                multizone = 'multizone '
+            if slider.data.name.startswith('arena '):
+                line = f'encounter {slider.data.name}'
+            elif ' ' in slider.data.name:
+                line = f'encounter multizone {slider.data.name}'
             else:
-                multizone = ''
+                line = f'encounter {slider.data.name}'
             for _ in range(slider.value):
-                input_data.append(f'encounter {multizone}{slider.data.name}')
+                input_data.append(line)
         return '\n'.join(input_data)
 
     def set_input(self, text: str) -> None:

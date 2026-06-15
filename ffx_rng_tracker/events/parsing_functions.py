@@ -24,8 +24,8 @@ from .change_stat import ChangeStat
 from .character_action import CharacterAction
 from .comment import Comment
 from .death import Death
-from .encounter import (Encounter, MultizoneRandomEncounter, RandomEncounter,
-                        SimulatedEncounter)
+from .encounter import (ArenaEncounter, Encounter, MultizoneRandomEncounter,
+                        RandomEncounter, SimulatedEncounter)
 from .encounter_check import EncounterChecks
 from .end_encounter import EndEncounter
 from .escape import Escape
@@ -159,6 +159,7 @@ def parse_target(gs: GameState, target_name: str) -> Actor:
 
 def parse_encounter(gs: GameState,
                     name: str = '',
+                    monster_name: str = '',
                     *zones: str,
                     ) -> Encounter | MultizoneRandomEncounter:
     if not name:
@@ -178,7 +179,11 @@ def parse_encounter(gs: GameState,
         encounter_type = RandomEncounter
     elif name in SIMULATIONS:
         encounter_type = SimulatedEncounter
+    elif name == 'arena':
+        parse_dict_key(monster_name, get_monsters_dict(), 'monster')
+        return ArenaEncounter(gs, f'arena_{monster_name}', monster_name)
     elif name == 'multizone':
+        zones = (monster_name,) + zones
         if not zones:
             raise EventParsingError
         for zone in zones:
@@ -895,6 +900,7 @@ def parse_inventory_command(gs: GameState,
 USAGE: dict[ParsingFunction, list[str]] = {
     parse_encounter: [
         'encounter (preemp/ambush/simulated/name/zone)',
+        'encounter arena [monster name]'
         # 'encounter multizone [zones]',  # undocumented
         ],
     parse_encounter_count_change: [

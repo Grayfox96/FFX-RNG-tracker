@@ -1,14 +1,15 @@
 from typing import Literal
 
 from ..configs import UIWidgetConfigs
-from ..data.encounters import get_steps_notes
+from ..data.encounters import StepsData, get_steps_notes
 from ..events.parser import EventParser
 from ..ui_abstract.steps_tracker import StepsTracker
-from .encounters_tracker import TkEncountersInputWidget
+from .encounters_tracker import EncounterSliders, TkEncountersInputWidget
 from .tktracker import TkTracker
 
 
 class TkStepsInputWidget(TkEncountersInputWidget):
+    sliders: EncounterSliders[StepsData]
 
     def get_input(self) -> str:
         current_zone = self.sliders.current_zone.get()

@@ -75,8 +75,9 @@ class ActionsTracker(TrackerUI):
                   .replace('Boss ', '')
                   .replace('Empty ', '')
                   .replace(' Normal', '')
-                  .replace('Random ', '')
-                  .replace('Simulated ', '')
+                  .replace('Random Encounter:', 'Encounter:')
+                  .replace('Simulated Encounter:', 'Encounter:')
+                  .replace('Arena Encounter:', 'Encounter:')
                   )
         if padding:
             output = self.pad_output(output)
