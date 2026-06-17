@@ -13,6 +13,22 @@
 [Drops]
 
 [Actions]
+"tidus equips weak brotherhood" = "weapon tidus 4 strength_+5%"
+"wakka equips scout" = "weapon wakka 2 icestrike sensor"
+"wakka equips generic armguard" = "armor wakka 1"
+"tidus equips ice brand" = "weapon tidus 1 icestrike"
+"tidus equips stunning steel" = "weapon tidus 1 slowtouch"
+"wakka equips official ball" = "weapon wakka 1"
+"wakka equips thunder ball" = "weapon wakka 1 lightningstrike"
+"tidus equips lightning steel" = "weapon tidus 1 lightningstrike"
+"tidus equips sonic steel" = "weapon tidus 1 first_strike"
+"tidus equips yellow shield" = "armor tidus 1 lightningproof"
+"tidus equips brotherhood" = "weapon tidus 4 strength_+10% strength_+5% waterstrike sensor"
+"yuna equips wind rod" = "weapon yuna 1 first_strike"
+"auron equips sonic blade" = "weapon auron 1 first_strike"
+"wakka equips switch hitter" = "weapon wakka 2 strength_+5% strength_+3%"
+"wakka equips grand slam" = "weapon wakka 2 first_strike break_damage_limit"
+"wakka equips fast break" = "armor wakka 1 auto-haste"
 "pre b&y grids" = """
 /macro besaid grid
 /macro kilika grid

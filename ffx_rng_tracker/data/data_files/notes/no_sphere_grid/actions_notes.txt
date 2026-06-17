@@ -117,8 +117,7 @@ wakka attack piranha
 # tidus escape
 # wakka escape
 
-# Tidus equips Brotherhood
-weapon tidus 4 strength_+5%
+/macro tidus equips weak brotherhood
 
 encounter wakka_tutorial
 tidus attack dingo
@@ -214,8 +213,7 @@ encounter kilika_woods
 
 # encounter lord_ochu
 
-# Tidus equips Stunning Steel
-weapon tidus 1 slowtouch
+/macro tidus equips stunning steel
 
 # -- Luca --
 encounter machina_1
@@ -252,8 +250,7 @@ kimahri attack oblitzerator
 lulu thunder oblitzerator
 # tidus attack oblitzerator
 
-# If Tidus equips Lightning Steel
-# weapon tidus 1 lightningstrike
+# /macro tidus equips lightning steel
 
 encounter sahagin_chiefs
 tidus attack sahagin_chief
@@ -388,12 +385,12 @@ encounter moonflow_south
 encounter moonflow_south
 encounter moonflow_south
 
-weapon tidus 1 slowtouch
-# weapon tidus 1 lightningstrike
-# weapon tidus 4 strength_+5%
+/macro tidus equips stunning steel
+# tidus equips lightning steel
+# tidus equips weak brotherhood
 
-weapon wakka 2 strength_+5% strength_+3%
-# weapon wakka 1 lightningstrike
+/macro wakka equips switch hitter
+# /macro wakka equips thunder ball
 
 encounter extractor
 wakka attack extractor
@@ -450,7 +447,7 @@ encounter macalania_woods
 encounter macalania_woods
 encounter macalania_woods
 
-weapon tidus 1 first_strike
+/macro tidus equips sonic steel
 
 encounter spherimorph
 tidus spiral_cut spherimorph 2.5
@@ -486,8 +483,7 @@ auron hi-potion auron
 auron phoenix_down rikku
 rikku lightning_marble m1
 
-# Tidus equips Brotherhood
-weapon tidus 4 strength_+10% strength_+5% waterstrike
+/macro tidus equips brotherhood
 
 # -- Macalania Temple --
 encounter seymour
@@ -512,8 +508,7 @@ shiva diamond_dust
 spawn seymour 2
 rikku chaos_grenade
 
-# Tidus unequips Brotherhood
-weapon tidus 1 first_strike
+/macro tidus equips sonic steel
 
 # encounter guado_encounter_1
 # encounter guado_encounter_2

@@ -117,8 +117,7 @@ wakka attack piranha
 # tidus escape
 # wakka escape
 
-# Tidus equips Brotherhood
-weapon tidus 4 strength_+5%
+/macro tidus equips weak brotherhood
 
 encounter wakka_tutorial
 tidus attack dingo
@@ -195,13 +194,10 @@ lulu fire ragora_2
 
 /macro kilika grid
 
-# Wakka equips Scout
-weapon wakka 2 icestrike sensor
-# If Wakka equips any Armguard
-# armor wakka 1
+/macro wakka equips scout
+# /macro wakka equips generic armguard
 
-# If Tidus equips an Icebrand
-# weapon tidus 1 icestrike
+# /macro tidus equips ice brand
 
 # encounter lord_ochu
 
@@ -382,13 +378,10 @@ encounter moonflow_south
 encounter moonflow_south
 encounter moonflow_south
 
-# Tidus equips Stunning Steel
-weapon tidus 1 slowtouch
+/macro tidus equips stunning steel
 
-# Wakka equips Official Ball
-weapon wakka 1
-# If Wakka equips Thunder Ball
-# weapon wakka 1 lightningstrike
+/macro wakka equips official ball
+# /macro wakka equips thunder ball
 
 /macro extractor grid
 
@@ -408,9 +401,8 @@ wakka attack m1
 tidus cheer
 wakka attack m1
 tidus cheer
-# Tidus changes Weapon
-# weapon tidus 1 lightningstrike
-weapon tidus 4 strength_+5%
+/macro tidus equips weak brotherhood
+# /macro tidus equips lightning steel
 wakka attack m1
 tidus attack m1
 wakka attack m1
@@ -468,10 +460,10 @@ encounter macalania_woods
 encounter macalania_woods
 encounter macalania_woods
 
-weapon tidus 1 first_strike
+/macro tidus equips sonic steel
 
 encounter spherimorph
-armor tidus 1 lightningproof
+/macro tidus equips yellow shield
 rikku grenade monsters
 element m1 thunder weak
 rikku lightning_bolt
@@ -493,8 +485,8 @@ yuna phoenix_down rikku
 rikku lightning_bolt crawler
 
 /macro seymour grid
-# Tidus equips Brotherhood
-weapon tidus 4 strength_+10% strength_+5% waterstrike
+
+/macro tidus equips brotherhood
 
 # -- Macalania Temple --
 encounter seymour
@@ -514,8 +506,8 @@ tidus attack m4
 tidus attack m4
 
 spawn seymour 2
-# Tidus unequips Brotherhood
-weapon tidus 1 first_strike
+
+/macro tidus equips sonic steel
 tidus attack m2
 tidus attack m2
 stat tidus strength -10
@@ -531,8 +523,7 @@ encounter crevasse
 
 encounter wendigo
 tidus haste tidus
-# Tidus equips Brotherhood
-weapon tidus 4 strength_+10% strength_+5% waterstrike
+/macro tidus equips brotherhood
 tidus attack guado_guardian_2
 # auron power_break wendigo
 # rikku lightning_marble wendigo
@@ -556,8 +547,7 @@ tidus attack zu_2
 
 /macro bikanel grid
 
-# Tidus equips Sonic Steel
-weapon tidus 1 first_strike
+/macro tidus equips sonic steel
 
 encounter sanubia_desert_east
 encounter sanubia_desert_east
@@ -743,6 +733,9 @@ kimahri water_gem biran_ronso
 # /macro b&y grid 2/2
 # /macro b&y grid 4 friends
 
+/macro yuna equips wind rod
+/macro auron equips sonic blade
+
 # encounter gagazet_mountain
 
 encounter seymour_flux
@@ -822,7 +815,7 @@ bahamut attack m1
 # encounter
 
 /macro bfa grid
-# weapon auron 1 first_strike
+# /macro auron equips sonic blade
 
 encounter bfa
 rikku armor_break m1

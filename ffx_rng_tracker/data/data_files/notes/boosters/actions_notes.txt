@@ -38,8 +38,7 @@ rikku shining_gem m1
 
 # -- Besaid --
 
-# Tidus equips Brotherhood
-weapon tidus 4 strength_+5%
+/macro tidus equips weak brotherhood
 
 # Besaid grid
 stat wakka strength +166
@@ -150,9 +149,9 @@ wakka attack m1
 
 encounter rikku_tutorial
 
-weapon tidus 1 first_strike
-weapon wakka 2 first_strike break_damage_limit
-armor wakka 1 auto-haste
+/macro tidus equips sonic steel
+/macro wakka equips grand slam
+/macro wakka equips fast break
 
 # -- Macalania Woods --
 encounter spherimorph
