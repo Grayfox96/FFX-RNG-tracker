@@ -840,4 +840,9 @@ def get_damage(
     damage = min(damage, damage_limit)
     if action.heals and Status.ZOMBIE not in target.statuses:
         damage = damage * -1
+    if Status.DAMAGE_9999 in user.statuses:
+        if 0 <= damage <= 9999:
+            damage = 9999
+        elif -9999 <= damage <= -1:
+            damage = -9999
     return damage
