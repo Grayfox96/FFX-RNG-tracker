@@ -71,7 +71,9 @@ def show_message_box(parent: tk.Misc,
                      /,
                      message: str = '',
                      title: str = '',
-                     ) -> None:
+                     box_type: Literal['ok', 'okcancel'] = 'ok',
+                     icon: Literal['info', 'question', 'warning'] = 'info',
+                     ) -> Literal['ok', 'cancel']:
     """Implements the tk_messageBox command, documentation can be found here
     https://www.tcl.tk/man/tcl8.6/TkCmd/messageBox.htm
     """
@@ -79,5 +81,7 @@ def show_message_box(parent: tk.Misc,
         '-parent', parent,
         '-message', message,
         '-title', title,
+        '-type', box_type,
+        '-icon', icon,
     )
-    parent.tk.call('tk_messageBox', *args)
+    return parent.tk.call('tk_messageBox', *args)

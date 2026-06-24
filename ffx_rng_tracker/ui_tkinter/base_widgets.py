@@ -1,9 +1,10 @@
 import re
 import tkinter as tk
 from collections.abc import Callable
-from tkinter import messagebox, ttk
+from tkinter import ttk
 
-from .tkinter_utils import create_command_proxy
+from ..data.constants import UIWidget
+from .tkinter_utils import create_command_proxy, show_message_box
 
 
 class ScrollableText(ttk.Frame):
@@ -212,12 +213,31 @@ class BetterScale(ttk.Scale):
 
 
 class TkWarningPopup:
+    def __init__(self, parent: tk.Misc, title: UIWidget) -> None:
+        self.parent = parent
+        self.title = title
 
     def print_output(self, output: str) -> None:
-        messagebox.showwarning(message=output)
+        show_message_box(
+            self.parent,
+            message=output,
+            title=self.title,
+            box_type='ok',
+            icon='warning',
+        )
 
 
 class TkConfirmPopup:
+    def __init__(self, parent: tk.Misc, title: UIWidget) -> None:
+        self.parent = parent
+        self.title = title
 
     def print_output(self, output: str) -> bool:
-        return messagebox.askokcancel(message=output)
+        response = show_message_box(
+            self.parent,
+            message=output,
+            title=self.title,
+            box_type='okcancel',
+            icon='question',
+            )
+        return response == 'ok'

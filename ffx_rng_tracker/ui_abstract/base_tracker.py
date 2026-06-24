@@ -162,8 +162,7 @@ class TrackerUI(ABC):
                     self.notes_file, seed, self.input_widget.get_input(),
                     force=True)
                 self.warning_popup.print_output(
-                    f'File "{seed}_{self.notes_file}" '
-                    'saved successfully!')
+                    f'File "{seed}_{self.notes_file}" saved successfully!')
         else:
             self.warning_popup.print_output(
                 f'File "{seed}_{self.notes_file}" saved successfully!')

@@ -52,6 +52,6 @@ class TkTracker(ttk.PanedWindow):
             input_widget=self.input_widget,
             output_widget=self.output_widget,
             search_bar=self.search_bar,
-            warning_popup=TkWarningPopup(),
-            confirmation_popup=TkConfirmPopup(),
+            warning_popup=TkWarningPopup(self, self.tracker_type.name),
+            confirmation_popup=TkConfirmPopup(self, self.tracker_type.name),
             )
