@@ -65,6 +65,7 @@ class CharacterAction(Event):
             self._get_statuses()
         else:
             self._remove_statuses()
+        self._apply_damages()
         self._get_buffs()
         self._shatter_check()
         if self.action.is_counter:
@@ -324,38 +325,44 @@ class CharacterAction(Event):
         for target, result in zip(self.targets, self.results):
             if not result.hit:
                 continue
-            discard_damage = Status.PETRIFY in target.statuses
             target_luck = max(target.stats[Stat.LUCK], 1)
             target_luck -= target.buffs[Buff.JINX] * 10
             if self.action.damages_hp:
                 result.hp.damage_rng = self._advance_rng(index) & 31
                 result.hp.crit = self._get_crit(luck, target_luck)
-                if not discard_damage:
-                    result.hp.damage = get_damage(
-                        self.user, self.action, target, result.hp.damage_rng,
-                        result.hp.crit, self.od_time_remaining, 'hp')
-                    target.current_hp -= result.hp.damage
+                result.hp.damage = get_damage(
+                    self.user, self.action, target, result.hp.damage_rng,
+                    result.hp.crit, self.od_time_remaining, 'hp')
             if self.action.damages_mp:
                 result.mp.damage_rng = self._advance_rng(index) & 31
                 result.mp.crit = self._get_crit(luck, target_luck)
-                if not discard_damage:
-                    result.mp.damage = get_damage(
-                        self.user, self.action, target, result.mp.damage_rng,
-                        result.mp.crit, self.od_time_remaining, 'mp')
-                    result.mp.damage = min(result.mp.damage, target.current_mp)
-                    target.current_mp -= result.mp.damage
+                result.mp.damage = get_damage(
+                    self.user, self.action, target, result.mp.damage_rng,
+                    result.mp.crit, self.od_time_remaining, 'mp')
+                result.mp.damage = min(result.mp.damage, target.current_mp)
             if self.action.damages_ctb:
                 result.ctb.damage_rng = self._advance_rng(index) & 31
                 result.ctb.crit = self._get_crit(luck, target_luck)
-                if not discard_damage:
-                    result.ctb.damage = get_damage(
-                        self.user, self.action, target, result.ctb.damage_rng,
-                        result.ctb.crit, self.od_time_remaining)
-                    target.ctb += result.ctb.damage
-            if not discard_damage and self.action.drains:
-                self.user.current_hp += result.hp.damage
-                self.user.current_mp += result.mp.damage
-                # self.user.ctb += result.ctb.damage
+                result.ctb.damage = get_damage(
+                    self.user, self.action, target, result.ctb.damage_rng,
+                    result.ctb.crit, self.od_time_remaining)
+
+    def _apply_damages(self) -> None:
+        for target, result in zip(self.targets, self.results):
+            if result.hit is False or Status.PETRIFY in target.statuses:
+                continue
+            if self.action.damages_hp:
+                target.current_hp -= result.hp.damage
+                if self.action.drains:
+                    self.user.current_hp += result.hp.damage
+            if self.action.damages_mp:
+                target.current_mp -= result.mp.damage
+                if self.action.drains:
+                    self.user.current_mp += result.mp.damage
+            if self.action.damages_ctb:
+                target.ctb += result.ctb.damage
+                # if self.action.drains:
+                #     self.user.ctb += result.ctb.damage
 
     def _get_statuses(self) -> None:
         index = self.status_rng_index
@@ -371,6 +378,12 @@ class CharacterAction(Event):
                     elif application.chance > status_applications[status].chance:
                         status_applications[status] = application
             for status, application in status_applications.items():
+                if status in target.statuses:
+                    continue
+                if status is Status.HASTE and target.statuses.get(Status.SLOW, 0) >= 255:
+                    continue
+                elif status is Status.SLOW and target.statuses.get(Status.HASTE, 0) >= 255:
+                    continue
                 if status in NO_RNG_STATUSES:
                     status_rng = 0
                 else:
@@ -390,12 +403,8 @@ class CharacterAction(Event):
                 if not applied:
                     continue
                 if status is Status.HASTE:
-                    if target.statuses.get(Status.SLOW, 0) >= 255:
-                        continue
                     target.statuses.pop(Status.SLOW, None)
                 elif status is Status.SLOW:
-                    if target.statuses.get(Status.HASTE, 0) >= 255:
-                        continue
                     target.statuses.pop(Status.HASTE, None)
                 target.statuses[status] = application.stacks
             for status in self.action.status_flags:
