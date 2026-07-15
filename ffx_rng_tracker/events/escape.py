@@ -22,7 +22,7 @@ class Escape(Event):
         return string
 
     def _get_escape(self) -> bool:
-        index = 20 + min(20 + self.character.index, 27)
+        index = min(20 + self.character.index, 27)
         escape_roll = self._advance_rng(index) & 255
         escape = escape_roll < 191
         if escape:

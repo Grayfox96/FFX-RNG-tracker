@@ -142,7 +142,7 @@ class GameState:
         statuses = actor.statuses.copy()
         for status, stacks in statuses.items():
             if status is Status.POISON:
-                actor.current_hp -= actor.max_hp // 4
+                actor.current_hp -= actor.poison_tick_damage
             if stacks >= 254:
                 continue
             if status not in DURATION_STATUSES:

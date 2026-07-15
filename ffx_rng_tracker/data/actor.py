@@ -43,6 +43,8 @@ class Actor(Protocol):
     @property
     def index(self) -> int: ...
     @property
+    def poison_tick_damage(self) -> int: ...
+    @property
     def max_hp(self) -> int: ...
     @property
     def current_hp(self) -> int: ...
@@ -149,6 +151,10 @@ class CharacterActor:
         appropriate min and max values.
         """
         self.buffs[buff] = min(max(0, value), 5)
+
+    @property
+    def poison_tick_damage(self) -> int:
+        return self.max_hp // 4
 
     @property
     def max_hp(self) -> int:
@@ -327,6 +333,7 @@ class MonsterActor:
         self.immune_to_percentage_damage = monster.immune_to_percentage_damage
         self.immune_to_delay = monster.immune_to_delay
         self.immune_to_life = monster.immune_to_life
+        self.poison_tick_damage = monster.poison_tick_damage
         self.stats: dict[Stat, int] = {}
         self.buffs: dict[Buff, int] = defaultdict(int)
         self.statuses: dict[Status, int] = {}
