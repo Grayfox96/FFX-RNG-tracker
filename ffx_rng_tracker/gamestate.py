@@ -75,7 +75,9 @@ class GameState:
             return 0
         return min(ctbs)
 
-    def normalize_ctbs(self, min_ctb: int) -> None:
+    def normalize_ctbs(self, min_ctb: int | None = None) -> None:
+        if min_ctb is None:
+            min_ctb = self.get_min_ctb()
         if min_ctb == 0:
             return
         actors = [self.characters[c] for c in self.party] + self.monster_party
@@ -133,6 +135,7 @@ class GameState:
         for status in TEMPORARY_STATUSES:
             actor.statuses.pop(status, None)
         self.setup_autostatuses()
+        self.normalize_ctbs()
 
     def process_end_of_turn(self, actor: Actor, action: Action) -> None:
         self.last_actor = actor

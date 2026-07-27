@@ -476,6 +476,7 @@ def parse_stat_update(gs: GameState,
         return Comment(gs, text)
     if stat_name == 'ctb':
         actor.ctb = parse_amount(amount, actor.ctb)
+        gs.normalize_ctbs()
         return Comment(gs, f'{actor}\'s CTB changed to {actor.ctb}')
     stat = parse_enum_member(stat_name, Stat, 'stat')
     stat_value = parse_amount(amount, actor.stats[stat])

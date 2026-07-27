@@ -25,7 +25,7 @@ class Encounter(Event):
         self._set_party_icvs()
         self._set_monsters_icvs()
         self.icvs_string = self._get_icvs_string()
-        self.gamestate.normalize_ctbs(self.gamestate.get_min_ctb())
+        self.gamestate.normalize_ctbs()
 
     def __str__(self) -> str:
         string = (f'Encounter: {self.index:>3} | '
