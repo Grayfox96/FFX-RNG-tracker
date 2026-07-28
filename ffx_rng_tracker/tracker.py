@@ -45,7 +45,7 @@ class FFXRNGTracker:
         self._rng_generators = tuple(
             [self.get_rng_generator(i) for i in range(68)])
         # create a list of lists used to store rng values
-        self._rng_arrays = [list() for _ in range(68)]
+        self._rng_arrays: list[list[int]] = [list() for _ in range(68)]
         self.rng_current_positions = [0 for _ in range(68)]
 
     def __repr__(self) -> str:
