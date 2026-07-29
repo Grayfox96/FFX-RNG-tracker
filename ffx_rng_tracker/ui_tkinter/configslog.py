@@ -77,6 +77,7 @@ class TkGeometryConfigs(ttk.Frame):
         self.y_spinbox.grid(row=1, column=3)
 
         self.register_callback(self.resize_toplevel)
+        self.cached_geometry = ''
 
     def resize_toplevel(self) -> None:
         width = self.width_spinbox.get()
@@ -86,7 +87,11 @@ class TkGeometryConfigs(ttk.Frame):
         self.winfo_toplevel().geometry(f'{width}x{height}+{x}+{y}')
 
     def on_root_configure(self, event: tk.Event) -> None:
-        size, x, y = self.winfo_toplevel().geometry().split('+')
+        geometry = self.winfo_toplevel().geometry()
+        if geometry == self.cached_geometry:
+            return
+        self.cached_geometry = geometry
+        size, x, y = geometry.split('+')
         width, height = size.split('x')
         self.width_spinbox.set(width)
         self.height_spinbox.set(height)
