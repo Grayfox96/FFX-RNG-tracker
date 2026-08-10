@@ -235,9 +235,11 @@ class CharacterAction(Event):
                 elif self.action.overdrive_index == 3:
                     # 6 damage rolls and 6 crit rolls before the timer
                     rng_rolls[damage_rng_index] = 2 * 6
-                    # if slice & dice fails rng5 is still rolled 6 times
-                    if self.action.n_of_hits == 3:
-                        rng_rolls[5] = 6
+                    # if more than 1 target, rng16 will be used in
+                    # _get_targets() once for every "missed" hit,
+                    # potentially to decide ties
+                    if self.action.n_of_hits == 3 and n_of_targets == 1:
+                        rng_rolls[16] = 3
                 elif self.action.overdrive_index == 4:
                     # 1 damage roll and 1 crit roll per target before the timer
                     rng_rolls[damage_rng_index] = 2 * n_of_targets
@@ -270,21 +272,28 @@ class CharacterAction(Event):
                 # if more than 1 target the the rolls are used
                 # to pick targets in _get_targets()
                 if n_of_targets == 1:
+                    # TODO
+                    # should this be self.od_n_of_hits instead of 1?
                     rng_rolls[19] = 1
             case Character.LULU:
                 if self.action.target is TargetType.RANDOM_MONSTER:
                     # rng5 will be rolled in _get_targets()
-                    # its always rolled 16 times and the first x are
-                    # used to pick targets
+                    # its always rolled 16 times
                     # bio and death fury have no damage
                     if self.action.base_damage:
                         rng_rolls[damage_rng_index] = 16
                     # only bio and death fury have statuses
                     else:
                         rng_rolls[status_rng_index] = 16
-                    rng_rolls[16] = min(max(0, 16 - self.od_n_of_hits), 16)
+                    # if more than 1 target, rng16 will be used in
+                    # _get_targets() once for every "missed" hit,
+                    # potentially to decide ties
+                    if n_of_targets == 1:
+                        rng_rolls[16] = min(max(0, 16 - self.od_n_of_hits), 15)
                 # demi and ultima fury
                 else:
+                    # TODO
+                    # do demi and ultima fury roll rng16?
                     rng_rolls[damage_rng_index] = 16 * n_of_targets
             case Character.RIKKU:
                 # all mixes roll rng5 once unless they target
@@ -508,7 +517,7 @@ class CharacterAction(Event):
             # only applies to attack reels
             n_of_hits = min(max(0, self.od_n_of_hits), 12)
         elif self.action.overdrive_user is Character.LULU:
-            n_of_hits = min(max(0, self.od_n_of_hits), 16)
+            n_of_hits = min(max(1, self.od_n_of_hits), 16)
         else:
             n_of_hits = self.action.n_of_hits
         match self.target:
@@ -549,11 +558,7 @@ class CharacterAction(Event):
         if len(possible_targets) == 1:
             return possible_targets * max(1, n_of_hits)
 
-        if self.action.overdrive_user is Character.TIDUS and n_of_hits == 3:
-            # if slice & dice fails the index used to pick
-            # targets will be rng16 instead
-            rng_index = 16
-        elif self.action.overdrive_user is Character.WAKKA:
+        if self.action.overdrive_user is Character.WAKKA:
             rng_index = 19
         elif (self.action.overdrive_user is Character.RIKKU and
                 self.action.target is TargetType.RANDOM_CHARACTER):
@@ -562,15 +567,37 @@ class CharacterAction(Event):
             rng_index = 5
 
         targets: list[Actor] = []
-        for _ in range(n_of_hits):
-            target_rng = self._advance_rng(rng_index)
-            target_index = target_rng % len(possible_targets)
-            targets.append(possible_targets[target_index])
-        # fury that have random targeting will always roll
-        # rng5 16 times if there is more than 1 target
-        if self.action.overdrive_user is Character.LULU:
-            for _ in range(16 - n_of_hits):
-                self._advance_rng(rng_index)
+        if ((self.action.overdrive_user is Character.TIDUS and n_of_hits == 3)
+                or self.action.overdrive_user is Character.LULU):
+            if self.action.overdrive_user is Character.TIDUS:
+                targets_needed = 6
+            elif self.action.overdrive_user is Character.LULU:
+                targets_needed = 16
+
+            for _ in range(targets_needed):
+                target_rng = self._advance_rng(rng_index)
+                target_index = target_rng % len(possible_targets)
+                targets.append(possible_targets[target_index])
+
+            while len(targets) > n_of_hits:
+                targets_counts = [targets.count(t) for t in possible_targets]
+                max_count = max(targets_counts)
+                targets_at_max_count = [i for i, c in enumerate(targets_counts)
+                                        if c == max_count]
+                if len(targets_at_max_count) == 1:
+                    index_to_remove = 0
+                    self._advance_rng(16)
+                else:
+                    index_to_remove = (self._advance_rng(16)
+                                       % len(targets_at_max_count))
+                target_to_remove = targets_at_max_count[index_to_remove]
+                targets.pop(targets.index(possible_targets[target_to_remove]))
+        else:
+            for _ in range(n_of_hits):
+                target_rng = self._advance_rng(rng_index)
+                target_index = target_rng % len(possible_targets)
+                targets.append(possible_targets[target_index])
+
         targets.sort(key=lambda t: t.index)
         return targets
 
@@ -836,6 +863,17 @@ def get_damage(
         if Status.ZOMBIE in target.statuses:
             damage = damage * -1
     if timer := OD_TIMERS.get(action.overdrive_user):
+        # TODO
+        # od time remaining is not every value in this range [0, timer]
+        # instead is given by this formula
+        # timer - (frames / fps)
+        # where fps is 30, frames is frames since start of od
+        # od time remaining can only be one of these 3
+        # x.y666666
+        # x.y333333
+        # x.y0
+        # where x and y are the integer digit and the 1st decimal digit
+        # from the visual timer (the last digit is actually random)
         od_time_remaining = min(od_time_remaining, timer)
         damage += damage * od_time_remaining // (timer * 2)
     if action.never_break_damage_limit:
