@@ -269,12 +269,18 @@ def parse_bribe(gs: GameState,
     return BribeDrop(gs, monster, user, ap_characters)
 
 
-def parse_death(gs: GameState, character_name: str = 'unknown', *_) -> Death:
+def parse_death(gs: GameState,
+                character_name: str = 'unknown',
+                *words: str,
+                ) -> Death:
     try:
         character = search_strenum(Character, character_name)
     except ValueError:
         character = Character.UNKNOWN
-    return Death(gs, character)
+        comment = ' '.join([character_name, *words])
+    else:
+        comment = ' '.join(words)
+    return Death(gs, character, comment)
 
 
 def parse_roll(gs: GameState,
@@ -917,7 +923,7 @@ USAGE: dict[ParsingFunction, list[str]] = {
         'bribe [monster name] [user] (characters initials)',
     ],
     parse_death: [
-        'death (character)',
+        'death (character) (comment)',
     ],
     parse_roll: [
         'roll [rng#] [amount]',
