@@ -56,14 +56,26 @@ def parse_amount(amount: str,
     return count
 
 
-def parse_dict_key[K, V](key: K,
-                         dict: dict[K, V],
-                         error_name: str = 'key',
-                         ) -> V:
+def parse_dict_key[K: str, V](key: K,
+                              dict: dict[K, V],
+                              error_name: str = 'key',
+                              ) -> V:
     try:
         return dict[key]
     except KeyError:
-        raise EventParsingError(f'No {error_name} named "{key}"')
+        possible_keys = [f'"{k}"'
+                         for k in dict
+                         if k.startswith(key)
+                         ]
+        if not key or not possible_keys:
+            # TODO
+            # should this also print all the dict keys?
+            text = f'No {error_name} named "{key}"'
+        elif len(possible_keys) == 1:
+            text = f'No {error_name} named "{key}", did you mean {possible_keys[0]}?'
+        else:
+            text = f'No {error_name} named "{key}", did you mean one of these: {', '.join(possible_keys)}?'
+        raise EventParsingError(text)
 
 
 def parse_enum_member[S: StrEnum](member_name: str,
@@ -73,8 +85,16 @@ def parse_enum_member[S: StrEnum](member_name: str,
     try:
         return search_strenum(enum, member_name)
     except ValueError:
-        enum_members = ', '.join([stringify(m) for m in enum])
-        text = f'{enum_name} can only be one of these values: {enum_members}'
+        all_members = [stringify(m) for m in enum]
+        members = [f'"{m}"' for m in all_members if m.startswith(member_name)]
+        if not member_name or not members:
+            text = (f'{enum_name} can only be one of these '
+                    f'values: "{'", "'.join(all_members)}"'
+                    )
+        elif len(members) == 1:
+            text = f'no {enum_name} called "{member_name}", did you mean {members[0]}?'
+        else:
+            text = f'no {enum_name} called "{member_name}", did you mean one of these: {', '.join(members)}?'
         raise EventParsingError(text)
 
 

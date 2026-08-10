@@ -90,8 +90,20 @@ class EventParser:
         elif line == '/usage' or line.startswith('/usage '):
             return Comment(self.gamestate, self.usage)
         elif line == '/macro' or line.startswith('/macro '):
-            macro_names = ', '.join([f'"{m}"' for m in self.macros])
-            text = f'Error: Possible macros are {macro_names}'
+            if not self.macros:
+                return Comment(self.gamestate, 'Error: No macros')
+            macro_name = line[6:].lstrip()
+            macro_names = [f'"{m}"'
+                           for m in self.macros
+                           if m.startswith(macro_name)
+                           ]
+            if not macro_name or not macro_names:
+                macro_names = [f'"{m}"' for m in self.macros]
+                text = f'Error: Possible macros are {', '.join(macro_names)}'
+            elif len(macro_names) == 1:
+                text = f'Error: No macro called "{macro_name}", did you mean {macro_names[0]}?'
+            else:
+                text = f'Error: No macro called "{macro_name}", did you mean one of these: {', '.join(macro_names)}?'
             return Comment(self.gamestate, text)
         elif line.startswith('/'):
             return Comment(self.gamestate, f'Command: {line}')
