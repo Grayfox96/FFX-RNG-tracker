@@ -24,8 +24,7 @@ class TkSeedInfo(ttk.Frame):
         self.inner_frame.pack()
 
         damage_values_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
-        text = (f'Input the first {damage_values_needed} damage values '
-                'in this order: ')
+        text = 'Input at least 2 damage values in this order: '
         if damage_values_needed == 3:
             text += 'Auron1 Tidus Auron2\n'
         else:

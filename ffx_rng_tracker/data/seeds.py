@@ -1,6 +1,5 @@
 import os
 import pprint
-from collections.abc import Iterable
 from itertools import islice
 from logging import getLogger
 
@@ -32,13 +31,13 @@ def prune(node: Node) -> PrunedNode:
     return {f'{k:02}': prune(v) for k, v in node.items()}
 
 
-def damage_rolls_to_values(damage_rolls: Iterable[int]) -> list[int]:
+def damage_rolls_to_values(damage_rolls: list[int]) -> list[int]:
     """damage rolls 1/3/5 are used to get values from _TIDUS_DAMAGE_VALUES
 
     drs 0/2/4/6/7 are used to get values from _AURON_DAMAGE_VALUES
 
     returns a list of 0-8 damage values based
-    on the size of the damage_values iterable
+    on the size of the damage_values list
 
     raises ValueError if a damage roll is not in the range 0-63
     """
@@ -59,13 +58,13 @@ def damage_rolls_to_values(damage_rolls: Iterable[int]) -> list[int]:
     return damage_values
 
 
-def damage_value_to_rolls(damage_values: Iterable[int]) -> list[int]:
+def damage_value_to_rolls(damage_values: list[int]) -> list[int]:
     """damage values 1/3/5 are searched in _TIDUS_DAMAGE_VALUES
 
     dvs 0/2/4/6/7 are searched in _AURON_DAMAGE_VALUES
 
     returns a list of 0-8 damage rolls based
-    on the size of the damage_values iterable
+    on the size of the damage_values list
 
     raises InvalidDamageValueError if one of the items
     of damage_values is not valid
@@ -116,25 +115,25 @@ def get_seed_from_string(damage_values_string: str,
     return get_seed(seed_info, continue_search)
 
 
-def get_seed(damage_values: Iterable[int],
+def get_seed(damage_values: list[int],
              continue_search: bool = False,
              ) -> int:
-    """damage_values needs to have at least 3 or 8 items
+    """damage_values needs to have at least 1 item
     depending on what Configs.game_version is set to
 
     if continue_search is true when the seed is not found in the
-    seeds file search_seed is called with the same dvs
+    seeds file search_seed is called with the same dvs as long as
+    damage_values has at least 3 or 8 items depending on
+    what Configs.game_version is set to
 
     returns an integer between 0 and (2**32 - 1)
 
-    raises SeedNotFoundError if there are less than 3 or 8 items
+    raises SeedNotFoundError if there are less than 1 items
     in damage_values or if the seed is not found in the seeds
     file or by search_seed
     """
-    dvs_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
-    if len(damage_values) < dvs_needed:
-        raise SeedNotFoundError(
-            f'Need at least {dvs_needed} damage values')
+    if len(damage_values) < 1:
+        raise SeedNotFoundError('Need at least 1 damage value')
 
     logger = getLogger(__name__)
     if not os.path.exists(SEEDS_DIRECTORY_PATH):
@@ -152,29 +151,30 @@ def get_seed(damage_values: Iterable[int],
             )
         logger.info('Done creating seeds file.')
 
-    damage_values = damage_values[:dvs_needed]
     damage_rolls = damage_value_to_rolls(damage_values)
     with open_cp1252(seeds_file_path) as file_object:
         seeds = file_object.read().splitlines()
-    i = 0
-    needle = f'{damage_rolls[i]:02}'
-    for line in seeds:
-        if not line.startswith(needle):
-            continue
-        seed = int(line[-10:])
-        drs_check = get_damage_rolls(FFXRNGTracker(seed))[:dvs_needed]
-        if damage_rolls == drs_check:
+    needle = ''
+    for damage_roll in damage_rolls:
+        needle += f'{damage_roll:02}'
+        seeds = [s for s in seeds if s.startswith(needle)]
+        if len(seeds) == 1:
+            seed = int(seeds[0][-10:])
             logger.info(f'Found seed {seed} in seeds file'
                         f' from DVs "{damage_values}"'
                         )
             break
-        i += 1
-        needle += f'{damage_rolls[i]:02}'
     else:
         logger.warning(
-            f'Failed to find seed in seeds file from DVs "{damage_values}".')
-        if Configs.game_version is GameVersion.HD or not continue_search:
-            raise SeedNotFoundError('Seed not found (seeds file exhausted)')
+            f'Failed to find seed in seeds file from DVs "{damage_values}" '
+            f'({len(seeds)} possible seeds found).')
+        dvs_needed = DAMAGE_VALUES_NEEDED[Configs.game_version]
+        if (Configs.game_version is GameVersion.HD
+                or not continue_search
+                or len(damage_rolls) < dvs_needed):
+            raise SeedNotFoundError(
+                f'Seed not found (seeds file exhausted) ({len(seeds)} '
+                f'possible seeds found)')
         seed = search_seed(damage_rolls)
         logger.info(f'Found seed {seed} from seed search'
                     f' from DVs "{damage_values}"'
@@ -182,7 +182,7 @@ def get_seed(damage_values: Iterable[int],
     return seed
 
 
-def search_seed(damage_rolls: Iterable[int]) -> int:
+def search_seed(damage_rolls: list[int]) -> int:
     """damage_rolls needs to have 8 items
 
     returns an integer between 0 and (2**32 - 1)
