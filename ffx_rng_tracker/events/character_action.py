@@ -11,7 +11,7 @@ from ..data.constants import (ELEMENTAL_AFFINITY_MODIFIERS, HIT_CHANCE_TABLE,
                               DamageType, Element, ElementalAffinity,
                               HitChanceFormula, Stat, Status, SubMenu,
                               TargetType)
-from ..data.statuses import NO_RNG_STATUSES, NUL_STATUSES
+from ..data.statuses import NUL_STATUSES
 from .main import Event
 
 
@@ -387,29 +387,24 @@ class CharacterAction(Event):
                     elif application.chance > status_applications[status].chance:
                         status_applications[status] = application
             for status, application in status_applications.items():
-                if status in target.statuses:
-                    continue
-                if status is Status.HASTE and target.statuses.get(Status.SLOW, 0) >= 255:
-                    continue
-                elif status is Status.SLOW and target.statuses.get(Status.HASTE, 0) >= 255:
-                    continue
-                if status in NO_RNG_STATUSES:
-                    status_rng = 0
-                else:
-                    status_rng = self._advance_rng(index) % 101
+                status_rng = self._advance_rng(index) % 101
                 resistance = target.status_resistances[status]
-                if application.chance == 255:
+                if (status is Status.HASTE
+                        and target.statuses.get(Status.SLOW, 0) >= 255):
+                    applied = False
+                elif (status is Status.SLOW
+                        and target.statuses.get(Status.HASTE, 0) >= 255):
+                    applied = False
+                elif application.chance == 255:
                     applied = True
                 elif resistance == 255:
                     applied = False
                 elif application.chance == 254:
                     applied = True
-                elif (application.chance - resistance) > status_rng:
-                    applied = True
                 else:
-                    applied = False
+                    applied = (application.chance - resistance) > status_rng
                 result.statuses[status] = applied
-                if not applied:
+                if not applied or status in target.statuses:
                     continue
                 if status is Status.HASTE:
                     target.statuses.pop(Status.SLOW, None)

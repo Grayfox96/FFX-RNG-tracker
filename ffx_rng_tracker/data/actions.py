@@ -8,7 +8,7 @@ from .constants import (COUNTER_TARGET_TYPES, HIT_CHANCE_FORMULA_TABLE,
                         Element, HitChanceFormula, MonsterSlot, Status,
                         SubMenu, TargetType)
 from .file_functions import get_resource_path
-from .statuses import NO_RNG_STATUSES, StatusApplication
+from .statuses import StatusApplication
 from .text_characters import bytes_to_string
 
 
@@ -174,26 +174,25 @@ def parse_actions_file(file_path: str) -> list[Action]:
                 elements.add(element)
 
         statuses: dict[Status, StatusApplication] = {}
-        for i, status in enumerate(Status, 46):
-            if i < 58:
-                stacks = 254
-            elif i > 70:
-                break
-            else:
-                stacks = action[i + 13]
-            chance = action[i]
-            if chance > 0:
-                statuses[status] = StatusApplication(status, chance, stacks)
-
         status_flags: set[Status] = set()
         status_flags_bytes = add_bytes(action[84], action[85], action[90])
-        for i, status_flag in enumerate(NO_RNG_STATUSES):
-            if i > 3:
-                i += 1
-            if i > 14:
-                i += 1
-            if status_flags_bytes & (1 << i):
-                status_flags.add(status_flag)
+        for i, status in enumerate(Status, 46):
+            if i <= 70:
+                if i >= 58:
+                    stacks = action[i + 13]
+                else:
+                    stacks = 254
+                chance = action[i]
+                if chance > 0:
+                    statuses[status] = StatusApplication(status, chance, stacks)
+            else:
+                i = i - 71
+                if i > 3:
+                    i += 1
+                if i > 14:
+                    i += 1
+                if status_flags_bytes & (1 << i):
+                    status_flags.add(status)
 
         buff_stacks = action[89]
         buffs = {}
