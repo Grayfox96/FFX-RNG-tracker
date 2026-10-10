@@ -43,3 +43,11 @@ class TkStepsTracker(TkTracker):
             self.tracker.notes_file, parser.gamestate.seed)
         for encounter in encounters:
             self.input_widget.sliders.add_slider(encounter)
+
+    def change_seed(self, seed: int, reload_notes: bool) -> None:
+        if reload_notes:
+            self.input_widget.sliders.reset()
+            encounters = get_steps_notes(self.tracker.notes_file, seed)
+            for encounter in encounters:
+                self.input_widget.sliders.add_slider(encounter)
+        return super().change_seed(seed, reload_notes)

@@ -84,7 +84,7 @@ class TkTrackersNotebook(ttk.Notebook):
         root.title(f'{title} | Seed: {seed}')
         getLogger(__name__).info(f'Changed seed to {seed}.')
         for tracker in self.trackers:
-            tracker.tracker.change_seed(seed, reload_notes)
+            tracker.change_seed(seed, reload_notes)
 
     def make_new_toplevel(self, title: str, configs: UIWidgetConfigs) -> tk.Toplevel:
         window = tk.Toplevel()

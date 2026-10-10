@@ -19,6 +19,7 @@ class EncounterSlider[T: EncounterData | StepsData]:
     data: T
     scale: BetterScale | None = None
     radiobutton: ttk.Radiobutton | None = None
+    label: ttk.Label | None = None
 
     @property
     def value(self) -> int:
@@ -54,6 +55,19 @@ class EncounterSliders[T: EncounterData | StepsData](ScrollableFrame):
     def __iter__(self) -> Iterator[EncounterSlider[T]]:
         return iter(self._sliders)
 
+    def reset(self) -> None:
+        for slider in self._sliders:
+            if slider.scale is not None:
+                slider.scale.destroy()
+                slider.scale.tk.deletecommand(str(slider.scale))
+            if slider.radiobutton is not None:
+                slider.radiobutton.destroy()
+                slider.radiobutton.tk.deletecommand(str(slider.radiobutton))
+            if slider.label is not None:
+                slider.label.destroy()
+        self._sliders.clear()
+        self._count = count()
+
     def add_slider(self, data: T) -> None:
         if data.min == data.max:
             self._sliders.append(EncounterSlider(data))
@@ -62,15 +76,15 @@ class EncounterSliders[T: EncounterData | StepsData](ScrollableFrame):
         scale = BetterScale(
             self, orient='horizontal', label=None, from_=data.min, to=data.max,
             value=data.default,
-            command=lambda _: scale_label.configure(text=slider.value))
+            command=lambda _: label.configure(text=slider.value))
         scale.grid(column=0, row=row, sticky='w')
-        scale_label = ttk.Label(self, text=data.default)
-        scale_label.grid(column=1, row=row, sticky='w')
+        label = ttk.Label(self, text=data.default)
+        label.grid(column=1, row=row, sticky='w')
 
         radiobutton = ttk.Radiobutton(
             self, text=data.label, variable=self.current_zone, value=row)
         radiobutton.grid(column=2, row=row, sticky='w')
-        slider = EncounterSlider(data, scale, radiobutton)
+        slider = EncounterSlider(data, scale, radiobutton, label)
         slider.register_callback(self.callback_func)
         self._sliders.append(slider)
 
@@ -161,3 +175,11 @@ class TkEncountersTracker(TkTracker):
             self.tracker.notes_file, parser.gamestate.seed)
         for encounter in encounters:
             self.input_widget.sliders.add_slider(encounter)
+
+    def change_seed(self, seed: int, reload_notes: bool) -> None:
+        if reload_notes:
+            self.input_widget.sliders.reset()
+            encounters = get_encounter_notes(self.tracker.notes_file, seed)
+            for encounter in encounters:
+                self.input_widget.sliders.add_slider(encounter)
+        return super().change_seed(seed, reload_notes)

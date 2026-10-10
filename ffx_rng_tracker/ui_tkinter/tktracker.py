@@ -55,3 +55,6 @@ class TkTracker(ttk.PanedWindow):
             warning_popup=TkWarningPopup(self, self.tracker_type.name),
             confirmation_popup=TkConfirmPopup(self, self.tracker_type.name),
             )
+
+    def change_seed(self, seed: int, reload_notes: bool) -> None:
+        self.tracker.change_seed(seed, reload_notes)
