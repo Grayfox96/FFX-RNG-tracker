@@ -5,10 +5,10 @@ from ..configs import Configs
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
 from ..data.actor import Actor, MonsterActor
 from ..data.characters import s_lv_to_total_ap
-from ..data.constants import (SHORT_STATS_NAMES, Autoability, Character,
-                              Element, ElementalAffinity, EquipmentType,
-                              GameVersion, Item, KillType, MonsterSlot, Stat,
-                              TargetType)
+from ..data.constants import (RNG_NAMES, SHORT_STATS_NAMES, Autoability,
+                              Character, Element, ElementalAffinity,
+                              EquipmentType, GameVersion, Item, KillType,
+                              MonsterSlot, Stat, TargetType)
 from ..data.encounter_formations import BOSSES, SIMULATIONS, ZONES
 from ..data.equipment import Equipment
 from ..data.items import ITEM_PRICES
@@ -314,7 +314,7 @@ def parse_roll(gs: GameState,
         else:
             rng_index_int = int(rng_index)
     except ValueError:
-        raise EventParsingError('rng needs to be an integer')
+        rng_index_int = parse_dict_key(rng_index, RNG_NAMES, 'rng type')
     if not (0 <= rng_index_int < 68):
         raise EventParsingError(f'Can\'t advance rng index {rng_index}')
 
