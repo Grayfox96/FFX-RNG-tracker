@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
 from ..data.actor import Actor
-from ..data.constants import Character, MonsterSlot, Stat, Status, TargetType
+from ..data.constants import (Character, MonsterSlot, OverdriveMode, Stat,
+                              Status, TargetType)
 from .character_action import CharacterAction
 
 
@@ -22,6 +23,14 @@ class MonsterAction(CharacterAction):
     @property
     def status_rng_index(self) -> int:
         return min(60 + self.user.index, 67)
+
+    def _charge_ods(self) -> None:
+        for target, result in zip(self.targets, self.results):
+            if target.overdrive_mode is OverdriveMode.STOIC:
+                if result.hp.damage > 0:
+                    target.current_od += (((result.hp.damage * 30)
+                                           // target.max_hp)
+                                          + 1)
 
     def _get_targets(self) -> list[Actor]:
         dummy_target = self.gamestate.characters[Character.UNKNOWN]

@@ -3,7 +3,7 @@ from typing import Protocol
 
 from ..configs import Configs
 from ..data.actions import ACTIONS, YOJIMBO_ACTIONS
-from ..data.actor import Actor, MonsterActor
+from ..data.actor import Actor, CharacterActor, MonsterActor
 from ..data.characters import s_lv_to_total_ap
 from ..data.constants import (RNG_NAMES, SHORT_STATS_NAMES, Autoability,
                               Character, Element, ElementalAffinity,
@@ -504,6 +504,9 @@ def parse_stat_update(gs: GameState,
         actor.ctb = parse_amount(amount, actor.ctb)
         gs.normalize_ctbs()
         return Comment(gs, f'{actor}\'s CTB changed to {actor.ctb}')
+    elif stat_name == 'od':
+        actor.current_od = parse_amount(amount, actor.current_od)
+        return Comment(gs, f'{actor}\'s OD changed to {actor.current_od}')
     stat = parse_enum_member(stat_name, Stat, 'stat')
     stat_value = parse_amount(amount, actor.stats[stat])
     return ChangeStat(gs, actor, stat, stat_value)
@@ -724,6 +727,8 @@ def parse_actor_status(gs: GameState,
             raise EventParsingError(f'"{actor_name}" is not a valid actor')
         actor = gs.characters[character]
     text = f'Status: {actor} {actor.current_hp}/{actor.max_hp} HP'
+    if isinstance(actor, CharacterActor):
+        text += f' | {actor.current_od}/{actor.max_od} OD'
     statuses = [f'{s} ({stacks})' for s, stacks in actor.statuses.items()]
     if statuses:
         text += f' | Statuses: {', '.join(statuses)}'

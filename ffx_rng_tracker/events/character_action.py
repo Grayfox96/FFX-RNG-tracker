@@ -56,6 +56,7 @@ class CharacterAction(Event):
         if not self.action.is_counter:
             self.gamestate.process_start_of_turn(self.user)
         self.mp_cost = self._get_mp_cost()
+        self.od_cost = self._get_od_cost()
         self.targets = self._get_targets()
         self.results = [ActionResult() for _ in self.targets]
         self.reflected_targets: dict[int, Actor] = {}
@@ -66,6 +67,7 @@ class CharacterAction(Event):
         else:
             self._remove_statuses()
         self._apply_damages()
+        self._charge_ods()
         self._get_buffs()
         self._shatter_check()
         if self.action.is_counter:
@@ -373,6 +375,9 @@ class CharacterAction(Event):
                 # if self.action.drains:
                 #     self.user.ctb += result.ctb.damage
 
+    def _charge_ods(self) -> None:
+        return
+
     def _get_statuses(self) -> None:
         index = self.status_rng_index
         for target, result in zip(self.targets, self.results):
@@ -636,6 +641,10 @@ class CharacterAction(Event):
                 mp_cost //= 2
         self.user.current_mp -= mp_cost
         return mp_cost
+
+    def _get_od_cost(self) -> int:
+        self.user.current_od -= self.action.od_cost
+        return self.action.od_cost
 
 
 def get_element_mods(elemental_affinities: dict[Element, ElementalAffinity],

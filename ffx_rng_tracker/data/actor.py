@@ -11,13 +11,15 @@ from .autoabilities import (AEON_RIBBON_IMMUNITIES, AUTO_STATUSES,
                             STATUS_WARDS)
 from .characters import DefaultCharacterState, total_ap_to_s_lv
 from .constants import (ICV_BASE, Autoability, Buff, Element,
-                        ElementalAffinity, MonsterSlot, Stat, Status)
+                        ElementalAffinity, MonsterSlot, OverdriveMode, Stat,
+                        Status)
 from .equipment import Equipment
 from .monsters import Monster
 from .statuses import StatusApplication
 
 
 class Actor(Protocol):
+    overdrive_mode: OverdriveMode
     armored: bool
     immune_to_damage: bool
     immune_to_physical_damage: bool
@@ -83,6 +85,10 @@ class Actor(Protocol):
 class CharacterActor:
     def __init__(self, defaults: DefaultCharacterState) -> None:
         self.index = defaults.index
+        if self.index < 8:
+            self.overdrive_mode = OverdriveMode.STOIC
+        else:
+            self.overdrive_mode = OverdriveMode.AEONS
         self.armored = False
         self.immune_to_damage = False
         self.immune_to_physical_damage = False
@@ -327,6 +333,9 @@ class MonsterActor:
                  ) -> None:
         self.index = index
         self.armored = monster.armored
+        # setting to something that will never be used
+        # monster od is handled in the script and set manually
+        self.overdrive_mode = OverdriveMode.UNUSED_1
         self.immune_to_damage = monster.immune_to_damage
         self.immune_to_physical_damage = monster.immune_to_physical_damage
         self.immune_to_magical_damage = monster.immune_to_magical_damage

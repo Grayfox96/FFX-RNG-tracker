@@ -522,6 +522,29 @@ class Autoability(StrEnum):
     EXTRA_5 = 'Extra 5'
 
 
+class OverdriveMode(StrEnum):
+    WARRIOR = 'Warrior'
+    COMRADE = 'Comrade'
+    STOIC = 'Stoic'
+    HEALER = 'Healer'
+    TACTICIAN = 'Tactician'
+    VICTIM = 'Victim'
+    DANCER = 'Dancer'
+    AVENGER = 'Avenger'
+    SLAYER = 'Slayer'
+    HERO = 'Hero'
+    ROOK = 'Rook'
+    VICTOR = 'Victor'
+    COWARD = 'Coward'
+    ALLY = 'Ally'
+    SUFFERER = 'Sufferer'
+    DAREDEVIL = 'Daredevil'
+    LONER = 'Loner'
+    UNUSED_1 = 'Unused 1'
+    UNUSED_2 = 'Unused 2'
+    AEONS = 'Aeons'
+
+
 class GameVersion(StrEnum):
     PS2JP = 'PS2 JP'
     PS2NA = 'PS2 NA'
